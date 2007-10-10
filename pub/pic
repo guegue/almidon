@@ -1,0 +1,1 @@
+../phpthumb/pic.php

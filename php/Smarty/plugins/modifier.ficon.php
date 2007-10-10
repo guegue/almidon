@@ -1,0 +1,1 @@
+/www/cms/smarty/modifier.ficon.php

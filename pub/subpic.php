@@ -1,0 +1,1 @@
+../phpthumb/subpic.php
