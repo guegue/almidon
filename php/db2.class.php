@@ -1,4 +1,15 @@
-<?
+<?php
+
+/**
+ * db2.php
+ *
+ * DAL entre almidon y PEAR::DB.
+ *
+ * @copyright &copy; 2005-2008 Guegue Comunicaciones - guegue.com
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
+ * @version $Id: db2.php,v 2008011401 javier $
+ * @package almidon
+ */
 
 foreach ($_POST as $j =>$value) {
    if (stristr($value,"Content-Type")) {

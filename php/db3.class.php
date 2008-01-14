@@ -1,6 +1,17 @@
 <?
 // vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 
+/**
+ * db3.php
+ *
+ * DAL entre almidon y PEAR::DB. Version 3 con mejoras para AJAX.
+ *
+ * @copyright &copy; 2005-2008 Guegue Comunicaciones - guegue.com
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
+ * @version $Id: db3.php,v 2008011401 javier $
+ * @package almidon
+ */
+
 foreach ($_POST as $j =>$value) {
  if (stristr($value,"Content-Type")) {
    header("HTTP/1.0 403 Forbidden");
