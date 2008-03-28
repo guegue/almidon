@@ -1,1 +1,1 @@
-/www/cms/smarty/function.count.php
+../../../smarty/function.count.php

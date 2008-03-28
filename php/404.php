@@ -3,6 +3,7 @@ define('ADMIN', true);
 require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 $smarty->caching = false;
 
+# Crea enlaces superiores
 if (!isset($adminlinks)) {
   $classes = get_declared_classes();
   foreach($classes as $key)
@@ -17,12 +18,6 @@ if (!isset($adminlinks)) {
 $params = explode('/', $_SERVER['REQUEST_URI']);
 $object = $params[2];
 if (strpos($object, '?')) {
-#  $qp = explode('&', $params[2]);
-#  foreach($qp as $qpvar) {
-#    list($k, $v) = split('=',$qpvar);
-#    $_REQUEST[$k] = $v;
-#    $_GET[$k] = $v;
-#  }
   $object = substr($object, 0, strpos($object, '?'));
   define('SELF', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'],'?')));
 } else {
@@ -31,23 +26,30 @@ if (strpos($object, '?')) {
 if ($object) {
   $ot = $object . 'Table';
   $$object = new $ot;
-  require("/www/cms/php/typical.php");
+  require(ALMIDONDIR . '/php/typical.php');
   $$object->destroy();
   $tpl = ($$object->cols > 5) ? 'abajo' : 'normal';
   if ($$object->key2) $tpl .= '2';
-  if (file_exists("/www/".DOMAIN."/templates/admin/header.tpl"))
-    $smarty->assign('header',"/www/".DOMAIN."/templates/admin/header.tpl");
-  else 
-    $smarty->assign('header',"/www/cms/tpl/header.tpl");
-  $smarty->display('/www/cms/tpl/' . $tpl . '.tpl');
+  if (file_exists(ROOTDIR.'/templates/admin/header.tpl'))
+    $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
+  else {
+    $smarty->assign('header',ALMIDONDIR.'/tpl/header.tpl');
+    $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
+  }
+  $smarty->display(ALMIDONDIR.'/tpl/'.$tpl.'.tpl');
 } else {
-  if (file_exists("/www/".DOMAIN."/templates/admin/index.tpl")) {  
-    if(file_exists("/www/".DOMAIN."/templates/admin/header.tpl"))
-      $smarty->assign('header','/www/'.DOMAIN.'/templates/admin/header.tpl');
-    else $smarty->assign('header','/www/cms/tpl/header.tpl');
-      $smarty->display("/www/".DOMAIN."/templates/admin/index.tpl");
+  if (file_exists(ROOTDIR.'/templates/admin/index.tpl')) {  
+    if(file_exists(ROOTDIR.'/templates/admin/header.tpl'))
+      $smarty->assign('header',ROOTDIR.'/templates/admin/header.tpl');
+    else  {
+      $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
+      $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
+    }
+    $smarty->display(ROOTDIR."/templates/admin/index.tpl");
   } else {
-    $smarty->display('/www/cms/tpl/index.tpl');
+    $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
+    $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
+    $smarty->display(ALMIDONDIR . '/tpl/index.tpl');
   }
 }
 ?>

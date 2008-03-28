@@ -426,7 +426,7 @@ class phpthumb_functions {
 				case 'exec':
 				default:
 					ob_start();
-					$returnvalue = $execfunction($command);
+					$returnvalue = @$execfunction($command);
 					ob_end_clean();
 					break;
 			}

@@ -1,1 +1,1 @@
-/www/cms/smarty/function.dataform.php
+../../../smarty/function.dataform.php

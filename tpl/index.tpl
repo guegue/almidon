@@ -1,2 +1,2 @@
-{include file="/www/cms/tpl/header.tpl"}
-{include file="/www/cms/tpl/footer.tpl"}
+{include file="$header"}
+{include file="$footer"}

@@ -81,7 +81,7 @@ function smarty_function_datagrid($params, &$smarty)
   require_once $smarty->_get_plugin_filepath('function','html_select_time');
   require_once $smarty->_get_plugin_filepath('modifier','truncate');
   require_once $smarty->_get_plugin_filepath('modifier','wordwrap');
-  require_once ('/www/cms/smarty/modifier.url.php');
+  require_once $smarty->_get_plugin_filepath('modifier','url');
   $rows = array();
   $dd = array();
   $options = array();
@@ -228,7 +228,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'image':
           case 'img':
             $_tmp = '';
-            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="http://'.DOMAIN.'/cms/thumb/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="http://'.DOMAIN.'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
             $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
             break;
           case 'time':
@@ -360,7 +360,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'image':
             if ($_val) {
               if (THUMBNAILING)
-                $_tmp = '<a href="javascript:openimage(\'http://' . DOMAIN . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/thumb/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+                $_tmp = '<a href="javascript:openimage(\'http://' . DOMAIN . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
               else
                 $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="/_' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" height="20" border="0" /></a>';
             } else {

@@ -23,13 +23,13 @@ if ($_REQUEST['move'] == 'down') {
     $$object->execSQL("UPDATE ".$$object->name." SET $key=$current WHERE $key IS NULL");
   }
 }
-require("/www/cms/php/typical.php");
+require(ALMIDONDIR."/php/typical.php");
 $$object->destroy();
 $tpl = ($$object->cols > 5) ? 'abajo' : 'normal';
 if ($$object->key2) $tpl .= '2';
-if (file_exists("/www/".DOMAIN."/templates/admin/header.tpl"))
-  $smarty->assign('header',"/www/".DOMAIN."/templates/admin/header.tpl");
+if (file_exists(ROOTDIR."/templates/admin/header.tpl"))
+  $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
 else 
   $smarty->assign('header',"/www/cms/tpl/header.tpl");
-$smarty->display('/www/cms/tpl/' . $tpl . '.tpl');
+$smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');
 ?>

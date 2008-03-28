@@ -1,1 +1,1 @@
-/www/cms/smarty/function.datagrid.php
+../../../smarty/function.datagrid.php

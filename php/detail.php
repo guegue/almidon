@@ -14,7 +14,7 @@ $object = substr($object, strrpos($object, '/')+1, strrpos($object, '.') - (strr
 $ot = $object . 'Table';
 $$object = new $ot;
 //$disable['prensa'] = true;
-require("/www/cms/php/typical.php");
+require(ALMIDONDIR."/php/typical.php");
 /*$tpl = ($$object->cols > 5) ? 'abajo' : 'normal';
 if ($$object->key2) $tpl .= '2';*/
 $smarty->assign('header',"/www/cms/tpl/detail_header.tpl");
@@ -25,5 +25,5 @@ if($_REQUEST['preset']) {
   $smarty->assign('preset',$_REQUEST['parent']."=".$_REQUEST[$_REQUEST['parent']]);
 }
 $$object->destroy();
-$smarty->display('/www/cms/tpl/detail.tpl');
+$smarty->display(ALMIDONDIR.'/tpl/detail.tpl');
 ?>

@@ -32,12 +32,12 @@ $PHPTHUMB_CONFIG['document_root'] = $_SERVER['DOCUMENT_ROOT'];
 // Note: this directory must be writable (usually chmod 777 is neccesary) for caching to work.
 // If the directory is not writable no error will be generated but caching will be disabled.
 #$PHPTHUMB_CONFIG['cache_directory'] = dirname(__FILE__).'/cache/';                            // set the cache directory relative to the phpThumb() installation
-$PHPTHUMB_CONFIG['cache_directory'] = '/www/cms/cache/thumb';
+$PHPTHUMB_CONFIG['cache_directory'] = $_SERVER['DOCUMENT_ROOT'] . '../cache';
 //$PHPTHUMB_CONFIG['cache_directory'] = $PHPTHUMB_CONFIG['document_root'].'/phpthumb/cache/'; // set the cache directory to an absolute directory for all source images
 //$PHPTHUMB_CONFIG['cache_directory'] = './cache/';                                           // set the cache directory relative to the source image - must start with '.' (will not work to cache URL- or database-sourced images, please use an absolute directory name)
 //$PHPTHUMB_CONFIG['cache_directory'] = null;                                                 // disable thumbnail caching (not recommended)
 
-$PHPTHUMB_CONFIG['cache_disable_warning'] = false; // If [cache_directory] is non-existant or not writable, and [cache_disable_warning] is false, an error image will be generated warning to either set the cache directory or disable the warning (to avoid people not knowing about the cache)
+$PHPTHUMB_CONFIG['cache_disable_warning'] = true; // If [cache_directory] is non-existant or not writable, and [cache_disable_warning] is false, an error image will be generated warning to either set the cache directory or disable the warning (to avoid people not knowing about the cache)
 
 
 // * Cache culling: phpThumb can automatically limit the contents of the cache directory
@@ -140,7 +140,7 @@ $PHPTHUMB_CONFIG['error_bgcolor']               = 'CCCCFF'; // background color 
 $PHPTHUMB_CONFIG['error_textcolor']             = 'FF0000'; // color of text in error messages
 $PHPTHUMB_CONFIG['error_fontsize']              = 1;        // size of text in error messages, from 1 (smallest) to 5 (largest)
 $PHPTHUMB_CONFIG['error_die_on_error']          = true;     // die with error message on any fatal error (recommended with standalone phpThumb.php)
-$PHPTHUMB_CONFIG['error_silent_die_on_error']   = true;    // simply die with no output of any kind on fatal errors (not recommended)
+$PHPTHUMB_CONFIG['error_silent_die_on_error']   = false;    // simply die with no output of any kind on fatal errors (not recommended)
 $PHPTHUMB_CONFIG['error_die_on_source_failure'] = true;     // die with error message if source image cannot be processed by phpThumb() (usually because source image is corrupt in some way). If false the source image will be passed through unprocessed, if true (default) an error message will be displayed.
 
 // * Off-server Thumbnailing Configuration:
@@ -205,8 +205,8 @@ $PHPTHUMB_CONFIG['disable_onlycreateable_passthru'] = true;   // if true, any im
 
 
 // * Speed optimizations configuration
-$PHPTHUMB_CONFIG['prefer_imagemagick']           = true;  // If true, use ImageMagick to resize thumbnails if possible, since it is usually faster than GD functions; if false only use ImageMagick if PHP memory limit is too low.
-$PHPTHUMB_CONFIG['use_exif_thumbnail_for_speed'] = true; // If true, and EXIF thumbnail is available, and is larger or equal to output image dimensions, use EXIF thumbnail rather than actual source image for generating thumbnail. Benefit is only speed, avoiding resizing large image.
+$PHPTHUMB_CONFIG['prefer_imagemagick']           = false;  // If true, use ImageMagick to resize thumbnails if possible, since it is usually faster than GD functions; if false only use ImageMagick if PHP memory limit is too low.
+$PHPTHUMB_CONFIG['use_exif_thumbnail_for_speed'] = false; // If true, and EXIF thumbnail is available, and is larger or equal to output image dimensions, use EXIF thumbnail rather than actual source image for generating thumbnail. Benefit is only speed, avoiding resizing large image.
 $PHPTHUMB_CONFIG['allow_local_http_src']         = false; // If true, 'src' parameter can be "http://<thishostname>/path/image.ext" instead of just "/path/image.ext"; if false then display warning message to encourage more efficient local-filename calling.
 
 // END USER CONFIGURATION SECTION

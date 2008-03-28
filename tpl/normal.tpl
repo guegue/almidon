@@ -31,4 +31,4 @@
 </tr>
 </table>
 {/if}
-{include file="/www/cms/tpl/footer.tpl"}
+{include file="$footer"}

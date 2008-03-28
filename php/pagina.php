@@ -11,6 +11,6 @@ if (preg_match('/\.es|\.en|\.fr|\.de/',$lang)) $extra_lang = substr($lang,-3);
 $smarty->assign('header', $smarty->template_dir . '/header'.$extra_lang.'.tpl');
 $smarty->assign('footer', $smarty->template_dir . '/footer'.$extra_lang.'.tpl');
 $smarty->assign('title', $row['pagina']);
-$smarty->display('/www/cms/tpl/pagina.tpl');
+$smarty->display(ALMIDONDIR.'/tpl/pagina.tpl');
 $data->destroy();
 ?>
