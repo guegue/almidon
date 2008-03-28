@@ -1,1 +1,1 @@
-/www/cms/smarty/modifier.ficon.php
+../../../smarty/modifier.ficon.php

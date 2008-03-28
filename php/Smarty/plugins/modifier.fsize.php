@@ -1,1 +1,1 @@
-/www/cms/smarty/modifier.fsize.php
+../../../smarty/modifier.fsize.php

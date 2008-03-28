@@ -19,7 +19,10 @@ foreach ($_POST as $j =>$value) {
    }
 }
 
-require('DB.php');
+if (DEBUG === true) ini_set('display_errors', true);
+set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
+
+require_once(ALMIDONDIR . '/php/pear/DB.php');
 
 class Data {
   var $data;
@@ -53,10 +56,10 @@ class Data {
       $error_msg = $obj->getMessage();
       #if ($extra) $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
       $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
-      if (DEBUG) trigger_error($error_msg);
+      if (DEBUG === true) trigger_error($error_msg);
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
       if ($die) die();
-    } elseif (DEBUG && $extra)
+    } elseif (DEBUG === true && $extra)
       $this->sql_log($extra);
   }
 
