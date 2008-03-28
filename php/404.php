@@ -3,7 +3,7 @@
 /**
  * 404.php
  *
- * Para generar admin de tabla automaticamente (via mod_rewrite)
+ * rewrite magic: para generar admin de tabla automaticamente (via mod_rewrite)
  *
  * @copyright &copy; 2005-2008 Guegue Comunicaciones - guegue.com
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
