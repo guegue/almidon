@@ -48,7 +48,7 @@ class Data {
     $this->num = 0;
     $this->cols = 0;
     $this->max = MAXROWS;
-    $this->current_pg = ($_REQUEST['pg']) ? $_REQUEST['pg'] : '1';
+    $this->current_pg = (isset($_REQUEST['pg'])) ? $_REQUEST['pg'] : '1';
   }
 
   function check_error($obj, $extra = '', $die = false) {
@@ -120,6 +120,7 @@ class Data {
   function getArray() {
     for ($i = 0; $i < $this->num; $i++) {
       $row = $this->data->fetchRow(DB_FETCHMODE_ASSOC);
+      if (isset($row[$this->key]))
       if ($row[$this->key] == $this->current_id)
         $this->current_record = $row;
       if ($this->html)
@@ -200,9 +201,9 @@ class Table extends Data {
   function refreshFields() {
     $n = 0;
     $ns = 0;
-    unset($this->fields_noserial);
-    unset($this->all_fields);
-    unset($this->fields);
+    $this->fields_noserial = '';
+    $this->all_fields = '';
+    $this->fields = '';
     foreach($this->definition as $column) {
       if ($n > 0) {
         $this->fields .= ",";
@@ -269,7 +270,7 @@ class Table extends Data {
       $tmpvar = preg_replace("/javascript/", "", $tmpvar);
     } 
     if ($type == 'string' && !$html) {
-      $tmpvar = strip_tags($tmpvar, "<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed>");
+      $tmpvar = strip_tags($tmpvar, "<br/><br><p><h1><h2><h3><b><i><s><div><span><img><img1><img2><img3><img4><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr/>");
       #$tmpvar = preg_replace("/<|>/", "", $tmpvar);
     }
     return $tmpvar;
@@ -408,7 +409,7 @@ class Table extends Data {
         case 'bool':
         case 'boolean':
           $value = $this->request[$column['name']];
-          $value = (!$value || $value == 'false' || $value == '0') ? '0' : '1';
+          $value = (!$value || $value == 'false' || $value == '0' || $value == 'f') ? '0' : '1';
           $values .= "'" . $value . "'";
           break;
         case 'date':
@@ -466,6 +467,7 @@ class Table extends Data {
             $value = $this->database->escapeSimple($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
             if ($column['extra'] && defined('PIXDIR')) $sizes = explode(',',$column['extra']);
+            if ($sizes)
             foreach($sizes as $size) {
               $picurl = URL.'/cms/pic/' . $size . '/' . $this->name . '/' . rawurlencode($filename);
               $thumbf = PIXDIR . '/' . $size . '_' . $filename;
@@ -565,7 +567,7 @@ class Table extends Data {
         } else {
           $tmptable = $column['references'] . $references[$column['references']];
           $tmpcolumn =  "id" . $column['references'];
-          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $tmpcolumn;
+          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $tmpcolumn;
         }  
       }
     return $join;

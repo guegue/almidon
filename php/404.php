@@ -1,4 +1,16 @@
 <?php
+
+/**
+ * 404.php
+ *
+ * Para generar admin de tabla automaticamente (via mod_rewrite)
+ *
+ * @copyright &copy; 2005-2008 Guegue Comunicaciones - guegue.com
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
+ * @version $Id: 404.php,v 2008032801 javier $
+ * @package almidon
+ */
+
 define('ADMIN', true);
 require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 $smarty->caching = false;
