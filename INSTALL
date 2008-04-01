@@ -1,1 +1,27 @@
+REQUERIMIENTOS
+
 ver README
+
+INSTALAR
+
+La version actual en desarrollo es la 0.4, y está disponible únicamente via SVN
+# svn checkout http://svn.almidon.org/
+
+PUBLICAR CAMBIOS
+
+Antes de hacer "commit" a cambios realizados, pruebalos, instala almidón en tu
+propio /www/cms, o donde resulte más cómodo en tu sistema. Para enviar los
+cambios realizados, entrar al directorio svn.almidon.org y usar:
+# svn --username alice -m "My Update" commit
+
+DOCUMENTACION
+
+http://almidon.org/
+
+TRAC
+
+http://trac.almidon.org/
+
+SVN
+
+http://svn.almidon.org/

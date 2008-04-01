@@ -1,23 +1,46 @@
+SOBRE ALMIDON
+
+Almidón es un framework de desarrollo rápido y sistema de manejo de contenido,
+publicado bajo la licencia open source GPL v3. Mantiene su wiki en http://almidon.org/
+
+Almidón es tambien una plataforma de hosting, aunque es por ahora la parte menos
+documentada, la idea es contar con un framework central en un servidor que permita
+tener varios proyectos funcionando con el mismo framework, sin tener que mantener
+cada sitio web por separado.
+
+REQUERIMIENTOS
+
+Para la automatización máxima e necesario:
+
+- Apache 1.3+
+- PHP 4.3+ (indispensable)
+- PHP GD para manejo de imagenes
+- Mysql 4+ o PostgreSQL 7+
+- Unix/Linux (para sacar provecho de symlinks)
+
+Almidon ha sido probado en plataformas muy disintas, siendo PHP el único requisito
+indispensable, ha sido probado por ejemplo en Windows + IIS + SQL Server. Sin embargo
+lo especificado anteriormente es lo minimo necesario para sacar provecho máximo de por
+ejemplo symlinks, mod_rewrite, etc.
+
+SOPORTE TECNICO
+
+Suscribite a la lista de correo: http://lista.almidon.org/
+Para enviar un correo: almidon@lista.almidon.org
+Para ver los archivos: http://lista.almidon.org/pipermail/almidon/
+Documentación: http://almidon.org/
+Codigo: http://svn.almidon.org/
+Trac: http://trac.almidon.org/
+
+QUIENES SOMOS
+
+Actualmente almidón es primordialmente desarrollado por Guegue.Com y usado intensivamente
+en cientos de sitios web, desarrollados y en su mayoría hospedados por Guegue.Com
+
+COMO PARTICIPAR
+
+Instala almidón, suscríbete a la lista, y ahi vemos...
+
 INSTALAR
 
-La version actual en desarrollo es la 0.4, y está disponible únicamente via SVN
-# svn --username alicia --password "secreto" checkout http://svn.almidon.org/
-
-PUBLICAR CAMBIOS
-
-Antes de hacer "commit" a cambios realizados, pruebalos, instala almidón en tu
-propio /www/cms, o donde resulte más cómodo en tu sistema. Para enviar los
-cambios realizados, entrar al directorio svn.almidon.org y usar:
-# svn commit -m "Comentario sobre los cambios"
-
-DOCUMENTACION
-
-http://almidon.org/
-
-TRAC
-
-http://trac.almidon.org/
-
-SVN
-
-http://svn.almidon.org/
+ver INSTALL
