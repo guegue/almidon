@@ -19,8 +19,8 @@ de configuracion de Apache:
 
 <VirtualHost 127.0.0.1:80>
         ServerName demo.almidon.org
-        DocumentRoot /var/www/svn/trunk/demo/public_html
-        Alias /cms /var/www/svn/trunk/pub
+        DocumentRoot /var/www/trunk/demo/public_html
+        Alias /cms /var/www/trunk/pub
 </VirtualHost>
 
 Nota, remplazar demo.almidon.org por el dominio que deseen configurar.
@@ -33,12 +33,12 @@ Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en bre
 createdb almidondemo
 createuser -P almidondemo
 createuser -P almidondemowww
-psql -Upostgres -f svn/trunk/demo/sql/demo.sql almidondemo
+psql -Upostgres -f trunk/demo/sql/demo.sql almidondemo
 
 CONFIGURANDO ALMIDON
 ====================
 
-config.php en svn/trunk/demo/public_html/classes/config.php
+config.php en trunk/demo/public_html/classes/config.php
 define las variable (o constantes) principales como:
 
 if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:pass@/almidondemo');
@@ -64,7 +64,7 @@ PUBLICAR CAMBIOS EN SVN
 Antes de hacer "commit" a cambios realizados, pruebalos, instala almidón en tu
 propio /www/cms, o donde resulte más cómodo en tu sistema. Para enviar los
 cambios realizados, entrar al directorio svn.almidon.org y usar:
-# svn --username alice -m "My Update" commit
+$ svn --username alice -m "My Update" commit
 
 SOPORTE TECNICO
 ===============
