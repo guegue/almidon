@@ -64,9 +64,11 @@ class Data {
   }
 
   function sql_log($logtext) {
-    $loghandle = fopen(SQLLOG, 'a');
-    fwrite($loghandle, date("[D M d H:i:s Y]") . " " . $logtext . "\n");
-    fclose($loghandle);
+    $loghandle = @fopen(SQLLOG, 'a');
+    if (is_writable(SQLLOG)) {
+      fwrite($loghandle, date("[D M d H:i:s Y]") . " " . $logtext . "\n");
+      fclose($loghandle);
+    }
   }
   
   function query($sqlcmd) {

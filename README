@@ -1,4 +1,5 @@
 SOBRE ALMIDON
+=============
 
 Almidón es un framework de desarrollo rápido y sistema de manejo de contenido,
 publicado bajo la licencia open source GPL v3. Mantiene su wiki en http://almidon.org/
@@ -9,6 +10,7 @@ tener varios proyectos funcionando con el mismo framework, sin tener que mantene
 cada sitio web por separado.
 
 REQUERIMIENTOS
+==============
 
 Para la automatización máxima e necesario:
 
@@ -24,6 +26,7 @@ lo especificado anteriormente es lo minimo necesario para sacar provecho máximo
 ejemplo symlinks, mod_rewrite, etc.
 
 SOPORTE TECNICO
+===============
 
 Suscribite a la lista de correo: http://lista.almidon.org/
 Para enviar un correo: almidon@lista.almidon.org
@@ -33,14 +36,20 @@ Codigo: http://svn.almidon.org/
 Trac: http://trac.almidon.org/
 
 QUIENES SOMOS
+=============
 
 Actualmente almidón es primordialmente desarrollado por Guegue.Com y usado intensivamente
 en cientos de sitios web, desarrollados y en su mayoría hospedados por Guegue.Com
 
+Desde abril 2008, almidon comienza a desarrollarse con apoyo de la comunidad de software
+libre en Nicaragua. 
+
 COMO PARTICIPAR
+===============
 
 Instala almidón, suscríbete a la lista, y ahi vemos...
 
 INSTALAR
+========
 
 ver INSTALL
