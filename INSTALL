@@ -25,6 +25,11 @@ de configuracion de Apache:
 
 Nota, remplazar demo.almidon.org por el dominio que deseen configurar.
 
+Permisos: templates_c debe ser escribible por el usuario web:
+$ chmod o+w templates_c
+Igual ocurre con otros directorios cuya escritura es menos indispensable para
+arrancar el demo: logs, files, cache
+
 CONFIGRANDO POSTGRESQL
 ======================
 
