@@ -1,0 +1,12 @@
+php_flag display_errors on
+php_value error_reporting 2039
+<IfModule mod_rewrite.c>
+ RewriteEngine on
+ RewriteRule ^$ default.php [L]
+ RewriteCond %{REQUEST_FILENAME} !-f
+ RewriteCond %{REQUEST_FILENAME} !-d
+ RewriteRule ^(.*)/(.*)$ /cms/default.php?obj=$1&id$1=$2 [QSA,L]
+ RewriteCond %{REQUEST_FILENAME} !-f
+ RewriteCond %{REQUEST_FILENAME} !-d
+ RewriteRule ^(.*)$ /cms/default.php?obj=$1 [QSA,L]
+</IfModule>
