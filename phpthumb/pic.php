@@ -34,6 +34,7 @@ if (phpversion() < '4.1.0') {
 }
 
 $args = getArgs();
+#$_GET['phpThumbDebug'] = true;
 $_GET['src'] = "/../files/" . $args[2] . "/" . $args[3];
 list($w, $h) = split("x", $args[1]);
 $_GET['w'] = $w; $_GET['h'] = $h;
