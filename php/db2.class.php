@@ -20,9 +20,10 @@ foreach ($_POST as $j =>$value) {
 }
 
 if (DEBUG === true) ini_set('display_errors', true);
-set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
+if (defined('ALMIDONDIR'))
+  set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
 
-require_once(ALMIDONDIR . '/php/pear/DB.php');
+require_once('DB.php');
 
 class Data {
   var $data;
@@ -359,7 +360,7 @@ class Table extends Data {
           $values .= $this->request[$column['name']];
           break;
         case 'image':
-	  if ($this->files[$column['name']]) {
+          if ($this->files[$column['name']]) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
             if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
@@ -367,12 +368,14 @@ class Table extends Data {
             if ($column['extra'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']);
             if(isset($sizes)) {
               foreach($sizes as $size) {
-                $picurl = URL . '/cms/pic/' . $size . '/' . $this->name . '/' . rawurlencode($filename);
-                $thumbf = PIXDIR . '/' . $size . '_' . $filename;
-                $thumbc = file_get_contents($picurl);
-                $thumbh = fopen($thumbf, "wb");
-                if (fwrite($thumbh, $thumbc) == FALSE) error_log("ERROR al escribir a " . $thumbf);
-                fclose($thumbh);
+                $image = imagecreatefromstring(file_get_contents(ROOTDIR.'/files/'.$this->name.'/'.$filename));
+                list($ancho,$alto) = split('x', $size);
+                $alto_original = imagesy($image);
+                $ancho_original = imagesx($image);
+                if (!$alto) $alto = ceil($alto_original*($ancho/$ancho_original));
+                $new_image = imagecreatetruecolor ($ancho, $alto);
+                imagecopyresampled($new_image, $image, 0, 0, 0, 0, $ancho, $alto, $ancho_original, $alto_original);
+                imagejpeg($new_image,PIXDIR.'/'.$size.'_'.$filename,72);
               }
             }
           }
@@ -468,15 +471,18 @@ class Table extends Data {
             move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
             $value = $this->database->escapeSimple($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
-            if ($column['extra'] && defined('PIXDIR')) $sizes = explode(',',$column['extra']);
-            if ($sizes)
-            foreach($sizes as $size) {
-              $picurl = URL.'/cms/pic/' . $size . '/' . $this->name . '/' . rawurlencode($filename);
-              $thumbf = PIXDIR . '/' . $size . '_' . $filename;
-              $thumbc = file_get_contents($picurl);
-              $thumbh = fopen($thumbf, "wb");
-              if (fwrite($thumbh, $thumbc) == FALSE) error_log("ERROR al escribir a " . $thumbf);
-              fclose($thumbh);
+            if ($column['extra'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']);
+            if(isset($sizes)) {
+              foreach($sizes as $size) {
+                $image = imagecreatefromstring(file_get_contents(ROOTDIR.'/files/'.$this->name.'/'.$filename));
+                list($ancho,$alto) = split('x', $size);
+                $alto_original = imagesy($image);
+                $ancho_original = imagesx($image);
+                if (!$alto) $alto = ceil($alto_original*($ancho/$ancho_original));
+                $new_image = imagecreatetruecolor ($ancho, $alto);
+                imagecopyresampled($new_image, $image, 0, 0, 0, 0, $ancho, $alto, $ancho_original, $alto_original);
+                imagejpeg($new_image,PIXDIR.'/'.$size.'_'.$filename,72);
+              }
             }
           }
           break;

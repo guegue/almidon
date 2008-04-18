@@ -9,6 +9,7 @@ setlocale(LC_TIME, "es_ES");
 if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:nituni2@/almidondemo');
 else define ('DSN', 'pgsql://almidondemowww:yosi@/almidondemo');
 define ('DEBUG', true);
+#define ('DB3', true);
  
 # Constantes del web y filesystem
 
@@ -23,6 +24,7 @@ define ('LOGFILE', ROOTDIR . '/logs/cms.log');
 define ('HOMEDIR', ROOTDIR .'/public_html');
 define ('URL', 'http://www.' . DOMAIN);
 define ('EMAIL', 'info@' . DOMAIN);
+define ('PIXDIR', HOMEDIR.'/pix');
 
 define ('MAXROWS', 5);
 define ('MAXCOLS', 6);

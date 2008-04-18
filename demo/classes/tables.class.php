@@ -34,7 +34,7 @@ class fotoTable extends Table {
     $this->addColumn('idfoto','serial',0,1,0,'Id');
     $this->addColumn('idgaleria','int',0,0,'galeria','Galeria');
     $this->addColumn('foto','varchar',500,0,0,'Titulo');
-    $this->addColumn('imagen','image',0,0,0,'Foto');
+    $this->addColumn('imagen','image',0,0,0,'Foto','100,300x300');
   }
 }
 

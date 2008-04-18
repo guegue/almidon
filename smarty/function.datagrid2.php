@@ -84,7 +84,7 @@ function smarty_function_datagrid2($params, &$smarty)
   require_once $smarty->_get_plugin_filepath('function','html_select_time');
   require_once $smarty->_get_plugin_filepath('modifier','truncate');
   require_once $smarty->_get_plugin_filepath('modifier','wordwrap');
-  require_once ('/www/cms/smarty/modifier.url.php');
+  require_once $smarty->_get_plugin_filepath('modifier','url');
   $rows = array();
   $dd = array();
   $options = array();
