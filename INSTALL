@@ -23,6 +23,7 @@ de configuracion de Apache:
         Alias /cms /var/www/trunk/pub
 </VirtualHost>
 
+Nota, el demo de almidon usa mod_rewrite, este modulo debe estar activo.
 Nota, remplazar demo.almidon.org por el dominio que deseen configurar.
 
 Permisos: templates_c debe ser escribible por el usuario web:
