@@ -537,7 +537,7 @@ class Table extends Data {
           $values .= $column['name'] . "=" . $this->request[$column['name']];
           break;
         case 'image':
-          if ($nofiles || $_REQUEST[$column['name'] . '_keep'] || !$this->files[$column['name']]) {
+          if ($nofiles || ($_REQUEST[$column['name'] . '_keep']&&!$this->files[$column['name']]) || !$this->files[$column['name']]) {
             if (!$_REQUEST[$column['name'] . '_keep'] && !$this->files[$column['name']])
               $values .= $column['name'] . "=''";
             else
@@ -567,21 +567,29 @@ class Table extends Data {
             if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
 	          if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
             if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
-            if($sizes)
-              foreach($sizes as $size) {
-                $pic = null;
-                list($w, $h, $crop) = split("x", $size);
-                if($crop&&$h) {
-                  $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
-                } else {
-                  $pic = $image->resize(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+            if(isset($sizes))  {
+              $image = new Image();
+              if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
+              // Comprueba que existan los directorios y sino
+              // los crea
+              if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
+              if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
+              if($sizes)
+                foreach($sizes as $size) {
+                  $pic = null;
+                  list($w, $h, $crop) = split("x", $size);
+                  if($crop&&$h) {
+                    $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+                  } else {
+                    $pic = $image->resize(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+                  }
+                  $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
+                  if (imagejpeg($pic, $thumbf, IMG_QUALITY) === FALSE) {
+                    error_log("ERROR al escribir " . $thumbf);
+                  }
                 }
-                $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
-                if (imagejpeg($pic, $thumbf, IMG_QUALITY) === FALSE) {
-                  error_log("ERROR al escribir " . $thumbf);
-                }
-              }
-            if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]) && $this->request['old_'.$column['name']]) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
+              if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]) && $this->request['old_'.$column['name']]) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
+            }
           }
           break;
         case 'file':
