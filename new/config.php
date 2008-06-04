@@ -7,7 +7,7 @@ setlocale(LC_TIME, "es_ES");
 # Constantes de conexion la base de datos
  
 if (ADMIN) define ('DSN', 'pgsql://example:pass@/example');
-else define ('DSN', 'pgsql://example:pass@/example');
+else define ('DSN', 'pgsql://examplewww:pass@/example');
 define ('DEBUG', true);
  
 # Constantes del web y filesystem
