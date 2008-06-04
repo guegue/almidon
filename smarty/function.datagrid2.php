@@ -454,7 +454,10 @@ function smarty_function_datagrid2($params, &$smarty)
   $_html_result = preg_replace("/_PARENT_/", $parent, $_html_result);
   $_html_result = preg_replace("/_PARENTID_/", $parentid, $_html_result);
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
+  if ($_SERVER['PHP_SELF'] == '/cms/404.php' || $_SERVER['PHP_SELF'] == '/cms/404c.php')
+    $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
+  else
+    $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
   $_html_result = preg_replace("/_KEY_/", $key, $_html_result);
   $_html_result = preg_replace("/_KEY1_/", $key1, $_html_result);
   $_html_result = preg_replace("/_KEY2_/", $key2, $_html_result);

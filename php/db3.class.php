@@ -543,48 +543,44 @@ class Table extends Data {
             else
               $values .= $column['name'] . "=" . $column['name'];
             if(($this->request['old_'.$column['name']] != $this->files[$column['name']]) && $this->request['old_'.$column['name']] && !$_REQUEST[$column['name'] . '_keep']) {
-	          if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']])) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
-	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
-   	          if (isset($sizes)) {
-      			// esta linea da un warning: Warning: Wrong parameter count for strpos() in /www/cms/php/db3.class.php on line 550 Warning: Wrong parameter count for substr() in /www/cms/php/db3.class.php on line 550
-	        	$timemark = getdate(substr($this->request['old_'.$column['name']],0,strpos($this->request['old_'.$column['name']]),"_"));
+	            if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']])) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
+  	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
+     	        if (isset($sizes)) {
+       			  // esta linea da un warning: Warning: Wrong parameter count for strpos() in /www/cms/php/db3.class.php on line 550 Warning: Wrong parameter count for substr() in /www/cms/php/db3.class.php on line 550
+	          	  $timemark = getdate(substr($this->request['old_'.$column['name']],0,strpos($this->request['old_'.$column['name']]),"_"));
                 if ($timemark['mon']<10)  $timemark['mon'] = "0" . $timemark['mon'];
-                    if($sizes)
-	            foreach($sizes as $size) {
-	              list($w, $h, $crop) = split("x", $size);
-	              if(file_exists(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']])) unlink(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']]);
-	            }
-	          }
+                if($sizes)
+	                foreach($sizes as $size) {
+	                  list($w, $h, $crop) = split("x", $size);
+	                  if(file_exists(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']])) unlink(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']]);
+	                }
+  	          }
             }
           } elseif ($this->files[$column['name']]) {
           	$timemark = getdate();
             $filename =  $timemark[0] . "_" . $this->request[$column['name']];
-	        if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+	          if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
             $value = $this->database->escapeSimple($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
             if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
             if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
-	        if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
+	          if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
             if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
             if($sizes)
-            foreach($sizes as $size) {
-	      list($w, $h, $crop) = split("x", $size);
-	      if(file_exists(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":"") . "_" . $this->request['old_'.$column['name']])) unlink(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']]);
-              #$picurl = URL . "/cms/pic/" . $size . "/" . $this->name . "/" . rawurlencode($filename);
-                // strpos($mi_cadena, $caracter)
-	      if($crop&&$h)
-                $picurl = URL . "/cms/pic2/$w".($h?"x$h":"")."/" . $this->name . "/" . rawurlencode($filename);
-              else
-                $picurl = URL . "/cms/pic/$w".($h?"x$h":"")."/" . $this->name . "/" . rawurlencode($filename);
-              $thumbf = PIXDIR ."/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
-              $thumbc = file_get_contents($picurl);
-              $thumbh = fopen($thumbf, "wb");
-              if (fwrite($thumbh, $thumbc) == FALSE) {
-                error_log("ERROR al escribir a " . $thumbf);
+              foreach($sizes as $size) {
+                $pic = null;
+                list($w, $h, $crop) = split("x", $size);
+                if($crop&&$h) {
+                  $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+                } else {
+                  $pic = $image->resize(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+                }
+                $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
+                if (imagejpeg($pic, $thumbf, IMG_QUALITY) === FALSE) {
+                  error_log("ERROR al escribir " . $thumbf);
+                }
               }
-              fclose($thumbh);
-            }
             if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]) && $this->request['old_'.$column['name']]) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
           }
           break;
