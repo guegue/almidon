@@ -1,4 +1,5 @@
 <?
+define ('ADMIN', true);
 require 'app.class.php';
 
 function genSQL($object) {
@@ -30,8 +31,9 @@ function genSQL($object) {
 
 $classes = get_declared_classes();
 foreach($classes as $key) {
-  if (strstr($key, 'table') && $key != 'table' && $key != 'tabledoublekey') {
-    $key = substr($key, 0, strpos($key, 'table'));
+  if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
+    if(substr($key, 0, strpos($key, 'Table')) !== false) $key = substr($key, 0, strpos($key, 'Table'));
+    else $key = substr($key, 0, strpos($key, 'table'));
     $tables[] = $key;
   }
 }

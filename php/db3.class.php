@@ -1,17 +1,6 @@
 <?
 // vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 
-/**
- * db3.php
- *
- * DAL entre almidon y PEAR::DB. Version 3 con mejoras para AJAX.
- *
- * @copyright &copy; 2005-2008 Guegue Comunicaciones - guegue.com
- * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
- * @version $Id: db3.php,v 2008011401 javier $
- * @package almidon
- */
-
 foreach ($_POST as $j =>$value) {
  if (stristr($value,"Content-Type")) {
    header("HTTP/1.0 403 Forbidden");
@@ -21,6 +10,7 @@ foreach ($_POST as $j =>$value) {
 }
 
 require('DB.php');
+require('image.class.php');
 // Constantes
 define('PERMIS_DIR',0775);
 
@@ -62,10 +52,10 @@ class Data {
       $error_msg = $obj->getMessage();
       #if ($extra) $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
       $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
-      if (DEBUG) trigger_error($error_msg);
+      if (DEBUG === true) trigger_error($error_msg);
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
       if ($die) die();
-    } elseif (DEBUG && $extra)
+    } elseif (DEBUG === true && $extra)
       $this->sql_log($extra);
   }
 
@@ -325,7 +315,7 @@ class Table extends Data {
       $tmpvar = preg_replace("/javascript/", "", $tmpvar);
     }
     if ($type == 'string' && !$html) {
-      $tmpvar = strip_tags($tmpvar, "<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed>");
+      $tmpvar = strip_tags($tmpvar, "<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>");
       //$tmpvar = strip_tags($tmpvar, "<br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup>");
       #$tmpvar = preg_replace("/<|>/", "", $tmpvar);
     }
@@ -390,7 +380,7 @@ class Table extends Data {
           #else $this->request[$column['name']] = 'NULL';
 	    //	nuevo
 	    } elseif($column['type'] == 'video') {
-	      $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.$_REQUEST[$column['name'].'_src'].'</src></video>';
+	      $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
           $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
 	    //	end
         } else {
@@ -427,46 +417,44 @@ class Table extends Data {
           	$timemark = getdate();
           	/*
           	"seconds"	Representaci—n numŽrica de segundos	0 a 59
-			"minutes"	Representaci—n numŽrica de minutos	0 a 59
-			"hours"	Representaci—n numŽrica de horas	0 a 23
-			"mday"	Representaci—n numŽrica del d’a del mes	1 a 31
-			"wday"	Representaci—n numŽrica del d’a de la semana	0 (para el Domingo) a 6 (para el S‡bado)
-			"mon"	Representaci—n numŽrica de un mes	1 a 12
-			"year"	Una representaci—n numŽrica completa de un a–o, 4 d’gitos	Ejemplos: 1999 o 2003
-			"yday"	Representaci—n numŽrica del d’a del a–o	0 a 365
-			"weekday"	Una representaci—n textual completa del d’a de la semana	Sunday a Saturday
-			"month"	Una representaci—n textual completa de un mes, como January o March	January a December
-			0	Segundos desde el Epoch Unix, similar a los valores devueltos por time() y usados por date(). 	Depende del sistema, t’picamente -2147483648 a 2147483647 (equivalente al mktime).
+			      "minutes"	Representaci—n numŽrica de minutos	0 a 59
+			      "hours"	Representaci—n numŽrica de horas	0 a 23
+			      "mday"	Representaci—n numŽrica del d’a del mes	1 a 31
+			      "wday"	Representaci—n numŽrica del d’a de la semana	0 (para el Domingo) a 6 (para el S‡bado)
+			      "mon"	Representaci—n numŽrica de un mes	1 a 12
+			      "year"	Una representaci—n numŽrica completa de un a–o, 4 d’gitos	Ejemplos: 1999 o 2003
+			      "yday"	Representaci—n numŽrica del d’a del a–o	0 a 365
+			      "weekday"	Una representaci—n textual completa del d’a de la semana	Sunday a Saturday
+			      "month"	Una representaci—n textual completa de un mes, como January o March	January a December
+			      0	Segundos desde el Epoch Unix, similar a los valores devueltos por time() y usados por date(). 	Depende del sistema, t’picamente -2147483648 a 2147483647 (equivalente al mktime).
           	*/
             $filename =  $timemark[0] . "_" . $this->request[$column['name']];
-	        if (!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+	          if (!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
             $this->request[$column['name']] = $filename;
-	        if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
-	        if(isset($sizes))  {
+	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
+	          if(isset($sizes))  {
+              $image = new Image();
               if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
               // Comprueba que existan los directorios y sino
-	          // los crea
-	          if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
-	          if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
+	            // los crea
+	            if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
+	            if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
               if($sizes)
-              foreach($sizes as $size) {
-                #$picurl = URL . "/cms/pic/" . $size . "/" . $this->name . "/" . rawurlencode($filename);
-                // strpos($mi_cadena, $caracter)
-	        list($w, $h, $crop) = split("x", $size);
-		if($crop&&$h)
-                  $picurl = URL . "/cms/pic2/$w".($h?"x$h":"")."/" . $this->name . "/" . rawurlencode($filename);
-                else
-                  $picurl = URL . "/cms/pic/$w".($h?"x$h":"")."/" . $this->name . "/" . rawurlencode($filename);
-                $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
-                $thumbc = file_get_contents($picurl);
-                $thumbh = fopen($thumbf, "wb");
-                if (fwrite($thumbh, $thumbc) == FALSE) {
-                  error_log("ERROR al escribir a " . $thumbf);
+                foreach($sizes as $size) {
+                  $pic = null;
+	                list($w, $h, $crop) = split("x", $size);
+		              if($crop&&$h) {
+                    $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+                  } else {
+                    $pic = $image->resize(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+                  }
+                  $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
+                  if (imagejpeg($pic, $thumbf, IMG_QUALITY) === FALSE) {
+                    error_log("ERROR al escribir " . $thumbf);
+                  }
                 }
-                fclose($thumbh);
-              }
-	    }
+	          }
           }
           $value = $this->database->escapeSimple($this->request[$column['name']]);
           $values .= "'" . $value . "'";
@@ -684,24 +672,25 @@ class Table extends Data {
     foreach ($this->definition as $column)
       if ($column['references']) {
         $references[$column['references']]++;
+        // Si solo hay una unica referencia a la tabla
         if ($references[$column['references']] == 1) {
           $pos = strpos($column['references'],'.');
           if($pos!==false) {
-   	    $r_table = substr($column['references'],0,$pos);
+      	    $r_table = substr($column['references'],0,$pos);
             $pos_2 = strpos($column['references'],'[');
-	    if($pos_2!==false) {
-	      $r_field = substr($column['references'],$pos+1,$pos_2-$pos-1);
+      	    if($pos_2!==false) {
+	            $r_field = substr($column['references'],$pos+1,$pos_2-$pos-1);
               $r_alias = substr($column['references'],$pos_2+1,strlen($column['references'])-($pos_2+2));
             }else{
-	      $r_field = substr($column['references'],$pos+1);
-	    }
+       	      $r_field = substr($column['references'],$pos+1);
+      	    }
             $join .= " LEFT OUTER JOIN " . $r_table . " ".(empty($r_alias)?"":"AS ".$r_alias." ")."ON " . $this->name . "." . $column['name'] . "=" . (empty($r_alias)?$r_table:$r_alias).".".$r_field;
           } else
             $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $column['name'];
         } else {
           $tmptable = $column['references'] . $references[$column['references']];
           $tmpcolumn =  "id" . $column['references'];
-          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $tmpcolumn;
+          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $tmpcolumn;
         }
       }
     return $join;
@@ -806,7 +795,6 @@ class Table extends Data {
       $sqlcmd .= " OFFSET $this->offset";
     $this->execSql($sqlcmd);
     return $this->getArray();
-
   }
 
   function dumpData() {

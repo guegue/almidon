@@ -208,7 +208,7 @@ function smarty_function_dataform2($params, &$smarty)
           $_tmp = '';
           $_icon = 'image.png';
           $_tmp = '<input name="old_'.$_key.'" type="hidden" value="'.$_val.'" /><img src="/cms/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
-          if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+          if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="http://'.DOMAIN.'/cms/thumb/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
           $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
         case 'boolean':
@@ -229,6 +229,7 @@ function smarty_function_dataform2($params, &$smarty)
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>'--', 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
           break;
         case 'date':
+          if(!$_val)  $_val = $dd[$_key]['extra']['default'];
           if (preg_match("/:/", $dd[$_key]['extra']['range']))
             list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']['range']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year), $smarty);
@@ -241,6 +242,13 @@ function smarty_function_dataform2($params, &$smarty)
           if (preg_match("/:/", $dd[$_key]['extra']['range']))
             list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']['range']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year), $smarty);
+          $_tmp .= smarty_function_html_select_time(array('prefix'=>$_key . '_', 'time'=>$_val, 'display_seconds'=>false), $smarty);
+          break;
+        case 'datetimenull':
+          if(!$_val)  $_val = $dd[$_key]['extra']['default'];
+          if (preg_match("/:/", $dd[$_key]['extra']['range']))
+            list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']['range']);
+          $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
           $_tmp .= smarty_function_html_select_time(array('prefix'=>$_key . '_', 'time'=>$_val, 'display_seconds'=>false), $smarty);
           break;
         case 'password':
@@ -275,9 +283,16 @@ function smarty_function_dataform2($params, &$smarty)
           break;
         case 'numeric':
         case 'int':
-          $_tmp = preg_replace("/_VALUE_/", $_val, FCELLMODSTR);
-          $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
-          $_tmp = preg_replace("/_SIZE_/", 10, $_tmp);
+          if ($dd[$_key]['extra']['arr_values']) {
+            $_options = $dd[$_key]['extra']['arr_values'];
+            $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_val), $smarty);
+            $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
+            $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+          } else {
+            $_tmp = preg_replace("/_VALUE_/", $_val, FCELLMODSTR);
+            $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+            $_tmp = preg_replace("/_SIZE_/", 10, $_tmp);
+          }
           break;
         case 'references':
           if ($_preset[$_key]) {
@@ -295,6 +310,7 @@ function smarty_function_dataform2($params, &$smarty)
               $_tmp = preg_replace("/_CHANGE_/", "updateCombo('$_key', '".$dd[$_key]['extra']['son']."', null)", $_tmp);
             else
               $_tmp = preg_replace("/_CHANGE_/", "", $_tmp);
+            if($dd[$_key]['extra']['open_popup']) $_tmp .= '&nbsp;<a href="javascript:openPopUp(\'/cms/query.php?f='.$dd[$_key]['references'].'&action=record&'.$_key.'=\'+document.forms[\'new\'].'.$_key.'.value,'.$dd[$_key]['extra']['height'].','.$dd[$_key]['extra']['width'].');">consultar</a>';
             if($dd[$_key]['extra']['depend'])
               $_tmp .= "<script>updateCombo('".$dd[$_key]['extra']['depend']."', '$_key', '$_selected')</script>";
           }
@@ -390,9 +406,9 @@ function smarty_function_dataform2($params, &$smarty)
         case 'image':
           if ($_val) {
             if (THUMBNAILING)
-              $_tmp = '<a href="javascript:openimage(\'http://' . DOMAIN . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+              $_tmp = '<a href="javascript:openimage(\'http://' . DOMAIN . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/thumb/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
             else
-              $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val . '" width="50" border="0" /></a>';
+              $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/thumb/pic/50/' . $table . '/' . $_val . '" alt="' . $_val . '" width="50" border="0" /></a>';
           } else {
             $_tmp = '--';
           } 
@@ -403,6 +419,10 @@ function smarty_function_dataform2($params, &$smarty)
           $_tmp = '';
           break;
         default:
+    	  if($dd[$_key]['extra']['arr_values']) {
+            $_options = $dd[$_key]['extra']['arr_values'];
+            $_val = $_options[trim($_val)];
+          }
           #$_tmp = smarty_modifier_truncate($_val, 50);
 	  if($_preset[$_key]) {
 	    $_tmp = '';
@@ -459,13 +479,21 @@ function smarty_function_dataform2($params, &$smarty)
       $_paginate .= NEXT;
   }
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
-  $_referer = preg_replace("/\//", "\/", $_SERVER['PHP_SELF']);
-  if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']) || $is_detail)
-    $_referer = $_SERVER['PHP_SELF'];
+
+  if ($_SERVER['PHP_SELF'] == '/cms/404.php' || $_SERVER['PHP_SELF'] == '/cms/404c.php')
+    $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
+    $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
+
+  $_referer = preg_replace("/\//", "\/", $_SERVER['PHP_SELF']);
+  if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']) || $is_detail || $_SERVER['PHP_SELF'] == '/cms/query.php') {
+    $_referer = $_SERVER['PHP_SELF'];
+  } else {
     $_referer = $_SERVER['HTTP_REFERER'];
+  }
   if($is_detail)  $_referer .= '?action=close';
+  // Si es el popup de consulta
+  if($_SERVER['PHP_SELF'] == '/cms/query.php') {  $_referer .= '?action=close'; }
   
   $_html_result = preg_replace("/_REFERER_/", $_referer, $_html_result);
   $_html_result = preg_replace("/_KEY_/", $key, $_html_result);
