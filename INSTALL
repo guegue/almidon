@@ -35,10 +35,10 @@ CONFIGRANDO POSTGRESQL
 
 Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en breve:
 
-createdb almidondemo
-createuser -P almidondemo
-createuser -P almidondemowww
 psql -Upostgres -f /var/www/trunk/demo/demo.sql almidondemo
+
+Nota: el script sql elige los password secreto1 y secreto2 para sus usuarios
+Nota: si es la segunda vez que instalas el demo, asegurate de borrar la base de datos almidondemo y usuarios almidondemo y almidondemowww
 
 CONFIGURANDO ALMIDON
 ====================
