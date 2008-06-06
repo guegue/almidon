@@ -1,0 +1,39 @@
+AUN FALTA POR DOCUMENTAR
+
+yum install postgresql
+yum install postgresql-server
+yum install php
+yum install httpd
+yum install httpd-php
+
+Config de postgres: vi /var/lib/pgsql/data/pg_hba.conf 
+  local   all         all                               trust
+  host    all         all         127.0.0.1/32          trust
+
+  service postgresql start
+
+yum install svn
+cd /var/www
+svn checkout http://svn.almidon.org/trunk/
+
+Configuracion de apache
+ vi /etc/httpd/conf.d/almidon.conf
+ agregar:
+  <VirtualHost 127.0.0.1:80>
+        ServerName local.almidon.org
+        DocumentRoot /var/www/trunk/demo/public_html
+        Alias /cms /var/www/trunk/pub
+  </VirtualHost>
+  service httpd start / restart / reload
+
+Permisos de escritura a template_c
+  chmod o+w templates_c
+
+Crear usuario / base de datos en postgres
+  psql -Upostgres -f /var/www/trunk/demo/demo.sql
+
+Crear archivo de password para administracion 
+ cd /var/www/trunk/demo
+ htpasswd -c .htpasswd demo
+ editar archivo .htaccess (secure/.htaccess)
+ cambiar AuthUserFile /var/www/trunk/demo/local.almidon.org/.htpasswd
