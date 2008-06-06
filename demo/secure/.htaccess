@@ -6,7 +6,7 @@ RewriteRule (.*) /cms/404.php [L]
 
 AuthType Basic
 AuthName "CMS: Demo de Almidon"
-AuthUserFile /var/www//trunk/demo/.htpasswd
+AuthUserFile /var/wwW/trunk/demo/.htpasswd
 
 
 order allow,deny
