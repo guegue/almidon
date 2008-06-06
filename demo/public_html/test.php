@@ -1,8 +1,8 @@
 <?php
-echo "PHP funciona?" . 5*8 . " = 40<br/>";
+echo "PHP funciona? " . 5*8 . " = 40<br/>";
 ?>
 <?
-echo "Short tags funcionan" . 5*8 . " = 40<br/>";
+echo "Short tags funcionan " . 5*8 . " = 40<br/>";
 ?>
 <?
 $conn = pg_pconnect("host=localhost port=5432 dbname=almidondemo user=almidondemo password=secreto1");
