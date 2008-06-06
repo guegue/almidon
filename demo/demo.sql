@@ -9,11 +9,23 @@ SET client_min_messages = warning;
 SET escape_string_warning = off;
 
 --
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+-- Name: almidondemo; Type: DATABASE; Schema: -; Owner: almidondemo
 --
 
-COMMENT ON SCHEMA public IS 'Standard public schema';
+CREATE DATABASE almidondemo WITH TEMPLATE = template0 ENCODING = 'UTF8';
+CREATE USER almidondemo WITH PASSWORD 'secreto1';
+CREATE USER almidondemowww WITH PASSWORD 'secreto2';
 
+
+ALTER DATABASE almidondemo OWNER TO almidondemo;
+
+\connect almidondemo
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
@@ -36,6 +48,149 @@ CREATE TABLE agenda (
 
 
 ALTER TABLE public.agenda OWNER TO almidondemo;
+
+--
+-- Name: doc; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE doc (
+    iddoc integer NOT NULL,
+    doc character varying(500),
+    portada character varying(500),
+    descripcion text,
+    archivo character varying(500)
+);
+
+
+ALTER TABLE public.doc OWNER TO almidondemo;
+
+--
+-- Name: donante; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE donante (
+    iddonante integer NOT NULL,
+    donante character varying(500)
+);
+
+
+ALTER TABLE public.donante OWNER TO almidondemo;
+
+--
+-- Name: donanteproyecto; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE donanteproyecto (
+    iddonanteproyecto integer NOT NULL,
+    iddonante integer,
+    idproyecto integer
+);
+
+
+ALTER TABLE public.donanteproyecto OWNER TO almidondemo;
+
+--
+-- Name: enlace; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE enlace (
+    idenlace integer NOT NULL,
+    enlace character varying(500),
+    url character varying(600),
+    texto text,
+    imagen character varying(500)
+);
+
+
+ALTER TABLE public.enlace OWNER TO almidondemo;
+
+--
+-- Name: foto; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE foto (
+    idfoto integer NOT NULL,
+    idgaleria integer,
+    foto character varying(500),
+    imagen character varying(500)
+);
+
+
+ALTER TABLE public.foto OWNER TO almidondemo;
+
+--
+-- Name: galeria; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE galeria (
+    idgaleria integer NOT NULL,
+    galeria character varying(500),
+    fecha date
+);
+
+
+ALTER TABLE public.galeria OWNER TO almidondemo;
+
+--
+-- Name: noticia; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE noticia (
+    idnoticia integer NOT NULL,
+    noticia character varying(500),
+    fecha date,
+    texto text,
+    foto character varying(500)
+);
+
+
+ALTER TABLE public.noticia OWNER TO almidondemo;
+
+--
+-- Name: pagina; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE pagina (
+    idpagina integer NOT NULL,
+    pagina character varying(500),
+    foto character varying(500),
+    descripcion text
+);
+
+
+ALTER TABLE public.pagina OWNER TO almidondemo;
+
+--
+-- Name: programa; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE programa (
+    idprograma integer NOT NULL,
+    programa character varying(500),
+    foto character varying(500),
+    descripcion text
+);
+
+
+ALTER TABLE public.programa OWNER TO almidondemo;
+
+--
+-- Name: proyecto; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
+--
+
+CREATE TABLE proyecto (
+    idproyecto integer NOT NULL,
+    proyecto character varying(500),
+    monto numeric,
+    beneficiarios text,
+    descripcion text,
+    territorio text,
+    duracion character varying(30),
+    idgaleria integer
+);
+
+
+ALTER TABLE public.proyecto OWNER TO almidondemo;
 
 --
 -- Name: agenda_idagenda_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
@@ -65,21 +220,6 @@ SELECT pg_catalog.setval('agenda_idagenda_seq', 2, true);
 
 
 --
--- Name: doc; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE doc (
-    iddoc integer NOT NULL,
-    doc character varying(500),
-    portada character varying(500),
-    descripcion text,
-    archivo character varying(500)
-);
-
-
-ALTER TABLE public.doc OWNER TO almidondemo;
-
---
 -- Name: doc_iddoc_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
 --
 
@@ -105,18 +245,6 @@ ALTER SEQUENCE doc_iddoc_seq OWNED BY doc.iddoc;
 
 SELECT pg_catalog.setval('doc_iddoc_seq', 6, true);
 
-
---
--- Name: donante; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE donante (
-    iddonante integer NOT NULL,
-    donante character varying(500)
-);
-
-
-ALTER TABLE public.donante OWNER TO almidondemo;
 
 --
 -- Name: donante_iddonante_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
@@ -147,19 +275,6 @@ SELECT pg_catalog.setval('donante_iddonante_seq', 1, false);
 
 
 --
--- Name: donanteproyecto; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE donanteproyecto (
-    iddonanteproyecto integer NOT NULL,
-    iddonante integer,
-    idproyecto integer
-);
-
-
-ALTER TABLE public.donanteproyecto OWNER TO almidondemo;
-
---
 -- Name: donanteproyecto_iddonanteproyecto_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
 --
 
@@ -186,21 +301,6 @@ ALTER SEQUENCE donanteproyecto_iddonanteproyecto_seq OWNED BY donanteproyecto.id
 
 SELECT pg_catalog.setval('donanteproyecto_iddonanteproyecto_seq', 1, false);
 
-
---
--- Name: enlace; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE enlace (
-    idenlace integer NOT NULL,
-    enlace character varying(500),
-    url character varying(600),
-    texto text,
-    imagen character varying(500)
-);
-
-
-ALTER TABLE public.enlace OWNER TO almidondemo;
 
 --
 -- Name: enlace_idenlace_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
@@ -230,20 +330,6 @@ SELECT pg_catalog.setval('enlace_idenlace_seq', 2, true);
 
 
 --
--- Name: foto; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE foto (
-    idfoto integer NOT NULL,
-    idgaleria integer,
-    foto character varying(500),
-    imagen character varying(500)
-);
-
-
-ALTER TABLE public.foto OWNER TO almidondemo;
-
---
 -- Name: foto_idfoto_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
 --
 
@@ -267,21 +353,8 @@ ALTER SEQUENCE foto_idfoto_seq OWNED BY foto.idfoto;
 -- Name: foto_idfoto_seq; Type: SEQUENCE SET; Schema: public; Owner: almidondemo
 --
 
-SELECT pg_catalog.setval('foto_idfoto_seq', 70, true);
+SELECT pg_catalog.setval('foto_idfoto_seq', 101, true);
 
-
---
--- Name: galeria; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE galeria (
-    idgaleria integer NOT NULL,
-    galeria character varying(500),
-    fecha date
-);
-
-
-ALTER TABLE public.galeria OWNER TO almidondemo;
 
 --
 -- Name: galeria_idgaleria_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
@@ -311,20 +384,6 @@ SELECT pg_catalog.setval('galeria_idgaleria_seq', 2, true);
 
 
 --
--- Name: pagina; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE pagina (
-    idpagina integer NOT NULL,
-    pagina character varying(500),
-    foto character varying(500),
-    descripcion text
-);
-
-
-ALTER TABLE public.pagina OWNER TO almidondemo;
-
---
 -- Name: identidad_ididentidad_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
 --
 
@@ -350,21 +409,6 @@ ALTER SEQUENCE identidad_ididentidad_seq OWNED BY pagina.idpagina;
 
 SELECT pg_catalog.setval('identidad_ididentidad_seq', 5, true);
 
-
---
--- Name: noticia; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE noticia (
-    idnoticia integer NOT NULL,
-    noticia character varying(500),
-    fecha date,
-    texto text,
-    foto character varying(500)
-);
-
-
-ALTER TABLE public.noticia OWNER TO almidondemo;
 
 --
 -- Name: noticia_idnoticia_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
@@ -394,20 +438,6 @@ SELECT pg_catalog.setval('noticia_idnoticia_seq', 2, true);
 
 
 --
--- Name: programa; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE programa (
-    idprograma integer NOT NULL,
-    programa character varying(500),
-    foto character varying(500),
-    descripcion text
-);
-
-
-ALTER TABLE public.programa OWNER TO almidondemo;
-
---
 -- Name: programa_idprograma_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
 --
 
@@ -433,24 +463,6 @@ ALTER SEQUENCE programa_idprograma_seq OWNED BY programa.idprograma;
 
 SELECT pg_catalog.setval('programa_idprograma_seq', 5, true);
 
-
---
--- Name: proyecto; Type: TABLE; Schema: public; Owner: almidondemo; Tablespace: 
---
-
-CREATE TABLE proyecto (
-    idproyecto integer NOT NULL,
-    proyecto character varying(500),
-    monto numeric,
-    beneficiarios text,
-    descripcion text,
-    territorio text,
-    duracion character varying(30),
-    idgaleria integer
-);
-
-
-ALTER TABLE public.proyecto OWNER TO almidondemo;
 
 --
 -- Name: proyecto_idproyecto_seq; Type: SEQUENCE; Schema: public; Owner: almidondemo
@@ -620,6 +632,16 @@ COPY foto (idfoto, idgaleria, foto, imagen) FROM stdin;
 68	2	Frutas en fondo oscuro	fruit_2_bg_020203.jpg
 69	2	Granos de café	coffee_01_bg_031106.jpg
 70	2	Treboles de Irlanda	ireland_102_bg_061602.jpg
+71	1	Señalando el 'datagrid' con el dedo	1208475133_IMG_1813.JPG
+72	1	Entendiendo Safari?	1208475451_IMG_1798.JPG
+77	1	Leandro, Marconi, otros...	1208475793_IMG_1808.JPG
+80	1	Javier, Melvin y Maribel	1208476743_IMG_1814.JPG
+79	1	Christian y Mac	1208477323_IMG_1817.JPG
+81	1	Donald, Alfredo, Leandro, Marconi...	1208477427_IMG_1816.JPG
+98	\N		1212293501_01fsnsaberuh3.jpg
+99	\N		1212293662_01fsnsaberuh3.jpg
+100	\N		1212597370_4 junio 2008.gif
+101	\N		1212768542_fire.jpg
 \.
 
 
@@ -629,7 +651,7 @@ COPY foto (idfoto, idgaleria, foto, imagen) FROM stdin;
 
 COPY galeria (idgaleria, galeria, fecha) FROM stdin;
 2	Galeria de ejemplos	\N
-1	Fiesta de Agosto	2007-08-24
+1	Primera reunión de almidón	2008-04-12
 \.
 
 
@@ -832,16 +854,6 @@ GRANT SELECT ON TABLE agenda TO almidondemowww;
 
 
 --
--- Name: agenda_idagenda_seq; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON SEQUENCE agenda_idagenda_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE agenda_idagenda_seq FROM almidondemo;
-GRANT ALL ON SEQUENCE agenda_idagenda_seq TO almidondemo;
-GRANT SELECT ON SEQUENCE agenda_idagenda_seq TO almidondemowww;
-
-
---
 -- Name: doc; Type: ACL; Schema: public; Owner: almidondemo
 --
 
@@ -849,16 +861,6 @@ REVOKE ALL ON TABLE doc FROM PUBLIC;
 REVOKE ALL ON TABLE doc FROM almidondemo;
 GRANT ALL ON TABLE doc TO almidondemo;
 GRANT SELECT ON TABLE doc TO almidondemowww;
-
-
---
--- Name: doc_iddoc_seq; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON SEQUENCE doc_iddoc_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE doc_iddoc_seq FROM almidondemo;
-GRANT ALL ON SEQUENCE doc_iddoc_seq TO almidondemo;
-GRANT SELECT ON SEQUENCE doc_iddoc_seq TO almidondemowww;
 
 
 --
@@ -872,16 +874,6 @@ GRANT SELECT ON TABLE donante TO almidondemowww;
 
 
 --
--- Name: donante_iddonante_seq; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON SEQUENCE donante_iddonante_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE donante_iddonante_seq FROM almidondemo;
-GRANT ALL ON SEQUENCE donante_iddonante_seq TO almidondemo;
-GRANT SELECT ON SEQUENCE donante_iddonante_seq TO almidondemowww;
-
-
---
 -- Name: donanteproyecto; Type: ACL; Schema: public; Owner: almidondemo
 --
 
@@ -889,16 +881,6 @@ REVOKE ALL ON TABLE donanteproyecto FROM PUBLIC;
 REVOKE ALL ON TABLE donanteproyecto FROM almidondemo;
 GRANT ALL ON TABLE donanteproyecto TO almidondemo;
 GRANT SELECT ON TABLE donanteproyecto TO almidondemowww;
-
-
---
--- Name: donanteproyecto_iddonanteproyecto_seq; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON SEQUENCE donanteproyecto_iddonanteproyecto_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE donanteproyecto_iddonanteproyecto_seq FROM almidondemo;
-GRANT ALL ON SEQUENCE donanteproyecto_iddonanteproyecto_seq TO almidondemo;
-GRANT SELECT ON SEQUENCE donanteproyecto_iddonanteproyecto_seq TO almidondemowww;
 
 
 --
@@ -912,16 +894,6 @@ GRANT SELECT ON TABLE enlace TO almidondemowww;
 
 
 --
--- Name: enlace_idenlace_seq; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON SEQUENCE enlace_idenlace_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE enlace_idenlace_seq FROM almidondemo;
-GRANT ALL ON SEQUENCE enlace_idenlace_seq TO almidondemo;
-GRANT SELECT ON SEQUENCE enlace_idenlace_seq TO almidondemowww;
-
-
---
 -- Name: foto; Type: ACL; Schema: public; Owner: almidondemo
 --
 
@@ -929,16 +901,6 @@ REVOKE ALL ON TABLE foto FROM PUBLIC;
 REVOKE ALL ON TABLE foto FROM almidondemo;
 GRANT ALL ON TABLE foto TO almidondemo;
 GRANT SELECT ON TABLE foto TO almidondemowww;
-
-
---
--- Name: foto_idfoto_seq; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON SEQUENCE foto_idfoto_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE foto_idfoto_seq FROM almidondemo;
-GRANT ALL ON SEQUENCE foto_idfoto_seq TO almidondemo;
-GRANT SELECT ON SEQUENCE foto_idfoto_seq TO almidondemowww;
 
 
 --
@@ -952,13 +914,13 @@ GRANT SELECT ON TABLE galeria TO almidondemowww;
 
 
 --
--- Name: galeria_idgaleria_seq; Type: ACL; Schema: public; Owner: almidondemo
+-- Name: noticia; Type: ACL; Schema: public; Owner: almidondemo
 --
 
-REVOKE ALL ON SEQUENCE galeria_idgaleria_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE galeria_idgaleria_seq FROM almidondemo;
-GRANT ALL ON SEQUENCE galeria_idgaleria_seq TO almidondemo;
-GRANT SELECT ON SEQUENCE galeria_idgaleria_seq TO almidondemowww;
+REVOKE ALL ON TABLE noticia FROM PUBLIC;
+REVOKE ALL ON TABLE noticia FROM almidondemo;
+GRANT ALL ON TABLE noticia TO almidondemo;
+GRANT SELECT ON TABLE noticia TO almidondemowww;
 
 
 --
@@ -972,6 +934,96 @@ GRANT SELECT ON TABLE pagina TO almidondemowww;
 
 
 --
+-- Name: programa; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON TABLE programa FROM PUBLIC;
+REVOKE ALL ON TABLE programa FROM almidondemo;
+GRANT ALL ON TABLE programa TO almidondemo;
+GRANT SELECT ON TABLE programa TO almidondemowww;
+
+
+--
+-- Name: proyecto; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON TABLE proyecto FROM PUBLIC;
+REVOKE ALL ON TABLE proyecto FROM almidondemo;
+GRANT ALL ON TABLE proyecto TO almidondemo;
+GRANT SELECT ON TABLE proyecto TO almidondemowww;
+
+
+--
+-- Name: agenda_idagenda_seq; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON SEQUENCE agenda_idagenda_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE agenda_idagenda_seq FROM almidondemo;
+GRANT ALL ON SEQUENCE agenda_idagenda_seq TO almidondemo;
+GRANT SELECT ON SEQUENCE agenda_idagenda_seq TO almidondemowww;
+
+
+--
+-- Name: doc_iddoc_seq; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON SEQUENCE doc_iddoc_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE doc_iddoc_seq FROM almidondemo;
+GRANT ALL ON SEQUENCE doc_iddoc_seq TO almidondemo;
+GRANT SELECT ON SEQUENCE doc_iddoc_seq TO almidondemowww;
+
+
+--
+-- Name: donante_iddonante_seq; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON SEQUENCE donante_iddonante_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE donante_iddonante_seq FROM almidondemo;
+GRANT ALL ON SEQUENCE donante_iddonante_seq TO almidondemo;
+GRANT SELECT ON SEQUENCE donante_iddonante_seq TO almidondemowww;
+
+
+--
+-- Name: donanteproyecto_iddonanteproyecto_seq; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON SEQUENCE donanteproyecto_iddonanteproyecto_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE donanteproyecto_iddonanteproyecto_seq FROM almidondemo;
+GRANT ALL ON SEQUENCE donanteproyecto_iddonanteproyecto_seq TO almidondemo;
+GRANT SELECT ON SEQUENCE donanteproyecto_iddonanteproyecto_seq TO almidondemowww;
+
+
+--
+-- Name: enlace_idenlace_seq; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON SEQUENCE enlace_idenlace_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE enlace_idenlace_seq FROM almidondemo;
+GRANT ALL ON SEQUENCE enlace_idenlace_seq TO almidondemo;
+GRANT SELECT ON SEQUENCE enlace_idenlace_seq TO almidondemowww;
+
+
+--
+-- Name: foto_idfoto_seq; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON SEQUENCE foto_idfoto_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE foto_idfoto_seq FROM almidondemo;
+GRANT ALL ON SEQUENCE foto_idfoto_seq TO almidondemo;
+GRANT SELECT ON SEQUENCE foto_idfoto_seq TO almidondemowww;
+
+
+--
+-- Name: galeria_idgaleria_seq; Type: ACL; Schema: public; Owner: almidondemo
+--
+
+REVOKE ALL ON SEQUENCE galeria_idgaleria_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE galeria_idgaleria_seq FROM almidondemo;
+GRANT ALL ON SEQUENCE galeria_idgaleria_seq TO almidondemo;
+GRANT SELECT ON SEQUENCE galeria_idgaleria_seq TO almidondemowww;
+
+
+--
 -- Name: identidad_ididentidad_seq; Type: ACL; Schema: public; Owner: almidondemo
 --
 
@@ -979,16 +1031,6 @@ REVOKE ALL ON SEQUENCE identidad_ididentidad_seq FROM PUBLIC;
 REVOKE ALL ON SEQUENCE identidad_ididentidad_seq FROM almidondemo;
 GRANT ALL ON SEQUENCE identidad_ididentidad_seq TO almidondemo;
 GRANT SELECT ON SEQUENCE identidad_ididentidad_seq TO almidondemowww;
-
-
---
--- Name: noticia; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON TABLE noticia FROM PUBLIC;
-REVOKE ALL ON TABLE noticia FROM almidondemo;
-GRANT ALL ON TABLE noticia TO almidondemo;
-GRANT SELECT ON TABLE noticia TO almidondemowww;
 
 
 --
@@ -1002,16 +1044,6 @@ GRANT SELECT ON SEQUENCE noticia_idnoticia_seq TO almidondemowww;
 
 
 --
--- Name: programa; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON TABLE programa FROM PUBLIC;
-REVOKE ALL ON TABLE programa FROM almidondemo;
-GRANT ALL ON TABLE programa TO almidondemo;
-GRANT SELECT ON TABLE programa TO almidondemowww;
-
-
---
 -- Name: programa_idprograma_seq; Type: ACL; Schema: public; Owner: almidondemo
 --
 
@@ -1019,16 +1051,6 @@ REVOKE ALL ON SEQUENCE programa_idprograma_seq FROM PUBLIC;
 REVOKE ALL ON SEQUENCE programa_idprograma_seq FROM almidondemo;
 GRANT ALL ON SEQUENCE programa_idprograma_seq TO almidondemo;
 GRANT SELECT ON SEQUENCE programa_idprograma_seq TO almidondemowww;
-
-
---
--- Name: proyecto; Type: ACL; Schema: public; Owner: almidondemo
---
-
-REVOKE ALL ON TABLE proyecto FROM PUBLIC;
-REVOKE ALL ON TABLE proyecto FROM almidondemo;
-GRANT ALL ON TABLE proyecto TO almidondemo;
-GRANT SELECT ON TABLE proyecto TO almidondemowww;
 
 
 --
