@@ -8,23 +8,22 @@ INSTALAR
 
 La version actual en desarrollo es la 0.4, y está disponible únicamente via SVN
 $ cd /var/www
-$ svn checkout http://svn.almidon.org/
+$ svn checkout http://svn.almidon.org/trunk/
 
 CONFIGURANDO APACHE
 ===================
 
 Dentro del directorio "trunk" está el directorio pub que debe mapearse como /cms
-en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un ejemplo
-de configuracion de Apache:
+en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un ejemplo de configuracion de Apache:
 
 <VirtualHost 127.0.0.1:80>
-        ServerName demo.almidon.org
+        ServerName local.almidon.org
         DocumentRoot /var/www/trunk/demo/public_html
         Alias /cms /var/www/trunk/pub
 </VirtualHost>
 
 Nota, el demo de almidon usa mod_rewrite, este modulo debe estar activo.
-Nota, remplazar demo.almidon.org por el dominio que deseen configurar.
+Nota, local.almidon.org de apuntar a 127.0.0.1
 
 Permisos: templates_c debe ser escribible por el usuario web:
 $ chmod o+w templates_c
@@ -39,7 +38,7 @@ Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en bre
 createdb almidondemo
 createuser -P almidondemo
 createuser -P almidondemowww
-psql -Upostgres -f trunk/demo/sql/demo.sql almidondemo
+psql -Upostgres -f /var/www/trunk/demo/demo.sql almidondemo
 
 CONFIGURANDO ALMIDON
 ====================
@@ -51,13 +50,10 @@ if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:pass@/almidondemo');
 else define ('DSN', 'pgsql://almidondemowww:pass@/almidondemo');
 define ('DEBUG', true);
 define ('ROOTDIR', '/var/www');
-define ('DOMAIN', 'demo.almidon.org');
-define ('ALMIDONDIR', '/usr/local/almidon');
+define ('DOMAIN', 'example.org');
+define ('ALMIDONDIR', '/usr/local/almidon/');
 
-DSN es el valor para acceder a la base de datos, cambiar "pass" por cada password
-elegido para cada usuario, almidondemo y almidondemowww. Nota, no es necesario usar
-doble usuario, puede especificarse el mismo. Nota 2, ADMIN es unicamente 'true' desde
-la administración.
+DSN es el valor para acceder a la base de datos, cambiar "pass" por cada password elegido para cada usuario, almidondemo y almidondemowww. Nota, no es necesario usar doble usuario, puede especificarse el mismo. Nota 2, ADMIN es unicamente 'true' desde la administración.
 
 DEBUG activa el log de SQL y otros mensajes de error
 ROOTDIR el directorio un nivel superio a DocumentRoot, donde esta classes, templates, etc.
@@ -67,9 +63,7 @@ ALMIDONDIR donde se encuentra almidon.
 PUBLICAR CAMBIOS EN SVN
 =======================
 
-Antes de hacer "commit" a cambios realizados, pruebalos, instala almidón en tu
-propio /www/cms, o donde resulte más cómodo en tu sistema. Para enviar los
-cambios realizados, entrar al directorio svn.almidon.org y usar:
+Antes de hacer "commit" a cambios realizados, pruebalos, instala almidón en tu propio /www/cms, o donde resulte más cómodo en tu sistema. Para enviar los cambios realizados, entrar al directorio svn.almidon.org y usar:
 $ svn --username alice -m "My Update" commit
 
 SOPORTE TECNICO

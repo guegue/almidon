@@ -9,14 +9,13 @@ setlocale(LC_TIME, "es_ES");
 if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:nituni2@/almidondemo');
 else define ('DSN', 'pgsql://almidondemowww:yosi@/almidondemo');
 define ('DEBUG', true);
-#define ('DB3', true);
  
 # Constantes del web y filesystem
 
 $configdir = dirname(__FILE__);
 $rootdir = substr($configdir, 0, strrpos($configdir,'/'));
 define ('ROOTDIR', $rootdir);
-define ('DOMAIN', 'demo.almidon.org');
+define ('DOMAIN', 'local.almidon.org');
 #define ('ALMIDONDIR', '/usr/local/almidon/');
 define ('ALMIDONDIR', ROOTDIR . '/..');
 define ('SQLLOG', ROOTDIR . '/logs/sql.log');
@@ -32,5 +31,3 @@ define ('MAXCOLS', 6);
 # Constantes de valores (IDs) de las tablas
 
 define('IDPAGINA', 1);
- 
-?>
