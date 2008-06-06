@@ -20,7 +20,7 @@ en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un eje
         ServerName local.almidon.org
         DocumentRoot /var/www/trunk/demo/public_html
         Alias /cms /var/www/trunk/pub
-        <Directory>
+        <Directory /var/www/trunk>
                 Options +FollowSymLinks
         </Directory>
 </VirtualHost>
