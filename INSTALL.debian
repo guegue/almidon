@@ -14,23 +14,16 @@ CONFIGURANDO APACHE
 ===================
 
 Dentro del directorio "trunk" está el directorio pub que debe mapearse como /cms
-en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un ejemplo de configuracion de Apache:
+en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. En ddebian copiamos la configuracion a /etc/apache2/conf.d/:
 
-<VirtualHost 127.0.0.1:80>
-        ServerName local.almidon.org
-        DocumentRoot /var/www/trunk/demo/public_html
-        Alias /cms /var/www/trunk/pub
-        <Directory>
-                Options +FollowSymLinks
-        </Directory>
-</VirtualHost>
+$ cp /var/www/trunk/demo/almidon.conf /etc/apache2/conf.d/
 
 Nota, el demo de almidon usa mod_rewrite, este modulo debe estar activo.
 Nota, local.almidon.org de apuntar a 127.0.0.1
 
 Permisos: templates_c debe ser escribible por el usuario web:
 
-$ chmod o+w templates_c
+$ chmod o+w templates_c logs files cache
 
 Igual ocurre con otros directorios cuya escritura es menos indispensable para
 arrancar el demo: logs, files, cache
@@ -40,6 +33,7 @@ CONFIGRANDO POSTGRESQL
 
 Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en breve:
 
+$ su - postgres
 $ psql -f /var/www/trunk/demo/demo.sql
 
 Nota: el script sql elige los password secreto1 y secreto2 para sus usuarios

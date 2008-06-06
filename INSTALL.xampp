@@ -56,6 +56,9 @@ NameVirtualHost 127.0.0.1:80
         ServerName demo.almidon.org
         DocumentRoot /opt/lampp/htdocs/almidon/demo/public_html
         Alias /cms /opt/lampp/htdocs/almidon/pub
+        <Directory>
+                Options +FollowSymLinks
+        </Directory>
 </VirtualHost>
 
 <VirtualHost 127.0.0.1:80>
@@ -69,7 +72,7 @@ INSTALANDO Y CONFIGURANDO ALMIDON
 
 Descargamos Almidon desde el SVN
 
-svn checkout http://svn.almidon.org/
+svn checkout http://svn.almidon.org/trunk
 
 Luego hacemos una carpeta llamada almidon en /opt/lampp/htdocs
 
