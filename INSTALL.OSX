@@ -31,7 +31,7 @@ __________________
 Una vez que se garantizan estos requerimientos previos en nuestro equipo, se puede proceder a la instalación de almidón. A continuación de manera organizada se mencionan los pasos a seguir.
 
 1) Abrir la terminal e introducir la siguiente línea 
-	svn checkout http://svn.almidon.org/  , la misma permite la descarga de almidón a nuestro equipo local.
+	svn checkout http://svn.almidon.org/trunk/  , la misma permite la descarga de almidón a nuestro equipo local.
 Nota: Se debe garantizar tener conexión a internet para poder descargar la plataforma.
 
 2) Mover el trunk (Directorio que descargamos con snv) hacia el directorio local de usr. 
