@@ -1,39 +1,97 @@
-AUN FALTA POR DOCUMENTAR
+REQUERIMIENTOS
+==============
 
-yum install postgresql
-yum install postgresql-server
-yum install php
+ver README
+
+INSTALAR
+========
+
+La version actual en desarrollo es la 0.4, y está disponible únicamente via SVN
+$ cd /var/www
+$ svn checkout http://svn.almidon.org/trunk/
+
+INSTALANDO Y CONFIGURANDO APACHE
+================================
+
 yum install httpd
-yum install httpd-php
 
-Config de postgres: vi /var/lib/pgsql/data/pg_hba.conf 
-  local   all         all                               trust
-  host    all         all         127.0.0.1/32          trust
+Editar /etc/httpd/conf/httpd.conf
+  DocumentRoot "/var/www/"
+  <Directory "/var/www/">
+  AllowOverride All 
 
-  service postgresql start
+Nota: por defecto esta directiva AllowOverride esta desactivada, y DocumentRoot y Directory apuntan a /var/www/html
 
-yum install svn
-cd /var/www
-svn checkout http://svn.almidon.org/trunk/
+Dentro del directorio "trunk" está el directorio pub que debe mapearse como /cms
+en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un ejemplo de configuracion de Apache:
 
-Configuracion de apache
- vi /etc/httpd/conf.d/almidon.conf
- agregar:
-  <VirtualHost 127.0.0.1:80>
+<VirtualHost 127.0.0.1:80>
         ServerName local.almidon.org
         DocumentRoot /var/www/trunk/demo/public_html
         Alias /cms /var/www/trunk/pub
-  </VirtualHost>
-  service httpd start / restart / reload
+        <Directory /var/www/trunk/demo>
+                Options +FollowSymLinks
+        </Directory>
+</VirtualHost>
 
-Permisos de escritura a template_c
-  chmod o+w templates_c
+Nota, el demo de almidon usa mod_rewrite, este modulo debe estar activo.
+Nota, local.almidon.org de apuntar a 127.0.0.1
 
-Crear usuario / base de datos en postgres
-  psql -Upostgres -f /var/www/trunk/demo/demo.sql
+service httpd restart
 
-Crear archivo de password para administracion 
- cd /var/www/trunk/demo
- htpasswd -c .htpasswd demo
- editar archivo .htaccess (secure/.htaccess)
- cambiar AuthUserFile /var/www/trunk/demo/local.almidon.org/.htpasswd
+Permisos: templates_c debe ser escribible por el usuario web:
+
+$ chmod o+w templates_c
+
+Igual ocurre con otros directorios cuya escritura es menos indispensable para
+arrancar el demo: logs, files, cache
+
+INSTALANDO Y CONFIGRANDO POSTGRESQL (Y PHP)
+===========================================
+yum install postgresql
+yum install postgresql-server
+yum install php-pgsql
+
+Configuracion de postgres: editar /var/lib/pgsql/data/pg_hba.conf 
+  local   all         all                               trust
+  host    all         all         127.0.0.1/32          trust
+
+service postgresql start
+
+Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en breve:
+
+$ psql -f /var/www/trunk/demo/demo.sql
+
+Nota: el script sql elige los password secreto1 y secreto2 para sus usuarios
+Nota: si es la segunda vez que instalas el demo, asegurate de borrar la base de datos almidondemo y usuarios almidondemo y almidondemowww
+
+CONFIGURANDO ALMIDON
+====================
+
+config.php en trunk/demo/public_html/classes/config.php
+define las variable (o constantes) principales como:
+
+if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:pass@/almidondemo');
+else define ('DSN', 'pgsql://almidondemowww:pass@/almidondemo');
+define ('DEBUG', true);
+define ('ROOTDIR', '/var/www');
+define ('DOMAIN', 'example.org');
+define ('ALMIDONDIR', '/usr/local/almidon/');
+
+DSN es el valor para acceder a la base de datos, cambiar "pass" por cada password elegido para cada usuario, almidondemo y almidondemowww. Nota, no es necesario usar doble usuario, puede especificarse el mismo. Nota 2, ADMIN es unicamente 'true' desde la administración.
+
+DEBUG activa el log de SQL y otros mensajes de error
+ROOTDIR el directorio un nivel superio a DocumentRoot, donde esta classes, templates, etc.
+DOMAIN el nombre del dominio, varios usos por almidon.
+ALMIDONDIR donde se encuentra almidon.
+
+PUBLICAR CAMBIOS EN SVN
+=======================
+
+Antes de hacer "commit" a cambios realizados, pruebalos, instala almidón en tu propio /www/cms, o donde resulte más cómodo en tu sistema. Para enviar los cambios realizados, entrar al directorio svn.almidon.org y usar:
+$ svn --username alice -m "My Update" commit
+
+SOPORTE TECNICO
+===============
+
+ver README
