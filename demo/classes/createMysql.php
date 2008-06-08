@@ -15,12 +15,12 @@ function genSQL($object) {
       $type = 'varchar';
       $size = '500';
     }
-    if ($type == 'order') $type = 'serial NULL';
+    if ($type == 'order') $type = 'int NULL'; //esta linea se cambio
     if (!$size) $size = $column['size'];
     $size = preg_replace("/\./", ",", $size);
     $sql .= "  ".$column['name']." ".$type;
     if ($size) $sql .= " (".$size.")";
-    if ($column['name'] == $data->key) $sql .= " PRIMARY KEY NOT NULL AUTO_INCREMENT"; //se cambio esta linea para que fuera compatible con MySQL.
+    if ($column['name'] == $data->key) $sql .= " PRIMARY KEY NOT NULL AUTO_INCREMENT "; //se cambio esta linea para que fuera compatible con MySQL.
     if ($column['references']) $sql .= " REFERENCES ".$column['references'];
     ++$i;
   }
