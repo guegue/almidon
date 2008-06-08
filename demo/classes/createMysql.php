@@ -32,7 +32,6 @@ $tables[] = null;
 $classes = get_declared_classes();
 foreach($classes as $key) {
   if (strstr($key, 'table') && $key != 'table' && $key != 'tabledoublekey') {
-    echo "entro al array";
     $key = substr($key, 0, strpos($key, 'table'));
     $tables[] = $key;
   }
