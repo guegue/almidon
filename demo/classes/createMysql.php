@@ -15,7 +15,7 @@ function genSQL($object) {
       $type = 'varchar';
       $size = '500';
     }
-    if ($type == 'order') $type = 'int AUTO_INCREMENT'; //esta linea se cambio pero todavia imprime serial enves de int AUTO_INCREMENT no se por que
+    if ($type == 'order' ||  $type == 'serial') $type = 'int AUTO_INCREMENT'; //corregido el asunto del serial grax Christian
     if (!$size) $size = $column['size'];
     $size = preg_replace("/\./", ",", $size);
     $sql .= "  ".$column['name']." ".$type;
@@ -38,7 +38,7 @@ foreach($classes as $key) {
 }
 
 // No funciona el foreach debido a que el arrary $tables no tiene ningun valor revisar funcion foreach que le precede. --fitoria
-// foreach($tables as $key)
+//foreach($tables as $key)
     genSQL($key);
 
 ?>
