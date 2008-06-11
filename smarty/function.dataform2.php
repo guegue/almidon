@@ -303,12 +303,12 @@ function smarty_function_dataform2($params, &$smarty)
             //$_tmp = '<input type="hidden" name="' . $_key . '" value="' . $_selected . '" />';
             //$_tmp .= $_selected;
           } else {
-            $_options = $options[$_key];
             if($dd[$_key]['extra']['readonly']) {
               $_tmp = preg_replace("/_FIELD_/", $_key, FCELLHIDEN);
               $_tmp = preg_replace("/_VALUE_/", $_selected, $_tmp);
               $_tmp = preg_replace("/_LABEL_/", $_val, $_tmp);
             } else {
+              $_options = $options[$_key];
               $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_selected), $smarty);
               $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
               $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);

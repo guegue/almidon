@@ -1,7 +1,8 @@
 <?
 require_once('config.php');
-require_once('/www/cms/php/db2.class.php');
-require_once('Smarty/Smarty.class.php');
+if(DB3===true)  require_once((defined('ALMIDONDIR')?ALMIDONDIR . '/php/':'').'db3.class.php');
+else  require_once((defined('ALMIDONDIR')?ALMIDONDIR . '/php/':'').'db2.class.php');
+require_once((defined('ALMIDONDIR')?ALMIDONDIR . '/php/':'').'Smarty/Smarty.class.php');
 
 $smarty = new Smarty;
 $smarty->template_dir = ROOTDIR . '/templates/';
