@@ -55,6 +55,7 @@ define('FHEADERCMD', '<th class="adm">Opciones</th>');
 define('FHEADERCELL', '<th class="adm"><a class="dgheader_link" href="_SELF_?f=_FORM_&amp;sort=_FIELD_">_LABEL_</a></th>'."\n");
 define('FROW', '<tr valign="top" class="dgrow"><td class="dgcell">_LABEL_</td> <td class="dgcell">_FCELL_</td></tr>'."\n");
 define('FCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="30" maxlength="_SIZE_"/>');
+define('FCELLHIDEN', '_LABEL_<input type="hidden" name="_FIELD_" value="_VALUE_" />');
 define('FCELLMODREF', '<select name="_FIELD_" id="_FIELD_" onchange="_CHANGE_"><option value="-1">--</option>_REFERENCE_</select>');
 define('FCMD',
   '<tr class="adm"><td class="dgcmd"><input type="submit" value="Modificar" /></td> <td class="dgcmd"><input type="button" value="Cancelar" onclick="location.href=\'_REFERER_\'" /></td></tr>');
@@ -303,16 +304,22 @@ function smarty_function_dataform2($params, &$smarty)
             //$_tmp .= $_selected;
           } else {
             $_options = $options[$_key];
-            $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_selected), $smarty);
-            $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
-            $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
-            if($dd[$_key]['extra']['son'])
-              $_tmp = preg_replace("/_CHANGE_/", "updateCombo('$_key', '".$dd[$_key]['extra']['son']."', null)", $_tmp);
-            else
-              $_tmp = preg_replace("/_CHANGE_/", "", $_tmp);
-            if($dd[$_key]['extra']['open_popup']) $_tmp .= '&nbsp;<a href="javascript:openPopUp(\'/cms/query.php?f='.$dd[$_key]['references'].'&action=record&'.$_key.'=\'+document.forms[\'new\'].'.$_key.'.value,'.$dd[$_key]['extra']['height'].','.$dd[$_key]['extra']['width'].');">consultar</a>';
-            if($dd[$_key]['extra']['depend'])
-              $_tmp .= "<script>updateCombo('".$dd[$_key]['extra']['depend']."', '$_key', '$_selected')</script>";
+            if($dd[$_key]['extra']['readonly']) {
+              $_tmp = preg_replace("/_FIELD_/", $_key, FCELLHIDEN);
+              $_tmp = preg_replace("/_VALUE_/", $_selected, $_tmp);
+              $_tmp = preg_replace("/_LABEL_/", $_val, $_tmp);
+            } else {
+              $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_selected), $smarty);
+              $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
+              $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+              if($dd[$_key]['extra']['son'])
+                $_tmp = preg_replace("/_CHANGE_/", "updateCombo('$_key', '".$dd[$_key]['extra']['son']."', null)", $_tmp);
+              else
+                $_tmp = preg_replace("/_CHANGE_/", "", $_tmp);
+              if($dd[$_key]['extra']['open_popup']) $_tmp .= '&nbsp;<a href="javascript:openPopUp(\'/cms/query.php?f='.$dd[$_key]['references'].'&action=record&'.$_key.'=\'+document.forms[\'new\'].'.$_key.'.value,'.$dd[$_key]['extra']['height'].','.$dd[$_key]['extra']['width'].');">consultar</a>';
+              if($dd[$_key]['extra']['depend'])
+                $_tmp .= "<script>updateCombo('".$dd[$_key]['extra']['depend']."', '$_key', '$_selected')</script>";
+            }
           }
           break;
         case 'hidden':

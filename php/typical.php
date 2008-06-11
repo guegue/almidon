@@ -99,18 +99,17 @@ function fillOpt(&$object) {
           $options[$key] = $object->selectMenu($references, $where);
         }
       // Esto sucede solo si extra esta manteniendo el formato ordenado de array de la version db3
-      } elseif (!$object->dd[$key]['extra']['depend']) {
+      } elseif (!$object->dd[$key]['extra']['depend']&&!$object->dd[$key]['extra']['readonly']) {
         if($object->dd[$key]['extra']['display']) {
           if($object->dd[$key]['extra']['filteropt'])
             $where = $object->dd[$key]['extra']['filteropt'];
           $ot = $object->dd[$key]['references'] . 'Table';
           $robject = new $ot;
 	  if($where)
-           $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." WHERE $where");
+            $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." WHERE $where");
 	  else
             $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']);
-        }
-        else {
+        }else {
 	  $pos = strpos($object->dd[$key]['references'],'.');
           if($pos!==false) {
             $references = substr($object->dd[$key]['references'],0,$pos);
