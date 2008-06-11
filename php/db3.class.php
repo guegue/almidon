@@ -9,10 +9,18 @@ foreach ($_POST as $j =>$value) {
  }
 }
 
+// Constantes
+if (DEBUG === true) ini_set('display_errors', true);
+# Directorio de instalación de almidon
+if (defined('ALMIDONDIR'))
+  set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
+# Permisos por defecto para los directorios que se creen en files
+define('PERMIS_DIR',0775);
+# Etiquetas permitidas
+if(!defined('ALM_ALLOW_TAGS')) define('ALM_ALLOW_TAGS', '<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>');
+
 require('DB.php');
 require('image.class.php');
-// Constantes
-define('PERMIS_DIR',0775);
 
 class Data {
   // {{{ variables
@@ -315,7 +323,7 @@ class Table extends Data {
       $tmpvar = preg_replace("/javascript/", "", $tmpvar);
     }
     if ($type == 'string' && !$html) {
-      $tmpvar = strip_tags($tmpvar, "<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>");
+      $tmpvar = strip_tags($tmpvar, ALM_ALLOW_TAGS);
       //$tmpvar = strip_tags($tmpvar, "<br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup>");
       #$tmpvar = preg_replace("/<|>/", "", $tmpvar);
     }
