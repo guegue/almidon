@@ -440,7 +440,7 @@ class Table extends Data {
 	          if (!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
             $this->request[$column['name']] = $filename;
-	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
+	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',trim($column['extra']['sizes']));
 	          if(isset($sizes))  {
               $image = new Image();
               if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
@@ -451,7 +451,7 @@ class Table extends Data {
               if($sizes)
                 foreach($sizes as $size) {
                   $pic = null;
-	                list($w, $h, $crop) = split("x", $size);
+	                list($w, $h, $crop) = split("x", trim($size));
 		              if($crop&&$h) {
                     $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
                   } else {
@@ -552,14 +552,14 @@ class Table extends Data {
               $values .= $column['name'] . "=" . $column['name'];
             if(($this->request['old_'.$column['name']] != $this->files[$column['name']]) && $this->request['old_'.$column['name']] && !$_REQUEST[$column['name'] . '_keep']) {
 	            if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']])) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
-  	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
+  	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',trim($column['extra']['sizes']));
      	        if (isset($sizes)) {
        			  // esta linea da un warning: Warning: Wrong parameter count for strpos() in /www/cms/php/db3.class.php on line 550 Warning: Wrong parameter count for substr() in /www/cms/php/db3.class.php on line 550
 	          	  $timemark = getdate(substr($this->request['old_'.$column['name']],0,strpos($this->request['old_'.$column['name']]),"_"));
                 if ($timemark['mon']<10)  $timemark['mon'] = "0" . $timemark['mon'];
                 if($sizes)
 	                foreach($sizes as $size) {
-	                  list($w, $h, $crop) = split("x", $size);
+	                  list($w, $h, $crop) = split("x", trim($size));
 	                  if(file_exists(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']])) unlink(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']]);
 	                }
   	          }
@@ -574,7 +574,7 @@ class Table extends Data {
             if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
             if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
 	          if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
-            if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
+            if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',trim($column['extra']['sizes']));
             if(isset($sizes))  {
               $image = new Image();
               if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
@@ -585,7 +585,7 @@ class Table extends Data {
               if($sizes)
                 foreach($sizes as $size) {
                   $pic = null;
-                  list($w, $h, $crop) = split("x", $size);
+                  list($w, $h, $crop) = split("x", trim($size));
                   if($crop&&$h) {
                     $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
                   } else {
