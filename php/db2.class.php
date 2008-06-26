@@ -215,9 +215,9 @@ class Table extends Data {
       }
       if ($this->schema != 'public')
         $this->all_fields .= $this->schema . ".";
-      if ($ns > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order')
+      if ($ns > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
         $this->fields_noserial .= ",";
-      if ($column['type'] == 'serial' || $column['type'] == 'external' || $column['type'] == 'auto' || $column['type'] == 'order')
+      if ($column['type'] == 'serial' || $column['type'] == 'external' || $column['type'] == 'auto' || $column['type'] == 'order' && $column['type'] == 'serial')
         $ns--;
       else
         $this->fields_noserial .= $column['name'];
@@ -344,7 +344,7 @@ class Table extends Data {
     $n = 0;
     $values ="";
     foreach($this->definition as $column) {
-      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order')
+      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
         $values .= ",";
       switch($column['type']) {
         case 'auto':
@@ -444,7 +444,7 @@ class Table extends Data {
     $n = 0;
     $values = "";
     foreach($this->definition as $column) {
-      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order')
+      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
         $values .= ",";
       switch($column['type']) {
       	case 'external':
