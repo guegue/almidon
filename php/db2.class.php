@@ -58,7 +58,7 @@ class Data {
       $error_msg = $obj->getMessage();
       #if ($extra) $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
       $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
-      if (DEBUG === true) trigger_error($error_msg);
+      if (DEBUG === true) trigger_error(htmlentities($error_msg));
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
       if ($die) die();
     } elseif (DEBUG === true && $extra)
@@ -270,8 +270,8 @@ class Table extends Data {
     }
     settype($tmpvar,$type);
     if ($type == 'string') {
-      $tmpvar = preg_replace("/<script[^>]*?>.*?<\/script>/", "", $tmpvar);
-      $tmpvar = preg_replace("/javascript/", "", $tmpvar);
+      $tmpvar = preg_replace("/<script[^>]*?>.*?<\/script>/i", "", $tmpvar);
+      $tmpvar = preg_replace("/javascript/i", "", $tmpvar); # es necesario?
     } 
     if ($type == 'string' && !$html) {
       $tmpvar = strip_tags($tmpvar, ALM_ALLOW_TAGS);

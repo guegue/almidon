@@ -319,8 +319,8 @@ class Table extends Data {
     }
     settype($tmpvar,$type);
     if ($type == 'string') {
-      $tmpvar = preg_replace("/<script[^>]*?>.*?<\/script>/", "", $tmpvar);
-      $tmpvar = preg_replace("/javascript/", "", $tmpvar);
+      $tmpvar = preg_replace("/<script[^>]*?>.*?<\/script>/i", "", $tmpvar);
+      $tmpvar = preg_replace("/javascript/i", "", $tmpvar); # Es necesario?
     }
     if ($type == 'string' && !$html) {
       $tmpvar = strip_tags($tmpvar, ALM_ALLOW_TAGS);
