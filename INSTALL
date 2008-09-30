@@ -28,9 +28,10 @@ en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un eje
 Nota, el demo de almidon usa mod_rewrite, este modulo debe estar activo.
 Nota, local.almidon.org de apuntar a 127.0.0.1
 
-Permisos: templates_c debe ser escribible por el usuario web:
+Permisos: demo/templates_c debe ser escribible por el usuario web:
 
-$ chmod o+w templates_c
+$ cd demo
+$ chmod o+w templates_c logs files cache
 
 Igual ocurre con otros directorios cuya escritura es menos indispensable para
 arrancar el demo: logs, files, cache
@@ -38,9 +39,17 @@ arrancar el demo: logs, files, cache
 CONFIGRANDO POSTGRESQL
 ======================
 
-Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en breve:
+Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en breve
+usando un usuario autorizado a crear bases de datos:
 
+$ su - postgres
 $ psql -f /var/www/trunk/demo/demo.sql
+
+Adicionalmente, una entrada en la configuración de postgres, pg_hba.conf puede ser
+necesaria, para permitir acceso local usando password:
+
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+local   all         all                               md5
 
 Nota: el script sql elige los password secreto1 y secreto2 para sus usuarios
 Nota: si es la segunda vez que instalas el demo, asegurate de borrar la base de datos almidondemo y usuarios almidondemo y almidondemowww

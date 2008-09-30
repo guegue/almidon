@@ -14,10 +14,10 @@ require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 
 # lee parametros, obj nunca esta vacio, tpl y php son opcionales
 #$params = explode("/", $_SERVER['REQUEST_URI']);
-$obj = strtolower(preg_replace("/[^A-Za-z0-9_]/", "", $_GET['obj']));
-$id = strtolower(preg_replace("/[^A-Za-z0-9_]/", "", $_GET['id']));
-$tpl = strtolower(preg_replace("/[^A-Za-z0-9_]/", "", $_GET['tpl']));
-$php = strtolower(preg_replace("/[^A-Za-z0-9_]/", "", $_GET['php']));
+if (isset($_GET['obj'])) $obj = strtolower(preg_replace("/[^A-Za-z0-9_]/", "", $_GET['obj']));
+if (isset($_GET['id'])) $id = strtolower(preg_replace("/[^A-Za-z0-9_]/", "", $_GET['id']));
+if (isset($_GET['tpl'])) $tpl = strtolower(preg_replace("/[^A-Za-z0-9_]/", "", $_GET['tpl']));
+if (isset($_GET['php'])) $php = strtolower(preg_replace("/[^A-Za-z0-9_]/", "", $_GET['php']));
 if (!empty($tpl)) $tpl = $smarty->template_dir.$tpl;
 if (!empty($php)) $php = ROOTDIR.$php;
 #if (!empty($obj)) $obj = $obj;
@@ -109,7 +109,7 @@ if (!empty($obj) && class_exists($object)) {
 
 # asgina variables a smarty
 $smarty->assign('obj', $obj);
-$smarty->assign('rows', $rows);
+if (isset($rows)) $smarty->assign('rows', $rows);
 
 # especifica display
 $smarty->display($tpl);
