@@ -19,6 +19,8 @@ foreach ($_POST as $j =>$value) {
    }
 }
 
+if (!defined('ALM_SQL_DEBUG')) define('ALM_SQL_DEBUG', true);
+if (!defined('ALM_DEBUG')) define('ALM_DEBUG', false);
 if (DEBUG === true) ini_set('display_errors', true);
 if (defined('ALMIDONDIR'))
   set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
@@ -61,8 +63,9 @@ class Data {
       if (DEBUG === true) trigger_error(htmlentities($error_msg));
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
       if ($die) die();
-    } elseif (ALM_SQL_DEBUG !== false && $extra)
+    } elseif (ALM_SQL_DEBUG !== false && $extra) {
       $this->sql_log($extra);
+    }
   }
 
   function sql_log($logtext) {
@@ -305,18 +308,20 @@ class Table extends Data {
           $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
         } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
           $date = ''; $time = '';
-          if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
-            $date = $this->parsevar($_REQUEST[$column['name']]);
-          else
-            $time = $this->parsevar($_REQUEST[$column['name']]);
-          if ($_REQUEST[$column['name'] . '_Year']) {
+          if (isset($_REQUEST[$column['name']])) {
+            if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
+              $date = $this->parsevar($_REQUEST[$column['name']]);
+            else
+              $time = $this->parsevar($_REQUEST[$column['name']]);
+          }
+          if (isset($_REQUEST[$column['name'] . '_Year'])) {
             $year = $this->parsevar($_REQUEST[$column['name'] . '_Year'], 'int');
             $month = $this->parsevar($_REQUEST[$column['name'] . '_Month'], 'int');
             if ($month<10) $month = '0'.$month;
             $day = $this->parsevar($_REQUEST[$column['name'] . '_Day'], 'int');
             $date = $year . '-' . $month . '-' . $day;
           }
-          if ($_REQUEST[$column['name'] . '_Hour']) {
+          if (isset($_REQUEST[$column['name'] . '_Hour'])) {
             $this->request[$column['name']] = $year . '-' . $month . '-' . $day;
             $hour = $this->parsevar($_REQUEST[$column['name'] . '_Hour'], 'int');
             $minute = $this->parsevar($_REQUEST[$column['name'] . '_Minute'], 'int');
@@ -328,7 +333,8 @@ class Table extends Data {
         } elseif ($column['type'] == 'html') {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], 'string', true); 
         } elseif ($column['type'] == 'int') {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
+          if (isset($_REQUEST[$column['name']]))
+            $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
           #if (isset($_REQUEST[$column['name']])) $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
           #else $this->request[$column['name']] = 'NULL';
         } else {
@@ -570,8 +576,10 @@ class Table extends Data {
 
   function getJoin() {
     $join = "";
+    $references = array();
     foreach ($this->definition as $column)
-      if ($column['references']) {
+      if ($column['references'] !== 0 && $column['references'] !== false) {
+        if (!isset($references[$column['references']])) $references[$column['references']] = 0;
         $references[$column['references']]++;
         if ($references[$column['references']] == 1) {
           $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $column['name'];
@@ -579,7 +587,7 @@ class Table extends Data {
           $tmptable = $column['references'] . $references[$column['references']];
           $tmpcolumn =  "id" . $column['references'];
           $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $tmpcolumn;
-        }  
+        }
       }
     return $join;
   }
