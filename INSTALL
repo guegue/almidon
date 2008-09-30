@@ -28,13 +28,12 @@ en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un eje
 Nota, el demo de almidon usa mod_rewrite, este modulo debe estar activo.
 Nota, local.almidon.org de apuntar a 127.0.0.1
 
-Permisos: demo/templates_c debe ser escribible por el usuario web:
+Permisos del demo: 'templates_c', 'logs', 'cache' debe ser escribible por el usuario web.
+Igual 'files' y sus subcarpertas.
 
 $ cd demo
-$ chmod o+w templates_c logs files cache
-
-Igual ocurre con otros directorios cuya escritura es menos indispensable para
-arrancar el demo: logs, files, cache
+$ chmod o+w templates_c logs cache
+$ chmod o+w -R files
 
 CONFIGRANDO POSTGRESQL
 ======================

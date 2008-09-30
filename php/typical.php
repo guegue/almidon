@@ -2,7 +2,8 @@
 if (!$object)
   $object = ($_REQUEST['o']) ? $_REQUEST['o'] : $_REQUEST['f'];
 $$object->readEnv();
-switch ($_REQUEST['action']) {
+$action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : null;
+switch ($action) {
   case 'edit':
     $edit = true;
     $row = $$object->readRecord();
@@ -24,17 +25,18 @@ switch ($_REQUEST['action']) {
     break;
   case 'dgsave':
     $maxcols = ($_REQUEST['maxcols']) ? $_REQUEST['maxcols'] : MAXCOLS;
-    $$object->updateRecord(0, $maxcols, 1);
+    # Por que nofiles? Tambien debe poder cambiar, nofiles es la tercera opcion de updateRecord
+    $$object->updateRecord(0, $maxcols, 0);
     //$smarty->clear_all_cache();
     break;
 }
-if ($_REQUEST[$object . 'sort']) $_SESSION[$object . 'sort'] = $_REQUEST[$object . 'sort'];
-if ($_REQUEST[$object . 'pg']) $_SESSION[$object . 'pg'] = $_REQUEST[$object . 'pg'];
-$$object->order = ($_SESSION[$object . 'sort']) ? $_SESSION[$object .'sort'] : $$object->order;
-$$object->pg = $_SESSION[$object . 'pg'];
+if (isset($_REQUEST[$object . 'sort'])) $_SESSION[$object . 'sort'] = $_REQUEST[$object . 'sort'];
+if (isset($_REQUEST[$object . 'pg'])) $_SESSION[$object . 'pg'] = $_REQUEST[$object . 'pg'];
+$$object->order = (isset($_SESSION[$object . 'sort'])) ? $_SESSION[$object .'sort'] : $$object->order;
+$$object->pg = (isset($_SESSION[$object . 'pg'])) ? $_SESSION[$object . 'pg'] : 1;
 // Codigo nuevo, agregado para la funcionalidad del detalle
 // Detalle
-if($$object->detail) {
+if(isset($$object->detail)) {
   $smarty->assign('have_detail', true);
   $obj = $$object->detail;
   $ot = $obj.'Table';
@@ -68,18 +70,25 @@ if($$object->detail) {
 // --
 $smarty->assign('object', $object);
 $smarty->assign('cur_page', "$object.php");
-$smarty->assign('detail', $detail);
-$smarty->assign('edit', $edit);
-$smarty->assign('row', $row);
+if (isset($detail))
+  $smarty->assign('detail', $detail);
+if (isset($edit))
+  $smarty->assign('edit', $edit);
+if (isset($row))
+  $smarty->assign('row', $row);
 $smarty->assign('options', fillOpt($$object));
 $smarty->assign('rows', $$object->readData());
 $smarty->assign('dd', $$object->dd);
 $smarty->assign('key', $$object->key);
-$smarty->assign('key1', $$object->key1);
-$smarty->assign('key2', $$object->key2);
+if (isset($$object->key1))
+  $smarty->assign('key1', $$object->key1);
+if (isset($$object->key2))
+  $smarty->assign('key2', $$object->key2);
 $smarty->assign('title', $$object->title);
-$smarty->assign('maxrows', $$object->maxrows);
-$smarty->assign('maxcols', $$object->maxcols);
+if (isset($$object->maxrows))
+  $smarty->assign('maxrows', $$object->maxrows);
+if (isset($$object->maxcols))
+  $smarty->assign('maxcols', $$object->maxcols);
 
 function fillOpt(&$object) {
   foreach ($object->dd as $key => $val)
@@ -118,7 +127,8 @@ function fillOpt(&$object) {
         }
       }
     }
-  return $options;
+  if (isset($options))
+    return $options;
 }
 
 ?>

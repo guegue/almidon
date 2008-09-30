@@ -45,7 +45,7 @@ if ($object) {
   require(ALMIDONDIR . '/php/typical.php');
   $$object->destroy();
   $tpl = ($$object->cols > 5) ? 'abajo' : 'normal';
-  if ($$object->key2) $tpl .= '2';
+  if (isset($$object->key2)) $tpl .= '2';
   if (file_exists(ROOTDIR.'/templates/admin/header.tpl'))
     $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
   else {

@@ -298,7 +298,7 @@ class Table extends Data {
     unset ($this->files);
     foreach($this->definition as $column) {
       if ($column['type'] != 'external' || $column['type'] != 'auto') {
-        if (($column['type'] == 'file' || $column['type'] == 'image') && $_FILES[$column['name']]['name']) {
+        if (($column['type'] == 'file' || $column['type'] == 'image') && isset($_FILES[$column['name']]['name'])) {
           $this->request[$column['name']] = $this->parsevar($_FILES[$column['name']]['name'], $column['type']);
           $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
         } elseif ($column['type'] == 'password') {
@@ -332,11 +332,13 @@ class Table extends Data {
           #if (isset($_REQUEST[$column['name']])) $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
           #else $this->request[$column['name']] = 'NULL';
         } else {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']); 
+          if (isset($_REQUEST[$column['name']]))
+            $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']); 
         }
       }
     }
-    $this->request['old_' . $this->key] = $_REQUEST['old_' . $this->key];
+    if (isset($_REQUEST['old_' . $this->key]))
+      $this->request['old_' . $this->key] = $_REQUEST['old_' . $this->key];
     $this->escaped = true;
   }
 
@@ -461,11 +463,12 @@ class Table extends Data {
           $values .= $column['name'] . "=" . $this->request[$column['name']];
           break;
         case 'image':
-	  if ($nofiles || $_REQUEST[$column['name'] . '_keep'] || !$this->files[$column['name']]) {
-            if (!$_REQUEST[$column['name'] . '_keep'] && !$this->files[$column['name']])
+	  if ($nofiles || isset($_REQUEST[$column['name'] . '_keep']) || !isset($this->files[$column['name']])) {
+            if (!isset($_REQUEST[$column['name'] . '_keep']) && !isset($this->files[$column['name']]))
               $values .= $column['name'] . "=''";
-            else
+            else {
               $values .= $column['name'] . "=" . $column['name'];
+            }
           } elseif ($this->files[$column['name']]) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
             if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
