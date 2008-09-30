@@ -22,7 +22,7 @@ foreach ($_POST as $j =>$value) {
 if (DEBUG === true) ini_set('display_errors', true);
 if (defined('ALMIDONDIR'))
   set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
-if(!defined('ALM_ALLOW_TAGS')) define('ALM_ALLOW_TAGS', '<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>');
+if(!defined('ALM_ALLOW_TAGS')) define('ALM_ALLOW_TAGS', '<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><img4><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>');
 
 require_once('DB.php');
 
@@ -61,7 +61,7 @@ class Data {
       if (DEBUG === true) trigger_error(htmlentities($error_msg));
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
       if ($die) die();
-    } elseif (DEBUG === true && $extra)
+    } elseif (ALM_SQL_DEBUG !== false && $extra)
       $this->sql_log($extra);
   }
 
