@@ -6,7 +6,7 @@
   {if $smarty.const.DB3 === true}
   {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:8 paginate=true cmd=$cmd|default:true name=$object have_detail=$have_detail}
   {else}
-  {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=5 maxrows=20 paginate=true cmd=$cmd|default:true name=$object}
+  {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object}
   {/if}
 {else}
   No hay datos.

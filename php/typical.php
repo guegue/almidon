@@ -30,8 +30,8 @@ switch ($action) {
     //$smarty->clear_all_cache();
     break;
 }
-if (isset($_REQUEST[$object . 'sort'])) $_SESSION[$object . 'sort'] = $_REQUEST[$object . 'sort'];
-if (isset($_REQUEST[$object . 'pg'])) $_SESSION[$object . 'pg'] = $_REQUEST[$object . 'pg'];
+if (isset($_REQUEST[$object . 'sort']) && !empty($_REQUEST[$object . 'sort'])) $_SESSION[$object . 'sort'] = $_REQUEST[$object . 'sort'];
+if (isset($_REQUEST[$object . 'pg']) && !empty($_REQUEST[$object . 'pg'])) $_SESSION[$object . 'pg'] = $_REQUEST[$object . 'pg'];
 $$object->order = (isset($_SESSION[$object . 'sort'])) ? $_SESSION[$object .'sort'] : $$object->order;
 $$object->pg = (isset($_SESSION[$object . 'pg'])) ? $_SESSION[$object . 'pg'] : 1;
 // Codigo nuevo, agregado para la funcionalidad del detalle
@@ -131,5 +131,3 @@ function fillOpt(&$object) {
   if (isset($options))
     return $options;
 }
-
-?>

@@ -469,11 +469,12 @@ class Table extends Data {
           $values .= $column['name'] . "=" . $this->request[$column['name']];
           break;
         case 'image':
-	  if ($nofiles || isset($_REQUEST[$column['name'] . '_keep']) || !isset($this->files[$column['name']])) {
-            if (!isset($_REQUEST[$column['name'] . '_keep']) && !isset($this->files[$column['name']]))
+	  if ($nofiles || isset($_REQUEST[$column['name'] . '_keep']) || !isset($this->files[$column['name']]) || empty($this->files[$column['name']]) ) {
+            if (!isset($_REQUEST[$column['name'] . '_keep']) && !isset($this->files[$column['name']])) {
               $values .= $column['name'] . "=''";
-            else
+            } else {
               $values .= $column['name'] . "=" . $column['name'];
+            }
           } elseif ($this->files[$column['name']]) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
             if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);

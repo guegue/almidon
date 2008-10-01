@@ -35,6 +35,7 @@ define('F',
   <input type="hidden" name="f" value="_FORM_"/>
   <input type="hidden" name="o" value="_OBJECT_"/>
   <input type="hidden" name="action" value="_ACTION_"/>
+  <input type="hidden" name="_OBJECT_pg" value="_PG_"/>
   <table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th></tr>
   <tr><td><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0">
   _FROW_</table></td></tr><tr><td>_PAGINATE_</td></tr></table></form>');
@@ -412,7 +413,7 @@ function smarty_function_dataform($params, &$smarty)
   $_html_result = preg_replace("/_ID1_/", $_REQUEST[$key1], $_html_result);
   $_html_result = preg_replace("/_ID2_/", $_REQUEST[$key2], $_html_result);
   $_html_result = preg_replace("/_SORT_/", $_REQUEST['sort'], $_html_result);
-  $_html_result = preg_replace("/_PG_/", $_REQUEST['pg'], $_html_result);
+  $_html_result = preg_replace("/_PG_/", $_REQUEST[$object . 'pg'], $_html_result);
   $_html_result = preg_replace("/_PGPREV_/", ($pg-1), $_html_result);
   $_html_result = preg_replace("/_PGNEXT_/", ($pg+1), $_html_result);
   $_html_result = preg_replace("/_FORM_/", $name, $_html_result);

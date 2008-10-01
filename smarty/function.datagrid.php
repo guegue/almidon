@@ -60,9 +60,9 @@ define('DGROW', '<tr class="dgrow">_DGCELL_</tr>'."\n");
 define('DGCELL', '<td class="dgcell">_VALUE_</td>');
 define('DGCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="20" maxlength="_SIZE_"/>');
 define('DGCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
-define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_=_ID_"><img src="/cms/img/view.png" border="0" alt="Ver"></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" alt="Borrar"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
+define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_=_ID_&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" alt="Ver"></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" alt="Borrar"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
 define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" border="0" alt="Borrar"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_PARENT_=_PARENTID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
-define('DGCMD2', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY1_=_ID1_&_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" alt="Ver"></a> <a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" alt="Borrar"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
+define('DGCMD2', '<td class="dgcmd"><a class="dgcmd_linksss" href="_SELF_?f=_FORM_&action=record&_KEY1_=_ID1_&_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" alt="Ver"></a> <a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" alt="Borrar"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
 define('DGCMD2R', '<td class="dgcmd"><a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" alt="Borrar"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
 define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_&_PARENT_=_PARENTID_"><img src="/cms/img/cancel.png" border="0" alt="Cancelar"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" alt="Guardar"></a></td>');
 define('DGCMD2MOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/cancel.png" border="0" alt="Cancelar"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" alt="Guardar"></a></td>');
@@ -90,8 +90,8 @@ function smarty_function_datagrid($params, &$smarty)
   $key = null;
   $key1 = null;
   $key2 = null;
-  $maxrows = (MAXROWS) ? MAXROWS : 5;
-  $maxcols = (MAXCOLS) ? MAXCOLS : 5;
+  $maxrows = (defined('MAXROWS')) ? MAXROWS : 5;
+  $maxcols = (defined('MAXCOLS')) ? MAXCOLS : 5;
   $name = 'dgform';
   $table = null;
   $parent = null;
@@ -228,7 +228,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'image':
           case 'img':
             $_tmp = '';
-            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="http://'.DOMAIN.'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="'.URL.'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
             $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
             break;
           case 'time':
@@ -254,7 +254,7 @@ function smarty_function_datagrid($params, &$smarty)
             }
             break;
           case 'text':
-            $_tmp = preg_replace("/_VALUE_/", $_val, DGCELLMODSTR);
+            $_tmp = preg_replace("/_VALUE_/",  htmlentities($_val,ENT_COMPAT,'UTF-8'), DGCELLMODSTR);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             break;
           case 'varchar':
@@ -270,7 +270,7 @@ function smarty_function_datagrid($params, &$smarty)
               $_tmp = preg_replace("/_REFERENCE_/", $_tmp, DGCELLMODREF);
               $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             } else {
-              $_tmp = preg_replace("/_VALUE_/", $_val, DGCELLMODSTR);
+              $_tmp = preg_replace("/_VALUE_/",  htmlentities($_val,ENT_COMPAT,'UTF-8'), DGCELLMODSTR);
               $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
               $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
             }
@@ -352,7 +352,7 @@ function smarty_function_datagrid($params, &$smarty)
               if (preg_match('/pdf/i',$ext)) $_icon = 'pdf.png';
               if (preg_match('/xls/i',$ext)) $_icon = 'excel.png';
               if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
-              $_tmp = '<a href="http://' . DOMAIN . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
+              $_tmp = URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
             } else {
               $_tmp = '--';
             }
@@ -360,7 +360,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'image':
             if ($_val) {
               if (THUMBNAILING)
-                $_tmp = '<a href="javascript:openimage(\'http://' . DOMAIN . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+                $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
               else
                 $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="/_' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" height="20" border="0" /></a>';
             } else {
