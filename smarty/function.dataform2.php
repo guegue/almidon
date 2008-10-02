@@ -228,7 +228,8 @@ function smarty_function_dataform2($params, &$smarty)
         case 'datenull':
           if (preg_match("/:/", $dd[$_key]['extra']['range']))
             list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']['range']);
-          $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>'--', 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
+          if (!isset($_val) || empty($_val)) $_val = '--';;
+          $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
           break;
         case 'date':
           if(!$_val)  $_val = $dd[$_key]['extra']['default'];
