@@ -429,12 +429,11 @@ class Table extends Data {
         case 'date':
         case 'datenull':
           $value = $this->request[$column['name']];
-          if ($value && $value != 'CURRENT_DATE') {
+          if (isset($value) && $value != '0-00-0') {
             $value = $this->database->escapeSimple($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {
             $values .= 'NULL';
-            #$values .= 'CURRENT_DATE';
           }
           break;
         default:
@@ -542,12 +541,11 @@ class Table extends Data {
         case 'date':
         case 'datenull':
           $value = $this->request[$column['name']];
-          if ($value && $value != 'CURRENT_DATE' && $value != ' ') {
+          if (isset($value) && $value != '0-00-0') {
             $value = $this->database->escapeSimple($this->request[$column['name']]);
             $values .= $column['name'] . "= '" . $value . "'";
           } else {
             $values .= $column['name'] . "= NULL";
-            #$values .= 'CURRENT_DATE';
           }
           break;
         default:

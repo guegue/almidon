@@ -75,7 +75,7 @@ class noticiaTable extends Table {
     $this->order ='fecha DESC';
     $this->addColumn('idnoticia','serial',0,1,0,'Id');
     $this->addColumn('noticia','varchar',500,0,0,'Titulo');
-    $this->addColumn('fecha','date',0,0,0,'Fecha');
+    $this->addColumn('fecha','datenull',0,0,0,'Fecha');
     $this->addColumn('texto','text',0,0,0,'Texto');
     $this->addColumn('foto','image',0,0,0,'Foto');
   }
