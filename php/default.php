@@ -71,7 +71,7 @@ if (!empty($obj) && class_exists($object)) {
 
   # si hay parametros, interpretarlos, ver detalle
   $data->readEnv();
-  if ($data->request[$data->key])
+  if (isset($data->request[$data->key]))
     $row = $data->readRecord();
 
   # si es galeria, carga fotos
@@ -100,7 +100,8 @@ if (!empty($obj) && class_exists($object)) {
   $data->destroy();
 
   # finalmente asigna row
-  $smarty->assign('row', $row);
+  if (isset($row))
+    $smarty->assign('row', $row);
 
   # tabla con fotos y su key
   $smarty->assign('foto', 'foto');

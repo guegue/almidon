@@ -65,6 +65,13 @@ $ psql -f /var/www/trunk/demo/demo.sql
 Nota: el script sql elige los password secreto1 y secreto2 para sus usuarios
 Nota: si es la segunda vez que instalas el demo, asegurate de borrar la base de datos almidondemo y usuarios almidondemo y almidondemowww
 
+
+SELINUX
+=======
+$ cd /var/www/trunk/demo
+$ restorecond .
+$ setsebool -P httpd_can_network_connect_db=1
+
 CONFIGURANDO ALMIDON
 ====================
 
