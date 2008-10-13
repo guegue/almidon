@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# setup.sh debe ayudar a configurar un sitio web para trabajar con almidon
+# copia una serie de archivos que son indispensables, otros que son utiles
+# pero su uso es opcional, igual se puede copiar el demo y usar como punto
+# de partida
+#
 if [ -z $2 ]; then
   echo "Usage: ./setup username domain pass"
   exit
