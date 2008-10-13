@@ -1,1 +1,1 @@
-/www/cms/smarty/modifier.p2nl.php
+../../../smarty/modifier.p2nl.php

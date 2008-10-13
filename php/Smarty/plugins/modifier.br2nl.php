@@ -1,1 +1,1 @@
-/www/cms/smarty/modifier.br2nl.php
+../../../smarty/modifier.br2nl.php

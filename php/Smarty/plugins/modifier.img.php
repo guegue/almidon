@@ -1,1 +1,1 @@
-/www/cms/smarty/modifier.img.php
+../../../smarty/modifier.img.php

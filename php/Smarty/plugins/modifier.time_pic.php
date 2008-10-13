@@ -1,1 +1,1 @@
-/www/cms/smarty/modifier.time_pic.php
+../../../smarty/modifier.time_pic.php

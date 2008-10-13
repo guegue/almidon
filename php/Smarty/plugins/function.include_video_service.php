@@ -1,1 +1,1 @@
-/www/cms/smarty/function.include_video_service.php
+../../../smarty/function.include_video_service.php
