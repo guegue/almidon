@@ -15,7 +15,11 @@ function genSQL($object) {
     if ($type == 'file' || $type == 'image' || $type == 'autoimage') {
       $type = 'varchar';
       $size = '500';
+    } elseif ($type == 'html' || $type == 'xhtml') {
+      $type = 'text';
+      $size = null;
     }
+
     if ($type == 'order') $type = 'serial NULL';
     if (!$size) $size = $column['size'];
     $size = preg_replace("/\./", ",", $size);

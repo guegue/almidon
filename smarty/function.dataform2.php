@@ -261,11 +261,13 @@ function smarty_function_dataform2($params, &$smarty)
           $_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edittext(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">maximizar</a>';
           break;
         case 'html':
-          #$_tmp = '<textarea rows="5" cols="40" class="adm" id="' . $_key . '" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edithtml(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">maximizar</a>';
           $_tmp = '<textarea rows="5" cols="40" class="adm" id="' . $_key . '" name="' . $_key . '">' . $_val . '</textarea>';
           $_tmp .= "<script language=\"JavaScript\">\ngenerate_wysiwyg('" . $_key . "');\n</script>\n";
-          #$_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edithtml(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">maximizar</a>';
           break;
+        case 'xhtml':
+          $_tmp = '<textarea rows="5" cols="40" class="adm" id="' . $_key . '" name="' . $_key . '">' . $_val . '</textarea>';
+          $_tmp .= "<script language=\"JavaScript\">\ntinyMCE.execCommand(\"mceAddControl\", true,\"$_key\");\n</script>\n";
+	  break;
         #case 'html':
         #  $_val = rteSafe($_val);
         #  $_tmp = '<script language="JavaScript" type="text/javascript">' . "\nwriteRichText('" . $_key . "', '" . $_val . "', 520, 200, true, false);\n</script>\n";
