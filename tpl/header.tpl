@@ -5,6 +5,7 @@
 <script language="JavaScript1.2" type="text/javascript" src="/cms/js/common.js"></script>
 <script language="JavaScript1.2" type="text/javascript" src="/cms/js/tools.js"></script>
 <script language="JavaScript" type="text/javascript" src="/cms/html/wysiwyg.js"></script>
+<script type="text/javascript" src="/cms/js/tiny_mce/tiny_mce.js"></script>
 {if $smarty.const.DB3===true}
 <script type='text/javascript' src="http://{$smarty.server.SERVER_NAME}/cms/ajax/server.php?client=Util,main,dispatcher,httpclient,request,json,loading,iframe,queues"></script>
 <script type='text/javascript' src="http://{$smarty.server.SERVER_NAME}/cms/ajax/server.php?stub=livefillcombo"></script>
