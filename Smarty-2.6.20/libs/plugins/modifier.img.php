@@ -1,0 +1,1 @@
+../../../smarty/modifier.img.php

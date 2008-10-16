@@ -1,0 +1,1 @@
+../../../smarty/validate/function.validate.php

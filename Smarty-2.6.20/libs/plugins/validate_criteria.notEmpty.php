@@ -1,0 +1,1 @@
+../../../smarty/validate/validate_criteria.notEmpty.php

@@ -1,0 +1,1 @@
+../../../smarty/function.datagrid2.php

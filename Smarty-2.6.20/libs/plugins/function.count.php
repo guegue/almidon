@@ -1,0 +1,1 @@
+../../../smarty/function.count.php
