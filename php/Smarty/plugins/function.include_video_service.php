@@ -1,1 +1,0 @@
-../../../smarty/function.include_video_service.php
