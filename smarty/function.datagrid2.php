@@ -383,7 +383,7 @@ function smarty_function_datagrid2($params, &$smarty)
             } 
             break;
           case 'order':
-            $_tmp = '<a href="' . $_SERVER['PHP_SELF'] . '?move=up&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/up.gif" border="0"/></a> <a href="' . $_SERVER['PHP_SELF'] . '?move=down&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/down.gif" border="0"/></a>';
+            $_tmp = '<a href="_SELF_?action=move&sense=up&key=' . $_key . '"><img src="/cms/img/up.gif" border="0"/></a> <a href="_SELF_?action=move&sense=down&key=' . $_key . '"><img src="/cms/img/down.gif" border="0"/></a>';
             break;
 	  case 'varchar':
 	    if ($dd[$_key]['extra']['arr_values']) {
