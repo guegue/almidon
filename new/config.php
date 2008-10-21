@@ -33,6 +33,18 @@ define ('EMAIL', 'info@' . DOMAIN);
 #define('ALMIDONDIR','/path-to-alm');
 # Calidad de las imagenes, sino se estable se utilizara 85
 #define('IMG_QUALITY',95);
+# HTPASSWDFILE
+define ('HTPASSWDFILE',ROOTDIR . '/.htpasswd');
+# Contantes de TINY_MCE
+# Tema
+define ('TINYMCE_THEME', 'advanced');
+# Skins
+#define ('TINYMCE_SKIN', 'o2k7');
+#define ('TINYMCE_SKIN_VAR', 'silver');
+# Toolbars del 1 al 3
+#define ('TINYMCE_TOOLBAR1','');
+#define ('TINYMCE_TOOLBAR2','');
+#define ('TINYMCE_TOOLBAR3','');
 # Indica que se utilizara DB3, si el valor es true, en vez de DB2.
 #define ('DB3', true);
 
