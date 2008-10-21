@@ -19,4 +19,4 @@ window.opener.location.reload();
 window.close();
 </script>
 {/if}
-{include file="/www/cms/tpl/footer.tpl"}
+{include file="$footer"}

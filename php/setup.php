@@ -21,6 +21,9 @@ function genSQL($object) {
     } elseif ($type == 'datetime') {
       $type = 'timestamp';
       $size = null;
+    } elseif ($type == 'auth_user') {
+      $type = 'varchar';
+      $size = '32';
     }
     if ($type == 'order') $type = 'serial NULL';
     if (!$size) $size = $column['size'];

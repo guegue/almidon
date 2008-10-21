@@ -354,9 +354,9 @@ class Table extends Data {
             $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
           } else {
             $this->request[$column['name']] = '';
-	      }
-	      $this->request['old_'.$column['name']] = $_REQUEST['old_'.$column['name']];
-	    } elseif ($column['type'] == 'password') {
+	        }
+	        $this->request['old_'.$column['name']] = $_REQUEST['old_'.$column['name']];
+	      } elseif ($column['type'] == 'password') {
           $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
         } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
           $date = ''; $time = '';
@@ -386,11 +386,13 @@ class Table extends Data {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
           #if (isset($_REQUEST[$column['name']])) $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
           #else $this->request[$column['name']] = 'NULL';
-	    //	nuevo
-	    } elseif($column['type'] == 'video') {
-	      $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
+	        //	nuevo
+	      } elseif($column['type'] == 'video') {
+	        $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
           $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
-	    //	end
+	        //	end
+        } elseif ($column['type'] == 'auth_user') {
+          $this->request[$column['name']] = $this->parsevar($_SERVER['PHP_AUTH_USER'], 'string');
         } else {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
         }
@@ -484,6 +486,7 @@ class Table extends Data {
             $values .= "'" . $value . "'";
           }
           break;
+        case 'auth_user':
         case 'varchar':
           if ($this->request[$column['name']] == -1) {
             $this->request[$column['name']] = 'NULL';
@@ -886,6 +889,8 @@ class TableDoubleKey extends Table {
           }
           $datetime = trim("$date $time");
           $this->request[$column['name']] = $datetime;
+        } elseif ($column['type'] == 'auth_user') {
+          $this->request[$column['name']] = $this->parsevar($_SERVER['PHP_AUTH_USER'], 'string');
         } else {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
         }

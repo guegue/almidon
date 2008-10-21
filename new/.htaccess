@@ -1,9 +1,9 @@
 ErrorDocument 404 /cms/404.php
 ErrorDocument 403 /cms/403.php
 RewriteEngine on
-RewriteCond %{REQUEST_URI} ^/example.org/setup(.php)?$
+RewriteCond %{REQUEST_URI} ^/(admin|secure|example.org)/setup(.php)?$
 RewriteRule (.*) /cms/setup.php [L]
-RewriteCond %{REQUEST_URI} ^/example.org/usuario(.php)?$
+RewriteCond %{REQUEST_URI} ^/(admin|secure|example.org)/usuario(.php)?$
 RewriteRule (.*) /cms/usuario.php [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
