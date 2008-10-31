@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 404.php
  *
@@ -39,6 +38,7 @@ if (strpos($object, '?')) {
 } else {
   define('SELF', $_SERVER['REQUEST_URI']);
 }
+if(strrpos($object, '.')===true) $object = substr($object, 0, strrpos($object, '.'));
 if ($object) {
   $ot = $object . 'Table';
   $$object = new $ot;

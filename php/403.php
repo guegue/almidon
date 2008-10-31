@@ -6,10 +6,14 @@ $smarty->caching = false;
 if (!isset($adminlinks)) {
   $classes = get_declared_classes();
   foreach($classes as $key)
-  if (strstr($key, 'table') && $key != 'table' && $key != 'tabledoublekey') {
-    error_log($key);
+  if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
+
     $table_object = new $key;
-    $key = substr($key, 0, strpos($key, 'table'));
+    // Modificacion hecho por lo antes comentado entre php5 y php4
+    if(substr($key, 0, strpos($key, 'Table'))!==false) {
+      $key = substr($key, 0, strpos($key, 'Table'));
+    } else { $key = substr($key, 0, strpos($key, 'table')); }
+    // End
     $adminlinks[$key] = $table_object->title;
   }
   $smarty->assign('adminlinks', $adminlinks);
@@ -22,6 +26,8 @@ if (file_exists(ROOTDIR."/templates/admin/index.tpl")) {
   else $smarty->assign('header',ALMIDONDIR.'/tpl/header.tpl');
   $smarty->display(ROOTDIR."/templates/admin/index.tpl");
 } else {
+  $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
+  $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
   $smarty->display(ALMIDONDIR.'/tpl/index.tpl');
 }
 ?>

@@ -59,6 +59,7 @@ define('DGHEADERCELL', '<th><a class="dgheader_link" href="_SELF_?q=_Q_&f=_FORM_
 define('DGROW', '<tr class="dgrow">_DGCELL_</tr>'."\n");
 define('DGCELL', '<td class="dgcell">_VALUE_</td>');
 define('DGCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="20" maxlength="_SIZE_"/>');
+define('DGCELLMODTXT', '<textarea name="_FIELD_" id="_FIELD_">_VALUE_</textarea><br /><a href="javascript:edittext(\'_FORM_\', \'_FIELD_\', document.getElementById(\'_FIELD_\').value);">maximizar</a>');
 define('DGCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
 define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_=_ID_&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" alt="Ver"></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" alt="Borrar"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
 //para las tablas detalle
@@ -134,6 +135,7 @@ function smarty_function_datagrid2($params, &$smarty)
           $selected = (string)$_val;
         }
         break;
+      case 'num_rows':
       case 'maxcols':
       case 'maxrows':
         $$_key = (int)$_val;
@@ -206,11 +208,11 @@ function smarty_function_datagrid2($params, &$smarty)
   $_i = 0;
   $pg = ($_SESSION[$name . 'pg']) ? $_SESSION[$name . 'pg'] : 1; 
   foreach ((array)$rows as $row) {
-    if ($paginate && $_SESSION[$name . 'pg'] && $_i < ($maxrows * ($pg - 1) )) {
+    /*if ($paginate && $_SESSION[$name . 'pg'] && $_i < ($maxrows * ($pg - 1) )) {
       $_need_paginate = true;
       $_i++;
       continue;
-    }
+    }*/
     $_html_row = '';
     $_chosen = ($key2) ? ($_REQUEST[$key1] == $row[$key1] && $_REQUEST[$key2] == $row[$key2]) : ($_REQUEST[$key] == $row[$key]); 
     if ($_REQUEST['f'] == $name && $_REQUEST['action'] == 'mod' && $_chosen) {
@@ -263,7 +265,7 @@ function smarty_function_datagrid2($params, &$smarty)
             }
             break;
           case 'text':
-            $_tmp = preg_replace("/_VALUE_/", $_val, DGCELLMODSTR);
+            $_tmp = preg_replace("/_VALUE_/", $_val, DGCELLMODTXT);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             break;
           case 'varchar':
@@ -430,11 +432,11 @@ function smarty_function_datagrid2($params, &$smarty)
     $_html_result = preg_replace("/_DGHEADERCMD_/", DGHEADERCMD, $_html_result);
     $_html_result = preg_replace("/_DGHEADERCMD_/", '', $_html_result);
   $_html_result = preg_replace("/_TITLE_/", $title, $_html_result);
-  $_html_result = preg_replace("/_ROWS_/", count($rows), $_html_result);
+  $_html_result = preg_replace("/_ROWS_/", $num_rows, $_html_result);
   $_html_result = preg_replace("/_DGROW_/", $_html_rows, $_html_result);
 
   # Paginacion del datagrid
-  $_npgs = ceil(count($rows) / $maxrows);
+  $_npgs = ceil($num_rows / $maxrows);
   $_paginate = '';
   if ($paginate && $_npgs > 1) {
     if ($pg != 1)

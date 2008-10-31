@@ -532,10 +532,11 @@ class Table extends Data {
     $n = 0;
     $values = "";
     foreach($this->definition as $column) {
-      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
+      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial' && $column['type'] != 'auth_user')
         $values .= ",";
       switch($column['type']) {
       	case 'external':
+      	case 'auth_user':
       	case 'auto':
       	case 'order':
         case 'serial':

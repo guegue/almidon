@@ -16,7 +16,7 @@ tinyMCE.init({
 	skin : {/literal}{if "TINYMCE_SKIN"|defined}"{$smarty.const.TINYMCE_SKIN}"{else}"o2k7"{/if}{literal},
 	skin_variant : {/literal}{if "TINYMCE_SKIN_VAR"|defined}"{$smarty.const.TINYMCE_SKIN_VAR}"{else}"silver"{/if}{literal},
 
-        theme_advanced_buttons1 : {/literal}{if "TINYMCE_TOOLBAR1"|defined}"{$smarty.const.TINYMCE_TOOLBAR1}"{else}"bold,italic,underline,strikethrough,separator,formatselect,justifyleft,justifycenter,justifyright,justifyfull,separator,hr,pastetext,pasteword,selectall,fullscreen"{/if}{literal},
+        theme_advanced_buttons1 : {/literal}{if "TINYMCE_TOOLBAR1"|defined}"{$smarty.const.TINYMCE_TOOLBAR1}"{else}"bold,italic,underline,strikethrough,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,hr,pastetext,pasteword,selectall,fullscreen"{/if}{literal},
         theme_advanced_buttons2 : {/literal}{if "TINYMCE_TOOLBAR2"|defined}"{$smarty.const.TINYMCE_TOOLBAR2}"{else}"sub,sup,separator,bullist,numlist,separator,outdent,indent,separator,undo,redo,separator,link,unlink,anchor,image,cleanup,code,fullscreen"{/if}{literal},
         theme_advanced_buttons3 : {/literal}{if "TINYMCE_TOOLBAR3"|defined}"{$smarty.const.TINYMCE_TOOLBAR3}"{else}""{/if}{literal},
         theme_advanced_toolbar_location : "top",
@@ -93,11 +93,11 @@ tinyMCE.init({
     <a href="{$smarty.const.SSL_URL}/"{if ($section_actual=='inicio')} class="stay"{/if}>Inicio</a> | &nbsp;{foreach key=key item=item from=$sectionlinks name=i}<a href="{$smarty.const.SSL_URL}/{$key}/{$item.index}"{if $section_actual==$key} class="stay"{/if}>{$item.label}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}<hr size="1" color="#97ACBA" noshade />
   {/if}
   {if $adminlinks}
-    {foreach key=key item=item from=$adminlinks name=j}<a href="{$smarty.const.SSL_URL}/{$section_actual}/{$key}"{if $cur_page==$key} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.j.last} | &nbsp;{/if}{/foreach}
+    {foreach key=key item=item from=$adminlinks name=j}<a href="{$smarty.const.SSL_URL}/{$section_actual}/{$key}"{if ($cur_page==$key)||($object==$key)} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.j.last} | &nbsp;{/if}{/foreach}
   <hr size="1" color="#97ACBA" noshade />
   {/if}
 {elseif $adminlinks}
-  {foreach key=key item=item from=$adminlinks name=i}<a href="{$key}"{if $cur_page==$key} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}
+  {foreach key=key item=item from=$adminlinks name=i}<a href="{$key}"{if ($cur_page==$key)||($object==$key)} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}
   {if $smarty.session.idusername}&nbsp;[{$smarty.session.idusername} ({$smarty.session.idrole}){if $smarty.const.LOGOUT===true} - <a href="/{$smarty.const.DOMAIN}/logout">salir</a>{/if}]{/if}
   <hr size="1" color="#97ACBA" noshade />
 {/if}
