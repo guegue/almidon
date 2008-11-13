@@ -36,6 +36,8 @@
 //   MBTTF_DIR $SERVER_SYSTEMROOT/fonts/
 //
 //------------------------------------------------------------------------
+DEFINE("CACHE_DIR","/var/cache/graph/");
+DEFINE("TTF_DIR","/usr/share/fonts/msttcorefonts/");
 // DEFINE("CACHE_DIR","/tmp/jpgraph_cache/");
 // DEFINE("TTF_DIR","/usr/X11R6/lib/X11/fonts/truetype/");
 // DEFINE("MBTTF_DIR","/usr/share/fonts/ja/TrueType/");
@@ -137,7 +139,7 @@ DEFINE("DEFAULT_GFORMAT","auto");
 // false will still create the image in the cache directory
 // just not use it. By setting USE_CACHE=false no files will even
 // be generated in the cache directory.
-DEFINE("USE_CACHE",false);
+DEFINE("USE_CACHE",true);
 
 // Should we try to find an image in the cache before generating it? 
 // Set this define to false to bypass the reading of the cache and always
@@ -156,7 +158,7 @@ DEFINE("USE_IMAGE_ERROR_HANDLER",true);
 // occasions when, for example, header files cannot be found and this results
 // in the graph not being created and just a "red-cross" image would be seen.
 // This should be turned off for a production site.
-DEFINE("CATCH_PHPERRMSG",true);
+DEFINE("CATCH_PHPERRMSG",false);
 
 // Determine if the library should also setup the default PHP
 // error handler to generate a graphic error mesage. This is useful
@@ -196,7 +198,7 @@ DEFINE("BRAND_TIME_FORMAT","(%01.3fs)");
 // Please note that the Apache user must be a member of the
 // specified group since otherwise it is impossible for Apache
 // to set the specified group.
-DEFINE("CACHE_FILE_GROUP","wwwadmin");
+DEFINE("CACHE_FILE_GROUP","apache");
 
 // What permissions should the cached file have
 // (Set to "" will give the default persmissions for the "PHP-user")
