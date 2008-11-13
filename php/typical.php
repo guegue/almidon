@@ -84,7 +84,7 @@ $$object->offset = ((int)$_REQUEST[$object.'pg'])?(((int)$_REQUEST[$object.'pg']
 $$object->limit = ($$object->maxrows)?$$object->maxrows:8;
 # End Limits
 $smarty->assign('rows', $$object->readData());
-$smarty->assign('num_rows', $$object->getVar("SELECT count(".$$object->key.") FROM ".$$object->name));
+$smarty->assign('num_rows', $$object->getVar("SELECT count(".$$object->key.") FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));
 $smarty->assign('dd', $$object->dd);
 $smarty->assign('key', $$object->key);
 if (isset($$object->key1))

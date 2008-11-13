@@ -13,7 +13,7 @@ foreach ($_POST as $j =>$value) {
 if (DEBUG === true) ini_set('display_errors', true);
 # Directorio de instalación de almidon
 if (defined('ALMIDONDIR'))
-  set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
+  set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php');
 # Permisos por defecto para los directorios que se creen en files
 define('PERMIS_DIR',0775);
 # Etiquetas permitidas
@@ -238,9 +238,9 @@ class Table extends Data {
       }
       if ($this->schema != 'public')
         $this->all_fields .= $this->schema . ".";
-      if ($ns > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
+      if ($ns > 0 && $column['type'] != 'external' && ($column['type'] != 'auto'||!empty($column['extra']['default'])) && $column['type'] != 'order' && $column['type'] != 'serial')
         $this->fields_noserial .= ",";
-      if ($column['type'] == 'serial' || $column['type'] == 'external' || $column['type'] == 'auto' || $column['type'] == 'order' && $column['type']=='serial')
+      if ($column['type'] == 'serial' || $column['type'] == 'external' || ($column['type'] == 'auto' && empty($column['extra']['default'])) || $column['type'] == 'order' && $column['type']=='serial')
         $ns--;
       else
         $this->fields_noserial .= $column['name'];
@@ -407,10 +407,14 @@ class Table extends Data {
     $values ="";
     foreach($this->definition as $column) {
       //if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order')
-      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
+      if ($n > 0 && $column['type'] != 'external' && ($column['type'] != 'auto'||!empty($column['extra']['default'])) && $column['type'] != 'order' && $column['type'] != 'serial')
         $values .= ",";
       switch($column['type']) {
         case 'auto':
+          if(!empty($column['extra']['default'])) {
+            $values .= "'".$column['extra']['default']."'";
+            break;
+          }
       	case 'external':
         case 'serial':
         case 'order':
