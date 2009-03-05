@@ -133,7 +133,8 @@ class Data {
           $row[$key] = htmlentities($val, ENT_COMPAT, 'UTF-8');
       $array_rows[] = $row;
     }
-    return $array_rows;
+    if (isset($array_rows)
+      return $array_rows;
   }
 
   function selectList($sqlcmd) {
@@ -347,7 +348,7 @@ class Table extends Data {
     unset ($this->request);
     unset ($this->files);
     foreach($this->definition as $column) {
-      if ($column['type'] != 'external' || $column['type'] != 'auto' && isset($_REQUEST)) {
+      if (($column['type'] != 'external' || $column['type'] != 'auto') && isset($_REQUEST[$column['name']])) {
         if (($column['type'] == 'file' || $column['type'] == 'image')) {
           if($_FILES[$column['name']]['name']) {
             $this->request[$column['name']] = $this->parsevar($_FILES[$column['name']]['name'], $column['type']);
@@ -691,7 +692,8 @@ class Table extends Data {
     $join = "";
     foreach ($this->definition as $column)
       if (!empty($column['references'])) {
-        $references[$column['references']]++;
+        if (isset($references[$column['references']])) $references[$column['references']]++;
+        else $references[$column['references']] = 1;
         // Si solo hay una unica referencia a la tabla
         if ($references[$column['references']] == 1) {
           $pos = strpos($column['references'],'.');

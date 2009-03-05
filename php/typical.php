@@ -80,7 +80,7 @@ $smarty->assign('options', fillOpt($$object));
 # Limits/Paginando
 if(((int)$$object->maxrows)<=0) $$object->maxrows = 8;
 else $$object->maxrows = (int) $$object->maxrows;
-$$object->offset = ((int)$_REQUEST[$object.'pg'])?(((int)$_REQUEST[$object.'pg'])-1)*$$object->maxrows:0;
+$$object->offset = (isset($_REQUEST[$object.'pg']))?(((int)$_REQUEST[$object.'pg'])-1)*$$object->maxrows:0;
 $$object->limit = ($$object->maxrows)?$$object->maxrows:8;
 # End Limits
 $smarty->assign('rows', $$object->readData());
@@ -117,7 +117,7 @@ function fillOpt(&$object) {
       // Esto sucede solo si extra esta manteniendo el formato ordenado de array de la version db3
       } elseif (!isset($object->dd[$key]['extra']['depend']) && !isset($object->dd[$key]['extra']['readonly'])) {
         if(isset($object->dd[$key]['extra']['display'])) {
-          if($object->dd[$key]['extra']['filteropt'])
+          if(isset($object->dd[$key]['extra']['filteropt']))
             $where = $object->dd[$key]['extra']['filteropt'];
           $ot = $object->dd[$key]['references'] . 'Table';
           $robject = new $ot;
