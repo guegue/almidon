@@ -133,7 +133,7 @@ class Data {
           $row[$key] = htmlentities($val, ENT_COMPAT, 'UTF-8');
       $array_rows[] = $row;
     }
-    if (isset($array_rows)
+    if (isset($array_rows))
       return $array_rows;
   }
 
