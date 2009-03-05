@@ -347,7 +347,7 @@ class Table extends Data {
     unset ($this->request);
     unset ($this->files);
     foreach($this->definition as $column) {
-      if ($column['type'] != 'external' || $column['type'] != 'auto') {
+      if ($column['type'] != 'external' || $column['type'] != 'auto' && isset($_REQUEST)) {
         if (($column['type'] == 'file' || $column['type'] == 'image')) {
           if($_FILES[$column['name']]['name']) {
             $this->request[$column['name']] = $this->parsevar($_FILES[$column['name']]['name'], $column['type']);
@@ -386,11 +386,9 @@ class Table extends Data {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
           #if (isset($_REQUEST[$column['name']])) $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
           #else $this->request[$column['name']] = 'NULL';
-	        //	nuevo
-	      } elseif($column['type'] == 'video') {
-	        $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
+        } elseif($column['type'] == 'video') {
+          $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
           $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
-	        //	end
         } elseif ($column['type'] == 'auth_user') {
           $this->request[$column['name']] = $this->parsevar($_SERVER['PHP_AUTH_USER'], 'string');
         } else {
@@ -398,7 +396,8 @@ class Table extends Data {
         }
       }
     }
-    $this->request['old_' . $this->key] = $_REQUEST['old_' . $this->key];
+    if (isset($_REQUEST['old_' . $this->key]))
+      $this->request['old_' . $this->key] = $_REQUEST['old_' . $this->key];
     $this->escaped = true;
   }
 
@@ -691,7 +690,7 @@ class Table extends Data {
   function getJoin() {
     $join = "";
     foreach ($this->definition as $column)
-      if ($column['references']) {
+      if (!empty($column['references'])) {
         $references[$column['references']]++;
         // Si solo hay una unica referencia a la tabla
         if ($references[$column['references']] == 1) {
