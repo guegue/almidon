@@ -707,8 +707,9 @@ class Table extends Data {
        	      $r_field = substr($column['references'],$pos+1);
       	    }
             $join .= " LEFT OUTER JOIN " . $r_table . " ".(empty($r_alias)?"":"AS ".$r_alias." ")."ON " . $this->name . "." . $column['name'] . "=" . (empty($r_alias)?$r_table:$r_alias).".".$r_field;
-          } else
-            $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $column['name'];
+          } else {
+            $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . (!empty($column['extra']['foreign'])?$column['extra']['foreign']:$column['name']);
+          }
         } else {
           $tmptable = $column['references'] . $references[$column['references']];
           $tmpcolumn =  "id" . $column['references'];
