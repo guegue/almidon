@@ -50,7 +50,7 @@ class Data {
     $this->num = 0;
     $this->cols = 0;
     $this->max = MAXROWS;
-    $this->current_pg = ($_REQUEST['pg']) ? $_REQUEST['pg'] : '1';
+    $this->current_pg = isset($_REQUEST['pg']) ? $_REQUEST['pg'] : '1';
   }
   // }}} inicializacion y conexion
 
@@ -250,7 +250,7 @@ class Table extends Data {
       else
         $this->all_fields .= $this->name . "." . $column['name'];
       if ($column['references']) {
-        #if ($column['extra'])
+        if (!empty($column['extra']))
         if (preg_match("/\|\|/", $column['extra']['display'])) {
           $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
         } else {
@@ -266,7 +266,7 @@ class Table extends Data {
              $r_table = $r_field = $column['references'];
 	  }
  	  $this->all_fields .= "," . (empty($r_alias)?$r_table:$r_alias) . "." . $r_table;
-	  if($r_alias) $this->all_fields .= " AS $r_alias";
+	  if(!empty($r_alias)) $this->all_fields .= " AS $r_alias";
 	  #$this->all_fields .= "," . $column['references'] . "." . $column['name'];
         }
       }
