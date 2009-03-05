@@ -251,9 +251,9 @@ class Table extends Data {
       else
         $this->all_fields .= $this->name . "." . $column['name'];
       if ($column['references']) {
-        if (!empty($column['extra']))
-        if (preg_match("/\|\|/", $column['extra']['display'])) {
-          $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
+        if (!empty($column['extra']['display'])) {
+          if(empty($column['extra']['alias']))  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
+          else  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['extra']['alias'];
         } else {
           $pos = strpos($column['references'],'.');
  	  if($pos!==false) {
