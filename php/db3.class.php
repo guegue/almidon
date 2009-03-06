@@ -1,13 +1,14 @@
 <?
 // vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 
-foreach ($_POST as $j =>$value) {
- if (stristr($value,"Content-Type")) {
-   header("HTTP/1.0 403 Forbidden");
-   echo "No spam allowed.";
-   exit;
- }
-}
+# Comentado Jue 5 Marzo 2009
+#foreach ($_POST as $j =>$value) {
+# if (stristr($value,"Content-Type")) {
+#   header("HTTP/1.0 403 Forbidden");
+#   echo "No spam allowed.";
+#   exit;
+# }
+#}
 
 // Constantes
 if (DEBUG === true) ini_set('display_errors', true);
@@ -50,7 +51,7 @@ class Data {
     $this->num = 0;
     $this->cols = 0;
     $this->max = MAXROWS;
-    $this->current_pg = isset($_REQUEST['pg']) ? $_REQUEST['pg'] : '1';
+    $this->current_pg = isset($_REQUEST['pg']) ? (int)$_REQUEST['pg'] : '1';
   }
   // }}} inicializacion y conexion
 
@@ -60,7 +61,7 @@ class Data {
       $error_msg = $obj->getMessage();
       #if ($extra) $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
       $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
-      if (DEBUG === true) trigger_error($error_msg);
+      if (DEBUG === true) trigger_error(htmlentities($error_msg));
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
       if ($die) die();
     } elseif (DEBUG === true && $extra)
@@ -135,6 +136,7 @@ class Data {
     }
     if (isset($array_rows))
       return $array_rows;
+    else return null;
   }
 
   function selectList($sqlcmd) {
@@ -209,6 +211,7 @@ class Table extends Data {
   var $id;
   var $action;
   var $detail;
+  var $hide;
   // }}} variables Table
 
   function Table($name, $schema = 'public') {
@@ -217,6 +220,25 @@ class Table extends Data {
     $this->schema = $schema;
     if ($schema && $schema != 'public')
       $this->query("SET search_path = $schema, public, pg_catalog");
+    $this->hide = false;
+  }
+
+  function http_digest_parse($digest = null) {
+    if(!isset($digest)) $digest = $_SERVER['PHP_AUTH_DIGEST'];
+    # edit needed parts, as you  want
+    preg_match_all('@(username|nonce|uri|nc|cnonce|qop|response)'.'=[\'"]?([^\'",]+)@', $digest, $t);
+    $data = array_combine($t[1], $t[2]);
+    # all parts found?
+    return (count($data)==7) ? $data : false;
+  }
+
+  function http_auth_user() {
+    if(!empty($_SERVER['PHP_AUTH_DIGEST'])) {
+      $_data = $this->http_digest_parse();
+      return $_data['username'];
+    } else {
+      return $_SERVER['PHP_AUTH_USER'];
+    }
   }
 
   // {{{ refreshFields()
@@ -368,7 +390,7 @@ class Table extends Data {
           if ($_REQUEST[$column['name'] . '_Year']) {
             $year = $this->parsevar($_REQUEST[$column['name'] . '_Year'], 'int');
             $month = $this->parsevar($_REQUEST[$column['name'] . '_Month'], 'int');
-            if ($month<10) $month = '0'.$month;
+            if ($month<10 && strlen($month)==1) $month = '0'.$month;
             $day = $this->parsevar($_REQUEST[$column['name'] . '_Day'], 'int');
             $date = $year . '-' . $month . '-' . $day;
           }
@@ -391,7 +413,7 @@ class Table extends Data {
           $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
           $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
         } elseif ($column['type'] == 'auth_user') {
-          $this->request[$column['name']] = $this->parsevar($_SERVER['PHP_AUTH_USER'], 'string');
+          $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
         } else {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
         }
@@ -447,24 +469,28 @@ class Table extends Data {
 	          if (!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
             $this->request[$column['name']] = $filename;
-	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',trim($column['extra']['sizes']));
+	          if ($column['extra']['sizes'] && defined('PIXDIR'))  {
+              $sizes = explode(',',trim($column['extra']['sizes']));
+              if ($column['extra']['radius'])  $radius = explode (',',trim($column['extra']['radius']));
+            }
 	          if(isset($sizes))  {
-              $image = new Image();
-              if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
+              $image = new almImage();
+              if ($timemark['mon']<10&&strlen($timemark['mon'])==1) $timemark['mon'] = "0" . $timemark['mon'];
               // Comprueba que existan los directorios y sino
 	            // los crea
 	            if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
 	            if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
               if($sizes)
-                foreach($sizes as $size) {
+                for($idx=0;$idx<count($sizes);$idx++) {
                   $pic = null;
-	                list($w, $h, $crop) = split("x", trim($size));
+	                list($w, $h, $crop) = split("x", trim($sizes[$idx]));
 		              if($crop&&$h) {
                     $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
                   } else {
                     $pic = $image->resize(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
                   }
                   $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
+                  if($radius[$idx]>0)  $pic = $image->rounded($pic,$radius[$idx]);
                   if (imagejpeg($pic, $thumbf, IMG_QUALITY) === FALSE) {
                     error_log("ERROR al escribir " . $thumbf);
                   }
@@ -565,7 +591,7 @@ class Table extends Data {
      	        if (isset($sizes)) {
        			  // esta linea da un warning: Warning: Wrong parameter count for strpos() in /www/cms/php/db3.class.php on line 550 Warning: Wrong parameter count for substr() in /www/cms/php/db3.class.php on line 550
 	          	  $timemark = getdate(substr($this->request['old_'.$column['name']],0,strpos($this->request['old_'.$column['name']]),"_"));
-                if ($timemark['mon']<10)  $timemark['mon'] = "0" . $timemark['mon'];
+                if ($timemark['mon']<10 && strlen($timemark['mon'])==1)  $timemark['mon'] = "0" . $timemark['mon'];
                 if($sizes)
 	                foreach($sizes as $size) {
 	                  list($w, $h, $crop) = split("x", trim($size));
@@ -580,27 +606,30 @@ class Table extends Data {
             move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
             $value = $this->database->escapeSimple($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
-            if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
+            if ($timemark['mon']<10 && strlen($timemark['mon'])==1)  $timemark['mon'] = "0" . $timemark['mon'];
             if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
 	          if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
-            if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',trim($column['extra']['sizes']));
+            if ($column['extra']['sizes'] && defined('PIXDIR')) {
+              $sizes = explode(',',trim($column['extra']['sizes']));
+              if ($column['extra']['radius'])  $radius = explode (',',trim($column['extra']['radius']));
+            }
             if(isset($sizes))  {
-              $image = new Image();
-              if ($timemark['mon']<10) $timemark['mon'] = "0" . $timemark['mon'];
+              $image = new almImage();
               // Comprueba que existan los directorios y sino
               // los crea
               if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
               if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
               if($sizes)
-                foreach($sizes as $size) {
+                for($idx=0;$idx<count($sizes);$idx++) {
                   $pic = null;
-                  list($w, $h, $crop) = split("x", trim($size));
+                  list($w, $h, $crop) = split("x", trim($sizes[$idx]));
                   if($crop&&$h) {
                     $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
                   } else {
                     $pic = $image->resize(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
                   }
                   $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
+                  if($radius[$idx]>0)  $pic = $image->rounded($pic,$radius[$idx]);
                   if (imagejpeg($pic, $thumbf, IMG_QUALITY) === FALSE) {
                     error_log("ERROR al escribir " . $thumbf);
                   }
@@ -897,8 +926,9 @@ class TableDoubleKey extends Table {
           $datetime = trim("$date $time");
           $this->request[$column['name']] = $datetime;
         } elseif ($column['type'] == 'auth_user') {
-          $this->request[$column['name']] = $this->parsevar($_SERVER['PHP_AUTH_USER'], 'string');
+          $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
         } else {
+          echo 'Entro';
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
         }
       }

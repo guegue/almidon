@@ -2,8 +2,8 @@
 
 if(!defined('IMG_QUALITY')) define('IMG_QUALITY',85);
 
-class Image {
-  function Image() {
+class almImage {
+  function almImage() {
   } 
 
   function resize($file, $w, $h = null, $restrict = true) {
@@ -96,6 +96,40 @@ class Image {
        imagecopyresampled($new_img, $image, 0, 0, $cropLeft, $cropTop, $res_w, $res_h, $res_w, $res_h);
        return $new_img;
     } else return false;
+  }
+
+  function rounded($file,$radius) {
+    # Require Corner, RGB and Tools classes
+    require_once 'Rounded/RGB.php';
+    require_once 'Rounded/Corner.php';
+    require_once 'Rounded/Tools.php';
+
+    $params = array(
+    'radius' => $radius,
+    'orientation' => 'tl',
+    'foreground' => 0,
+    'background' => 'fff',
+    'borderwidth' => 0,
+    'bordercolor' => 0,
+    'bgtransparent' => false,
+    'fgtransparent' => true,
+    'btransparent' => true,
+    'antialias' => true
+    );
+    if($file) {
+      if(is_string($file))
+        $image = imagecreatefromstring(file_get_contents($file));
+      elseif(is_resource($file)) $image = &$file;
+      $img = Rounded_Corner::create($params);
+      imagecopy($image, $img, 0, 0, 0, 0, $radius, $radius);
+      $img = Rounded_Tools::imageFlipVertical($img);
+      imagecopy($image, $img, 0, imagesy($image) - $radius, 0, 0, $radius,$radius);
+      $img = Rounded_Tools::imageFlipHorizontal($img);
+      imagecopy($image, $img, imagesx($image) - $radius, imagesy($image) - $radius, 0, 0, $radius, $radius);
+      $img = Rounded_Tools::imageFlipVertical($img);
+      imagecopy($image, $img, imagesx($image) - $radius, 0, 0, 0, $radius, $radius);
+      return $image;
+    }
   }
 }
 
