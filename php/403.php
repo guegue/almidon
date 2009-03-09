@@ -1,4 +1,5 @@
 <?php
+
 define('ADMIN', true);
 require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 $smarty->caching = false;
@@ -17,6 +18,7 @@ if (!isset($adminlinks)) {
     $adminlinks[$key] = $table_object->title;
   }
   $smarty->assign('adminlinks', $adminlinks);
+
 }
 
 
