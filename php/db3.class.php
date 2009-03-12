@@ -403,7 +403,7 @@ class Table extends Data {
           }
           $datetime = trim("$date $time");
           $this->request[$column['name']] = $datetime;
-        } elseif ($column['type'] == 'html') {
+        } elseif ($column['type'] == 'html' || ($column['type'] == 'xhtml')) {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], 'string', true);
         } elseif ($column['type'] == 'int') {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
