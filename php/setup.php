@@ -1,6 +1,6 @@
 <?php
 define ('ADMIN', true);
-require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 function genSQL($object) {
   $o = $object . "Table";
   $data = new $o;

@@ -45,6 +45,10 @@ if (strpos($object, '?')) {
 }
 if(strrpos($object, '.')===true) $object = substr($object, 0, strrpos($object, '.'));
 if ($object) {
+  if ($object == 'setup') {
+    require('setup.php');
+    exit;
+  }
   $ot = $object . 'Table';
   $$object = new $ot;
   require(ALMIDONDIR . '/php/typical.php');
