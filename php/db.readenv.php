@@ -2,8 +2,8 @@
     unset ($this->request);
     unset ($this->files);
     if ($friendly === true) {
-      $params = explode("/", $_SERVER['REQUEST_URI']);
-      $i=2;
+      $params = explode("/", $_SERVER['PATH_INFO']);
+      $i=1;
       foreach($this->definition as $column) {
         if (!isset($params[$i])) break;
         $_REQUEST[$column['name']] = $params[$i];

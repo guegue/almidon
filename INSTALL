@@ -13,7 +13,7 @@ $ svn checkout http://svn.almidon.org/trunk/ almidon
 CONFIGURANDO APACHE
 ===================
 
-Dentro del directorio "trunk" está el directorio pub que debe mapearse como /cms
+Dentro del directorio "almidon" está el directorio pub que debe mapearse como /cms
 en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un ejemplo de configuracion de Apache:
 
 NameVirtualHost 127.0.0.1:80
@@ -22,7 +22,7 @@ NameVirtualHost 127.0.0.1:80
         DocumentRoot /var/www/almidon/demo/public_html
         Alias /cms /var/www/almidon/pub
         <Directory /var/www/almidon>
-                Options +FollowSymLinks
+                Options +FollowSymLinks +MultiViews
         </Directory>
 </VirtualHost>
 
@@ -43,7 +43,7 @@ Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en bre
 usando un usuario autorizado a crear bases de datos:
 
 $ su - postgres
-$ psql -f /var/www/trunk/demo/demo.sql
+$ psql -f /var/www/almidon/demo/demo.sql
 
 Adicionalmente, una entrada en la configuración de postgres, pg_hba.conf puede ser
 necesaria, para permitir acceso local usando password:
@@ -57,9 +57,10 @@ Nota: si es la segunda vez que instalas el demo, asegurate de borrar la base de 
 CONFIGURANDO ALMIDON
 ====================
 
-config.php en trunk/demo/public_html/classes/config.php
+config.php en almidon/demo/public_html/classes/config.php
 define las variable (o constantes) principales como:
 
+if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:pass@/almidondemo');
 else define ('DSN', 'pgsql://almidondemowww:pass@/almidondemo');
 define ('DEBUG', true);
