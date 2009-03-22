@@ -26,7 +26,7 @@
 //
 // Usage
 // =====
-//   require_once('htpasswd.inc');
+//   require_once('htpasswd.inc.php');
 //   $pass_array = load_htpasswd();
 //
 //   if ( test_htpasswd( $pass_array,  $user, $pass ))

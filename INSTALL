@@ -14,7 +14,8 @@ CONFIGURANDO APACHE
 ===================
 
 Dentro del directorio "almidon" está el directorio pub que debe mapearse como /cms
-en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un ejemplo de configuracion de Apache:
+en Apache, y el directorio demo/public_html que debe ser el DocumentRoot.
+Un ejemplo de configuracion de Apache:
 
 NameVirtualHost 127.0.0.1:80
 <VirtualHost 127.0.0.1:80>

@@ -1,12 +1,13 @@
-<?
+<?php
 define ('ADMIN', true);
 require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
-
 function genSQL($object) {
   $o = $object . "Table";
   $data = new $o;
+  $dbtype = $data->database->dsn['phptype'];
   $sql = "CREATE TABLE $data->name (\n";
   $i = 0;
+  if($data->definition)
   foreach($data->definition as $column) {
     unset($size);
     if ($type == 'external') next($data->definition);
@@ -25,12 +26,16 @@ function genSQL($object) {
       $type = 'varchar';
       $size = '32';
     }
-    if ($type == 'order') $type = 'serial NULL';
+    if ($dbtype == 'pgsql') {
+      if ($type == 'order') $type = 'serial NULL';
+    } elseif ($dbtype == 'mysql') {
+      if ($type == 'order' ||  $type == 'serial') $type = 'int AUTO_INCREMENT';
+    }
     if (!$size) $size = $column['size'];
     $size = preg_replace("/\./", ",", $size);
     $sql .= "  ".$column['name']." ".$type;
     if ($size) $sql .= " (".$size.")";
-    if ($column['name'] == $data->key) $sql .= " PRIMARY KEY";
+    if ($column['name'] == $data->key) $sql .= " PRIMARY KEY NOT NULL";
     if ($column['references']) $sql .= " REFERENCES ".$column['references'];
     ++$i;
   }
@@ -46,10 +51,8 @@ foreach($classes as $key) {
     $tables[] = $key;
   }
 }
-
 echo '<pre>';
 foreach($tables as $key)
   genSQL($key);
-
 echo '</pre>';
 ?>

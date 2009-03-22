@@ -1,8 +1,8 @@
 <?php
 define('ADMIN',true);
 require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
-if(defined('ALMIDONDIR')) require(ALMIDONDIR . '/php/htpasswd.inc');
-else require('htpasswd.inc');
+if(defined('ALMIDONDIR')) require(ALMIDONDIR . '/php/htpasswd.inc.php');
+else require('htpasswd.inc.php');
 
 $params = explode('/', $_SERVER['REQUEST_URI']);
 $object = $params[2];
