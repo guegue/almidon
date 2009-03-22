@@ -1,4 +1,5 @@
 <?php
+// vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 
 /**
  * db2.php
@@ -296,56 +297,8 @@ class Table extends Data {
     return $args;
   }
 
-  function readEnv() {
-    unset ($this->request);
-    unset ($this->files);
-    foreach($this->definition as $column) {
-      if ($column['type'] != 'external' || $column['type'] != 'auto') {
-        if (($column['type'] == 'file' || $column['type'] == 'image') && isset($_FILES[$column['name']]['name'])) {
-          $this->request[$column['name']] = $this->parsevar($_FILES[$column['name']]['name'], $column['type']);
-          $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
-        } elseif ($column['type'] == 'password') {
-          $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
-        } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
-          $date = ''; $time = '';
-          if (isset($_REQUEST[$column['name']])) {
-            if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
-              $date = $this->parsevar($_REQUEST[$column['name']]);
-            else
-              $time = $this->parsevar($_REQUEST[$column['name']]);
-          }
-          if (isset($_REQUEST[$column['name'] . '_Year'])) {
-            $year = $this->parsevar($_REQUEST[$column['name'] . '_Year'], 'int');
-            $month = $this->parsevar($_REQUEST[$column['name'] . '_Month'], 'int');
-            if ($month<10) $month = '0'.$month;
-            $day = $this->parsevar($_REQUEST[$column['name'] . '_Day'], 'int');
-            $date = $year . '-' . $month . '-' . $day;
-          }
-          if (isset($_REQUEST[$column['name'] . '_Hour'])) {
-            $this->request[$column['name']] = $year . '-' . $month . '-' . $day;
-            $hour = $this->parsevar($_REQUEST[$column['name'] . '_Hour'], 'int');
-            $minute = $this->parsevar($_REQUEST[$column['name'] . '_Minute'], 'int');
-            $second = $this->parsevar($_REQUEST[$column['name'] . '_Second'], 'int');
-            $time = $hour . ':' . $minute . ':' . $second;
-          }
-          $datetime = trim("$date $time");
-          $this->request[$column['name']] = $datetime;
-        } elseif ($column['type'] == 'html') {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], 'string', true); 
-        } elseif ($column['type'] == 'int') {
-          if (isset($_REQUEST[$column['name']]))
-            $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
-          #if (isset($_REQUEST[$column['name']])) $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
-          #else $this->request[$column['name']] = 'NULL';
-        } else {
-          if (isset($_REQUEST[$column['name']]))
-            $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']); 
-        }
-      }
-    }
-    if (isset($_REQUEST['old_' . $this->key]))
-      $this->request['old_' . $this->key] = $_REQUEST['old_' . $this->key];
-    $this->escaped = true;
+  function readEnv($friendly = false) {
+    include_once('db.readenv.php');
   }
 
   function addRecord() {
@@ -592,7 +545,7 @@ class Table extends Data {
   }
 
   function readRecord($id = 0) {
-    if (!$id) $id = $this->request[$this->key];
+    if (!$id && isset($this->request[$this->key])) $id = $this->request[$this->key];
     #if (!$id) $id = $this->getVar("SELECT currval('" . $this->name . "_" . $this->key . "_seq')");
     if (!$id) $id = $this->getVar("SELECT MAX(" . $this->key . ") FROM " . $this->name);
     if ($this->join) {

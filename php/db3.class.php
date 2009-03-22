@@ -1,4 +1,4 @@
-<?
+<?php
 // vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 
 # Comentado Jue 5 Marzo 2009
@@ -367,61 +367,7 @@ class Table extends Data {
   }
 
   function readEnv() {
-    unset ($this->request);
-    unset ($this->files);
-    foreach($this->definition as $column) {
-      if (($column['type'] != 'external' || $column['type'] != 'auto') && isset($_REQUEST[$column['name']])) {
-        if (($column['type'] == 'file' || $column['type'] == 'image')) {
-          if($_FILES[$column['name']]['name']) {
-            $this->request[$column['name']] = $this->parsevar($_FILES[$column['name']]['name'], $column['type']);
-            $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
-          } else {
-            $this->request[$column['name']] = '';
-	        }
-	        $this->request['old_'.$column['name']] = $_REQUEST['old_'.$column['name']];
-	      } elseif ($column['type'] == 'password') {
-          $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
-        } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
-          $date = ''; $time = '';
-          if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
-            $date = $this->parsevar($_REQUEST[$column['name']]);
-          else
-            $time = $this->parsevar($_REQUEST[$column['name']]);
-          if ($_REQUEST[$column['name'] . '_Year']) {
-            $year = $this->parsevar($_REQUEST[$column['name'] . '_Year'], 'int');
-            $month = $this->parsevar($_REQUEST[$column['name'] . '_Month'], 'int');
-            if ($month<10 && strlen($month)==1) $month = '0'.$month;
-            $day = $this->parsevar($_REQUEST[$column['name'] . '_Day'], 'int');
-            $date = $year . '-' . $month . '-' . $day;
-          }
-          if ($_REQUEST[$column['name'] . '_Hour']) {
-            $this->request[$column['name']] = $year . '-' . $month . '-' . $day;
-            $hour = $this->parsevar($_REQUEST[$column['name'] . '_Hour'], 'int');
-            $minute = $this->parsevar($_REQUEST[$column['name'] . '_Minute'], 'int');
-            $second = $this->parsevar($_REQUEST[$column['name'] . '_Second'], 'int');
-            $time = $hour . ':' . $minute . ':' . $second;
-          }
-          $datetime = trim("$date $time");
-          $this->request[$column['name']] = $datetime;
-        } elseif ($column['type'] == 'html' || ($column['type'] == 'xhtml')) {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], 'string', true);
-        } elseif ($column['type'] == 'int') {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
-          #if (isset($_REQUEST[$column['name']])) $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
-          #else $this->request[$column['name']] = 'NULL';
-        } elseif($column['type'] == 'video') {
-          $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
-          $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
-        } elseif ($column['type'] == 'auth_user') {
-          $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
-        } else {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
-        }
-      }
-    }
-    if (isset($_REQUEST['old_' . $this->key]))
-      $this->request['old_' . $this->key] = $_REQUEST['old_' . $this->key];
-    $this->escaped = true;
+    include_once('db.readenv.php');
   }
 
   function addRecord() {

@@ -1,4 +1,4 @@
-<?
+<?php
  
 # Funciones que definen el comportamiento de PHP
  
@@ -6,8 +6,10 @@ setlocale(LC_TIME, "es_ES");
  
 # Constantes de conexion la base de datos
  
+if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:secreto1@/almidondemo');
 else define ('DSN', 'pgsql://almidondemowww:secreto2@/almidondemo');
+
 define ('DEBUG', true);
  
 # Constantes del web y filesystem

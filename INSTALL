@@ -8,7 +8,7 @@ INSTALAR
 
 La version actual en desarrollo es la 0.4, y está disponible únicamente via SVN
 $ cd /var/www
-$ svn checkout http://svn.almidon.org/trunk/
+$ svn checkout http://svn.almidon.org/trunk/ almidon
 
 CONFIGURANDO APACHE
 ===================
@@ -19,9 +19,9 @@ en Apache, y el directorio demo/public_html que debe ser el DocumentRoot. Un eje
 NameVirtualHost 127.0.0.1:80
 <VirtualHost 127.0.0.1:80>
         ServerName local.almidon.org
-        DocumentRoot /var/www/trunk/demo/public_html
-        Alias /cms /var/www/trunk/pub
-        <Directory /var/www/trunk>
+        DocumentRoot /var/www/almidon/demo/public_html
+        Alias /cms /var/www/almidon/pub
+        <Directory /var/www/almidon>
                 Options +FollowSymLinks
         </Directory>
 </VirtualHost>
