@@ -1,4 +1,16 @@
 <?php
+// vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
+
+/**
+ * db.readenv.php
+ *
+ * Lee argumentos de Request o URI
+ *
+ * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
+ * @version $Id: db.readenv.php,v 2009032201 javier $
+ * @package almidon
+ */
     unset ($this->request);
     unset ($this->files);
     if ($friendly === true) {

@@ -2,13 +2,13 @@
 // vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 
 /**
- * db2.php
+ * db2.class.php
  *
  * DAL entre almidon y PEAR::MDB2
  *
- * @copyright &copy; 2005-2008 Guegue Comunicaciones - guegue.com
+ * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
- * @version $Id: db2.php,v 2008101301 javier $
+ * @version $Id: db2.class.php,v 2008101301 javier $
  * @package almidon
  */
 

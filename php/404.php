@@ -78,4 +78,3 @@ if ($object) {
     $smarty->display(ALMIDONDIR . '/tpl/index.tpl');
   }
 }
-?>

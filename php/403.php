@@ -1,5 +1,4 @@
 <?php
-
 define('ADMIN', true);
 require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 $smarty->caching = false;
@@ -18,9 +17,7 @@ if (!isset($adminlinks)) {
     $adminlinks[$key] = $table_object->title;
   }
   $smarty->assign('adminlinks', $adminlinks);
-
 }
-
 
 if (file_exists(ROOTDIR."/templates/admin/index.tpl")) {  
   if(file_exists(ROOTDIR."/templates/admin/header.tpl"))
@@ -32,4 +29,3 @@ if (file_exists(ROOTDIR."/templates/admin/index.tpl")) {
   $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
   $smarty->display(ALMIDONDIR.'/tpl/index.tpl');
 }
-?>
