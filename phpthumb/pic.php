@@ -34,9 +34,15 @@ if (phpversion() < '4.1.0') {
 }
 
 $args = getArgs();
+if (!isset($args[3])) exit;
 #$_GET['phpThumbDebug'] = true;
 $_GET['src'] = "/../files/" . $args[2] . "/" . $args[3];
-list($w, $h) = split("x", $args[1]);
+if(strpos('x', $args[1])) {
+  list($w, $h) = split("x", $args[1]);
+} else {
+  $w = $args[1];
+  $h = null;
+}
 $_GET['w'] = $w; $_GET['h'] = $h;
 
 // instantiate a new phpThumb() object

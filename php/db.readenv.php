@@ -23,7 +23,7 @@
       }
     }
     foreach($this->definition as $column) {
-      if (($column['type'] != 'external' || $column['type'] != 'auto') && isset($_REQUEST[$column['name']])) {
+      if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$column['name']]) || isset($_FILES[$column['name']]))) {
         if ($column['type'] == 'file' || $column['type'] == 'image') {
           if(isset($_FILES[$column['name']]['name'])) {
             $this->request[$column['name']] = $this->parsevar($_FILES[$column['name']]['name'], $column['type']);
@@ -31,7 +31,8 @@
           } else {
             $this->request[$column['name']] = '';
 	  }
-	  $this->request['old_'.$column['name']] = $_REQUEST['old_'.$column['name']];
+          if (isset($_REQUEST['old_'.$column['name']]))
+            $this->request['old_'.$column['name']] = $_REQUEST['old_'.$column['name']];
         } elseif ($column['type'] == 'password') {
           $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
         } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
