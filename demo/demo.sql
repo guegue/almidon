@@ -40,9 +40,8 @@ INSERT INTO doc (doc, portada, descripcion, archivo) VALUES ('Memorias 2002', ''
 INSERT INTO enlace (enlace, url, texto, imagen) VALUES ('Google', 'http://www.google.com/', '', '1207951914_logo.gif');
 INSERT INTO enlace (enlace, url, texto, imagen) VALUES ('Yahoo!', 'http://www.yahoo.com/', '', '1207951982_y3.gif');
 
-INSERT INTO galeria (galeria, fecha) VALUES ('Galeria de ejemplos', NULL);
 INSERT INTO galeria (galeria, fecha) VALUES ('Primera reunión de almidón', '2008-04-12');
---
+INSERT INTO galeria (galeria, fecha) VALUES ('Galeria de ejemplos', NULL);
 
 INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Ballons San Diego', 'balloons_2_bg_060504.jpg');
 INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Playa Ocaso', 'beach_3_bg_010503.jpg');

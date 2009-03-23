@@ -1,5 +1,4 @@
 {include file="$header"}
-{debug}
 <table>
 <tr valign="top">
 <td>
