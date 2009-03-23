@@ -377,6 +377,7 @@ function smarty_function_dataform($params, &$smarty)
     break;
   }
   $_f = ($key2) ? F2 : F;
+  $_f = preg_replace('/_PRESET_/',$_pre,$_f);
   $_html_result = preg_replace("/_FHEADER_/", $_html_labels, $_f);
   if ($cmd)
     $_html_result = preg_replace("/_FHEADERCMD_/", FHEADERCMD, $_html_result);

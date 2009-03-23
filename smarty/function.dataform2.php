@@ -28,7 +28,6 @@
  * @return string
  * @uses smarty_function_escape_special_chars()
  */
-
 define('F', 
   '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
   <input type="hidden" name="old__KEY_" value="_ID_"/>
