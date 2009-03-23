@@ -17,7 +17,7 @@ define ('DEBUG', true);
 $configdir = dirname(__FILE__);
 $rootdir = substr($configdir, 0, strrpos($configdir,'/'));
 define ('ROOTDIR', $rootdir);
-define ('DOMAIN', 'demo.almidon.org');
+define ('DOMAIN', 'local.almidon.org');
 #define ('ALMIDONDIR', '/usr/local/almidon/');
 define ('ALMIDONDIR', ROOTDIR . '/..');
 define ('SQLLOG', ROOTDIR . '/logs/sql.log');
