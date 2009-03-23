@@ -26,7 +26,7 @@ if (!isset($adminlinks)) {
       } else { $key = substr($key, 0, strpos($key, 'table')); }
       // End
       $adminlinks[$key] = $table_object->title;
-      if($extralinks){
+      if(isset($extralinks)){
          foreach($extralinks as $key=>$link){
            $adminlinks[$key] = $link;
          }

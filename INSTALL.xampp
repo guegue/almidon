@@ -36,7 +36,6 @@ que contiene la configuracion de los Virtual Host. Borramos todo el
 contenido e introducimos los siguientes valores.
 
     NameVirtualHost 127.0.0.1:80
-
     <VirtualHost 127.0.0.1:80>
         ServerName demo.almidon.org
         DocumentRoot /opt/lampp/htdocs/almidon/demo/public_html

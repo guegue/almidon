@@ -78,7 +78,7 @@ if (isset($row))
   $smarty->assign('row', $row);
 $smarty->assign('options', fillOpt($$object));
 # Limits/Paginando
-if(((int)$$object->maxrows)<=0) $$object->maxrows = 8;
+if(!isset($$object->maxrows)) $$object->maxrows = 8;
 else $$object->maxrows = (int) $$object->maxrows;
 $$object->offset = (isset($_REQUEST[$object.'pg']))?(((int)$_REQUEST[$object.'pg'])-1)*$$object->maxrows:0;
 $$object->limit = ($$object->maxrows)?$$object->maxrows:8;

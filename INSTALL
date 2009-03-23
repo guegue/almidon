@@ -7,8 +7,9 @@ INSTALAR
 ========
 
 La version actual en desarrollo es la 0.4, y está disponible únicamente via SVN
-$ cd /var/www
-$ svn checkout http://svn.almidon.org/trunk/ almidon
+
+  $ cd /var/www
+  $ svn checkout http://svn.almidon.org/trunk/ almidon
 
 CONFIGURANDO APACHE
 ===================
@@ -17,15 +18,15 @@ Dentro del directorio "almidon" está el directorio pub que debe mapearse como /
 en Apache, y el directorio demo/public_html que debe ser el DocumentRoot.
 Un ejemplo de configuracion de Apache:
 
-NameVirtualHost 127.0.0.1:80
-<VirtualHost 127.0.0.1:80>
+  NameVirtualHost 127.0.0.1:80
+  <VirtualHost 127.0.0.1:80>
         ServerName local.almidon.org
         DocumentRoot /var/www/almidon/demo/public_html
         Alias /cms /var/www/almidon/pub
         <Directory /var/www/almidon>
                 Options +FollowSymLinks +MultiViews
         </Directory>
-</VirtualHost>
+  </VirtualHost>
 
 Nota, el demo de almidon usa mod_rewrite, este modulo debe estar activo.
 Nota, local.almidon.org de apuntar a 127.0.0.1
@@ -33,9 +34,8 @@ Nota, local.almidon.org de apuntar a 127.0.0.1
 Permisos del demo: 'templates_c', 'logs', 'cache' debe ser escribible por el usuario web.
 Igual 'files' y sus subcarpertas.
 
-$ cd demo
-$ chmod o+w templates_c logs cache
-$ chmod o+w -R files
+  $ cd demo
+  $ chmod -R o+w templates_c logs cache files
 
 CONFIGRANDO POSTGRESQL
 ======================
@@ -43,8 +43,8 @@ CONFIGRANDO POSTGRESQL
 Esto depende mucho de como has configurado seguridad en PostrgreSQL, pero en breve
 usando un usuario autorizado a crear bases de datos:
 
-$ su - postgres
-$ psql -f /var/www/almidon/demo/demo.sql
+  $ su - postgres
+  $ psql -f /var/www/almidon/demo/demo.sql
 
 Adicionalmente, una entrada en la configuración de postgres, pg_hba.conf puede ser
 necesaria, para permitir acceso local usando password:
@@ -62,13 +62,13 @@ CONFIGURANDO ALMIDON
 config.php en almidon/demo/public_html/classes/config.php
 define las variable (o constantes) principales como:
 
-if (!defined('ADMIN')) define('ADMIN', false);
-if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:pass@/almidondemo');
-else define ('DSN', 'pgsql://almidondemowww:pass@/almidondemo');
-define ('DEBUG', true);
-define ('ROOTDIR', '/var/www');
-define ('DOMAIN', 'example.org');
-define ('ALMIDONDIR', '/usr/local/almidon/');
+  if (!defined('ADMIN')) define('ADMIN', false);
+  if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:pass@/almidondemo');
+  else define ('DSN', 'pgsql://almidondemowww:pass@/almidondemo');
+  define ('DEBUG', true);
+  define ('ROOTDIR', '/var/www');
+  define ('DOMAIN', 'example.org');
+  define ('ALMIDONDIR', '/usr/local/almidon/');
 
 DSN es el valor para acceder a la base de datos, cambiar "pass" por cada
 password elegido para cada usuario, almidondemo y almidondemowww.
@@ -96,7 +96,8 @@ PUBLICAR CAMBIOS EN SVN
 =======================
 
 Antes de hacer "commit" a cambios realizados, pruebalos, instala almidón en tu propio /www/cms, o donde resulte más cómodo en tu sistema. Para enviar los cambios realizados, entrar al directorio svn.almidon.org y usar:
-$ svn --username alice -m "My Update" commit
+
+  $ svn --username alice -m "My Update" commit
 
 SOPORTE TECNICO
 ===============

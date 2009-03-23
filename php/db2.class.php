@@ -322,7 +322,8 @@ class Table extends Data {
           $values .= $this->request[$column['name']];
           break;
         case 'image':
-          if ($this->files[$column['name']]) {
+          $value = '';
+          if (isset($this->files[$column['name']])) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
             if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
@@ -340,8 +341,8 @@ class Table extends Data {
                 imagejpeg($new_image,PIXDIR.'/'.$size.'_'.$filename,72);
               }
             }
+            $value = $this->database->escape($this->request[$column['name']]);
           }
-          $value = $this->database->escape($this->request[$column['name']]);
           $values .= "'" . $value . "'";
           break;
         case 'file':

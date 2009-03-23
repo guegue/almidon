@@ -5,12 +5,12 @@ ver INSTALL
 
 Fedora usa yum como manejador de paquetes, instalando requerimientos:
 
-yum install httpd php-pgsql php-gd postgresql postgresql-server
+  # yum install httpd php-pgsql php-gd postgresql postgresql-server
 
 SELINUX
 =======
 Permitir acceso web al demo con SELINUX activo:
 
-# cd /var/www/almidon/demo
-# restorecond .
-# setsebool -P httpd_can_network_connect_db=1
+  # cd /var/www/almidon/demo
+  # restorecond .
+  # setsebool -P httpd_can_network_connect_db=1
