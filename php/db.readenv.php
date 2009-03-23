@@ -24,6 +24,8 @@
     }
     foreach($this->definition as $column) {
       if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$column['name']]) || isset($_FILES[$column['name']]))) {
+
+        # Recepcion de una imagen
         if ($column['type'] == 'file' || $column['type'] == 'image') {
           if(isset($_FILES[$column['name']]['name'])) {
             $this->request[$column['name']] = $this->parsevar($_FILES[$column['name']]['name'], $column['type']);
@@ -33,8 +35,12 @@
 	  }
           if (isset($_REQUEST['old_'.$column['name']]))
             $this->request['old_'.$column['name']] = $_REQUEST['old_'.$column['name']];
+
+        # Recepcion de un password
         } elseif ($column['type'] == 'password') {
           $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
+
+        # Recepcion de una fecha
         } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
           $date = ''; $time = '';
           if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
@@ -57,8 +63,12 @@
           }
           $datetime = trim("$date $time");
           $this->request[$column['name']] = $datetime;
+
+        # Recepcion de texto html
         } elseif ($column['type'] == 'html' || ($column['type'] == 'xhtml')) {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], 'string', true);
+
+        # Recepcion de enteros
         } elseif ($column['type'] == 'int') {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
           #if (isset($_REQUEST[$column['name']])) $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);

@@ -423,7 +423,7 @@ class Table extends Data {
           break;
         case 'image':
 	  if ($nofiles || isset($_REQUEST[$column['name'] . '_keep']) || !isset($this->files[$column['name']]) || empty($this->files[$column['name']]) ) {
-            if (!isset($_REQUEST[$column['name'] . '_keep']) && !isset($this->files[$column['name']])) {
+            if (!isset($_REQUEST[$column['name'] . '_keep']) && empty($this->files[$column['name']])) {
               $values .= $column['name'] . "=''";
             } else {
               $values .= $column['name'] . "=" . $column['name'];
