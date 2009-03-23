@@ -1,0 +1,56 @@
+CREATE DATABASE almidondemo;
+GRANT ALL ON almidondemo.* TO almidondemo IDENTIFIED BY 'secreto1';
+GRANT SELECT ON almidondemo.* TO almidondemowww IDENTIFIED BY 'secreto2';
+
+CREATE TABLE pagina (
+  idpagina integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
+  pagina varchar (500) ,
+  foto varchar (500) ,
+  descripcion text
+);
+
+CREATE TABLE galeria (
+  idgaleria integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
+  galeria varchar (500) ,
+  fecha date
+);
+
+CREATE TABLE foto (
+  idfoto integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
+  idgaleria int REFERENCES galeria ,
+  foto varchar (500) ,
+  imagen varchar (500)
+);
+
+CREATE TABLE doc (
+  iddoc integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
+  doc varchar (500) ,
+  archivo varchar (500) ,
+  portada varchar (500) ,
+  descripcion text
+);
+
+CREATE TABLE agenda (
+  idagenda integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
+  agenda varchar (500) ,
+  fecha date ,
+  lugar varchar (120) ,
+  texto text ,
+  organiza varchar (500)
+);
+
+CREATE TABLE noticia (
+  idnoticia integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
+  noticia varchar (500) ,
+  fecha datenull ,
+  texto text ,
+  foto varchar (500)
+);
+
+CREATE TABLE enlace (
+  idenlace integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
+  enlace varchar (500) ,
+  url varchar (600) ,
+  texto text ,
+  imagen varchar (500)
+);

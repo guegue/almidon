@@ -53,7 +53,8 @@ necesaria, para permitir acceso local usando password:
 local   all         all                               md5
 
 Nota: el script sql elige los password secreto1 y secreto2 para sus usuarios
-Nota: si es la segunda vez que instalas el demo, asegurate de borrar la base de datos almidondemo y usuarios almidondemo y almidondemowww
+Nota: si es la segunda vez que instalas el demo, asegurate de borrar la base
+de datos almidondemo y usuarios almidondemo y almidondemowww
 
 CONFIGURANDO ALMIDON
 ====================
@@ -69,7 +70,10 @@ define ('ROOTDIR', '/var/www');
 define ('DOMAIN', 'example.org');
 define ('ALMIDONDIR', '/usr/local/almidon/');
 
-DSN es el valor para acceder a la base de datos, cambiar "pass" por cada password elegido para cada usuario, almidondemo y almidondemowww. Nota, no es necesario usar doble usuario, puede especificarse el mismo. Nota 2, ADMIN es unicamente 'true' desde la administración.
+DSN es el valor para acceder a la base de datos, cambiar "pass" por cada
+password elegido para cada usuario, almidondemo y almidondemowww.
+Nota, no es necesario usar doble usuario, puede especificarse el mismo.
+Nota 2, ADMIN es unicamente 'true' desde la administración.
 
 DEBUG activa el log de SQL y otros mensajes de error
 ROOTDIR el directorio un nivel superio a DocumentRoot, donde esta classes, templates, etc.
@@ -77,6 +81,16 @@ DOMAIN el nombre del dominio, varios usos por almidon.
 ALMIDONDIR donde se encuentra almidon.
 
 Nota: el demo de almidon viene ya configurado con los passwords y variables necesarias.
+
+PRUEBA
+=======
+
+http://local.almidon.org/
+
+Nota: si la prueba es desde una máquina sin conexión a Internet, debes
+mapear local.almidon.org a 127.0.0.1 en /etc/hosts con la siguiente linea:
+
+127.0.0.1 local.almidon.org
 
 PUBLICAR CAMBIOS EN SVN
 =======================

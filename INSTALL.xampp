@@ -1,127 +1,71 @@
 INSTALAR
 ========
 
-La version actual en desarrollo es la 0.4, y está disponible únicamente via SVN
-$ cd /var/www
-$ svn checkout http://svn.almidon.org/
+ver INSTALL
 
 INSTALANDO Y CONFIGURANDO XAMPP
 ===============================
 
 - XAMPP se instala bajando el paquete desde http://www.apachefriends.org/en/xampp.html
-Luego se descomprime  en /opt con el comando:
+Luego se descomprime  en /opt con el comando (como root)
 
-    sudo tar xvfz xampp-linux-1.6.6.tar.gz -C /opt
+  # tar xvfz xampp-linux-1.6.6.tar.gz -C /opt
 
 Si lo queremos iniciar damos el siguiente comando (como root)
 
-     /etc/opt/lampp/lampp start
+  # /etc/opt/lampp/lampp start
 
-Para detenerlo se ejecuta el mismo comando pero con la opcion stop
-y para reiniciarlo  con la opcion restart
-se recomienda leer la documentación de XAMPP para mas detalles
+Para detenerlo se ejecuta el mismo comando pero con la opcion stop y
+para reiniciarlo  con la opcion restart, se recomienda leer la
+documentación de XAMPP para mas detalles.
 
 - Configurando XAMPP para usar Almidon
 
-Para este paso tenemos que editar tres archivos de configuración
-
-Primeramente editamos el archivo /etc/hosts y
- agregamos a la lista de dominios la siguiente linea
-
-127.0.0.1 demo.almidon.org
-
-Esto sirve para que cada vez que ingresemos demo.almidon.org 
-en un navegador se refiera a la direccion de localhost (127.0.0.1)
+Para este paso tenemos que editar dos archivos de configuración
 
 Al archivo /opt/lampp/etc/httpd.conf le agregamos al final la linea:
 
-
     Include etc/extra/httpd-vhosts.conf
-
-
 
 Esto sirve para que Apache trabaje con Virtual Host lo que permite 
 multiples aplicaciones en el mismo XAMPP y para poder correr tanto 
 el ejemplo de Almidon como la aplicacion administrativa de XAMPP.
 
 Luego modificamos el archivo /opt/lamp/etc/extra/httpd-vhost.conf
- que contiene la configuracion de los Virtual Host. Borramos todo el contenido
-e introducimos los siguientes valores.
+que contiene la configuracion de los Virtual Host. Borramos todo el
+contenido e introducimos los siguientes valores.
 
+    NameVirtualHost 127.0.0.1:80
 
-NameVirtualHost 127.0.0.1:80
-
-#Modulos de almidon
-<VirtualHost 127.0.0.1:80>
+    <VirtualHost 127.0.0.1:80>
         ServerName demo.almidon.org
         DocumentRoot /opt/lampp/htdocs/almidon/demo/public_html
         Alias /cms /opt/lampp/htdocs/almidon/pub
         <Directory>
-                Options +FollowSymLinks
+                Options +FollowSymLinks +MultiViews
         </Directory>
-</VirtualHost>
+    </VirtualHost>
 
-<VirtualHost 127.0.0.1:80>
+    <VirtualHost 127.0.0.1:80>
 	ServerName localhost
         DocumentRoot /opt/lampp/htdocs/xampp
-</VirtualHost>
+    </VirtualHost>
 
 
 INSTALANDO Y CONFIGURANDO ALMIDON
 =================================
 
-Descargamos Almidon desde el SVN
+Descargamos Almidon desde el SVN en htdocs:
 
-svn checkout http://svn.almidon.org/trunk
-
-Luego hacemos una carpeta llamada almidon en /opt/lampp/htdocs
-
-mkdir /opt/lampp/htdocs/almidon
-
-Luego copiamos el contenido del trunk a dicha carpeta.
+  # cd /opt/lampp/htdocs
+  # svn checkout http://svn.almidon.org/trunk almidon
 
 Modificamos config.php en /opt/lampp/htdocs/almidon/demo/public_html/classes/config.php
+para definir la conexion a nuestra base de datos.
 
-if (ADMIN===true) define ('DSN', 'mysql://<user>:<password>@localhost/<base_de_datos>');
-else define ('DSN', 'mysql://<user>:<password>@localhost/<base_de_datos>');
+  if (ADMIN===true) define ('DSN', 'mysql://almidondemo:pass@/almidondemo');
+  else define ('DSN', 'mysql://almidondemowww:pass@/almidondemo');
 
-Aca definimos los parametros de conexion a la base de datos.
+Creamos nuestra base de datos:
 
--Creando Nuestra Base de Datos
-
-El script createsql.php no genera el SQL para MySQL pero podemos adaptar el archivo demo.sql 
-que esta dentro de la carpeta demo para las nuestras necesidades. Simplemente modificamos
-las llaves primarias de la manera siguiente.
-
-CREATE TABLE agenda (
-idagenda integer PRIMARY KEY NOT NULL AUTO_INCREMENT /* (manera anterior)idagenda integer NOT NULL, */
-agenda character varying(500),
-fecha date,
-lugar character varying(120),
-texto text,
-organiza character varying(500)
-);
-
-Se realiza este proceso por cada tabla de la base de datos en demo.sql
-
-
-PRUEBA
-=======
-
-Ahora si ha configurado bien todo podra probarlo introduciendo en su navegador la direccion antes establecida
-
-demo.almidon.org
-
-
-PUBLICAR CAMBIOS EN SVN
-=======================
-
-Antes de hacer "commit" a cambios realizados, pruebalos, instala almidón en tu
-propio /www/cms, o donde resulte más cómodo en tu sistema. Para enviar los
-cambios realizados, entrar al directorio svn.almidon.org y usar:
-$ svn --username alice -m "My Update" commit
-
-SOPORTE TECNICO
-===============
-
-ver README
+  # mysql < /var/www/almidon/demo/demo.mysql
