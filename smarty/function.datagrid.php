@@ -125,6 +125,7 @@ function smarty_function_datagrid($params, &$smarty)
           $selected = (string)$_val;
         }
         break;
+      case 'num_rows':
       case 'maxcols':
       case 'maxrows':
         $$_key = (int)$_val;
@@ -197,11 +198,11 @@ function smarty_function_datagrid($params, &$smarty)
   $_i = 0;
   $pg = ($_SESSION[$name . 'pg']) ? $_SESSION[$name . 'pg'] : 1; 
   foreach ((array)$rows as $row) {
-    if ($paginate && $_SESSION[$name . 'pg'] && $_i < ($maxrows * ($pg - 1) )) {
+    /* if ($paginate && $_SESSION[$name . 'pg'] && $_i < ($maxrows * ($pg - 1) )) {
       $_need_paginate = true;
       $_i++;
       continue;
-    }
+    } */
     $_html_row = '';
     $_chosen = ($key2) ? ($_REQUEST[$key1] == $row[$key1] && $_REQUEST[$key2] == $row[$key2]) : ($_REQUEST[$key] == $row[$key]); 
     if ($_REQUEST['f'] == $name && $_REQUEST['action'] == 'mod' && $_chosen) {
@@ -407,11 +408,11 @@ function smarty_function_datagrid($params, &$smarty)
     $_html_result = preg_replace("/_DGHEADERCMD_/", DGHEADERCMD, $_html_result);
     $_html_result = preg_replace("/_DGHEADERCMD_/", '', $_html_result);
   $_html_result = preg_replace("/_TITLE_/", $title, $_html_result);
-  $_html_result = preg_replace("/_ROWS_/", count($rows), $_html_result);
+  $_html_result = preg_replace("/_ROWS_/", $num_rows, $_html_result);
   $_html_result = preg_replace("/_DGROW_/", $_html_rows, $_html_result);
 
   # Paginacion del datagrid
-  $_npgs = ceil(count($rows) / $maxrows);
+  $_npgs = ceil($num_rows / $maxrows);
   $_paginate = '';
   if ($paginate && $_npgs > 1) {
     if ($pg != 1)
