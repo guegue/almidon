@@ -36,7 +36,7 @@ if (!isset($adminlinks)) {
 }
 
 $params = explode('/', $_SERVER['REQUEST_URI']);
-$object = $params[2];
+$object = $params[count($params)-1];
 if (strpos($object, '?')) {
   $object = substr($object, 0, strpos($object, '?'));
   define('SELF', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'],'?')));
