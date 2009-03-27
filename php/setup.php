@@ -72,15 +72,12 @@ $options = array(
   'sql'=>'Generar SQL basado en tables.class',
   'dd'=>'Generar diccionario de datos',
   'erd'=>'Geenrar diagrama entidad relacion');
-$params = explode("/", $_SERVER['REQUEST_URI']);
-$action = $params[3];
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if ($action != 'erd')
 foreach($options as $k=>$option) {
-  if (!isset($params[3])) $prefix = 'setup/';
-  else $prefix = '';
-  print "<a href=\"$prefix$k\">$option</a><br/>";
+  print "<a href=\"?action=$k\">$option</a><br/>";
 }
-if (isset($params[3])) {
+if (isset($_REQUEST['action'])) {
   $classes = get_declared_classes();
   $output = '';
   foreach($classes as $key) {
