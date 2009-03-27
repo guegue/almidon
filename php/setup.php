@@ -1,6 +1,11 @@
 <?php
 if (!defined('ADMIN')) define ('ADMIN', true);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+function getTitle($object) {
+  $o = $object . "Table";
+  $data = new $o;
+  return $data->title;
+}
 function genLinks($object) {
   $o = $object . "Table";
   $data = new $o;
@@ -95,7 +100,7 @@ if (isset($_REQUEST['action'])) {
   case 'dd':
     foreach($tables as $key) {
       $dd = genDD($key);
-      $output .= "\n".'<tr align="center"><td colspan="5" bgcolor="#f0f0f0"><br/>'.$key."</br><br/></td></tr>\n";
+      $output .= "\n".'<tr align="center"><td colspan="5" bgcolor="#f0f0f0"><br/>'.getTitle($key)." ($key)</br><br/></td></tr>\n";
       $output .= "\n<tr><th>Nombre</th><th>Tipo</th><th>Tama&ntilde;o</th><th>Referencias</th><th>Descripci&oacute;n</th></tr>\n";
       foreach($dd as $col) {
         $output .= "<tr>";
