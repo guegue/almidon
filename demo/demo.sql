@@ -40,25 +40,18 @@ INSERT INTO doc (doc, portada, descripcion, archivo) VALUES ('Memorias 2002', ''
 INSERT INTO enlace (enlace, url, texto, imagen) VALUES ('Google', 'http://www.google.com/', '', '1207951914_logo.gif');
 INSERT INTO enlace (enlace, url, texto, imagen) VALUES ('Yahoo!', 'http://www.yahoo.com/', '', '1207951982_y3.gif');
 
-INSERT INTO galeria (galeria, fecha) VALUES ('Primera reunión de almidón', '2008-04-12');
 INSERT INTO galeria (galeria, fecha) VALUES ('Galeria de ejemplos', NULL);
 
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Ballons San Diego', 'balloons_2_bg_060504.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Playa Ocaso', 'beach_3_bg_010503.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Mar Big Sur', 'bigsur_28_bg_101203.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Lago de Canda', 'canada_40_bg_061904.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Zoom de chips de computadora', 'chips_3_bg_102602.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Ciudad en Irlanda', 'ireland_37_bg_070504.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Ciudad desconocida', 'roadtrip_23_bg_021604.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Frutas en fondo oscuro', 'fruit_2_bg_020203.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Granos de café', 'coffee_01_bg_031106.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (2, 'Treboles de Irlanda', 'ireland_102_bg_061602.jpg');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Señalando el ''datagrid'' con el dedo', '1208475133_IMG_1813.JPG');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Entendiendo Safari?', '1208475451_IMG_1798.JPG');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Leandro, Marconi, otros...', '1208475793_IMG_1808.JPG');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Javier, Melvin y Maribel', '1208476743_IMG_1814.JPG');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Christian y Mac', '1208477323_IMG_1817.JPG');
-INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Donald, Alfredo, Leandro, Marconi...', '1208477427_IMG_1816.JPG');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Ballons San Diego', 'balloons_2_bg_060504.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Playa Ocaso', 'beach_3_bg_010503.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Mar Big Sur', 'bigsur_28_bg_101203.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Lago de Canda', 'canada_40_bg_061904.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Zoom de chips de computadora', 'chips_3_bg_102602.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Ciudad en Irlanda', 'ireland_37_bg_070504.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Ciudad desconocida', 'roadtrip_23_bg_021604.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Frutas en fondo oscuro', 'fruit_2_bg_020203.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Granos de café', 'coffee_01_bg_031106.jpg');
+INSERT INTO foto (idgaleria, foto, imagen) VALUES (1, 'Treboles de Irlanda', 'ireland_102_bg_061602.jpg');
 
 INSERT INTO noticia (noticia, fecha, texto, foto) VALUES ('Don Quijote Primera Parte Capítulo Dos', '2007-10-13', 'Hechas, pues, estas prevenciones, no quiso aguardar más tiempo a poner en efecto su pensamiento, apretándole a ello la falta que él pensaba que hacía en el mundo su tardanza, según eran los agravios que pensaba deshacer, tuertos que enderezar, sinrazones que enmendar, y abusos que mejorar, y deudas que satisfacer; y así, sin dar parte a persona alguna de su intención, y sin que nadie le viese, una mañana, antes del día (que era uno de los calurosos del mes de Julio), se armó de todas sus armas, subió sobre Rocinante, puesta su mal compuesta celada, embrazó su adarga, tomó su lanza, y por la puerta falsa de un corral, salió al campo con grandísimo contento y alborozo de ver con cuánta facilidad había dado principio a su buen deseo. Mas apenas se vió en el campo, cuando le asaltó un pensamiento terrible, y tal, que por poco le hiciera dejar la comenzada empresa: y fue que le vino a la memoria que no era armado caballero, y que, conforme a la ley de caballería, ni podía ni debía tomar armas con ningún caballero; y puesto qeu lo fuera, había de llevar armas blancas, como novel caballero, sin empresa en el escudo, hasta que por su esfuerzo la ganase.', '');
 INSERT INTO noticia (noticia, fecha, texto, foto) VALUES ('Casi todo aquel día caminó sin acontecerle', '2007-10-13', 'Autores hay que dicen que la primera aventura que le avino fue la de PuertoLápice; otros dicen que la de los molinos de viento; pero lo que yo he podido averiguar en este caso, y lo que he hallado escrito en los anales de la Mancha, es que él anduvo todo aquel día, y al anochecer, su rocín y él se hallaron cansados y muertos de hambre; y que mirando a todas partes, por ver si descubriría algún castillo o alguna majada de pastores donde recogerse, y adonde pudiese remediar su mucha necesidad, vió no lejos del camino por donde iba una venta, que fue como si viera una estrella, que a los portales, si no a los alcázares de su redención, le encaminaba. Dióse priesa a caminar, y llegó a ella a tiempo que anochecía. Estaban acaso a la puerta dos mujeres mozas, de estas que llaman del partido, las cuales iban a Sevilla con unos arrieros, que en la venta aquella noche acertaron a hacer jornada; y como a nuestro aventurero todo cuanto pensaba, veía o imaginaba, le parecía ser hecho y pasar al modo de lo que había leído, luego que vió la venta se le representó que era un castillo con sus cuatro torres y chapiteles de luciente plata, sin faltarle su puente levadizo y honda cava, con todos aquellos adherentes que semejantes castillos se pintan.
