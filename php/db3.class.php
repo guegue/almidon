@@ -367,7 +367,7 @@ class Table extends Data {
   }
 
   function readEnv() {
-    include_once('db.readenv.php');
+    include('db.readenv.php');
   }
 
   function addRecord() {

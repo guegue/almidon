@@ -298,7 +298,7 @@ class Table extends Data {
   }
 
   function readEnv($friendly = false) {
-    include_once('db.readenv.php');
+    include('db.readenv.php');
   }
 
   function addRecord() {

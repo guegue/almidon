@@ -1,6 +1,11 @@
 <?php
 if (!defined('ADMIN')) define ('ADMIN', true);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+function checkPerms($filepath) {
+  if (!file_exists($filepath)) return "File does not exist";
+  if (is_writeable($filepath)) return true;
+  else return "Not writeable";
+}
 function getTitle($object) {
   $o = $object . "Table";
   $data = new $o;
@@ -74,6 +79,7 @@ function genSQL($object) {
 }
 
 $options = array(
+  'test'=>'Probar configuraci&oacute;n',
   'sql'=>'Generar SQL basado en tables.class',
   'dd'=>'Generar diccionario de datos',
   'erd'=>'Geenrar diagrama entidad relacion');
@@ -124,6 +130,29 @@ if (isset($_REQUEST['action'])) {
     }
     $output .= "}\n";
     break;
+  case 'test':
+    $red = '<font color="red">FALL&Oacute;</font>';
+    $green = '<font color="green">PAS&Oacute;</font>';
+    print "Probando conexion a base de datos... ";
+    $db =& MDB2::connect (DSN);
+    if (PEAR::isError($db)) {
+      $error_msg = $db->getMessage();
+      print "$red <i>$error_msg</i><br/>";
+    } else {
+      print "$green<br/>";
+    }
+    print "Probando configuracion de PHP... ";
+    if (get_cfg_var('short_open_tag') != 1) {
+      print "$red <i>short_open_tag = ".get_cfg_var('short_open_tag')."</i><br/>";
+    } else {
+      print "$green<br/>";
+    }
+    print "Probando permisos de directorios... ";
+    if (checkPerms($smarty->compile_dir = ROOTDIR . '/templates_c/') != 1) {
+      print "$red <i>mod = ".checkPerms($smarty->compile_dir = ROOTDIR . '/templates_c/')."</i><br/>";
+    } else {
+      print "$green<br/>";
+    }
   }
   switch($action) {
   case 'erd':
