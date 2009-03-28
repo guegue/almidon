@@ -23,8 +23,16 @@
       }
     }
     foreach($this->definition as $column) {
-      if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$column['name']]) || isset($_FILES[$column['name']]))) {
+      if(preg_match('/^(date|datetime|datenull|time)$/', $column['type'])){
+        if($column['type']=='time') 
+          $tmpcolumn = $column['name']."_Hour";
+        else
+          $tmpcolumn = $column['name']."_Year";
+      }else{
+          $tmpcolumn = $column['name'];
+      }
 
+      if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$tmpcolumn]) || isset($_FILES[$column['name']]))) {
         # Recepcion de una imagen
         if ($column['type'] == 'file' || $column['type'] == 'image') {
           if(isset($_FILES[$column['name']]['name'])) {
@@ -32,16 +40,14 @@
             $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
           } else {
             $this->request[$column['name']] = '';
-	  }
+	        }
           if (isset($_REQUEST['old_'.$column['name']]))
             $this->request['old_'.$column['name']] = $_REQUEST['old_'.$column['name']];
-
         # Recepcion de un password
         } elseif ($column['type'] == 'password') {
-          $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
-
+           $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
         # Recepcion de una fecha
-        } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
+         } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
           $date = ''; $time = '';
           if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
             $date = $this->parsevar($_REQUEST[$column['name']]);

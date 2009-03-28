@@ -313,6 +313,7 @@ class Table extends Data {
       - alias
   */
   function addColumn($name, $type, $size = 100, $pk = 0, $references = 0, $label = '', $extra = '') {
+  #print $type;
     $column = array('name'=>$name,'type'=>$type,'size'=>$size,'references'=>$references, 'label'=>$label, 'extra'=>$extra);
     $this->definition[] = $column;
     $this->dd[$name] = $column;
@@ -519,7 +520,7 @@ class Table extends Data {
           $n--;
           break;
         case 'int':
-          if ($this->request[$column['name']] == -1)
+          if ($this->request[$column['name']] == -1 ||  $this->request[$column['name']] =='')
             $this->request[$column['name']] = 'NULL';
         case 'smallint':
         case 'numeric':
@@ -870,6 +871,7 @@ class TableDoubleKey extends Table {
             $time = $hour . ':' . $minute . ':' . $second;
           }
           $datetime = trim("$date $time");
+          //echo $datetime;
           $this->request[$column['name']] = $datetime;
         } elseif ($column['type'] == 'auth_user') {
           $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
