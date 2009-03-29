@@ -13,6 +13,5 @@ if (file_exists(ROOTDIR."/templates/admin/index.tpl")) {
 } else {
   $smarty->assign('header',ALMIDONDIR.'/tpl/header.tpl');
   $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
-echo ALMIDONDIR.'/tpl/index.tpl';
   $smarty->display(ALMIDONDIR.'/tpl/index.tpl');
 }
