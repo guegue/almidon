@@ -10,10 +10,20 @@
  * @package almidon
  */
 
+# Tell Almidon to use admin user, admin links, etc
 define('ADMIN', true);
-require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+
+# Fetch app.class.php, wherever it is...
+$script_filename = $_SERVER['SCRIPT_FILENAME'];
+$app_base = '/../classes/app.class.php';
+$app_filename = substr($script_filename, 0, strrpos($script_filename,'/')) . $app_base;
+if (file_exists($app_filename)) require($app_filename);
+else require($_SERVER['DOCUMENT_ROOT'] . $app_base);
+
+# No cache in admon, of course
 $smarty->caching = false;
 
+# Who am I?
 $params = explode('/', $_SERVER['REQUEST_URI']);
 $object = $params[count($params)-1];
 if (strpos($object, '?')) {
@@ -23,6 +33,8 @@ if (strpos($object, '?')) {
   define('SELF', $_SERVER['REQUEST_URI']);
 }
 if(strrpos($object, '.')===true) $object = substr($object, 0, strrpos($object, '.'));
+
+# If I am... Go ahead try to create object (or setup)
 if ($object) {
   if ($object == 'setup') {
     require('setup.php');
@@ -56,7 +68,8 @@ if ($object) {
     $tpl = 'index';
   }
 }
-# Crea enlaces superiores
+
+# Creates admin links
 if (!isset($adminlinks)) {
   $classes = get_declared_classes();
   foreach($classes as $key)
@@ -76,4 +89,6 @@ if (!isset($adminlinks)) {
     }
   $smarty->assign('adminlinks', $adminlinks);
 }
+
+# Display object's forms (or index)
 $smarty->display(ALMIDONDIR.'/tpl/'.$tpl.'.tpl');
