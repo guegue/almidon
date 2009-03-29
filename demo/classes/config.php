@@ -1,25 +1,23 @@
 <?php
- 
+#
+# Nota: definir donde encontrar almidon?
+#
+#define ('ALMIDONDIR', '/usr/local/almidon/');
+define ('DEBUG', true);
+
 # Funciones que definen el comportamiento de PHP
- 
 setlocale(LC_TIME, "es_ES");
  
 # Constantes de conexion la base de datos
- 
 if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN===true) define ('DSN', 'pgsql://almidondemo:secreto1@/almidondemo');
 else define ('DSN', 'pgsql://almidondemowww:secreto2@/almidondemo');
-
-define ('DEBUG', true);
  
 # Constantes del web y filesystem
-
 $configdir = dirname(__FILE__);
 $rootdir = substr($configdir, 0, strrpos($configdir,'/'));
 define ('ROOTDIR', $rootdir);
 define ('DOMAIN', 'local.almidon.org');
-#define ('ALMIDONDIR', '/usr/local/almidon/');
-define ('ALMIDONDIR', ROOTDIR . '/..');
 define ('SQLLOG', ROOTDIR . '/logs/sql.log');
 define ('LOGFILE', ROOTDIR . '/logs/cms.log');
 define ('HOMEDIR', ROOTDIR .'/public_html');

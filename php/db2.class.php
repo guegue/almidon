@@ -12,20 +12,24 @@
  * @package almidon
  */
 
-foreach ($_POST as $j =>$value) {
-   if (stristr($value,"Content-Type")) {
-       header("HTTP/1.0 403 Forbidden");
-       echo "No spam allowed.";
-       exit;
-   }
+if (DEBUG === true) ini_set('display_errors', true);
+
+# Where is Almidon?
+if (!defined('ALMIDONDIR')) {
+  $almidondir = dirname(__FILE__);
+  $almidondir = substr($almidondir, 0, strrpos($almidondir,'/'));
+  define ('ALMIDONDIR', $almidondir);
 }
 
+# Use Almidon's PEAR
+set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
+
+# Other constants...
 if (!defined('ALM_SQL_DEBUG')) define('ALM_SQL_DEBUG', true);
 if (!defined('ALM_DEBUG')) define('ALM_DEBUG', false);
-if (DEBUG === true) ini_set('display_errors', true);
-if (defined('ALMIDONDIR'))
-  set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
 if(!defined('ALM_ALLOW_TAGS')) define('ALM_ALLOW_TAGS', '<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><img4><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>');
+
+# Finally... the DAL...
 
 require_once('MDB2.php');
 
@@ -59,7 +63,6 @@ class Data {
   function check_error($obj, $extra = '', $die = false) {
     if (PEAR::isError($obj)) {
       $error_msg = $obj->getMessage();
-      #if ($extra) $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
       $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
       if (DEBUG === true) trigger_error(htmlentities($error_msg));
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
@@ -84,14 +87,6 @@ class Data {
     }
     $result = $this->database->query($sqlcmd);
     $this->check_error($result, $sqlcmd);
-      /* if (preg_match("/violates foreign key/", $error_msg)) {
-        preg_match("/DETAIL: Key \((.*)\)\=\((.*?)\)(.*)from table \"(.*?)\"/", $error_msg, $error_detail);
-        preg_match("/Key \((.*?)\)=\((.*?)\)(.*?)\"(.*?)\"/", $error_msg, $error_detail);
-        $msg = "ERROR: Registro $error_detail[1]=$error_detail[2] es usado en la tabla $error_detail[4]";
-        if (DEBUG) print $msg;
-        global $smarty;
-        if ($smarty) $smarty->assign('error', "$msg <br/> $error_msg");
-      } */
     return $result;
   }
   
@@ -728,5 +723,3 @@ class TableDoubleKey extends Table {
     $this->request['old_' . $this->key2] = $_REQUEST['old_' . $this->key2];
   }
 }
-
-?>

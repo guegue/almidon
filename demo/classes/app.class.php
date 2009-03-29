@@ -1,7 +1,8 @@
 <?php
 require_once('config.php');
-require_once(ALMIDONDIR . '/php/db2.class.php');
-require_once(ALMIDONDIR . '/php/Smarty/Smarty.class.php');
+$almidondir = defined('ALMIDODIR') ? ALMIDONDIR : $_SERVER['DOCUMENT_ROOT'] . '/../../';
+require_once($almidondir . '/php/db2.class.php');
+require_once($almidondir . '/php/Smarty/Smarty.class.php');
 
 $smarty = new Smarty;
 $smarty->template_dir = ROOTDIR . '/templates/';

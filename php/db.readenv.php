@@ -47,7 +47,7 @@
         } elseif ($column['type'] == 'password') {
            $this->request[$column['name']] = md5($_REQUEST[$column['name']]);
         # Recepcion de una fecha
-         } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
+        } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
           $date = ''; $time = '';
           if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
             $date = $this->parsevar($_REQUEST[$column['name']]);
