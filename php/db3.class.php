@@ -12,6 +12,14 @@
 
 // Constantes
 if (DEBUG === true) ini_set('display_errors', true);
+
+# Where is Almidon?
+if (!defined('ALMIDONDIR')) {
+  $almidondir = dirname(__FILE__);
+  $almidondir = substr($almidondir, 0, strrpos($almidondir,'/'));
+  define ('ALMIDONDIR', $almidondir);
+}
+
 # Directorio de instalación de almidon
 if (defined('ALMIDONDIR'))
   set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php');

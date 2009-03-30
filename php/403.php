@@ -2,8 +2,6 @@
 define('ADMIN', true);
 require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 $smarty->caching = false;
-# Si no se define la variable utiliza la por defecto
-if(!defined('ALMIDONDIR')) define('ALMIDONDIR','/www/cms');
 
 if (!isset($adminlinks)) {
   $classes = get_declared_classes();
