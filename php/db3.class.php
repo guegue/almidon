@@ -390,7 +390,7 @@ class Table extends Data {
           $n--;
           break;
         case 'int':
-          if ($this->request[$column['name']] == -1 || !isset($this->request[$column['name']]))
+          if ($this->request[$column['name']] == -1 || (!isset($this->request[$column['name']]) || $this->request[$column['name']]==NULL))
             $this->request[$column['name']] = 'NULL';
         case 'smallint':
         case 'numeric':
