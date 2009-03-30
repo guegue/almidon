@@ -35,7 +35,7 @@
       if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$tmpcolumn]) || isset($_FILES[$column['name']]))) {
         # Recepcion de una imagen
         if ($column['type'] == 'file' || $column['type'] == 'image') {
-          if(isset($_FILES[$column['name']]['name'])) {
+          if(!empty($_FILES[$column['name']]['name'])) {
             $this->request[$column['name']] = $this->parsevar($_FILES[$column['name']]['name'], $column['type']);
             $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
           } else {
