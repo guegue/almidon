@@ -19,6 +19,8 @@ $app_base = '/../classes/app.class.php';
 $app_filename = substr($script_filename, 0, strrpos($script_filename,'/')) . $app_base;
 if (file_exists($app_filename)) require($app_filename);
 else require($_SERVER['DOCUMENT_ROOT'] . $app_base);
+# Si no se define la variable utiliza la por defecto
+if(!defined('ALMIDONDIR')) define('ALMIDONDIR','/www/cms');
 
 # No cache in admon, of course
 $smarty->caching = false;
