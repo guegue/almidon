@@ -239,7 +239,7 @@ function smarty_function_datagrid2($params, &$smarty)
           case 'image':
           case 'img':
             $_tmp = '';
-            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="http://'.DOMAIN.'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL .'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
             $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
             break;
           case 'time':
@@ -353,9 +353,25 @@ function smarty_function_datagrid2($params, &$smarty)
             $_tmp = ($_val == 't') ? $_si : $_no;
             break;
 	  case 'video':
-	    if($_val)
-	      $_tmp = '<img src="/cms/img/youtube.png" alt="YouTube" title="YouTube" />';
-	    else
+	    if($_val) {
+              require_once $smarty->_get_plugin_filepath('shared','video_service');
+
+              $a_vs = smarty_function_video_service();
+              //      XML
+              require_once 'XML/Unserializer.php';
+              $options = array(
+                XML_UNSERIALIZER_OPTION_ATTRIBUTES_PARSE    => true,
+                XML_UNSERIALIZER_OPTION_ATTRIBUTES_ARRAYKEY => false
+              );
+              $unserializer = &new XML_Unserializer($options);
+              $status = $unserializer->unserialize($_val, false);
+              if (PEAR::isError($status)){
+                echo 'Error: ' . $status->getMessage();
+              }else{ 
+                $vs = $unserializer->getUnserializedData();
+              }
+              $_tmp = '<a href="javascript:openwindow(\'' . URL . '/cms/video.php?src='.$vs['src'].'&type='.$vs['tipo'].'\',400,333)"><img src="/cms/img/'.$vs['tipo'].'.png" alt="'.$a_vs[$vs['tipo']].'" title="'.$a_vs[$vs['tipo']].'" border="0" /></a>';
+	    } else
 	      $_tmp = '--';
 	    break;
           case 'file':
@@ -369,7 +385,7 @@ function smarty_function_datagrid2($params, &$smarty)
               if (preg_match('/pdf/i',$ext)) $_icon = 'pdf.png';
               if (preg_match('/xls/i',$ext)) $_icon = 'excel.png';
               if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
-              $_tmp = '<a href="http://' . DOMAIN . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
+              $_tmp = '<a href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
             } else {
               $_tmp = '--';
             }
@@ -377,7 +393,7 @@ function smarty_function_datagrid2($params, &$smarty)
           case 'image':
             if ($_val) {
               if (THUMBNAILING)
-                $_tmp = '<a href="javascript:openimage(\'http://' . DOMAIN . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+                $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
               else
                 $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="/_' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" height="20" border="0" /></a>';
             } else {

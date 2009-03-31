@@ -28,8 +28,10 @@
           $tmpcolumn = $column['name']."_Hour";
         else
           $tmpcolumn = $column['name']."_Year";
-      }else{
-          $tmpcolumn = $column['name'];
+      } elseif($column['type']=='video') {
+        $tmpcolumn = $column['name']."_type";
+      } else{
+        $tmpcolumn = $column['name'];
       }
 
       if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$tmpcolumn]) || isset($_FILES[$column['name']]))) {

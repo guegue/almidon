@@ -185,7 +185,28 @@ function smarty_function_dataform2($params, &$smarty)
 	case 'video':
 	  $_tmp = '';
 	  $_options = smarty_function_video_service();
-	  $_tmp .= smarty_function_html_options(array('name'=>$_key.'_type','options'=>$_options,'selected'=>$_val), $smarty).'<input type="text" size="25" name="'.$_key.'_src" maxlength="500" />'; 
+          if ($_val) {
+            require_once $smarty->_get_plugin_filepath('shared','video_service');
+          
+            $a_vs = smarty_function_video_service();
+            //      XML
+            require_once 'XML/Unserializer.php';
+            $options = array(
+              XML_UNSERIALIZER_OPTION_ATTRIBUTES_PARSE    => true,
+              XML_UNSERIALIZER_OPTION_ATTRIBUTES_ARRAYKEY => false
+            );
+            $unserializer = &new XML_Unserializer($options);
+            $status = $unserializer->unserialize($_val, false);
+            if (PEAR::isError($status)){
+              echo 'Error: ' . $status->getMessage();
+            }else{
+              $vs = $unserializer->getUnserializedData();
+            }
+            //  -----
+	    $_tmp .= smarty_function_html_options(array('name'=>$_key.'_type','options'=>$_options,'selected'=>$vs['tipo']), $smarty).'<input type="text" size="25" name="'.$_key.'_src" maxlength="500" value="'.$vs['src'].'" />'; 
+          } else {
+	    $_tmp .= smarty_function_html_options(array('name'=>$_key.'_type','options'=>$_options,'selected'=>$_val), $smarty).'<input type="text" size="25" name="'.$_key.'_src" maxlength="500" />'; 
+          }
 	  break;
  	//End Add
         case 'file':
@@ -209,7 +230,7 @@ function smarty_function_dataform2($params, &$smarty)
           $_tmp = '';
           $_icon = 'image.png';
           $_tmp = '<input name="old_'.$_key.'" type="hidden" value="'.$_val.'" /><img src="/cms/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
-          if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+          if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
           $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
         case 'boolean':
@@ -394,7 +415,7 @@ function smarty_function_dataform2($params, &$smarty)
               $vs = $unserializer->getUnserializedData();
 	    }
 	    //	-----
-	    $_tmp = '<a href="javascript:openwindow(\'http://'.DOMAIN.'/cms/video.php?src='.$vs['src'].'&type='.$vs['tipo'].'\',400,333)"><img src="/cms/img/'.$vs['tipo'].'.png" alt="'.$a_vs[$vs['tipo']].'" title="'.$a_vs[$vs['tipo']].'" border="0" /></a>';
+	    $_tmp = '<a href="javascript:openwindow(\''. URL .'/cms/video.php?src='.$vs['src'].'&type='.$vs['tipo'].'\',400,333)"><img src="/cms/img/'.$vs['tipo'].'.png" alt="'.$a_vs[$vs['tipo']].'" title="'.$a_vs[$vs['tipo']].'" border="0" /></a>';
 	  } else
 	    $_tmp = '--';
 	  break;
@@ -408,7 +429,7 @@ function smarty_function_dataform2($params, &$smarty)
             if ($_p[$_pc - 1] == 'doc') $_icon = 'doc.png';
             if ($_p[$_pc - 1] == 'pdf') $_icon = 'pdf.png';
             if ($_p[$_pc - 1] == 'xls') $_icon = 'xls.png';
-            $_tmp = '<a title="' . $_val . '" href="http://' . DOMAIN . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
+            $_tmp = '<a title="' . $_val . '" href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
           } else {
             $_tmp = '--';
           }
@@ -416,9 +437,9 @@ function smarty_function_dataform2($params, &$smarty)
         case 'image':
           if ($_val) {
             if (THUMBNAILING)
-              $_tmp = '<a href="javascript:openimage(\'http://' . DOMAIN . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+              $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="' . URL . '/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
             else
-              $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="http://'.DOMAIN.'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val . '" width="50" border="0" /></a>';
+              $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val . '" width="50" border="0" /></a>';
           } else {
             $_tmp = '--';
           } 
