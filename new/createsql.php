@@ -7,17 +7,29 @@ function genSQL($object) {
   $data = new $o;
   $sql = "CREATE TABLE $data->name (\n";
   $i = 0;
+  $end = end($data->definition);
   foreach($data->definition as $column) {
     unset($size);
-    if ($type == 'external') next($data->definition);
+    $type = $column['type'];
+    if ($type == 'external') { continue; } #next($data->definition);
     if ($i) $sql .= " ,\n";
     $type = $column['type'];
-    if ($type == 'file' || $type == 'image' || $type == 'autoimage') {
-      $type = 'varchar';
-      $size = '500';
-    } elseif ($type == 'html' || $type == 'xhtml') {
-      $type = 'text';
-      $size = null;
+    switch($type) {
+      case 'file':
+      case 'image':
+      case 'autoimage':
+        $type = 'varchar';
+        $size = '500';
+        break;
+      case 'html':
+      case 'xhtml':
+        $type = 'text';
+        $size = null;
+        break;
+      case 'datetime':
+	$type = 'timestamp';
+        $size = null;
+        break;
     }
 
     if ($type == 'order') $type = 'serial NULL';
