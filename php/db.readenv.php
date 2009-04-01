@@ -23,14 +23,15 @@
       }
     }
     foreach($this->definition as $column) {
-      if(preg_match('/^(date|datetime|datenull|time)$/', $column['type'])){
+      # Si es fecha o video, el valor del request no coincide con el nombre en tables.class
+      if(preg_match('/^(date|datetime|datenull|time)$/', $column['type']) && !isset($_REQUEST[$column['name']])) {
         if($column['type']=='time') 
           $tmpcolumn = $column['name']."_Hour";
         else
           $tmpcolumn = $column['name']."_Year";
       } elseif($column['type']=='video') {
         $tmpcolumn = $column['name']."_type";
-      } else{
+      } else {
         $tmpcolumn = $column['name'];
       }
 
@@ -51,10 +52,12 @@
         # Recepcion de una fecha
         } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
           $date = ''; $time = '';
-          if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
-            $date = $this->parsevar($_REQUEST[$column['name']]);
-          else
-            $time = $this->parsevar($_REQUEST[$column['name']]);
+          if (isset($_REQUEST[$column['name']])) {
+            if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
+              $date = $this->parsevar($_REQUEST[$column['name']]);
+            else
+              $time = $this->parsevar($_REQUEST[$column['name']]);
+          }
           if (isset($_REQUEST[$column['name'] . '_Year'])) {
             $year = $this->parsevar($_REQUEST[$column['name'] . '_Year'], 'int');
             $month = $this->parsevar($_REQUEST[$column['name'] . '_Month'], 'int');
