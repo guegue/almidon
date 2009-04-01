@@ -82,8 +82,6 @@
         # Recepcion de enteros
         } elseif ($column['type'] == 'int') {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
-          #if (isset($_REQUEST[$column['name']])) $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
-          #else $this->request[$column['name']] = 'NULL';
         } elseif($column['type'] == 'video') {
           $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
           $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
