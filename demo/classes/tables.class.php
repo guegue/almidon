@@ -48,7 +48,7 @@ class docTable extends Table {
     $this->addColumn('doc','varchar',500,0,0,'Titulo');
     $this->addColumn('archivo','file',0,0,0,'Archivo');
     $this->addColumn('portada','image',0,0,0,'Imagen');
-    $this->addColumn('descripcion','text',0,0,0,'Descripcion');
+    $this->addColumn('descripcion','xhtml',0,0,0,'Descripcion');
   }
 }
 
