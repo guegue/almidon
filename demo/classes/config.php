@@ -2,6 +2,7 @@
 #
 # Nota: definir donde encontrar almidon?
 #
+#define ('ALMIDONDIR', '/usr/local/almidon/');
 define ('DEBUG', true);
 
 # Funciones que definen el comportamiento de PHP
@@ -26,7 +27,6 @@ define ('PIXDIR', HOMEDIR.'/pix');
 
 define ('MAXROWS', 5);
 define ('MAXCOLS', 6);
-define ('ALMIDONDIR', '/var/www/html/almidon/');
 
 # Constantes de valores (IDs) de las tablas
 
