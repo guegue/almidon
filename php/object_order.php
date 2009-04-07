@@ -31,5 +31,10 @@ if (file_exists(ROOTDIR."/templates/admin/header.tpl"))
   $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
 else 
   $smarty->assign('header',"/www/cms/tpl/header.tpl");
+if (file_exists(ROOTDIR."/templates/admin/footer.tpl"))
+  $smarty->assign('footer',ROOTDIR."/templates/admin/footer.tpl");
+else 
+  $smarty->assign('footer',"/www/cms/tpl/footer.tpl");
+$smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');
 $smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');
 ?>
