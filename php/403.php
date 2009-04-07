@@ -3,7 +3,8 @@ define('ADMIN', true);
 require($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 $smarty->caching = false;
 
-if (!isset($adminlinks)) {
+# Creates admin links
+if (!isset($sectionlinks)&&!isset($adminlinks)) {
   $classes = get_declared_classes();
   foreach($classes as $key)
   if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
