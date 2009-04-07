@@ -48,19 +48,24 @@ if ($object) {
   if (isset($$object->key2)) $tpl .= '2';
   if (file_exists(ROOTDIR.'/templates/admin/header.tpl')) {
     $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
-    $smarty->assign('footer',ROOTDIR."/templates/admin/footer.tpl");
   } else {
     $smarty->assign('header',ALMIDONDIR.'/tpl/header.tpl');
+  }
+  if (file_exists(ROOTDIR.'/templates/admin/footer.tpl')) {
+    $smarty->assign('footer',ROOTDIR."/templates/admin/footer.tpl");
+  } else {
     $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
   }
 } else {
   if (file_exists(ROOTDIR.'/templates/admin/index.tpl')) {  
     if(file_exists(ROOTDIR.'/templates/admin/header.tpl'))
       $smarty->assign('header',ROOTDIR.'/templates/admin/header.tpl');
-    else  {
+    else 
       $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
+    if(file_exists(ROOTDIR.'/templates/admin/footer.tpl'))
+      $smarty->assign('header',ROOTDIR.'/templates/admin/footer.tpl');
+    else 
       $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
-    }
     $smarty->display(ROOTDIR."/templates/admin/index.tpl");
   } else {
     $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
