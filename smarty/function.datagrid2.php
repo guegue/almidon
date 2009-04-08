@@ -403,6 +403,10 @@ function smarty_function_datagrid2($params, &$smarty)
           case 'order':
             $_tmp = '<a href="_SELF_?action=move&sense=up&key=' . $_key . '"><img src="/cms/img/up.gif" border="0"/></a> <a href="_SELF_?action=move&sense=down&key=' . $_key . '"><img src="/cms/img/down.gif" border="0"/></a>';
             break;
+     	  case 'html':
+          case 'xhtml':
+            # strip_tags quita los tags [x]html, preg_replace reemplaza los &nbsp; por espacio en blanco, el otro preg_replace quita mas de un espacio en blanco conjunto y lo reemplaza por un solo espacio y trim quita los espacios en blanco al final e inicio de la cadena.
+	    $_val = trim(preg_replace('/\s\s+/',' ',preg_replace('/&nbsp;/',' ',strip_tags($_val))));
 	  case 'varchar':
 	    if ($dd[$_key]['extra']['arr_values']) {
               $_options = $dd[$_key]['extra']['arr_values'];

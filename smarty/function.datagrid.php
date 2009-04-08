@@ -371,6 +371,10 @@ function smarty_function_datagrid($params, &$smarty)
           case 'order':
             $_tmp = '<a href="' . $_SERVER['PHP_SELF'] . '?move=up&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/up.gif" border="0"/></a> <a href="' . $_SERVER['PHP_SELF'] . '?move=down&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/down.gif" border="0"/></a>';
             break;
+     	  case 'html':
+          case 'xhtml':
+            # strip_tags quita los tags [x]html, preg_replace reemplaza los &nbsp; por espacio en blanco, el otro preg_replace quita mas de un espacio en blanco conjunto y lo reemplaza por un solo espacio y trim quita los espacios en blanco al final e inicio de la cadena.
+	    $_val = trim(preg_replace('/\s\s+/',' ',preg_replace('/&nbsp;/',' ',strip_tags($_val))));
           default:
             if ($truncate)
               $_tmp = smarty_modifier_truncate($_val, 50);
