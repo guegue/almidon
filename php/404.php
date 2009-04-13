@@ -32,7 +32,7 @@ if (strpos($object, '?')) {
 } else {
   define('SELF', $_SERVER['REQUEST_URI']);
 }
-if(strrpos($object, '.')===true) $object = substr($object, 0, strrpos($object, '.'));
+if(strrpos($object, '.')!==false) $object = substr($object, 0, strrpos($object, '.'));
 
 # If I am... Go ahead try to create object (or setup)
 if ($object) {
