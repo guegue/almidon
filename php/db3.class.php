@@ -492,9 +492,10 @@ class Table extends Data {
           $values .= "'" . $value . "'";
           break;
         case 'date':
+        case 'datetime':
         case 'datenull':
           $value = $this->request[$column['name']];
-          if ($value && $value != 'CURRENT_DATE') {
+          if (isset($value) && $value != 'CURRENT_DATE' && $value != '0-00-0' && !empty($value)) {
             $value = $this->database->escapeSimple($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {

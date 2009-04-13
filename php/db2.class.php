@@ -376,9 +376,10 @@ class Table extends Data {
           $values .= "'" . $value . "'";
           break;
         case 'date':
+        case 'datetime':
         case 'datenull':
           $value = $this->request[$column['name']];
-          if (isset($value) && $value != '0-00-0') {
+          if (isset($value) && $value != '0-00-0' && !empty($value)) {
             $value = $this->database->escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {
