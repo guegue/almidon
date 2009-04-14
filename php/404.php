@@ -46,6 +46,7 @@ if ($object) {
   $$object->destroy();
   $tpl = ($$object->cols > 5) ? 'abajo' : 'normal';
   if (isset($$object->key2)) $tpl .= '2';
+  $tpl = ALMIDONDIR . '/tpl/' . $tpl . 'tpl';
   if (file_exists(ROOTDIR.'/templates/admin/header.tpl')) {
     $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
   } else {
@@ -66,11 +67,11 @@ if ($object) {
       $smarty->assign('header',ROOTDIR.'/templates/admin/footer.tpl');
     else 
       $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
-    $smarty->display(ROOTDIR."/templates/admin/index.tpl");
+    $tpl = ROOTDIR . "/templates/admin/index.tpl";
   } else {
     $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
     $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
-    $tpl = 'index';
+    $tpl = ALMIDONDIR . '/tpl/index.tpl';
   }
 }
 
@@ -96,4 +97,4 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
 }
 
 # Display object's forms (or index)
-$smarty->display(ALMIDONDIR.'/tpl/'.$tpl.'.tpl');
+$smarty->display($tpl);
