@@ -353,7 +353,7 @@ function smarty_function_datagrid($params, &$smarty)
               if (preg_match('/pdf/i',$ext)) $_icon = 'pdf.png';
               if (preg_match('/xls/i',$ext)) $_icon = 'excel.png';
               if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
-              $_tmp = URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
+              $_tmp = '<a href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
             } else {
               $_tmp = '--';
             }
