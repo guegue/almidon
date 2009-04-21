@@ -26,7 +26,11 @@ if (file_exists(ROOTDIR."/templates/admin/index.tpl")) {
   else $smarty->assign('header',ALMIDONDIR.'/tpl/header.tpl');
   $smarty->display(ROOTDIR."/templates/admin/index.tpl");
 } else {
-  $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
-  $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
+  if(file_exists(ROOTDIR."/templates/admin/header.tpl"))
+  	$smarty->assign('header',ROOTDIR.'/templates/admin/header.tpl');
+  else $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
+  if(file_exists(ROOTDIR."/templates/admin/footer.tpl"))
+  	$smarty->assign('footer',ROOTDIR.'/templates/admin/footer.tpl');
+  else $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
   $smarty->display(ALMIDONDIR.'/tpl/index.tpl');
 }
