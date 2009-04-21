@@ -563,8 +563,6 @@ class Table extends Data {
             $value = $this->database->escapeSimple($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
             if ($timemark['mon']<10 && strlen($timemark['mon'])==1)  $timemark['mon'] = "0" . $timemark['mon'];
-            if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
-	          if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
             if ($column['extra']['sizes'] && defined('PIXDIR')) {
               $sizes = explode(',',trim($column['extra']['sizes']));
               if ($column['extra']['radius'])  $radius = explode (',',trim($column['extra']['radius']));
