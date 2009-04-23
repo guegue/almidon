@@ -1,0 +1,1 @@
+../../../smarty/function.confirm_delete.php

@@ -28,6 +28,20 @@
  * @return string
  * @uses smarty_function_escape_special_chars()
  */
+# Choose the language base in the webbrowser
+$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+if(file_exists(dirname(__FILE__) . '/shared.lang_' . $lang . '.php'))  include dirname(__FILE__) . '/shared.lang_' . $lang . '.php';
+# End
+
+if(!defined('EDIT_LB'))  define('EDIT_LB','Editar');
+if(!defined('CAN_LB'))  define('CAN_LB','Cancelar');
+if(!defined('SAVE_LB'))  define('SAVE_LB','Guardar');
+if(!defined('NEXT_LB'))  define('NEXT_LB','Pr&oacute;ximo');
+if(!defined('PREV_LB'))  define('PREV_LB','Previo');
+if(!defined('OPT_LB'))  define('OPT_LB','Opciones');
+if(!defined('MAX'))  define('MAX','maximizar');
+if(!defined('ADD_LB')) define('ADD_LB','Agregar');
+
 define('F', 
   '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
   <input type="hidden" name="old__KEY_" value="_ID_"/>
@@ -51,21 +65,21 @@ define('F2',
   <table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr class="adm"><th class="adm">_TITLE_</th></tr>
   <tr class="adm"><td class="adm"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0">
   _FROW_</table></td></tr><tr class="adm"><td class="adm">_PAGINATE_</td></tr></table></form>');
-define('FHEADERCMD', '<th class="adm">Opciones</th>');
+define('FHEADERCMD', '<th class="adm">'. OPT_LB .'</th>');
 define('FHEADERCELL', '<th class="adm"><a class="dgheader_link" href="_SELF_?f=_FORM_&amp;sort=_FIELD_">_LABEL_</a></th>'."\n");
 define('FROW', '<tr valign="top" class="dgrow"><td class="dgcell">_LABEL_</td> <td class="dgcell">_FCELL_</td></tr>'."\n");
 define('FCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="30" maxlength="_SIZE_"/>');
 define('FCELLHIDEN', '_LABEL_<input type="hidden" name="_FIELD_" value="_VALUE_" />');
 define('FCELLMODREF', '<select name="_FIELD_" id="_FIELD_" onchange="_CHANGE_"><option value="-1">--</option>_REFERENCE_</select>');
 define('FCMD',
-  '<tr class="adm"><td class="dgcmd"><input type="submit" value="Modificar" /></td> <td class="dgcmd"><input type="button" value="Cancelar" onclick="location.href=\'_REFERER_\'" /></td></tr>');
+  '<tr class="adm"><td class="dgcmd"><input type="submit" value="'. EDIT_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
 define('FCMDMOD',
-  '<tr class="adm"><td class="dgcmd"><input type="submit" value="Guardar" /></td> <td class="dgcmd"><input type="button" value="Cancelar" onclick="location.href=\'_REFERER_\'" /></td></tr>');
+  '<tr class="adm"><td class="dgcmd"><input type="submit" value="'. SAVE_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
 define('FCMDMOD_det',
-  '<tr class="adm"><td class="dgcmd"><input type="submit" value="Guardar" /></td> <td class="dgcmd"><input type="button" value="Cancelar" onclick="location.href=\'_REFERER_\'" /></td></tr>');
-define('FCMDADD', '<tr class="adm"><td class="dgcmd"><input type="submit" value="Agregar" /></td></tr>');
-define('PREV','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGPREV_">&lt; Previo</a> |');
-define('NEXT','| <a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGNEXT_">Pr&oacute;ximo &gt;</a>&nbsp;');
+  '<tr class="adm"><td class="dgcmd"><input type="submit" value="'. SAVE_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
+define('FCMDADD', '<tr class="adm"><td class="dgcmd"><input type="submit" value="'. ADD_LB .'" /></td></tr>');
+define('PREV','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGPREV_">&lt; '. PREV_LB .'</a> |');
+define('NEXT','| <a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGNEXT_">'. NEXT_LB .' &gt;</a>&nbsp;');
 define('NPG','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_NPG_"> _NPG_ </a>');
 define('CURRENTPG','<strong>_NPG_</strong>');
 define('PAGINATE','<table><tr class="adm"><td nowrap><br>_PGS_<br></td></tr></table>');
@@ -278,7 +292,7 @@ function smarty_function_dataform2($params, &$smarty)
           $_tmp = '<input type="password" name="' . $_key . '" size="20" maxlength="16" />';
           break;
         case 'text':
-          $_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edittext(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">maximizar</a>';
+          $_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edittext(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">'.MAX.'</a>';
           break;
         case 'html':
           $_tmp = '<textarea rows="5" cols="40" class="adm" id="' . $_key . '" name="' . $_key . '">' . $_val . '</textarea>';

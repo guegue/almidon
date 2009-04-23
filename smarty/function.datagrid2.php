@@ -28,6 +28,20 @@
  * @return string
  * @uses smarty_function_escape_special_chars()
  */
+# Choose the language base in the webbrowser
+$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+if(file_exists(dirname(__FILE__) . '/shared.lang_' . $lang . '.php'))  include dirname(__FILE__) . '/shared.lang_' . $lang . '.php';
+# End
+
+if(!defined('REC_LB'))  define('REC_LB','registros');
+if(!defined('DEL_LB'))  define('DEL_LB','Borrar');
+if(!defined('VIEW_LB'))  define('VIEW_LB','Ver');
+if(!defined('EDIT_LB'))  define('EDIT_LB','Editar');
+if(!defined('CAN_LB'))  define('CAN_LB','Cancelar');
+if(!defined('SAVE_LB'))  define('SAVE_LB','Guardar');
+if(!defined('NEXT_LB'))  define('NEXT_LB','Pr&oacute;ximo');
+if(!defined('PREV_LB'))  define('PREV_LB','Previo');
+if(!defined('OPT_LB'))  define('OPT_LB','Opciones');
 
 define('DG', '<form action="_SELF_" method="POST" name="_FORM_" enctype="multipart/form-data">
 <input type="hidden" name="old__KEY_" value="_ID_">
@@ -38,7 +52,7 @@ define('DG', '<form action="_SELF_" method="POST" name="_FORM_" enctype="multipa
 <input type="hidden" name="maxcols" value="_MAXCOLS_">
 <input type="hidden" name="f" value="_FORM_">
 <input type="hidden" name="action" value="save">
-<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th> <th align="right"><div align="right">(_ROWS_ registros)</div></th></tr>
+<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th> <th align="right"><div align="right">(_ROWS_ '. REC_LB .')</div></th></tr>
 <tr><td colspan="2"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DGHEADER__DGHEADERCMD_</tr>
 _DGROW_
 </table></td></tr><tr><td class="paginate">_PAGINATE_</td></tr></table></form>');
@@ -50,28 +64,28 @@ define('DG2', '<form action="_SELF_" method="POST" name="_FORM_">
 <input type="hidden" name="maxcols" value="_MAXCOLS_">
 <input type="hidden" name="f" value="_FORM_">
 <input type="hidden" name="action" value="save">
-<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_ _ROWS_ registros</th></tr>
+<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_ _ROWS_ '. REC_LB .'</th></tr>
 <tr><td><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DGHEADER__DGHEADERCMD_</tr>
 _DGROW_
 </table></td></tr><tr><td class="paginate">_PAGINATE_</td></tr></table></form>');
-define('DGHEADERCMD', '<th>Opciones</th>');
+define('DGHEADERCMD', '<th>'. OPT_LB .'</th>');
 define('DGHEADERCELL', '<th><a class="dgheader_link" href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_FIELD__DESC_">_LABEL__SORTIMG_</a></th>');
 define('DGROW', '<tr class="dgrow">_DGCELL_</tr>'."\n");
 define('DGCELL', '<td class="dgcell">_VALUE_</td>');
 define('DGCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="20" maxlength="_SIZE_"/>');
-define('DGCELLMODTXT', '<textarea name="_FIELD_" id="_FIELD_">_VALUE_</textarea><br /><a href="javascript:edittext(\'_FORM_\', \'_FIELD_\', document.getElementById(\'_FIELD_\').value);">maximizar</a>');
+define('DGCELLMODTXT', '<textarea name="_FIELD_" id="_FIELD_">_VALUE_</textarea><br /><a href="javascript:edittext(\'_FORM_\', \'_FIELD_\', document.getElementById(\'_FIELD_\').value);">'. MAX .'</a>');
 define('DGCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
-define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_=_ID_&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" alt="Ver"></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" alt="Borrar"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
+define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_=_ID_&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. VIEW_LB .'" alt="'. VIEW_LB .'"></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. DEL_LB .'" alt="'. DEL_LB .'"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. EDIT_LB .'" alt="'. EDIT_LB .'"></a></td>');
 //para las tablas detalle
-define('DGCMD_det', '<td class="dgcmd"><a class="dgcmd_link" href="javascript:openwindow(\'./_FORM_.php?parent=_PARENT_=_PARENTID_&f=_FORM_&action=record&_KEY_=_ID_\');"><img src="/cms/img/view.png" border="0" alt="Ver"></a> <a href="javascript:confirm_delete_det(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" alt="Borrar"></a></td>');
-define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" border="0" alt="Borrar"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_PARENT_=_PARENTID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
+define('DGCMD_det', '<td class="dgcmd"><a class="dgcmd_link" href="javascript:openwindow(\'./_FORM_.php?parent=_PARENT_=_PARENTID_&f=_FORM_&action=record&_KEY_=_ID_\');"><img src="/cms/img/view.png" border="0" title="'. VIEW_LB .'" alt="'. VIEW_LB .'"></a> <a href="javascript:confirm_delete_det(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. DEL_LB .'" alt="' . DEL_LB . '"></a></td>');
+define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" border="0" title="'. DEL_LB .'" alt="' . DEL_LB . '"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_PARENT_=_PARENTID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. EDIT_LB .'" alt="'. EDIT_LB .'"></a></td>');
 //para las tablas detalle
-define('DGCMD2', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY1_=_ID1_&_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" alt="Ver"></a> <a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" alt="Borrar"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
-define('DGCMD2R', '<td class="dgcmd"><a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" alt="Borrar"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td>');
-define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_&_PARENT_=_PARENTID_"><img src="/cms/img/cancel.png" border="0" alt="Cancelar"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" alt="Guardar"></a></td>');
-define('DGCMD2MOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/cancel.png" border="0" alt="Cancelar"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" alt="Guardar"></a></td>');
-define('PREV','<a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_PGPREV_">&lt; Previo</a> |');
-define('NEXT','| <a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_PGNEXT_">Pr&oacute;ximo &gt;</a>&nbsp;');
+define('DGCMD2', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY1_=_ID1_&_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" title="'. VIEW_LB .'" alt="'. VIEW_LB .'"></a> <a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" title="'. DEL_LB .'" alt="' . DEL_LB . '"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. EDIT_LB .'" alt="'. EDIT_LB .'"></a></td>');
+define('DGCMD2R', '<td class="dgcmd"><a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" title="'. DEL_LB .'" alt="' . DEL_LB . '"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. EDIT_LB .'" alt="'. EDIT_LB .'"></a></td>');
+define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_&_PARENT_=_PARENTID_"><img src="/cms/img/cancel.png" border="0" title="'. CAN_LB .'" alt="'. CAN_LB .'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. SAVE_LB .'" alt="'. SAVE_LB .'"></a></td>');
+define('DGCMD2MOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/cancel.png" border="0" title="'. CAN_LB .'" alt="'. CAN_LB .'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. SAVE_LB .'" alt="'. SAVE_LB .'"></a></td>');
+define('PREV','<a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_PGPREV_">&lt; '. PREV_LB .'</a> |');
+define('NEXT','| <a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_PGNEXT_">'. NEXT_LB .' &gt;</a>&nbsp;');
 define('NPG','<a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_NPG_"> _NPG_ </a>');
 define('CURRENTPG','<strong>_NPG_</strong>');
 define('PAGINATE','<table><tr><td nowrap><br>_PGS_<br></td></tr></table>');

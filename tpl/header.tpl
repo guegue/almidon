@@ -31,59 +31,9 @@ tinyMCE.init({
 
 {/literal}
 </script>
-{if $smarty.const.DB3===true}
-<script type='text/javascript' src="http://{$smarty.server.SERVER_NAME}/cms/ajax/server.php?client=Util,main,dispatcher,httpclient,request,json,loading,iframe,queues"></script>
-<script type='text/javascript' src="http://{$smarty.server.SERVER_NAME}/cms/ajax/server.php?stub=livefillcombo"></script>
-{/if}
 <link rel="stylesheet" href="/cms/css/adm.css">
 <title>{$title}</title>
-<script language="javascript">
-{literal}
-  function confirm_delete(o, idfield, id, desc) {
-    if (window.confirm('"'+desc+'": Estas seguro de querer borrar este registro?')) {
-        {/literal}location.href = '?o='+o+'&action=delete&'+idfield+'='+id;{literal}
-    }
-  }
-
-  function confirm_delete_det(od, idfield, id, desc) {
-    if (window.confirm('"'+desc+'": Estas seguro de querer borrar este registro?')) {
-        {/literal}location.href = '?od='+od+'&actiond=delete&'+idfield+'='+id;{literal}
-    }
-  }
-
-  function confirm_delete2(o, idfield1, idfield2, id1, id2, desc) {
-    if (window.confirm('"'+desc+'": Estas seguro de querer borrar este registro?')) {
-        {/literal}location.href = '?o='+o+'&action=delete&'+idfield1+'='+id1+'&'+idfield2+'='+id2;{literal}
-    }
-  }
-
-  // callback hash, outputs the results of the search method
-  callback = {
-    filter_data: function(result) {  
-        // if we have object this works right, if we have an array we get a problem
-        // if we have sparse keys will get an array back otherwise will get an array
-        alert(result);
-        fillCombo(result);
-    }
-  }
-
-  // setup our remote object from the generated proxy stub
-  var remoteFillCombo = new livefillcombo(callback);
-
-  // we could change the queue by overriding the default one, but generally you want to create a new one
-  // set our remote object to use the rls queue
-  remoteFillCombo.dispatcher.queue = 'rls';
-
-  // create the rls queue, with a 350ms buffer, a larger interval such as 2000 is useful to see what is happening but not so useful in real life
-  HTML_AJAX.queues['rls'] = new HTML_AJAX_Queue_Interval_SingleBuffer(350);
-
-  // what to call on onkeyup, you might want some logic here to not search on empty strings or to do something else in those cases
-  function updateCombo(pComboBox, comboBox, selected) {
-    var objParent = document.getElementById(pComboBox);
-    remoteFillCombo.filter_data(pComboBox, comboBox, objParent.value, selected);
-  }
-{/literal}
-</script>
+{confirm_delete}
 </head>
 <body>
 {strip}
