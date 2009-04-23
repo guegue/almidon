@@ -28,18 +28,22 @@
  * @uses smarty_function_escape_special_chars()
  */
 # Choose the language base in the webbrowser
-$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-if(file_exists(dirname(__FILE__) . '/shared.lang_' . $lang . '.php'))  include dirname(__FILE__) . '/shared.lang_' . $lang . '.php';
+if(DETECT_LANG===true) {
+  $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+  if(file_exists(dirname(__FILE__) . '/shared.lang_' . $lang . '.php'))  include dirname(__FILE__) . '/shared.lang_' . $lang . '.php';
+} elseif(defined(ALM_LANG)) {
+  if(file_exists(dirname(__FILE__) . '/shared.lang_' . ALM_LANG . '.php'))  include dirname(__FILE__) . '/shared.lang_' . ALM_LANG . '.php';
+}
 # End
 
-if(!defined('EDIT_LB'))  define('EDIT_LB','Editar');
-if(!defined('CAN_LB'))  define('CAN_LB','Cancelar');
-if(!defined('SAVE_LB'))  define('SAVE_LB','Guardar');
-if(!defined('NEXT_LB'))  define('NEXT_LB','Pr&oacute;ximo');
-if(!defined('PREV_LB'))  define('PREV_LB','Previo');
-if(!defined('OPT_LB'))  define('OPT_LB','Opciones');
-if(!defined('MAX'))  define('MAX','maximizar');
-if(!defined('ADD_LB')) define('ADD_LB','Agregar');
+if(!defined('ALM_EDIT_LB'))  define('ALM_EDIT_LB','Editar');
+if(!defined('ALM_CAN_LB'))  define('ALM_CAN_LB','Cancelar');
+if(!defined('ALM_SAVE_LB'))  define('ALM_SAVE_LB','Guardar');
+if(!defined('ALM_NEXT_LB'))  define('ALM_NEXT_LB','Pr&oacute;ximo');
+if(!defined('ALM_PREV_LB'))  define('ALM_PREV_LB','Previo');
+if(!defined('ALM_OPT_LB'))  define('ALM_OPT_LB','Opciones');
+if(!defined('ALM_MAX'))  define('MAX','maximizar');
+if(!defined('ALM_ADD_LB')) define('ALM_ADD_LB','Agregar');
 
 define('F', 
   '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
@@ -62,18 +66,18 @@ define('F2',
   <table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th></tr>
   <tr><td><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0">
   _FROW_</table></td></tr><tr><td>_PAGINATE_</td></tr></table></form>');
-define('FHEADERCMD', '<th>'. OPT_LB .'</th>');
+define('FHEADERCMD', '<th>'. ALM_OPT_LB .'</th>');
 define('FHEADERCELL', '<th><a class="dgheader_link" href="_SELF_?f=_FORM_&amp;sort=_FIELD_">_LABEL_</a></th>'."\n");
 define('FROW', '<tr valign="top" class="dgrow"><td class="dgcell">_LABEL_</td> <td class="dgcell">_FCELL_</td></tr>'."\n");
 define('FCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="30" maxlength="_SIZE_"/>');
 define('FCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
 define('FCMD',
-  '<tr><td class="dgcmd"><input type="submit" value="'. EDIT_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
+  '<tr><td class="dgcmd"><input type="submit" value="'. ALM_EDIT_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. ALM_CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
 define('FCMDMOD',
-  '<tr><td class="dgcmd"><input type="submit" value="'. SAVE_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
-define('FCMDADD', '<tr><td class="dgcmd"><input type="submit" value="'. ADD_LB .'" /></td></tr>');
-define('PREV','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGPREV_">&lt; '. PREV_LB .'</a> |');
-define('NEXT','| <a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGNEXT_">'. NEXT_LB .' &gt;</a>&nbsp;');
+  '<tr><td class="dgcmd"><input type="submit" value="'. ALM_SAVE_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. ALM_CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
+define('FCMDADD', '<tr><td class="dgcmd"><input type="submit" value="'. ALM_ADD_LB .'" /></td></tr>');
+define('PREV','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGPREV_">&lt; '. ALM_PREV_LB .'</a> |');
+define('NEXT','| <a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGNEXT_">'. ALM_NEXT_LB .' &gt;</a>&nbsp;');
 define('NPG','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_NPG_"> _NPG_ </a>');
 define('CURRENTPG','<strong>_NPG_</strong>');
 define('PAGINATE','<table><tr><td nowrap><br>_PGS_<br></td></tr></table>');
@@ -240,10 +244,10 @@ function smarty_function_dataform($params, &$smarty)
           $_tmp = '<input type="password" name="' . $_key . '" size="20" maxlength="16" />';
           break;
         case 'text':
-          $_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edittext(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">'.MAX.'</a>';
+          $_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edittext(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">'.ALM_MAX.'</a>';
           break;
         case 'html':
-          $_tmp = '<textarea rows="5" cols="40" id="' . $_key . '" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edithtml(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">'.MAX.'</a>';
+          $_tmp = '<textarea rows="5" cols="40" id="' . $_key . '" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edithtml(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">'.ALM_MAX.'</a>';
           $_tmp .= "<script language=\"JavaScript\">\ngenerate_wysiwyg('" . $_key . "');\n</script>\n";
           #$_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edithtml(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">maximizar</a>';
           break;
