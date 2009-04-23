@@ -8,10 +8,10 @@
  * Date:   23.abr.2009<br>
  */
 # Choose the language base in the webbrowser
-if(DETECT_LANG===true) {
+if(ALM_DETECT_LANG===true) {
   $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
   if(file_exists(dirname(__FILE__) . '/shared.lang_' . $lang . '.php'))  include dirname(__FILE__) . '/shared.lang_' . $lang . '.php';
-} elseif(defined(ALM_LANG)) {
+} elseif(defined('ALM_LANG')) {
   if(file_exists(dirname(__FILE__) . '/shared.lang_' . ALM_LANG . '.php'))  include dirname(__FILE__) . '/shared.lang_' . ALM_LANG . '.php';
 }
 # End
