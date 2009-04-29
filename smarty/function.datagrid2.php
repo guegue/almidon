@@ -28,24 +28,8 @@
  * @return string
  * @uses smarty_function_escape_special_chars()
  */
-# Choose the language base in the webbrowser
-if(ALM_DETECT_LANG===true) {
-  $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-  if(file_exists(dirname(__FILE__) . '/shared.lang_' . $lang . '.php'))  include dirname(__FILE__) . '/shared.lang_' . $lang . '.php';
-} elseif(defined('ALM_LANG')) {
-  if(file_exists(dirname(__FILE__) . '/shared.lang_' . ALM_LANG . '.php'))  include dirname(__FILE__) . '/shared.lang_' . ALM_LANG . '.php';
-}
-# End
 
-if(!defined('ALM_REC_LB'))  define('ALM_REC_LB','registros');
-if(!defined('ALM_DEL_LB'))  define('ALM_DEL_LB','Borrar');
-if(!defined('ALM_VIEW_LB'))  define('ALM_VIEW_LB','Ver');
-if(!defined('ALM_EDIT_LB'))  define('ALM_EDIT_LB','Editar');
-if(!defined('ALM_CAN_LB'))  define('ALM_CAN_LB','Cancelar');
-if(!defined('ALM_SAVE_LB'))  define('ALM_SAVE_LB','Guardar');
-if(!defined('ALM_NEXT_LB'))  define('ALM_NEXT_LB','Pr&oacute;ximo');
-if(!defined('ALM_PREV_LB'))  define('ALM_PREV_LB','Previo');
-if(!defined('ALM_OPT_LB'))  define('ALM_OPT_LB','Opciones');
+include dirname(__FILE__) . '/shared.lang.php';
 
 define('DG', '<form action="_SELF_" method="POST" name="_FORM_" enctype="multipart/form-data">
 <input type="hidden" name="old__KEY_" value="_ID_">

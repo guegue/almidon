@@ -20,4 +20,7 @@ define('ALM_PREV_LB','Previous');
 define('ALM_OPT_LB','Options');
 define('ALM_ADD_LB','Add');
 define('ALM_AL_MSG_DEL','Are you sure to want to delete this record?');
+
+#Para las fechas
+setlocale(LC_TIME, "en_US.UTF-8");
 ?>
