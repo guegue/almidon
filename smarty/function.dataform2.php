@@ -33,8 +33,8 @@ include dirname(__FILE__) . '/shared.lang.php';
 
 define('F', 
   '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
-  <input type="hidden" name="old__KEY_" value="_ID_"/>
-  <input type="hidden" name="_KEY_" value="_ID_"/>
+  <input type="hidden" name="old__KEY_" value="{_ID_}"/>
+  <input type="hidden" name="_KEY_" value="{_ID_}"/>
   <input type="hidden" name="f" value="_FORM_"/>
   <input type="hidden" name="o" value="_OBJECT_"/>
   <input type="hidden" name="action" value="_ACTION_"/>
@@ -474,7 +474,7 @@ function smarty_function_dataform2($params, &$smarty)
       if (!$hidden) $_html_rows .= $_tmp;
       $hidden = false;
     }
-    $_html_cmd = ereg_replace("_ID_", $row[$key], FCMD);
+    $_html_cmd = ereg_replace("{_ID_}", $row[$key], FCMD);
     if(!empty($_pre)) $_pre = '<input type="hidden" name="preset" value="' .$_pre . '" />';
   }
   if ($type == 2) { $_html_cmd = FCMDADD; $action = "add"; }
@@ -534,7 +534,7 @@ function smarty_function_dataform2($params, &$smarty)
   $_html_result = preg_replace("/_KEY_/", $key, $_html_result);
   $_html_result = preg_replace("/_KEY1_/", $key1, $_html_result);
   $_html_result = preg_replace("/_KEY2_/", $key2, $_html_result);
-  $_html_result = preg_replace("/_ID_/", $_REQUEST[$key], $_html_result);
+  $_html_result = preg_replace("/{_ID_}/", $_REQUEST[$key], $_html_result);
   $_html_result = preg_replace("/_ID1_/", $_REQUEST[$key1], $_html_result);
   $_html_result = preg_replace("/_ID2_/", $_REQUEST[$key2], $_html_result);
   $_html_result = preg_replace("/_SORT_/", $_REQUEST['sort'], $_html_result);
