@@ -32,9 +32,9 @@
 include dirname(__FILE__) . '/shared.lang.php';
 
 define('DG', '<form action="_SELF_" method="POST" name="_FORM_" enctype="multipart/form-data">
-<input type="hidden" name="old__KEY_" value="_ID_">
+<input type="hidden" name="old__KEY_" value="{_ID_}">
 <input type="hidden" name="_PARENT_" value="_PARENTID_">
-<input type="hidden" name="_KEY_" value="_ID_">
+<input type="hidden" name="_KEY_" value="{_ID_}">
 <input type="hidden" name="_FORM_sort" value="_SORT_">
 <input type="hidden" name="_FORM_pg" value="_PG_">
 <input type="hidden" name="maxcols" value="_MAXCOLS_">
@@ -62,11 +62,11 @@ define('DGROW', '<tr class="dgrow">_DGCELL_</tr>'."\n");
 define('DGCELL', '<td class="dgcell">_VALUE_</td>');
 define('DGCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="20" maxlength="_SIZE_"/>');
 define('DGCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
-define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_=_ID_&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
-define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'_ID_\',\'_ID_\');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_=_ID_&_PARENT_=_PARENTID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
+define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_={_ID_}&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_={_ID_}&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
+define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"></a> <a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_={_ID_}&_PARENT_=_PARENTID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
 define('DGCMD2', '<td class="dgcmd"><a class="dgcmd_linksss" href="_SELF_?f=_FORM_&action=record&_KEY1_=_ID1_&_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a> <a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
 define('DGCMD2R', '<td class="dgcmd"><a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" title="'. DEL__LB .'" alt="'.ALM_DEL_LB.'"></a> <a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
-define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY_=_ID_&_FORM_pg=_PG_&_FORM_sort=_SORT_&_PARENT_=_PARENTID_"><img src="/cms/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'.ALM_CAN_LB.'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'.ALM_SAVE_LB.'"></a></td>');
+define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY_={_ID_}&_FORM_pg=_PG_&_FORM_sort=_SORT_&_PARENT_=_PARENTID_"><img src="/cms/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'.ALM_CAN_LB.'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'.ALM_SAVE_LB.'"></a></td>');
 define('DGCMD2MOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'.ALM_CAN_LB.'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'.ALM_SAVE_LB.'"></a></td>');
 define('PREV','<a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_PGPREV_">&lt; '.ALM_PREV_LB.'</a> |');
 define('NEXT','| <a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_PGNEXT_">'.ALM_SAVE_LB.' &gt;</a>&nbsp;');
@@ -303,7 +303,7 @@ function smarty_function_datagrid($params, &$smarty)
         $_html_row .= $_tmp;
       }
       $_dgcmdmod = ($key2) ? DGCMD2MOD : DGCMDMOD;
-      $_html_cmd = preg_replace("/_ID_/", $row[$key], $_dgcmdmod);
+      $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmdmod);
     } else {
       $_cols = 0;
       foreach ($row as $_key=>$_val) {
@@ -392,7 +392,7 @@ function smarty_function_datagrid($params, &$smarty)
         $_dgcmd = ($_cols <= 3 || $parent) ? DGCMD2R : DGCMD2;
       else
         $_dgcmd = ($_cols <= 3 || $parent) ? DGCMDR : DGCMD;
-      $_html_cmd = preg_replace("/_ID_/", $row[$key], $_dgcmd);
+      $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmd);
       $_html_cmd = preg_replace("/_ID1_/", $row[$key1], $_html_cmd);
       $_html_cmd = preg_replace("/_ID2_/", $row[$key2], $_html_cmd);
     }
@@ -446,7 +446,7 @@ function smarty_function_datagrid($params, &$smarty)
   $_html_result = preg_replace("/_KEY_/", $key, $_html_result);
   $_html_result = preg_replace("/_KEY1_/", $key1, $_html_result);
   $_html_result = preg_replace("/_KEY2_/", $key2, $_html_result);
-  $_html_result = preg_replace("/_ID_/", $_REQUEST[$key], $_html_result);
+  $_html_result = preg_replace("/{_ID_}/", $_REQUEST[$key], $_html_result);
   $_html_result = preg_replace("/_ID1_/", $_REQUEST[$key1], $_html_result);
   $_html_result = preg_replace("/_ID2_/", $_REQUEST[$key2], $_html_result);
   $_html_result = preg_replace("/_SORT_/", $_SESSION[$name . 'sort'], $_html_result);
