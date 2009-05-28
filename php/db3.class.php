@@ -22,7 +22,10 @@ if (!defined('ALMIDONDIR')) {
 
 # Directorio de instalación de almidon
 if (defined('ALMIDONDIR'))
-  set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php');
+  if(defined('KEEP_INCPATH')&&KEEP_INCPATH===false)
+    set_include_path(ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
+  else
+    set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
 # Permisos por defecto para los directorios que se creen en files
 define('PERMIS_DIR',0775);
 # Etiquetas permitidas
@@ -271,9 +274,9 @@ class Table extends Data {
         $this->all_fields .= $this->schema . ".";
       if ($ns > 0 && $column['type'] != 'external' && ($column['type'] != 'auto'||!empty($column['extra']['default'])) && $column['type'] != 'order' && $column['type'] != 'serial')
         $this->fields_noserial .= ",";
-      if ($column['type'] == 'serial' || $column['type'] == 'external' || ($column['type'] == 'auto' && empty($column['extra']['default'])) || $column['type'] == 'order' && $column['type']=='serial')
+      if ($column['type'] == 'serial' || $column['type'] == 'external' || ($column['type'] == 'auto' && empty($column['extra']['default'])) || $column['type'] == 'order' || $column['type']=='serial')
         $ns--;
-      else
+      else 
         $this->fields_noserial .= $column['name'];
       $this->fields .= $column['name'];
       if ($column['type'] == 'external')
@@ -883,7 +886,6 @@ class TableDoubleKey extends Table {
         } elseif ($column['type'] == 'auth_user') {
           $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
         } else {
-          echo 'Entro';
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
         }
       }
