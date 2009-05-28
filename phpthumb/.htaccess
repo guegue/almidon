@@ -1,3 +1,0 @@
-AcceptPathInfo On
-ForceType application/x-httpd-php
-php_flag zlib.output_compression Off
