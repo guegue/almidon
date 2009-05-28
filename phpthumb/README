@@ -1,0 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////////
+///  phpThumb() v1.7.9 - May ??, 2008 by James Heinrich <info@silisoftware.com>   //
+//                 available at http://phpthumb.sourceforge.net                   //
+////////////////////////////////////////////////////////////////////////////////////
+
+To update:
+
+1) Make a copy of actual configuration file - phpThumb.config.php to phpThumb.config.php-old
+2) Put here the php files, please delete (these are not needed):
+cache, demo, docs, fonts, images and also index.php
+3) Rename phpThumb.config.php.default to phpThumb.config.php
+4) Config phpThumb.config.php, review if it is neccessary the old configuration file and modify as be required
+5) Delete phpThumb.config.php-old when you are sure the phpthumb is running ok!
