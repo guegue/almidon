@@ -29,6 +29,27 @@ switch ($action) {
     $$object->updateRecord(0, $maxcols, 0);
     //$smarty->clear_all_cache();
     break;
+  case 'move':
+    $limit = $$object->limit;
+    $$object->limit = 1;
+    if($_REQUEST['sense']=='up') {
+      list($curr) = $$object->readDataFilter($$object->key . " = " . $$object->request[$$object->key]);
+      list($prev) = $$object->readDataFilter($$object->order . " < " . $curr[$$object->order]);
+      if($prev) {
+        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $prev[$$object->order] . "' WHERE " . $$object->key ." = '" . $$object->request[$$object->key] . "'");               
+        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $curr[$$object->order] . "' WHERE " . $$object->key ." = '" . $prev[$$object->key] . "'");
+      }
+    } elseif($_REQUEST['sense']=='down') {
+      list($curr) = $$object->readDataFilter($$object->key . " = " . $$object->request[$$object->key]);
+      list($next) = $$object->readDataFilter($$object->order . " > " . $curr[$$object->order]);
+      if($next) {
+        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $next[$$object->order] . "' WHERE " . $$object->key ." = '" . $$object->request[$$object->key] . "'"); 
+        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $curr[$$object->order] . "' WHERE " . $$object->key ." = '" . $next[$$object->key] . "'"); 
+      }
+    }
+    $$object->limit = $limit;
+    unset($limit);
+    break;
 }
 if (isset($_REQUEST[$object . 'sort']) && !empty($_REQUEST[$object . 'sort'])) $_SESSION[$object . 'sort'] = $_REQUEST[$object . 'sort'];
 if (isset($_REQUEST[$object . 'pg']) && !empty($_REQUEST[$object . 'pg'])) $_SESSION[$object . 'pg'] = $_REQUEST[$object . 'pg'];
@@ -83,6 +104,9 @@ else $$object->maxrows = (int) $$object->maxrows;
 $$object->offset = (isset($$object->pg))?(((int)$$object->pg)-1)*$$object->maxrows:0;
 $$object->limit = ($$object->maxrows)?$$object->maxrows:8;
 # End Limits
+# To know who the first one and the last one is, this is useful when use order type of field
+$_SESSION[$object . 'first'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " LIMIT 1");
+$_SESSION[$object . 'last'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " DESC LIMIT 1");
 $smarty->assign('rows', $$object->readData());
 $count_key = $$object->key ? $$object->key : $$object->key1;
 $smarty->assign('num_rows', $$object->getVar("SELECT COUNT(".$count_key.") FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));

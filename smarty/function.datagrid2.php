@@ -403,7 +403,12 @@ function smarty_function_datagrid2($params, &$smarty)
             } 
             break;
           case 'order':
-            $_tmp = '<a href="_SELF_?action=move&sense=up&key=' . $_key . '"><img src="/cms/img/up.gif" border="0"/></a> <a href="_SELF_?action=move&sense=down&key=' . $_key . '"><img src="/cms/img/down.gif" border="0"/></a>';
+            $_tmp = '';
+            if ($_SESSION[$name . 'first'] != $row[$key]) $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=up&key=' . $_key . '"><img src="/cms/img/up.gif" border="0"/></a>';
+            if ($_SESSION[$name . 'last'] != $row[$key]) {
+              if(!empty($_tmp)) $tmp = ' ';
+              $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=down&key=' . $_key . '"><img src="/cms/img/down.gif" border="0"/></a>';
+            }
             break;
           case 'text':
      	  case 'html':
