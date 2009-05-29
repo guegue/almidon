@@ -514,8 +514,7 @@ function smarty_function_dataform2($params, &$smarty)
   }
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
 
-  if ($_SERVER['PHP_SELF'] == '/~sgtz/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php' || $_SERVER['PHP_SELF'] == '/cms/404c.php')
-  #if ($_SERVER['PHP_SELF'] == '/cms/404.php' || $_SERVER['PHP_SELF'] == '/cms/404c.php')
+  if ($_SERVER['PHP_SELF'] == '/cms/404.php' || $_SERVER['PHP_SELF'] == '/cms/404c.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
@@ -524,7 +523,8 @@ function smarty_function_dataform2($params, &$smarty)
   if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']) || $is_detail || $_SERVER['PHP_SELF'] == '/cms/query.php') {
     $_referer = $_SERVER['PHP_SELF'];
   } else {
-    $_referer = $_SERVER['HTTP_REFERER'];
+    if(defined('SELF'))  $_referer = SELF;
+    else $_referer = $_SERVER['PHP_SELF'];
   }
   if($is_detail)  $_referer .= '?action=close';
   // Si es el popup de consulta
