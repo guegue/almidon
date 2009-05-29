@@ -66,10 +66,14 @@
             $date = $year . '-' . $month . '-' . $day;
           }
           if (isset($_REQUEST[$column['name'] . '_Hour'])) {
-            $this->request[$column['name']] = $year . '-' . $month . '-' . $day;
+            if (isset($year))
+              $this->request[$column['name']] = $year . '-' . $month . '-' . $day;
             $hour = $this->parsevar($_REQUEST[$column['name'] . '_Hour'], 'int');
             $minute = $this->parsevar($_REQUEST[$column['name'] . '_Minute'], 'int');
-            $second = $this->parsevar($_REQUEST[$column['name'] . '_Second'], 'int');
+            if (isset($_REQUEST[$column['name'] . '_Second']))
+              $second = $this->parsevar($_REQUEST[$column['name'] . '_Second'], 'int');
+            else
+              $second = '00';
             $time = $hour . ':' . $minute . ':' . $second;
           }
           $datetime = trim("$date $time");

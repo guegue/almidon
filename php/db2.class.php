@@ -311,7 +311,7 @@ class Table extends Data {
           $n--;
           break;
         case 'int':
-          if ($this->request[$column['name']] == -1 || !isset($this->request[$column['name']]))
+          if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1)
             $this->request[$column['name']] = 'NULL';
         case 'smallint':
         case 'numeric':
@@ -358,7 +358,7 @@ class Table extends Data {
           }
           break;
         case 'varchar':
-          if ($this->request[$column['name']] == -1) {
+          if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1) {
             $this->request[$column['name']] = 'NULL';
             $values .= $this->request[$column['name']];
           } else {
@@ -367,12 +367,16 @@ class Table extends Data {
           }
           break;
         case 'text':
-          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
-          $values .= "'" . $value . "'";
+          if (isset($this->request[$column['name']])) {
+            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $values .= "'" . $value . "'";
+          } else {
+            $values .= "NULL";
+          } 
           break;
         case 'bool':
         case 'boolean':
-          $value = $this->request[$column['name']];
+          $value = (isset($this->request[$column['name']])) ? $this->request[$column['name']] : false;
           $value = (!$value || $value == 'false' || $value == '0' || $value == 'f') ? '0' : '1';
           $values .= "'" . $value . "'";
           break;
@@ -388,8 +392,12 @@ class Table extends Data {
           }
           break;
         default:
-          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
-          $values .= "'" . $value . "'";
+          if (isset($this->request[$column['name']])) {
+            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $values .= "'" . $value . "'";
+          } else {
+            $values .= "NULL";
+          }
           break;
       }
       $n++;
@@ -412,7 +420,7 @@ class Table extends Data {
           $n--;
           break;
         case 'int':
-          if ($this->request[$column['name']] === -1 || $this->request[$column['name']] === '')
+          if (!isset($this->request[$column['name']]) || $this->request[$column['name']] === -1 || $this->request[$column['name']] === '')
             $this->request[$column['name']] = 'NULL';
         case 'smallint':
         case 'numeric':
@@ -471,7 +479,7 @@ class Table extends Data {
           }
           break;
         case 'varchar':
-          if ($this->request[$column['name']] == -1) {
+          if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1) {
             $this->request[$column['name']] = 'NULL';
             $values .= $column['name'] . "=" . $this->request[$column['name']];
           } else {
@@ -480,12 +488,16 @@ class Table extends Data {
           }
           break;
         case 'text':
-          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
-          $values .= $column['name'] . "=" ."'" . $value . "'";
+          if (isset($this->request[$column['name']])) {
+            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $values .= $column['name'] . "=" ."'" . $value . "'";
+          } else {
+            $values .= $column['name'] . "=NULL";
+          }
           break;
         case 'bool':
         case 'boolean':
-          $value = $this->request[$column['name']];
+          $value = (isset($this->request[$column['name']])) ? $this->request[$column['name']] : '0';
           $value = (!$value || $value == 'false' || $value == '0') ? '0' : '1';
           $values .= $column['name'] . "=" ."'" . $value . "'";
           break;
@@ -496,12 +508,16 @@ class Table extends Data {
             $value = $this->database->escape($this->request[$column['name']]);
             $values .= $column['name'] . "= '" . $value . "'";
           } else {
-            $values .= $column['name'] . "= NULL";
+            $values .= $column['name'] . "=NULL";
           }
           break;
         default:
-          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
-          $values .= $column['name'] . "=" ."'" . $value . "'";
+          if (isset($this->request[$column['name']])) {
+            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $values .= $column['name'] . "=" ."'" . $value . "'";
+          } else {
+            $values .= $column['name'] . "=NULL";
+          }
           break;
       }
       $n++;
@@ -511,7 +527,7 @@ class Table extends Data {
   }
   
   function updateRecord($id = 0, $maxcols = 0, $nofiles = 0) {
-    if (!$id && $this->request['old_' . $this->key]) $id = $this->request['old_' . $this->key];
+    if (!$id && isset($this->request['old_' . $this->key])) $id = $this->request['old_' . $this->key];
     if (!$id) $id = $this->request[$this->key];
     $values = $this->preUpdateRecord($maxcols, $nofiles);
     $sqlcmd = "UPDATE $this->name SET $values WHERE $this->key = '$id'";
