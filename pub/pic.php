@@ -1,1 +1,1 @@
-../phpthumb/pic.php
+../phpthumb/phpThumb.php
