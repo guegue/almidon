@@ -57,7 +57,7 @@ define('F2',
 define('FHEADERCMD', '<th class="adm">'. ALM_OPT_LB .'</th>');
 define('FHEADERCELL', '<th class="adm"><a class="dgheader_link" href="_SELF_?f=_FORM_&amp;sort=_FIELD_">_LABEL_</a></th>'."\n");
 define('FROW', '<tr valign="top" class="dgrow"><td class="dgcell">_LABEL_</td> <td class="dgcell">_FCELL_</td></tr>'."\n");
-define('FCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="30" maxlength="_SIZE_"/>');
+define('FCELLMODSTR', '<input type="text" name="_FIELD_" id="_FIELD_" value="_VALUE_" size="30" maxlength="_SIZE_"/>');
 define('FCELLHIDEN', '_LABEL_<input type="hidden" name="_FIELD_" value="_VALUE_" />');
 define('FCELLMODREF', '<select name="_FIELD_" id="_FIELD_" onchange="_CHANGE_"><option value="-1">--</option>_REFERENCE_</select>');
 define('FCMD',
@@ -307,6 +307,11 @@ function smarty_function_dataform2($params, &$smarty)
             $_tmp = preg_replace("/_VALUE_/", $_val, FCELLMODSTR);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
+            if($dd[$_key]['extra']['source']) {
+              $_tmp .= '<script type="text/javascript">
+                          addEvent(document.getElementById(\'' . $dd[$_key]['extra']['source'] . '\'), \'blur\', function () { if(document.getElementById(\'' . $_key . '\').value.replace(/(^\s*)|(\s*$)/g, \'\') == \'\')  document.getElementById(\'' . $_key . '\').value = ' . $dd[$_key]['extra']['apply_funct_js'] . '(document.getElementById(\'' . $dd[$_key]['extra']['source'] . '\').value) });
+                        </script>';
+            }
           }
           break;
         case 'numeric':
