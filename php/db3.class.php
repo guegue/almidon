@@ -21,11 +21,12 @@ if (!defined('ALMIDONDIR')) {
 }
 
 # Directorio de instalación de almidon
-if (defined('ALMIDONDIR'))
+if (defined('ALMIDONDIR')) {
   if(defined('KEEP_INCPATH')&&KEEP_INCPATH===false)
     set_include_path(ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
   else
     set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
+}
 # Permisos por defecto para los directorios que se creen en files
 define('PERMIS_DIR',0775);
 # Etiquetas permitidas

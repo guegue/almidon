@@ -105,8 +105,13 @@ $$object->offset = (isset($$object->pg))?(((int)$$object->pg)-1)*$$object->maxro
 $$object->limit = ($$object->maxrows)?$$object->maxrows:8;
 # End Limits
 # To know who the first one and the last one is, this is useful when use order type of field
-$_SESSION[$object . 'first'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " LIMIT 1");
-$_SESSION[$object . 'last'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " DESC LIMIT 1");
+$order_is_valid = split(' ',trim($$object->order));
+if(count($order_is_valid) > 1) $order_is_valid = false;
+else $order_is_valid = true;
+if ($order_is_valid) {
+  $_SESSION[$object . 'first'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " LIMIT 1");
+  $_SESSION[$object . 'last'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " DESC LIMIT 1");
+}
 $smarty->assign('rows', $$object->readData());
 $count_key = $$object->key ? $$object->key : $$object->key1;
 $smarty->assign('num_rows', $$object->getVar("SELECT COUNT(".$count_key.") FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));

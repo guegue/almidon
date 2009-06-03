@@ -51,7 +51,7 @@ function friendly_url(str,max) {
   // first replace whitespace by -, second remove repeated - by just one, third turn in low case the chars,
   // fourth delete all chars which are not between a-z or 0-9, fifth trim the string and
   // the last step truncate the string to 32 chars 
-  return str.replace(/\s+/g,'-').replace(/\-{2,}/g,'-').toLowerCase().replace(/[^a-z0-9\-]/g, '').replace(/(^\s*)|(\s*$)/g, '').substr(0,max);
+  return str.replace(/\s+/g,'-').toLowerCase().replace(/[^a-z0-9\-]/g, '').replace(/\-{2,}/g,'-').replace(/(^\s*)|(\s*$)/g, '').substr(0,max);
 }
 
 function addEvent( obj, type, fn ) {

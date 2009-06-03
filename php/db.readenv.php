@@ -35,7 +35,7 @@
         $tmpcolumn = $column['name'];
       }
 
-      if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$tmpcolumn]) || isset($_FILES[$column['name']]))) {
+      if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$tmpcolumn]) || $column['type'] == 'auth_user' || isset($_FILES[$column['name']]))) {
         # Recepcion de una imagen
         if ($column['type'] == 'file' || $column['type'] == 'image') {
           if(!empty($_FILES[$column['name']]['name'])) {
