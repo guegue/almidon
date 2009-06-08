@@ -75,26 +75,7 @@ if ($object) {
   }
 }
 
-# Creates admin links
-if (!isset($sectionlinks)&&!isset($adminlinks)) {
-  $classes = get_declared_classes();
-  foreach($classes as $key)
-    if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
-      $table_object = new $key;
-      // Modificacion hecho por lo antes comentado entre php5 y php4
-      if(substr($key, 0, strpos($key, 'Table'))!==false) {
-        $key = substr($key, 0, strpos($key, 'Table'));
-      } else { $key = substr($key, 0, strpos($key, 'table')); }
-      // End
-      $adminlinks[$key] = $table_object->title;
-      if(isset($extralinks)){
-         foreach($extralinks as $key=>$link){
-           $adminlinks[$key] = $link;
-         }
-      }
-    }
-  $smarty->assign('adminlinks', $adminlinks);
-}
+require (ALMIDONDIR . '/php/createlinks.php');
 
 # Display object's forms (or index)
 $smarty->display($tpl);
