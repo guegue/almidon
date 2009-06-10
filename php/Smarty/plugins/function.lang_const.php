@@ -1,0 +1,1 @@
+../../../smarty/function.lang_const.php

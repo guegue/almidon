@@ -21,4 +21,7 @@ if(!defined('ALM_ADD_LB')) define('ALM_ADD_LB','Agregar');
 if(!defined('ALM_REC_LB'))  define('ALM_REC_LB','registros');
 if(!defined('ALM_DEL_LB'))  define('ALM_DEL_LB','Borrar');
 if(!defined('ALM_VIEW_LB'))  define('ALM_VIEW_LB','Ver');
+if(!defined('ALM_AL_MSG_DEL'))  define('ALM_AL_MSG_DEL','Estas seguro de querer borrar este registro?');
+if(!defined('ALM_ADMIN_TITLE'))  define('ALM_ADMIN_TITLE','Administración');
+if(!defined('ALM_WCOME')) define('ALM_WCOME','Bienvenido! Conectado como:');
 ?>

@@ -44,8 +44,8 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
   }
 
   $smarty->assign('cur_section', $section);
+  $smarty->assign('sectionlinks', $sectionlinks);
   if(count($sectionlinks) > 1) {
-    $smarty->assign('sectionlinks', $sectionlinks);
     $smarty->assign('adminlinks', $sectionlinks[$section]['adminlinks']);
   } else {
     list($part) = array_values($sectionlinks);

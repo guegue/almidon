@@ -16,6 +16,6 @@ if (file_exists(ROOTDIR."/templates/admin/index.tpl")) {
   if(file_exists(ROOTDIR."/templates/admin/footer.tpl"))
   	$smarty->assign('footer',ROOTDIR.'/templates/admin/footer.tpl');
   else $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
-  if(KINDAMIN===2) $smarty->display(ALMIDONDIR."/tpl/index_sec.tpl");
+  if(KINDADMIN===2) $smarty->display(ALMIDONDIR."/tpl/index_sec.tpl");
   else $smarty->display(ALMIDONDIR.'/tpl/index.tpl');
 }

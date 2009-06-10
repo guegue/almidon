@@ -7,16 +7,8 @@
  * Name:   confirm_delete<br>
  * Date:   23.abr.2009<br>
  */
-# Choose the language base in the webbrowser
-if(ALM_DETECT_LANG===true) {
-  $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-  if(file_exists(dirname(__FILE__) . '/shared.lang_' . $lang . '.php'))  include dirname(__FILE__) . '/shared.lang_' . $lang . '.php';
-} elseif(defined('ALM_LANG')) {
-  if(file_exists(dirname(__FILE__) . '/shared.lang_' . ALM_LANG . '.php'))  include dirname(__FILE__) . '/shared.lang_' . ALM_LANG . '.php';
-}
-# End
 
-if(!defined('ALM_AL_MSG_DEL'))  define('ALM_AL_MSG_DEL','Estas seguro de querer borrar este registro?');
+include dirname(__FILE__) . '/shared.lang.php';
 
 define('SCRIPT', "
 <script language=\"javascript\">
