@@ -34,6 +34,12 @@ function smarty_function_mini_calendar($params, &$smarty){
   require_once $smarty->_get_plugin_filepath('function','html_select_date');
   require_once $smarty->_get_plugin_filepath('modifier','strip');
 
+  # Cuando se hacia un redirect usando el ErrorDocument del 403 al archivo, no se pasaban los
+  # parametros
+  if((!isset($_REQUEST['Year'])&&!isset($_REQUEST['Month']))||!isset($_REQUEST['Day'])) {
+    $query = parse_url($_SERVER['REQUEST_URI'],PHP_URL_QUERY);
+    parse_str($query,$_REQUEST);
+  }
   if (!isset($_REQUEST['Year'])) $_REQUEST['Year'] = date('Y');
   if (!isset($_REQUEST['Month'])) $_REQUEST['Month'] = date('m');
   if (!isset($_REQUEST['Day'])) $_REQUEST['Day'] = date('d');
@@ -64,8 +70,8 @@ function smarty_function_mini_calendar($params, &$smarty){
   $out .= "<th>Mie</th>";
   $out .= "<th>Jue</th>";
   $out .= "<th>Vie</th>";
-  $out .= "<th>Sáb</th>";
-  $out .= "<th>Dom</th>";
+  $out .= "<th".($params['dif_weekend']?" class=\"weekend sat\"":"").">Sáb</th>";
+  $out .= "<th".($params['dif_weekend']?" class=\"weekend sun\"":"").">Dom</th>";
   $out .= "</tr>";
   while ( $Day = $Month->fetch() ) {
     // Build a link string for each day
@@ -82,7 +88,18 @@ function smarty_function_mini_calendar($params, &$smarty){
         $out .= "<tr>\n";
 
     if ( $Day->isSelected() ) {
-        $out .= "<td class=\"selected\"><a href=\"".$link."\"".(($class)?" class=\"$class\"":"").">".$Day->thisDay()."</a></td>\n";
+        $out .= "<td class=\"selected\">";
+        if($params['dif_weekend'])
+          if($num_day == 6)
+            $out .= "<div class=\"weekend sat\">";
+          elseif($num_day == 0)
+            $out .= "<div class=\"weekend sun\">";
+          elseif($Day->thisDay()==date("d") AND $Day->thisMonth()==date("m") AND $Day->thisYear()==date("Y"))
+            $out .= "<div class=\"now\">";
+        $out .= "<a href=\"".$link."\"".(($class)?" class=\"$class\"":"").">".$Day->thisDay()."</a>";
+        if(($params['dif_weekend'] && ($num_day == 6 || $num_day == 0)) || ($Day->thisDay()==date("d") && $Day->thisMonth()==date("m") && $Day->thisYear()==date("Y")))
+          $out .= "</div>";
+        $out .= "</td>\n";
     } else if ( $Day->isEmpty() ) {
         $out .= "<td>&nbsp;</td>\n";
     } elseif($Day->thisDay()==date("d") AND $Day->thisMonth()==date("m") AND $Day->thisYear()==date("Y")) {
@@ -109,7 +126,7 @@ function smarty_function_mini_calendar($params, &$smarty){
   if($display_date) {
     $out .= "<tr>";
     $out .= "<td colspan=\"7\" class=\"control\"><form method=\"get\" action=\"".$params['action']."\"";
-    $out .= ($params['frm_extra']?" ".$params['frm_extra']:"").">".smarty_function_html_select_date(array('time'=>$day,'prefix'=>'','start_year'=>$start_year,'end_year'=>$end_year,'display_days'=>false, 'display_months'=>true, 'display_years'=>true, 'month_extra'=>'id="Month"', 'year_extra'=>'id="Year"'),$smarty)."&nbsp;".($params['btn_img']?"<input name=\"btnsubmit\" type=\"image\" src=\"".$params['btn_img']."\"/>":"<input name=\"btnsubmit\" type=\"submit\" value=\"Ir\" />")."</form></td>";
+    $out .= ($params['frm_extra']?" ".$params['frm_extra']:"").">".smarty_function_html_select_date(array('time'=>$day,'prefix'=>'','start_year'=>$start_year,'end_year'=>$end_year,'display_days'=>false, 'display_months'=>true, 'display_years'=>true, 'month_extra'=>'id="Month"', 'year_extra'=>'id="Year"'),$smarty)."&nbsp;".($params['btn_img']?"<input name=\"btnsubmit\" type=\"image\" src=\"".$params['btn_img']."\"/>":"<input name=\"btnsubmit\" type=\"submit\" value=\"Ir\" />").($params['today_btn']===true?"&nbsp;<input name=\"today\" type=\"button\" value=\"Hoy\" title=\"Presione para ir al mes en curso\" onclick=\"location.href = './'\" />":"")."</form></td>";
     $out .= "</tr>";
   }
   $out .= "</table>";

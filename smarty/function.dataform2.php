@@ -212,6 +212,10 @@ function smarty_function_dataform2($params, &$smarty)
           }
 	  break;
  	//End Add
+        case 'auto':
+          if($dd[$_key]['extra']['default']) $_tmp = '<span class="auto">' . $dd[$_key]['extra']['default'] . '</span>';
+          else $_tmp = '';
+          break;
         case 'file':
           $_tmp = '';
           if ($_val) {
