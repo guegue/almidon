@@ -409,6 +409,7 @@ function smarty_function_datagrid2($params, &$smarty)
               if(!empty($_tmp)) $tmp = ' ';
               $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=down&key=' . $_key . '"><img src="/cms/img/down.gif" border="0"/></a>';
             }
+            if(empty($_tmp)) $_tmp = '--';
             break;
           case 'text':
      	  case 'html':

@@ -25,9 +25,13 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
 } elseif(isset($sectionlinks)) {
   # If sectionlinks is defined 
   $params = explode('/', $_SERVER['REQUEST_URI']);
-  $table = $params[count($params)-1];
-  if(strpos($table, '?'))  $table = substr($table, 0, strpos($table, '?'));
-  if(strrpos($table, '.')!==false) $table = substr($table, 0, strrpos($table, '.'));
+  if((strrpos($_SERVER['REQUEST_URI'],'/')+1) != strlen($_SERVER['REQUEST_URI'])) {
+    $table = $params[count($params)-1];
+  } else {
+    $section = $params[count($params)-2];
+  }
+  if(!empty($table)&&strpos($table, '?'))  $table = substr($table, 0, strpos($table, '?'));
+  if(!empty($table)&&strrpos($table, '.')!==false) $table = substr($table, 0, strrpos($table, '.'));
   if($sectionlinks) {
     foreach($sectionlinks as $key => $val) {
       if(!empty($val['objects'])) {

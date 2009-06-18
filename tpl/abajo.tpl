@@ -14,7 +14,7 @@
 </td>
 </tr>
 <tr>
-<td>{if $smarty.const.DB3 === true}{dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{else}{dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{/if}</td>
+<td>{if $add===true || $row}{if $smarty.const.DB3 === true}{dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{else}{dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{/if}{else}&nbsp;<!--No esta permito agregar solo modificar-->{/if}</td>
 </tr>
 </table>
 <br />
@@ -24,7 +24,7 @@
 <tr valign="top">
 <td>
   {if $detail.rows}
-    {datagrid2 parent=$detail._fkey rows=$detail.rows key=$detail.key title=$detail.title dd=$detail.dd maxcols=$detail.maxcols|default:5 maxrows=$detail.maxrows|default:8 paginate=true cmd=true name=$detail.name object=$detail.name options=$detail._options is_detail=true}
+    {datagrid2 parent=$detail._fkey rows=$detail.rows key=$detail.key title=$detail.title dd=$detail.dd maxcols=$detail.maxcols|default:5 maxrows=$detail.maxrows|default:8 paginate=true cmd=true name=$detail.name object=$detail.name options=$detail._options is_detail=true num_rows=$detail.num_rows}
     <br /><a href="javascript:openwindow('{$detail.name}.php?parent={$detail._fkey}&{$detail._fkey}={$detail._fkey_value|escape}');">Agregar</a>
   {else}
     No existen items relacionados. <a href="javascript:openwindow('{$detail.name}.php?parent={$detail._fkey}&{$detail._fkey}={$detail._fkey_value|escape}');">Agregar detalle</a>

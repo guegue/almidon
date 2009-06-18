@@ -83,8 +83,9 @@ if(isset($$object->detail)) {
 		'dd' => $$obj->dd,
 		'key' => $$obj->key,
 		'title' => $$obj->title,
-		'maxrows', $$obj->maxrows,
-		'maxcols', $$obj->maxcols
+		'maxrows'=> $$obj->maxrows,
+		'maxcols'=> $$obj->maxcols,
+                'num_rows'=> $$obj->getVar("SELECT COUNT(".$$obj->key.") FROM ".$$obj->name." WHERE ".$filter)
 	    );
   } 
 }
@@ -117,6 +118,7 @@ $count_key = $$object->key ? $$object->key : $$object->key1;
 $smarty->assign('num_rows', $$object->getVar("SELECT COUNT(".$count_key.") FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));
 $smarty->assign('dd', $$object->dd);
 $smarty->assign('key', $$object->key);
+$smarty->assign('add', isset($$object->add)?$$object->add:true);
 if (isset($$object->key1))
   $smarty->assign('key1', $$object->key1);
 if (isset($$object->key2))
@@ -146,12 +148,13 @@ function fillOpt(&$object) {
         }
       // Esto sucede solo si extra esta manteniendo el formato ordenado de array de la version db3
       } elseif (!isset($object->dd[$key]['extra']['depend']) && !isset($object->dd[$key]['extra']['readonly'])) {
+        $where = '';
+        if(isset($object->dd[$key]['extra']['filteropt']))
+          $where = $object->dd[$key]['extra']['filteropt'];
         if(isset($object->dd[$key]['extra']['display'])) {
-          if(isset($object->dd[$key]['extra']['filteropt']))
-            $where = $object->dd[$key]['extra']['filteropt'];
           $ot = $object->dd[$key]['references'] . 'Table';
           $robject = new $ot;
-	  if(isset($where))
+	  if(!empty($where))
             $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." WHERE $where");
 	  else
             $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']);

@@ -170,7 +170,7 @@ function smarty_function_dataform2($params, &$smarty)
       }
       if ($type == 2) $_val = '';
       if ($type == 1) $_val = $row[$_val['name']];
-      if ($dd[$_key]['references'] && $dd[$_key]['type'] != 'hidden') {
+      if ($dd[$_key]['references'] && $dd[$_key]['type'] != 'auto' && $dd[$_key]['type'] != 'hidden') {
         if ($_preset[$_key]) {
           $_selected = $_preset[$_key];
         } else {
@@ -214,7 +214,7 @@ function smarty_function_dataform2($params, &$smarty)
  	//End Add
         case 'auto':
           if($dd[$_key]['extra']['default']) $_tmp = '<span class="auto">' . $dd[$_key]['extra']['default'] . '</span>';
-          else $_tmp = '';
+          else $_tmp = !empty($_val)?$_val:'';
           break;
         case 'file':
           $_tmp = '';

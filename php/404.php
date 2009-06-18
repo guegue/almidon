@@ -42,6 +42,12 @@ if ($object) {
   }
   $ot = $object . 'Table';
   $$object = new $ot;
+  #If I'm a detail, not the master
+  if($$object->is_detail) {
+    require(ALMIDONDIR . '/php/detail.php');
+    die();
+  }
+  # If it continues is because I'm master
   require(ALMIDONDIR . '/php/typical.php');
   $$object->destroy();
   $tpl = ($$object->cols > 5) ? 'abajo' : 'normal';

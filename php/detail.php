@@ -1,6 +1,14 @@
 <?php
-define('ADMIN',true);
-require("../classes/app.class.php");
+if(!defined('ADMIN')) define('ADMIN',true);
+
+# Fetch app.class.php, wherever it is...
+$script_filename = $_SERVER['SCRIPT_FILENAME'];
+$app_base = '/../classes/app.class.php';
+$app_filename = substr($script_filename, 0, strrpos($script_filename,'/')) . $app_base;
+if (file_exists($app_filename)) require_once($app_filename);
+else require_once($_SERVER['DOCUMENT_ROOT'] . $app_base);
+
+
 if ($_REQUEST['action'] == 'add')
   $smarty->assign('added',true);
 if ($_REQUEST['action'] == 'save')
@@ -8,11 +16,12 @@ if ($_REQUEST['action'] == 'save')
 if ($_REQUEST['action'] == 'close')
   $smarty->assign('closed',true);
 
-$smarty->caching = false;
-$object = $_SERVER['SCRIPT_NAME'];
-$object = substr($object, strrpos($object, '/')+1, strrpos($object, '.') - (strrpos($object, '/') + 1));
-$ot = $object . 'Table';
-$$object = new $ot;
+if(empty($object)) {
+  $object = $_SERVER['SCRIPT_NAME'];
+  $object = substr($object, strrpos($object, '/')+1, strrpos($object, '.') - (strrpos($object, '/') + 1));
+  $ot = $object . 'Table';
+  $$object = new $ot;
+}
 //$disable['prensa'] = true;
 if(defined('ALMIDONDIR')) require(ALMIDONDIR."/php/typical.php");
 /*$tpl = ($$object->cols > 5) ? 'abajo' : 'normal';
