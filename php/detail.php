@@ -17,6 +17,7 @@ if ($_REQUEST['action'] == 'close')
   $smarty->assign('closed',true);
 
 if(empty($object)) {
+  $smarty->caching = false;
   $object = $_SERVER['SCRIPT_NAME'];
   $object = substr($object, strrpos($object, '/')+1, strrpos($object, '.') - (strrpos($object, '/') + 1));
   $ot = $object . 'Table';
