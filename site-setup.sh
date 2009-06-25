@@ -6,40 +6,28 @@
 # de partida
 #
 if [ -z $2 ]; then
-  echo "Usage: ./setup username domain pass"
+  echo "Usage: ./setup domain username"
   exit
 fi
-cd /www/$2
-mkdir classes
-mkdir files
-mkdir files/galeria
-mkdir files/doc
-mkdir files/pagina
-mkdir logs
-mkdir secure
-mkdir templates
-mkdir templates_c
-mkdir cache
-chown -R $1:www *
-chgrp -R apache cache logs files cache templates_c
-chmod -R g+w cache logs files cache templates_c
-cd public_html
-ln -s ../files
-cd ..
-cd secure
-ln -s /www/cms/php/object.php galeria.php
-ln -s /www/cms/php/object.php doc.php
-ln -s /www/cms/php/object.php pagina.php
-ln -s /www/cms/php/object.php categoria.php
-ln -s /www/cms/php/object.php enlace.php
-ln -s /www/cms/php/index.php
-cp /www/cms/new/.htaccess .
-perl -pi -e "s/example.org/$2/g" .htaccess
-perl -pi -e "s/example/$1/g" .htaccess
-ln -s ../classes
-cd ..
-cp /www/cms/new/* classes/
-perl -pi -e "s/example.org/$2/g" classes/config.php
-perl -pi -e "s/example/$1/g" classes/config.php
-echo createuser -Upostgres -SDRP $1
-echo createdb -Upostgres -O$1 $1
+source config.sh
+ROOTDIR=$WWWDIR/$1
+mkdir $ROOTDIR/classes
+mkdir $ROOTDIR/files
+mkdir $ROOTDIR/logs
+mkdir $ROOTDIR/secure
+mkdir $ROOTDIR/templates
+mkdir $ROOTDIR/templates_c
+mkdir $ROOTDIR/cache
+chown -R $2:$APACHEUSER $ROOTDIR
+chmod -R g+w $ROOTDIR/cache $ROOTDIR/logs $ROOTDIR/files $ROOTDIR/cache $ROOTDIR/templates_c
+ln -s $ROOTDIR/files $ROOTDIR/public_html/
+cp $ALMIDONDIR/new/secure/.htaccess $ROOTDIR/secure/
+perl -pi -e "s/example.org/$1/g" $ROOTDIR/secure/.htaccess
+perl -pi -e "s/example/$2/g" $ROOTDIR/secure/.htaccess
+cp $ALMIDONDIR/new/classes/* $ROOTDIR/classes/
+perl -pi -e "s/example.org/$1/g" $ROOTDIR/classes/config.php
+perl -pi -e "s/example/$2/g" $ROOTDIR/classes/config.php
+echo Postgresql commands:
+echo createuser -Upostgres -SDRP $2
+echo createdb -Upostgres -O$2 $2
+echo psql -Upostgres -f $ROOTDIR/secure/tables.sql $2
