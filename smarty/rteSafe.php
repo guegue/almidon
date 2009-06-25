@@ -1,4 +1,4 @@
-<?
+<?php
 function rteSafe($strText) {
         //returns safe code for preloading in the RTE
         $tmpString = $strText;
@@ -19,4 +19,3 @@ function rteSafe($strText) {
 
         return $tmpString;
 }
-?>
