@@ -1,10 +1,70 @@
 <?php
-if (!defined('ADMIN')) define ('ADMIN', true);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+function performTests() {
+    global $failed, $test_output, $action, $admin_db_failed, $public_db_failed, $admin_dsn, $public_dsn, $smarty;
+    $failed = false;
+    $red = '<font color="red">FALL&Oacute;</font>';
+    $green = '<font color="green">PAS&Oacute;</font>';
+    $test_output = "Probando conexion a base de datos (admin)... ";
+    $db =& MDB2::connect ($admin_dsn);
+    if (PEAR::isError($db)) {
+      $error_msg = $db->getMessage();
+      $test_output .= "$red <i>$error_msg</i><br/>";
+      $failed = true;
+      $admin_db_failed = true;
+    } else {
+      $test_output .= "$green<br/>";
+    }
+    $test_output .= "Probando conexion a base de datos (public)... ";
+    $db =& MDB2::connect ($public_dsn);
+    if (PEAR::isError($db)) {
+      $error_msg = $db->getMessage();
+      $test_output .= "$red <i>$error_msg</i><br/>";
+      $failed = true;
+      $public_db_failed = true;
+    } else {
+      $test_output .= "$green<br/>";
+    }
+    $test_output .= "Probando configuracion de PHP... ";
+    if (get_cfg_var('short_open_tag') != 1) {
+      $test_output .= "$red <i>short_open_tag = ".get_cfg_var('short_open_tag')."</i><br/>";
+      $failed=true;
+    } else {
+      $test_output .= "$green<br/>";
+    }
+    $test_output .= "Probando permisos de directorios... ";
+    if (checkPerms($smarty->compile_dir) !== true)
+      $test_output .= "$red <i> $smarty->compile_dir = ".checkPerms($smarty->compile_dir)."</i><br/>";
+    if (checkPerms($smarty->cache_dir) !== true)
+      $test_output .= "$red <i> $smarty->cache_dir = ".checkPerms($smarty->cache_dir)."</i><br/>";
+    $logs_dir = ROOTDIR . '/logs';
+    if (checkPerms($logs_dir) !== true)
+      $test_output .= "$red <i> $logs_dir = ".checkPerms($logs_dir)."</i><br/>";
+    $files_dir = ROOTDIR . '/files';
+    if (checkPerms($files_dir) !== true)
+      $test_output .= "$red <i> $files_dir = ".checkPerms($files_dir)."</i><br/>";
+    if (checkPerms($smarty->compile_dir) === true && checkPerms($smarty->cache_dir) === true) {
+      $test_output .= "$green<br/>";
+    } else {
+      $failed=true;
+    }
+    $test_output .= "Dónde está almidón? ";
+    if (defined('ALMIDONDIR')) {
+      $test_output .= '<font color="green">'.ALMIDONDIR.'</font><br/>';
+    } else {
+      $failed=true;
+      $test_output .= $red;
+    }
+    if ($failed) {
+      $action='failed';
+      $test_output .= '<br/><br/><font color="red">Por favor corregir antes de continuar con la instalaci&oacute;n</font>';
+    }
+}
+if (!defined('ADMIN')) define ('ADMIN', true);
 function checkPerms($filepath) {
-  if (!file_exists($filepath)) return "File does not exist";
+  if (!file_exists($filepath)) return "No existe.";
   if (is_writeable($filepath)) return true;
-  else return "Not writeable";
+  else return "Sin permisos de escritura.";
 }
 function getTitle($object) {
   $o = $object . "Table";
@@ -78,17 +138,47 @@ function genSQL($object) {
   return($sql);
 }
 
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+
+if ($action == 'fixdb') {
+  $config = file_get_contents(ROOTDIR.'/classes/config.ori.php');
+  # $admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';
+  $pahost = ($_REQUEST['phost'] == '(local)') ? '' : $_REQUEST['phost'];
+  $ahost = ($_REQUEST['host'] == '(local)') ? '' : $_REQUEST['host'];
+  $admin_dsn = $_POST['type'] . '://' . $_POST['username'] . ':' . $_REQUEST['pass'] . '@'.$ahost.'/' . $_REQUEST['dbname'];
+  $public_dsn = $_POST['ptype'] . '://' . $_POST['pusername'] . ':' . $_REQUEST['ppass'] . '@'.$pahost.'/' . $_REQUEST['pdbname'];
+  $config = preg_replace('/admin_dsn = (.*)/',"admin_dsn = '$admin_dsn';",$config);
+  $config = preg_replace('/public_dsn = (.*)/',"public_dsn = '$public_dsn';",$config);
+  if (!is_writable(ROOTDIR.'/classes/config.php')) {
+    print "No se puede escribir en classes/config.php. Copiar el siguiente c&oacute;digo manualmente a config.php:<br/><br/>\n";
+    print '<table bgcolor="#f0f0f0" border="1" width="100%"><tr><td><pre>';
+    print htmlentities($config);
+    print "</pre></td></tr></table>";
+  } else {
+    $fp = fopen(ROOTDIR.'/classes/config.php', 'w');
+    fwrite($fp, $config);
+    fclose($fp);
+    print "Se ha actualizado la configuraci&oacute;n.<br/>";
+  }
+  print '<a href="setup">Continuar con instalaci&oacute;n...</a>';
+  exit;
+} else {
+  performTests();
+}
+
 $options = array(
   'test'=>'Probar configuraci&oacute;n',
+  'tables'=>'Probar tablas y base de datos',
   'sql'=>'Generar SQL basado en tables.class',
   'dd'=>'Generar diccionario de datos',
   'erd'=>'Geenrar diagrama entidad relacion');
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-if ($action != 'erd')
-foreach($options as $k=>$option) {
-  print "<a href=\"?action=$k\">$option</a><br/>";
+if ($action != 'erd' && !$failed) {
+  print "Herramientas:<br/>";
+  foreach($options as $k=>$option) {
+    print "<li><a href=\"?action=$k\">$option</a><br/></li>";
+  }
 }
-if (isset($_REQUEST['action'])) {
+if (!empty($action)) {
   $classes = get_declared_classes();
   $output = '';
   foreach($classes as $key) {
@@ -99,6 +189,52 @@ if (isset($_REQUEST['action'])) {
     }
   }
   switch ($action) {
+  case 'tables':
+    $sql_fix = '';
+    $tables_failed = false;
+    $red = '<font color="red">FALL&Oacute;</font>';
+    $green = '<font color="green">PAS&Oacute;</font>';
+    $tables_output = 'Probando tablas en base de datos:<br/>';
+    foreach($tables as $key) {
+      $sql = genSQL($key);
+      $keyTable = $key . 'Table';
+      $data = new $keyTable;
+      #error_reporting(0);
+      if (!isset($id)) $id = $data->getVar("SELECT MAX(" . $data->key . ") FROM " . $data->name);
+      if ($data->join) {
+        $sqlcmd = "SELECT $data->all_fields FROM $data->name " . $data->getJoin() . " WHERE $data->name.$data->key = '$id'";
+      } else {
+        $sqlcmd = "SELECT $data->fields FROM $data->name WHERE $data->name.$data->key = '$id'";
+      }
+      $tables_output .= "Tabla $key ";
+      @$data->execSql($sqlcmd);
+      if (PEAR::isError($data->data)) {
+        $error_msg = $data->data->getMessage();
+        $native_msg = preg_replace('/(.*)Native message:(.*)\]/s','\2',$data->data->userinfo);
+        $error_msg = '<small>'.preg_replace('/(.*)\n(.*)/','\1',$native_msg).'</small>';
+        $tables_output .= "$red <!-- <i>$error_msg</i> --><br/>";
+        $tables_failed = true;
+        $sqlcmd = "SELECT * FROM $data->name";
+        @$data->execSql($sqlcmd);
+        if (PEAR::isError($data->data)) {
+          $tables_output .= "&nbsp;&nbsp;&nbsp;&nbsp;<small>Error general en la tabla <!--".$data->data->getMessage() . "--></small><br/>";
+          $sql_fix .= genSQL($data->name);
+        } else {
+          $campos = split(',',$data->fields);
+          foreach($campos as $campo) {
+            $sqlcmd = "SELECT $campo FROM $data->name";
+            @$data->execSql($sqlcmd);
+            if (PEAR::isError($data->data)) {
+              $tables_output .= "&nbsp;&nbsp;&nbsp;&nbsp;<small>Error en campo $campo <!--".$data->data->getMessage() . "--></small><br/>";
+              $size = ($data->dd[$campo]['size'] > 0) ? '('.$data->dd[$campo]['size'].')': '';
+              $sql_fix .= "ALTER TABLE $data->name ADD COLUMN $campo ". $data->dd[$campo]['type'] . "$size;\n";
+            }
+          }
+        }
+      } else
+        $tables_output .= "$green<br/>";
+    }
+    break;
   case 'sql':
     foreach($tables as $key)
       $output .= genSQL($key);
@@ -131,30 +267,51 @@ if (isset($_REQUEST['action'])) {
     $output .= "}\n";
     break;
   case 'test':
-    $red = '<font color="red">FALL&Oacute;</font>';
-    $green = '<font color="green">PAS&Oacute;</font>';
-    print "Probando conexion a base de datos... ";
-    $db =& MDB2::connect (DSN);
-    if (PEAR::isError($db)) {
-      $error_msg = $db->getMessage();
-      print "$red <i>$error_msg</i><br/>";
-    } else {
-      print "$green<br/>";
-    }
-    print "Probando configuracion de PHP... ";
-    if (get_cfg_var('short_open_tag') != 1) {
-      print "$red <i>short_open_tag = ".get_cfg_var('short_open_tag')."</i><br/>";
-    } else {
-      print "$green<br/>";
-    }
-    print "Probando permisos de directorios... ";
-    if (checkPerms($smarty->compile_dir = ROOTDIR . '/templates_c/') != 1) {
-      print "$red <i>mod = ".checkPerms($smarty->compile_dir = ROOTDIR . '/templates_c/')."</i><br/>";
-    } else {
-      print "$green<br/>";
-    }
+    performTests();
+    break;
   }
   switch($action) {
+  case 'failed':
+  case 'test':
+    if (isset($test_output)) print $test_output;
+    if (isset($admin_db_failed) || isset($public_db_failed)) {
+      print '<br/>Revise los datos de conexi&oacute;n en classes/config.php: <br/><!--<table border="1"><tr><td>'.DSN.'</td></tr></table>-->';
+      list($ptype,$ptmp) = split('://',$public_dsn);
+      list($pauth,$pdbname) = split('/',$ptmp);
+      list($pauth,$phost) = split('@',$pauth);
+      $pahost = empty($phost) ? '(local)' : $phost;
+      list($pusername,$ppass) = split(':',$pauth);
+      list($type,$tmp) = split('://',$admin_dsn);
+      list($auth,$dbname) = split('/',$tmp);
+      list($auth,$host) = split('@',$auth);
+      $ahost = empty($host) ? '(local)' : $host;
+      list($username,$pass) = split(':',$auth);
+      print "<form action=\"\" method=\"POST\">";
+      print "<input type=\"hidden\" name=\"action\" value=\"fixdb\"/>";
+      print "<table><tr><td></td><td>ADMIN</td><td>PUBLIC</td></tr>";
+      print "<tr><td>Host:</td> <td><input type=\"text\" name=\"host\" value=\"$ahost\"/><br/></td> <td><input type=\"text\" name=\"phost\" value=\"$pahost\"/><br/></td></tr>";
+      print "<tr><td>Tipo de base de datos:</td> <td><select name=\"type\"><option value=\"mysql\""; print ($type=='mysql') ? ' selected' : ''; print ">mysql</option>";
+      print "<option value=\"pgsql\""; print ($type=='pgsql') ? ' selected': ''; print ">pgsql</option></select><br/></td>";
+      print "<td><select name=\"ptype\"><option value=\"mysql\""; print ($ptype=='mysql') ? ' selected' : ''; print ">mysql</option>";
+      print "<option value=\"pgsql\""; print ($ptype=='pgsql') ? ' selected': ''; print ">pgsql</option></select><br/></td></tr>";
+      print "<tr><td>Nombre de la base de datos:</td> <td><input type=\"text\" name=\"dbname\" value=\"$dbname\"/><br/></td> <td><input type=\"text\" name=\"pdbname\" value=\"$pdbname\"/><br/></tr>"; 
+      print "<tr><td>Usuario:</td> <td><input type=\"text\" name=\"username\" value=\"$username\"/><br/></td> <td><input type=\"text\" name=\"pusername\" value=\"$pusername\"/><br/></td></tr>";
+      print "<tr><td>Password:</td> <td><input type=\"text\" name=\"pass\" value=\"$pass\"/><br/></td> <td><input type=\"text\" name=\"ppass\" value=\"$ppass\"/><br/></td</tr>";
+      print "</table>";
+      print "<input type=\"submit\" value=\"Guardar\"/>";
+      print "</form>";
+      // connect to a database named "mary" on "localhost" at port "5432"
+      $myhost = empty($host) ? '' : $host;
+    }
+    break;
+  case 'tables':
+    print "$tables_output";
+    if ($tables_failed) {
+      print '<br/><font color="red">Debes corregir estos errores en la base de datos.</font><br/>Puedes ayudarte del <a href="?action=sql">sql generado desde tables.class</a> o del texto a continuaci&oacute;n:';
+      if (isset($sql_fix))
+        print '<pre>'.$sql_fix.'</pre>';
+    }
+    break;
   case 'erd':
     header('Content-type: plain/text');
     header('Content-Disposition: attachment; filename="erd.dot"');
