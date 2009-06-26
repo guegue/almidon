@@ -24,6 +24,7 @@ tinyMCE.init({
         theme_advanced_resizing : true,
         plugins : "paste",
         plugins : "fullscreen",
+	{/literal}{if "TINYMCE_EXTENDED_VALID_ELEMENTS"|defined}extended_valid_elements:"{$smarty.const.TINYMCE_EXTENDED_VALID_ELEMENTS}",{/if}{literal}
         fullscreen_settings : {
                 theme_advanced_path_location : "top"
         }

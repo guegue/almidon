@@ -45,6 +45,8 @@ define ('TINYMCE_THEME', 'advanced');
 #define ('TINYMCE_TOOLBAR1','');
 #define ('TINYMCE_TOOLBAR2','');
 #define ('TINYMCE_TOOLBAR3','');
+# Permitir mas elementos htmls
+#define ('TINYMCE_EXTENDED_VALID_ELEMENTS','') // Ej: iframe[src|width|height|name|align]
 # Indica que se utilizara DB3, si el valor es true, en vez de DB2.
 #define ('DB3', true);
 
