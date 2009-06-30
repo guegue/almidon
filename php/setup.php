@@ -94,6 +94,38 @@ function genDD($object) {
   }
   return $dd;
 }
+function genColumnSQL($column, $dbtype, $key = false) {
+  $type = $column['type'];
+  if ($type == 'external') return;
+  if ($type == 'file' || $type == 'image' || $type == 'autoimage') {
+    $type = 'varchar';
+    $size = '500';
+  } elseif ($type == 'html' || $type == 'xhtml') {
+    $type = 'text';
+    $size = null;
+  } elseif ($type == 'datetime') {
+    $type = 'timestamp';
+    $size = null;
+  } elseif ($type == 'auth_user') {
+    $type = 'varchar';
+    $size = '32';
+  } elseif ($type == 'datenull') {
+    $type = 'date';
+    $size = null;
+  }
+  if ($dbtype == 'pgsql') {
+    if ($type == 'order') $type = 'serial NULL';
+  } elseif ($dbtype == 'mysql') {
+    if ($type == 'order' ||  $type == 'serial') $type = 'int AUTO_INCREMENT';
+  }
+  $size = $column['size'];
+  $size = preg_replace("/\./", ",", $size);
+  $sql .= "  ".$column['name']." ".$type;
+  if ($size) $sql .= " (".$size.")";
+  if ($key) $sql .= " PRIMARY KEY NOT NULL";
+  if ($column['references']) $sql .= " REFERENCES ".$column['references'];
+  return $sql;
+}
 function genSQL($object) {
   $o = $object . "Table";
   $data = new $o;
@@ -103,35 +135,9 @@ function genSQL($object) {
   if($data->definition)
   foreach($data->definition as $column) {
     unset($size);
-    if (!isset($type)) $type = '';
-    if (!isset($size)) $size = '';
     if ($type == 'external') next($data->definition);
     if ($i) $sql .= " ,\n";
-    $type = $column['type'];
-    if ($type == 'file' || $type == 'image' || $type == 'autoimage') {
-      $type = 'varchar';
-      $size = '500';
-    } elseif ($type == 'html' || $type == 'xhtml') {
-      $type = 'text';
-      $size = null;
-    } elseif ($type == 'datetime') {
-      $type = 'timestamp';
-      $size = null;
-    } elseif ($type == 'auth_user') {
-      $type = 'varchar';
-      $size = '32';
-    }
-    if ($dbtype == 'pgsql') {
-      if ($type == 'order') $type = 'serial NULL';
-    } elseif ($dbtype == 'mysql') {
-      if ($type == 'order' ||  $type == 'serial') $type = 'int AUTO_INCREMENT';
-    }
-    if (!$size) $size = $column['size'];
-    $size = preg_replace("/\./", ",", $size);
-    $sql .= "  ".$column['name']." ".$type;
-    if ($size) $sql .= " (".$size.")";
-    if ($column['name'] == $data->key) $sql .= " PRIMARY KEY NOT NULL";
-    if ($column['references']) $sql .= " REFERENCES ".$column['references'];
+    $sql .= genColumnSQL($column, $dbtype, $column['name'] == $data->key );
     ++$i;
   }
   $sql .= "\n);\n\n";
@@ -199,12 +205,15 @@ if (!empty($action)) {
       $sql = genSQL($key);
       $keyTable = $key . 'Table';
       $data = new $keyTable;
+      $dbtype = $data->database->dsn['phptype'];
       #error_reporting(0);
-      if (!isset($id)) $id = $data->getVar("SELECT MAX(" . $data->key . ") FROM " . $data->name);
+      #if (!isset($id)) $id = $data->getVar("SELECT MAX(" . $data->key . ") FROM " . $data->name);
       if ($data->join) {
-        $sqlcmd = "SELECT $data->all_fields FROM $data->name " . $data->getJoin() . " WHERE $data->name.$data->key = '$id'";
+        #$sqlcmd = "SELECT $data->all_fields FROM $data->name " . $data->getJoin() . " WHERE $data->name.$data->key = '$id'";
+        $sqlcmd = "SELECT $data->all_fields FROM $data->name " . $data->getJoin() . " LIMIT 1";
       } else {
-        $sqlcmd = "SELECT $data->fields FROM $data->name WHERE $data->name.$data->key = '$id'";
+        #$sqlcmd = "SELECT $data->fields FROM $data->name WHERE $data->name.$data->key = '$id'";
+        $sqlcmd = "SELECT $data->fields FROM $data->name LIMIT 1";
       }
       $tables_output .= "Tabla $key ";
       @$data->execSql($sqlcmd);
@@ -227,7 +236,7 @@ if (!empty($action)) {
             if (PEAR::isError($data->data)) {
               $tables_output .= "&nbsp;&nbsp;&nbsp;&nbsp;<small>Error en campo $campo <!--".$data->data->getMessage() . "--></small><br/>";
               $size = ($data->dd[$campo]['size'] > 0) ? '('.$data->dd[$campo]['size'].')': '';
-              $sql_fix .= "ALTER TABLE $data->name ADD COLUMN $campo ". $data->dd[$campo]['type'] . "$size;\n";
+              $sql_fix .= "ALTER TABLE $data->name ADD COLUMN " . genColumnSQL($data->dd[$campo], $dbtype, $dd[$campo]['name'] == $data->key).";\n";
             }
           }
         }

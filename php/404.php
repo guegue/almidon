@@ -37,7 +37,7 @@ if(strrpos($object, '.')!==false) $object = substr($object, 0, strrpos($object, 
 # If I am... Go ahead try to create object (or setup)
 if ($object) {
   if ($object == 'setup') {
-    require('setup.php');
+    require(ALMIDONDIR.'/php/setup.php');
     exit;
   }
   $ot = $object . 'Table';
