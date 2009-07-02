@@ -75,8 +75,14 @@ if ($object) {
       $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
     $tpl = ROOTDIR . "/templates/admin/index.tpl";
   } else {
-    $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
-    $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
+    if(file_exists(ROOTDIR.'/templates/admin/header.tpl'))
+      $smarty->assign('header',ROOTDIR.'/templates/admin/header.tpl');
+    else
+      $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
+    if(file_exists(ROOTDIR.'/templates/admin/footer.tpl'))
+      $smarty->assign('header',ROOTDIR.'/templates/admin/footer.tpl');
+    else
+      $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
     $tpl = ALMIDONDIR . '/tpl/index.tpl';
   }
 }
