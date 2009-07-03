@@ -316,6 +316,11 @@ function smarty_function_dataform2($params, &$smarty)
                           addEvent(document.getElementById(\'' . $dd[$_key]['extra']['source'] . '\'), \'blur\', function () { if(document.getElementById(\'' . $_key . '\').value.replace(/(^\s*)|(\s*$)/g, \'\') == \'\')  document.getElementById(\'' . $_key . '\').value = ' . $dd[$_key]['extra']['apply_funct_js'] . '(document.getElementById(\'' . $dd[$_key]['extra']['source'] . '\').value) });
                         </script>';
             }
+            if($dd[$_key]['extra']['autocomplete']) {
+              $_tmp .= '<script type="text/javascript">
+                          $(\'#' . $_key . '\').autocomplete({ serviceUrl:' . ($dd[$_key]['extra']['autocomplete_sr']?$dd[$_key]['extra']['autocomplete_sr']:'\'/cms/js/autocomplete/autocomplete.php\'') . ', delimiter: /(,|;)\s*/, params: { table:\'' . $table . '\', field:\'' . $_key . '\' } });
+                        </script>';
+            }
           }
           break;
         case 'numeric':
@@ -523,7 +528,11 @@ function smarty_function_dataform2($params, &$smarty)
   }
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
 
-  if ($_SERVER['PHP_SELF'] == '/cms/404.php' || $_SERVER['PHP_SELF'] == '/cms/404c.php')
+  # christian | a new way to know if this pages is the 404.php file
+  $params = split('/',$_SERVER['PHP_SELF']);
+  $page = $params[count($params) - 1];
+  # end
+  if ($page == '404.php' || $page == '/cms/404c.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);

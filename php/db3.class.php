@@ -1,14 +1,16 @@
 <?php
 // vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 
-# Comentado Jue 5 Marzo 2009
-#foreach ($_POST as $j =>$value) {
-# if (stristr($value,"Content-Type")) {
-#   header("HTTP/1.0 403 Forbidden");
-#   echo "No spam allowed.";
-#   exit;
-# }
-#}
+/**
+ * db3.class.php
+ *
+ * DAL entre almidon y PEAR::MDB2
+ *
+ * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
+ * @version $Id: db3.class.php,v 20090703 christian $
+ * @package almidon
+ */
 
 // Constantes
 if (DEBUG === true) ini_set('display_errors', true);
@@ -20,20 +22,26 @@ if (!defined('ALMIDONDIR')) {
   define ('ALMIDONDIR', $almidondir);
 }
 
-# Directorio de instalación de almidon
+# Use Almidon's PEAR
 if (defined('ALMIDONDIR')) {
   if(defined('KEEP_INCPATH')&&KEEP_INCPATH===false)
     set_include_path(ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
   else
     set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
 }
+
 # Permisos por defecto para los directorios que se creen en files
 define('PERMIS_DIR',0775);
+
+# Other constants...
+if (!defined('ALM_SQL_DEBUG')) define('ALM_SQL_DEBUG', true);
 # Etiquetas permitidas
 if(!defined('ALM_ALLOW_TAGS')) define('ALM_ALLOW_TAGS', '<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>');
 
-require('DB.php');
 require('image.class.php');
+
+# Finally... the DAL...
+require_once('MDB2.php');
 
 class Data {
   // {{{ variables
@@ -56,9 +64,9 @@ class Data {
   function Data () {
     global $DSN;
     if ($DSN)
-      $this->database = DB::connect ($DSN);
+      $this->database =& MDB2::connect ($DSN);
     else
-      $this->database = DB::connect (DSN);
+      $this->database =& MDB2::connect (DSN);
     $this->check_error($this->database,'',true);
     $this->num = 0;
     $this->cols = 0;
@@ -76,7 +84,7 @@ class Data {
       if (DEBUG === true) trigger_error(htmlentities($error_msg));
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
       if ($die) die();
-    } elseif (DEBUG === true && $extra)
+    } elseif (ALM_SQL_DEBUG !== false && $extra)
       $this->sql_log($extra);
   }
 
@@ -122,7 +130,7 @@ class Data {
 
   function getVar($sqlcmd) {
     $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(DB_FETCHMODE_ORDERED);
+    $row = $this->data->fetchRow(MDB2_FETCHMODE_ORDERED);
     return $row[0];
   }
 
@@ -130,7 +138,7 @@ class Data {
   function getList($sqlcmd) {
     $this->execSql($sqlcmd);
     for ($i = 0; $i < $this->num; $i++) {
-      $row = $this->data->fetchRow(DB_FETCHMODE_ORDERED);
+      $row = $this->data->fetchRow(MDB2_FETCHMODE_ORDERED);
       $array_rows[] = $row[0];
     }
     return $array_rows;
@@ -138,7 +146,7 @@ class Data {
 
   function getArray() {
     for ($i = 0; $i < $this->num; $i++) {
-      $row = $this->data->fetchRow(DB_FETCHMODE_ASSOC);
+      $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
       if ($row[$this->key] == $this->current_id)
         $this->current_record = $row;
       if ($this->html)
@@ -156,7 +164,7 @@ class Data {
     $num = $result->numRows();
     $menu = array();
     for ($i=0; $i < $num; $i++) {
-      $r = $result->fetchRow(DB_FETCHMODE_ORDERED);
+      $r = $result->fetchRow(MDB2_FETCHMODE_ORDERED);
       $new = array($r[0] => $r[1]);
       $menu = $menu + $new;
     }
@@ -179,7 +187,7 @@ class Data {
     $num = $result->numRows();
     $menu = array();
     for ($i=0; $i < $num; $i++) {
-      $r = $result->fetchRow(DB_FETCHMODE_ORDERED);
+      $r = $result->fetchRow(MDB2_FETCHMODE_ORDERED);
       $new = array($r[0] => $r[1]);
       $menu = $menu + $new;
     }
@@ -337,7 +345,7 @@ class Table extends Data {
 
   function parsevar($tmpvar, $type = 'string', $html = false) {
     if ($this->database)
-      $tmpvar = $this->database->escapeSimple($tmpvar);
+      $tmpvar = $this->database->escape($tmpvar);
     switch ($type) {
       case 'varchar':
         $type = 'string';
@@ -456,7 +464,7 @@ class Table extends Data {
                 }
 	          }
           }
-          $value = $this->database->escapeSimple($this->request[$column['name']]);
+          $value = $this->database->escape($this->request[$column['name']]);
           $values .= "'" . $value . "'";
           break;
         case 'file':
@@ -471,7 +479,7 @@ class Table extends Data {
             $this->request[$column['name']] = 'NULL';
             $values .= $this->request[$column['name']];
           } else {
-            $value = $this->database->escapeSimple($this->request[$column['name']]);
+            $value = $this->database->escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           }
           break;
@@ -481,12 +489,12 @@ class Table extends Data {
             $this->request[$column['name']] = 'NULL';
             $values .= $this->request[$column['name']];
           } else {
-            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escapeSimple($this->request[$column['name']]);
+            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           }
           break;
         case 'text':
-          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escapeSimple($this->request[$column['name']]);
+          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
           $values .= "'" . $value . "'";
           break;
         case 'bool':
@@ -500,7 +508,7 @@ class Table extends Data {
         case 'datenull':
           $value = $this->request[$column['name']];
           if (isset($value) && $value != 'CURRENT_DATE' && $value != '0-00-0' && !empty($value)) {
-            $value = $this->database->escapeSimple($this->request[$column['name']]);
+            $value = $this->database->escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {
             $values .= 'NULL';
@@ -508,7 +516,7 @@ class Table extends Data {
           }
           break;
         default:
-          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escapeSimple($this->request[$column['name']]);
+          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
           $values .= "'" . $value . "'";
           break;
       }
@@ -564,7 +572,7 @@ class Table extends Data {
             $filename =  $timemark[0] . "_" . $this->request[$column['name']];
 	          if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
-            $value = $this->database->escapeSimple($filename);
+            $value = $this->database->escape($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
             if ($timemark['mon']<10 && strlen($timemark['mon'])==1)  $timemark['mon'] = "0" . $timemark['mon'];
             if ($column['extra']['sizes'] && defined('PIXDIR')) {
@@ -607,7 +615,7 @@ class Table extends Data {
             $filename =  mktime() . "_" . $this->request[$column['name']];
 	        if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
-            $value = $this->database->escapeSimple($filename);
+            $value = $this->database->escape($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;
@@ -616,7 +624,7 @@ class Table extends Data {
             $this->request[$column['name']] = 'NULL';
             $values .= $column['name'] . "=" . $this->request[$column['name']];
           } else {
-            $value = $this->database->escapeSimple($this->request[$column['name']]);
+            $value = $this->database->escape($this->request[$column['name']]);
             $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;
@@ -625,12 +633,12 @@ class Table extends Data {
             $this->request[$column['name']] = 'NULL';
             $values .= $column['name'] . "=" . $this->request[$column['name']];
           } else {
-            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escapeSimple($this->request[$column['name']]);
+            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
             $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;
         case 'text':
-          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escapeSimple($this->request[$column['name']]);
+          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
           $values .= $column['name'] . "=" ."'" . $value . "'";
           break;
         case 'bool':
@@ -643,7 +651,7 @@ class Table extends Data {
         case 'datenull':
           $value = $this->request[$column['name']];
           if ($value && $value != 'CURRENT_DATE' && $value != ' ') {
-            $value = $this->database->escapeSimple($this->request[$column['name']]);
+            $value = $this->database->escape($this->request[$column['name']]);
             $values .= $column['name'] . "= '" . $value . "'";
           } else {
             $values .= $column['name'] . "= NULL";
@@ -651,7 +659,7 @@ class Table extends Data {
           }
           break;
         default:
-          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escapeSimple($this->request[$column['name']]);
+          $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
           $values .= $column['name'] . "=" ."'" . $value . "'";
           break;
       }
@@ -716,7 +724,7 @@ class Table extends Data {
     } else
       $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key = '$id'";
     $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(DB_FETCHMODE_ASSOC);
+    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
     if ($this->html)
       foreach($row as $key=>$val)
         $row[$key] = htmlentities($val);
@@ -726,7 +734,7 @@ class Table extends Data {
 
   function readRecordSQL($sqlcmd) {
     $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(DB_FETCHMODE_ASSOC);
+    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
     $this->current_record = $row;
     return $row;
   }
@@ -849,7 +857,7 @@ class TableDoubleKey extends Table {
     } else
       $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key1 = '$id1' AND $this->name.$this->key2 = '$id2'";
     $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(DB_FETCHMODE_ASSOC);
+    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
     $this->current_record = $row;
     return $row;
   }

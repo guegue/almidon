@@ -32,6 +32,11 @@ tinyMCE.init({
 
 {/literal}
 </script>
+<!-- Autocomplete -->
+<script type="text/javascript" src="/cms/js/autocomplete/jquery.js"></script>
+<script type="text/javascript" src="/cms/js/autocomplete/jquery.autocomplete.min.js"></script>
+<link rel="stylesheet" href="/cms/js/autocomplete/jquery.autocomplete.css" />
+<!-- Default CSS -->
 <link rel="stylesheet" href="/cms/css/adm.css">
 <title>{$title}</title>
 {confirm_delete}
