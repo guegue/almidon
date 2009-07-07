@@ -13,21 +13,20 @@ switch ($action) {
     break;
   case 'add':
     $$object->addRecord();
-    //$smarty->clear_all_cache();
+    # Para los tags
+    verifyNewTags($$object);
     break;
   case 'delete':
     $$object->deleteRecord();
-    //$smarty->clear_all_cache();
     break;
   case 'save':
     $$object->updateRecord();
-    //$smarty->clear_all_cache();
+    verifyNewTags($$object);
     break;
   case 'dgsave':
     $maxcols = ($_REQUEST['maxcols']) ? $_REQUEST['maxcols'] : MAXCOLS;
     # Por que nofiles? Tambien debe poder cambiar, nofiles es la tercera opcion de updateRecord
     $$object->updateRecord(0, $maxcols, 0);
-    //$smarty->clear_all_cache();
     break;
   case 'move':
     $limit = $$object->limit;
@@ -50,7 +49,35 @@ switch ($action) {
     $$object->limit = $limit;
     unset($limit);
     break;
+  case 'search':
+    $cols = split(',',$$object->search);
+    $s_ftr = '';
+    $q_ftr = '';
+    if($cols) {
+      foreach($cols as $col) {
+        if(!empty($_REQUEST[$col . 'search'])) {
+          if(!empty($q_ftr)) $q_ftr .= ' AND ';
+          $q_ftr .= "lower($col)" . ' LIKE lower(\'%' . $$object->database->escape($_REQUEST[$col . 'search']) . '%\')';
+          $s_ftr .= "$col => " . htmlspecialchars($_REQUEST[$col . 'search'],ENT_COMPAT,'UTF-8');
+        }
+      }
+    }
+    $_SESSION[$object . 'ssearch'] = $s_ftr;
+    $_SESSION[$object . 'query'] = $q_ftr;
+    break;
+  case 'clear':
+    unset($_SESSION[$object . 'ssearch']);
+    unset($_SESSION[$object . 'query']);
+    
+    break;
 }
+# Para la busqueda
+if(!empty($_SESSION[$object . 'query'])) {
+  if(!empty($$object->filter)) $$object->filter .= ' AND ';
+  else $$object->filter = '';
+  $$object->filter .= "(" . $_SESSION[$object . 'query'] . ")";
+}
+# End - Para la busqueda
 if (isset($_REQUEST[$object . 'sort']) && !empty($_REQUEST[$object . 'sort'])) $_SESSION[$object . 'sort'] = $_REQUEST[$object . 'sort'];
 if (isset($_REQUEST[$object . 'pg']) && !empty($_REQUEST[$object . 'pg'])) $_SESSION[$object . 'pg'] = $_REQUEST[$object . 'pg'];
 $$object->order = (isset($_SESSION[$object . 'sort'])) ? $_SESSION[$object .'sort'] : $$object->order;
@@ -118,6 +145,7 @@ $count_key = $$object->key ? $$object->key : $$object->key1;
 $smarty->assign('num_rows', $$object->getVar("SELECT COUNT(".$count_key.") FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));
 $smarty->assign('dd', $$object->dd);
 $smarty->assign('key', $$object->key);
+$smarty->assign('search', $$object->search);
 $smarty->assign('add', isset($$object->add)?$$object->add:true);
 if (isset($$object->key1))
   $smarty->assign('key1', $$object->key1);
@@ -170,4 +198,24 @@ function fillOpt(&$object) {
     }
   if (isset($options))
     return $options;
+}
+
+function verifyNewTags (&$object) {
+  # Begining - Para los tags
+  foreach($object->dd as $col) {
+    # Cuando se agarran de otra tabla
+    unset($tags);
+    if(!empty($col['extra']['autocomplete_tb']) && $object->name != $col['extra']['autocomplete_tb']) {
+      $object->sql_log("Examinando en busca de nuevas palabras claves");
+      $tags = split(',',trim($_REQUEST[$col['name']]));
+      if($tags)
+        foreach($tags as $tag) {
+          $tag = trim($tag);
+          $exist = (bool) $object->getVar("SELECT " . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . " FROM " . $col['extra']['autocomplete_tb'] . " WHERE lower(" . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . ") LIKE lower('" . $object->database->escape($tag) . "') LIMIT 1");
+          if(!$exist) $object->query("INSERT INTO " . $col['extra']['autocomplete_tb'] . " (" . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . ") VALUES ('" . $object->database->escape($tag) . "')");
+        }
+      $object->sql_log("Fin Examen de nuevas palabras claves");
+    }
+  }
+  # End - Para los tags
 }

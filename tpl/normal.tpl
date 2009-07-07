@@ -2,14 +2,14 @@
 <table>
 <tr valign="top">
 <td>
-{if $rows}
-  {if $smarty.const.DB3 === true}
+{if $smarty.const.DB3 === true}
   {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:8 paginate=true cmd=$cmd|default:true name=$object have_detail=$have_detail num_rows=$num_rows}
-  {else}
-  {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object num_rows=$num_rows}
-  {/if}
 {else}
+  {if $rows}
+  {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object num_rows=$num_rows}
+  {else}
   No hay datos.
+  {/if}
 {/if}
 </td>
 <td>{if $add===true || $row}{if $smarty.const.DB3 === true}{dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{else}{dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{/if}{else}&nbsp;<!--No esta permito agregar solo modificar-->{/if}</td>

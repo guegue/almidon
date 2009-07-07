@@ -318,7 +318,7 @@ function smarty_function_dataform2($params, &$smarty)
             }
             if($dd[$_key]['extra']['autocomplete']) {
               $_tmp .= '<script type="text/javascript">
-                          $(\'#' . $_key . '\').autocomplete({ serviceUrl:' . ($dd[$_key]['extra']['autocomplete_sr']?$dd[$_key]['extra']['autocomplete_sr']:'\'/cms/js/autocomplete/autocomplete.php\'') . ', delimiter: /(,|;)\s*/, params: { table:\'' . $table . '\', field:\'' . $_key . '\' } });
+                          $(\'#' . $_key . '\').autocomplete({ serviceUrl:' . ($dd[$_key]['extra']['autocomplete_sr']?$dd[$_key]['extra']['autocomplete_sr']:'\'/cms/js/autocomplete/autocomplete.php\'') . ', delimiter: /(,|;)\s*/, params: { table:\'' . ($dd[$_key]['extra']['autocomplete_tb']?$dd[$_key]['extra']['autocomplete_tb']:$table) . '\', field:\'' . ($dd[$_key]['extra']['autocomplete_fd']?$dd[$_key]['extra']['autocomplete_fd']:($dd[$_key]['extra']['autocomplete_tb']?$dd[$_key]['extra']['autocomplete_tb']:$_key)) . '\' } });
                         </script>';
             }
           }
@@ -532,7 +532,7 @@ function smarty_function_dataform2($params, &$smarty)
   $params = split('/',$_SERVER['PHP_SELF']);
   $page = $params[count($params) - 1];
   # end
-  if ($page == '404.php' || $page == '/cms/404c.php')
+  if ($page == '404.php' || $page == '404c.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);

@@ -2,14 +2,14 @@
 <table>
 <tr valign="top">
 <td>
-{if $rows}
-  {if $smarty.const.DB3 === true}
-  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:10 paginate=true cmd=$cmd|default:true name=$object have_detail=$have_detail num_rows=$num_rows}
-  {else}
-  {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:5 paginate=true cmd=true name=$object num_rows=$num_rows}
-  {/if}
+{if $smarty.const.DB3 === true}
+  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:10 paginate=true cmd=$cmd|default:true name=$object have_detail=$have_detail num_rows=$num_rows search=$search}
 {else}
+  {if $rows}
+  {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:5 paginate=true cmd=true name=$object num_rows=$num_rows}
+  {else}
   No hay datos.
+  {/if}
 {/if}
 </td>
 </tr>
