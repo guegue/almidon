@@ -1,1 +1,0 @@
-../../../smarty/function.mini_calendar.php

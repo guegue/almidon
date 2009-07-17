@@ -1,1 +1,0 @@
-../../../smarty/function.http_user_auth.php

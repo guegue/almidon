@@ -1,1 +1,0 @@
-../../../smarty/validate/validate_criteria.isEqual.php
