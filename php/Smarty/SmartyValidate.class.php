@@ -1,1 +1,0 @@
-../../smarty/validate/SmartyValidate.class.php
