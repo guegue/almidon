@@ -211,8 +211,10 @@ function verifyNewTags (&$object) {
       if($tags)
         foreach($tags as $tag) {
           $tag = trim($tag);
-          $exist = (bool) $object->getVar("SELECT " . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . " FROM " . $col['extra']['autocomplete_tb'] . " WHERE lower(" . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . ") LIKE lower('" . $object->database->escape($tag) . "') LIMIT 1");
-          if(!$exist) $object->query("INSERT INTO " . $col['extra']['autocomplete_tb'] . " (" . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . ") VALUES ('" . $object->database->escape($tag) . "')");
+          if(!empty($tag)) {
+            $exist = (bool) $object->getVar("SELECT " . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . " FROM " . $col['extra']['autocomplete_tb'] . " WHERE lower(" . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . ") LIKE lower('" . $object->database->escape($tag) . "') LIMIT 1");
+            if(!$exist) $object->query("INSERT INTO " . $col['extra']['autocomplete_tb'] . " (" . (!empty($col['extra']['autocomplete_fd'])?$col['extra']['autocomplete_fd']:$col['extra']['autocomplete_tb']) . ") VALUES ('" . $object->database->escape($tag) . "')");
+          }
         }
       $object->sql_log("Fin Examen de nuevas palabras claves");
     }

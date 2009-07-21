@@ -433,36 +433,41 @@ class Table extends Data {
 			      0	Segundos desde el Epoch Unix, similar a los valores devueltos por time() y usados por date(). 	Depende del sistema, t’picamente -2147483648 a 2147483647 (equivalente al mktime).
           	*/
             $filename =  $timemark[0] . "_" . $this->request[$column['name']];
-	          if (!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
-            move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
-            $this->request[$column['name']] = $filename;
-	          if ($column['extra']['sizes'] && defined('PIXDIR'))  {
-              $sizes = explode(',',trim($column['extra']['sizes']));
-              if ($column['extra']['radius'])  $radius = explode (',',trim($column['extra']['radius']));
+	    if (!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+            if(move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename)) {
+              $this->request[$column['name']] = $filename;
+	      if ($column['extra']['sizes'] && defined('PIXDIR'))  {
+                $sizes = explode(',',trim($column['extra']['sizes']));
+                if ($column['extra']['radius'])  $radius = explode (',',trim($column['extra']['radius']));
+              }
+	      if(isset($sizes))  {
+                $image = new almImage();
+                if ($timemark['mon']<10&&strlen($timemark['mon'])==1) $timemark['mon'] = "0" . $timemark['mon'];
+                // Comprueba que existan los directorios y sino
+	        // los crea
+	        if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
+	        if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
+                if($sizes)
+                  for($idx=0;$idx<count($sizes);$idx++) {
+                    $pic = null;
+	            list($w, $h, $crop) = split("x", trim($sizes[$idx]));
+		    if($crop&&$h) {
+                      $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+                    } else {
+                      $pic = $image->resize(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
+                    }
+                    $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
+                    if($radius[$idx]>0)  $pic = $image->rounded($pic,$radius[$idx]);
+                    if (imagejpeg($pic, $thumbf, IMG_QUALITY) === FALSE) {
+                      error_log("ERROR al escribir " . $thumbf);
+                    }
+                  }
+	      }
+            } else {
+              $this->request[$column['name']] = '';
             }
-	          if(isset($sizes))  {
-              $image = new almImage();
-              if ($timemark['mon']<10&&strlen($timemark['mon'])==1) $timemark['mon'] = "0" . $timemark['mon'];
-              // Comprueba que existan los directorios y sino
-	            // los crea
-	            if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
-	            if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
-              if($sizes)
-                for($idx=0;$idx<count($sizes);$idx++) {
-                  $pic = null;
-	                list($w, $h, $crop) = split("x", trim($sizes[$idx]));
-		              if($crop&&$h) {
-                    $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
-                  } else {
-                    $pic = $image->resize(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
-                  }
-                  $thumbf = PIXDIR . "/" . $timemark['year'] . "/" . $timemark['mon'] . "/$w" . ($h?"x$h":"") . "_" . $filename;
-                  if($radius[$idx]>0)  $pic = $image->rounded($pic,$radius[$idx]);
-                  if (imagejpeg($pic, $thumbf, IMG_QUALITY) === FALSE) {
-                    error_log("ERROR al escribir " . $thumbf);
-                  }
-                }
-	          }
+          } else {
+            $this->request[$column['name']] = '';
           }
           $value = $this->database->escape($this->request[$column['name']]);
           $values .= "'" . $value . "'";
@@ -471,8 +476,10 @@ class Table extends Data {
           if ($this->files[$column['name']]) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
 	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
-            move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
-            $this->request[$column['name']] = $filename;
+            if(move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename))
+              $this->request[$column['name']] = $filename;
+          } else {
+            $this->request[$column['name']] = '';
           }
         case 'char':
           if ($this->request[$column['name']] == -1) {
@@ -549,30 +556,32 @@ class Table extends Data {
           break;
         case 'image':
           if ($nofiles || ($_REQUEST[$column['name'] . '_keep']&&!$this->files[$column['name']]) || !$this->files[$column['name']]) {
-            if (!$_REQUEST[$column['name'] . '_keep'] && !$this->files[$column['name']])
+            if (!$_REQUEST[$column['name'] . '_keep'] && !$this->files[$column['name']]) {
               $values .= $column['name'] . "=''";
-            else
+            } else {
               $values .= $column['name'] . "=" . $column['name'];
+            }
             if(($this->request['old_'.$column['name']] != $this->files[$column['name']]) && $this->request['old_'.$column['name']] && !$_REQUEST[$column['name'] . '_keep']) {
-	            if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']])) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
-  	          if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',trim($column['extra']['sizes']));
-     	        if (isset($sizes)) {
-       			  // esta linea da un warning: Warning: Wrong parameter count for strpos() in /www/cms/php/db3.class.php on line 550 Warning: Wrong parameter count for substr() in /www/cms/php/db3.class.php on line 550
-	          	  $timemark = getdate(substr($this->request['old_'.$column['name']],0,strpos($this->request['old_'.$column['name']]),"_"));
+	      if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']])) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
+  	      if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',trim($column['extra']['sizes']));
+     	      if (isset($sizes)) {
+       	        // esta linea da un warning: Warning: Wrong parameter count for strpos() in /www/cms/php/db3.class.php on line 550 Warning: Wrong parameter count for substr() in /www/cms/php/db3.class.php on line 550
+	        $timemark = getdate(substr($this->request['old_'.$column['name']],0,strpos($this->request['old_'.$column['name']]),"_"));
                 if ($timemark['mon']<10 && strlen($timemark['mon'])==1)  $timemark['mon'] = "0" . $timemark['mon'];
                 if($sizes)
-	                foreach($sizes as $size) {
-	                  list($w, $h, $crop) = split("x", trim($size));
-	                  if(file_exists(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']])) unlink(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']]);
-	                }
-  	          }
+	          foreach($sizes as $size) {
+	            list($w, $h, $crop) = split("x", trim($size));
+	            if(file_exists(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']])) unlink(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']]);
+	          }
+  	        }
             }
           } elseif ($this->files[$column['name']]) {
-          	$timemark = getdate();
+            $timemark = getdate();
             $filename =  $timemark[0] . "_" . $this->request[$column['name']];
-	          if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
-            move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
-            $value = $this->database->escape($filename);
+	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+            if(move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename))
+              $value = $this->database->escape($filename);
+            else $value ='';
             $values .= $column['name'] . "=" ."'" . $value . "'";
             if ($timemark['mon']<10 && strlen($timemark['mon'])==1)  $timemark['mon'] = "0" . $timemark['mon'];
             if ($column['extra']['sizes'] && defined('PIXDIR')) {
@@ -605,7 +614,6 @@ class Table extends Data {
           }
           break;
         case 'file':
-          #if ($nofiles) break;
           if ($nofiles || $_REQUEST[$column['name'] . '_keep'] || !$this->files[$column['name']]) {
             if (!$_REQUEST[$column['name'] . '_keep'] && !$this->files[$column['name']])
               $values .= $column['name'] . "=''";
@@ -613,9 +621,10 @@ class Table extends Data {
               $values .= $column['name'] . "=" . $column['name'];
           } elseif ($this->files[$column['name']]) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
-	        if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
-            move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename);
-            $value = $this->database->escape($filename);
+	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+            if(move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename))
+              $value = $this->database->escape($filename);
+            else $value = '';
             $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;

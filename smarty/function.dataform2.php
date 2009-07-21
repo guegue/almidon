@@ -85,6 +85,8 @@ function smarty_function_dataform2($params, &$smarty)
   require_once $smarty->_get_plugin_filepath('modifier','truncate');
   require_once $smarty->_get_plugin_filepath('modifier','nl2br');
   require_once $smarty->_get_plugin_filepath('modifier','wordwrap');
+  require_once $smarty->_get_plugin_filepath('modifier','return_bytes');
+  require_once $smarty->_get_plugin_filepath('modifier','fsize_format');
   $row = array();
   $dd = array();
   $options = array();
@@ -158,6 +160,14 @@ function smarty_function_dataform2($params, &$smarty)
   $_html_result = '';
 
   $h_f = ($key2) ? F2 : F;
+  # Determinar el tamaño máximo de los archivo
+  $upload = smarty_modifier_return_bytes(ini_get('upload_max_filesize'));
+  $post = smarty_modifier_return_bytes(ini_get('post_max_size'));
+  $max_size = 0;
+  if($upload<$post)
+    $max_size = $upload;
+  else $max_size = $post;
+  $max_size = smarty_modifier_fsize_format($max_size);
 
   # Crea las filas del dataform
   $_i = 0;
@@ -230,13 +240,13 @@ function smarty_function_dataform2($params, &$smarty)
             if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
             $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /><br />';
           }
-          $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
+          $_tmp .= '[' . $max_size . ']<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
         case 'image':
         case 'img':
           $_tmp = '';
           $_icon = 'image.png';
-          $_tmp = '<input name="old_'.$_key.'" type="hidden" value="'.$_val.'" /><img src="/cms/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
+          $_tmp = '[' . $max_size . ']<input name="old_'.$_key.'" type="hidden" value="'.$_val.'" /><img src="/cms/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
           if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
           $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
@@ -567,5 +577,4 @@ function smarty_function_dataform2($params, &$smarty)
   return $_html_result;
 
 }
-
 ?>
