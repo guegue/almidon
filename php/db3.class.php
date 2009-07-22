@@ -343,7 +343,7 @@ class Table extends Data {
     $this->cols++;
   }
 
-  function parsevar($tmpvar, $type = 'string', $html = false) {
+  function parsevar($tmpvar, $type = 'string', $html = false, $ena_js = false) {
     if ($this->database)
       $tmpvar = $this->database->escape($tmpvar);
     switch ($type) {
@@ -362,7 +362,7 @@ class Table extends Data {
         $type = 'string';
     }
     settype($tmpvar,$type);
-    if ($type == 'string') {
+    if ($type == 'string' && !$ena_js) {
       $tmpvar = preg_replace("/<script[^>]*?>.*?<\/script>/i", "", $tmpvar);
       $tmpvar = preg_replace("/javascript/i", "", $tmpvar); # Es necesario?
     }
@@ -903,6 +903,8 @@ class TableDoubleKey extends Table {
           $this->request[$column['name']] = $datetime;
         } elseif ($column['type'] == 'auth_user') {
           $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
+        } elseif($column['extra']['ena_js']!==false) {
+          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type'], false, $column['extra']['ena_js']);
         } else {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
         }

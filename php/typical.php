@@ -84,24 +84,29 @@ $$object->order = (isset($_SESSION[$object . 'sort'])) ? $_SESSION[$object .'sor
 $$object->pg = (isset($_SESSION[$object . 'pg'])) ? $_SESSION[$object . 'pg'] : 1;
 // Codigo nuevo, agregado para la funcionalidad del detalle
 // Detalle
+$detail = array();
 if(isset($$object->detail)) {
   $smarty->assign('have_detail', true);
-  $obj = $$object->detail;
-  $ot = $obj.'Table';
-  $$obj = new $ot;
-  $$obj->readEnv();
-  switch($_REQUEST['actiond']) {
-    case 'delete':
-    $tmp = $$obj->readRecord();
-    $$obj->deleteRecord();
-    //$smarty->clear_all_cache();
-    header('Location: ./'.$object.'.php?f='.$object.'&action=record&'.$$object->key.'='.$tmp[$$object->key]);
-    break;
-  }
-  if($row) {
-    $filter = "$obj.".$$object->key." = '".$row[$$object->key]."'";
-    $detail = array (
-		'name' => $$object->detail,
+  $classes = split(',',$$object->detail);
+  foreach ($classes as $class) {
+    $obj = trim($class);
+    $ot = $obj.'Table';
+    $$obj = new $ot;
+    $$obj->readEnv();
+    switch($_REQUEST['actiond']) {
+      case 'delete':
+       if($_REQUEST['od']==$obj) {
+         $tmp = $$obj->readRecord();
+         $$obj->deleteRecord();
+        //$smarty->clear_all_cache();
+        header('Location: ./'.$object.'.php?f='.$object.'&action=record&'.$$object->key.'='.$tmp[$$object->key]);
+      }
+      break;
+    }
+    if($row) {
+      $filter = "$obj.".$$object->key." = '".$row[$$object->key]."'";
+      $detail[] = array (
+		'name' => $obj,
 		'_ftable' => $object,
 		'_fkey' => $$object->key,
 		'_fkey_value' => $$object->request[$$object->key],
@@ -114,7 +119,8 @@ if(isset($$object->detail)) {
 		'maxcols'=> $$obj->maxcols,
                 'num_rows'=> $$obj->getVar("SELECT COUNT(".$$obj->key.") FROM ".$$obj->name." WHERE ".$filter)
 	    );
-  } 
+    } 
+  }
 }
 // --
 $smarty->assign('object', $object);

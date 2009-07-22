@@ -5,7 +5,7 @@
  * File:   function.share_bookmarklet.php<br>
  * Type:   function<br>
  * Name:   share_bookmarklet<br>
- * Params: [ css (bool) | domain (varchar) | site (varchar) | url (varchar) ]
+ * Params: [ css (bool) | outside (bool) | domain (varchar) | site (varchar) | url (varchar) ]
  * Date:   18.jul.2009<br>
  * Author: Christian Torres <chtorrez at gmail dot com>
  */
@@ -50,7 +50,7 @@ function smarty_function_share_bookmarklet($params, &$smarty) {
    $url = str_replace('[title]',rawurlencode($params['title']),$url);
    $url = str_replace('[desc]',rawurlencode($params['desc']),$url);
    $url = str_replace('[url]',rawurlencode($pageURL),$url);
-   $str .= '<li' . (($i==1&&$i<$total)?" class=\"first\"":(($i==$total&&$total!=1)?" class=\"last\"":"")) . '><a href="' . $url . '"'.(!empty($network['js_events'])?" ".$network['js_events']:"").'><img src="/cms/img/networks/' . $network['image'] . '" alt="' . htmlentities($network['label'],ENT_COMPAT,"UTF-8") . '" title="' . htmlentities($network['label'],ENT_COMPAT,"UTF-8") . '" border="0" /></a></li>';
+   $str .= '<li' . (($i==1&&$i<$total)?" class=\"first\"":(($i==$total&&$total!=1)?" class=\"last\"":"")) . '><a href="' . $url . '"'.($params['outside']!==false?" target=\"_blank\"":"").(!empty($network['js_events'])?" ".$network['js_events']:"").'><img src="' . (empty($params['path'])?"/cms/img/networks/":$params['path']) . $network['image'] . '" alt="' . htmlentities($network['label'],ENT_COMPAT,"UTF-8") . '" title="' . htmlentities($network['label'],ENT_COMPAT,"UTF-8") . '" border="0" /></a></li>';
   }
   $str .= "</ul>";
   return $str;
