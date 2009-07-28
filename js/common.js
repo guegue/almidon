@@ -9,8 +9,8 @@
   }
 
   function openwindow(href, w, h) {
-    if (!w) w = 350;
-    if (!h) h = 160;
+    if (!w) w = 500;
+    if (!h) h = 400;
     desktop = window.open('','_blank','toolbar=no,location=no,status=no,menubar=no,  scrollbars=yes,resizable=yes,width='+ w +',height='+ h +',screenX=100,screenY=50,top=100,left=50');
     desktop.location.href = href;
   }
