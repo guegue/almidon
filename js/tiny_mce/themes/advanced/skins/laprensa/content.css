@@ -19,6 +19,19 @@ cite {border-bottom:1px dashed blue}
 acronym {border-bottom:1px dotted #CCC; cursor:help}
 abbr, html\:abbr {border-bottom:1px dashed #CCC; cursor:help}
 p { margin:0;padding:0; }
+/* Etiquetas propias del sitio web */
+div.picture600x400 { float:none; background-color:#efefef; display:block; width:600px; padding:6px; }
+div.picture288x318, div.picture232x155, div.picture138x90 { margin-right: 10px; margin-bottom:10px; }
+div.picture288x318 { float:left; background-color:#efefef; display:block; width:288px; padding:6px; }
+div.picture232x155 { float:left; background-color:#efefef; display:block; width:232px; padding:6px; }
+div.picture138x90 { float:left; background-color:#efefef; display:block; width:138px; padding:6px; }
+div.note { margin-top:8px; color:#636363;font-size:font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; }
+blockquote { border:none; border-top:1px solid #8588a8; border-bottom:2px solid #8588a8; margin:0; padding:6; width:232px; margin-bottom:10px; }
+blockquote h2 { margin:0;padding:0;margin-bottom:3px;font-size:13px; }
+blockquote.left { float:left; margin-right:10px; }
+blockquote.right { float:right; margin-left:10px; }
+blockquote a { color: #afafaf; }
+blockquote a:hover { text-decoration:underline; }
 
 /* IE */
 * html body {
