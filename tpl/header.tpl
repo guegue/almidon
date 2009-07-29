@@ -13,7 +13,7 @@
 tinyMCE.init({
         mode : "none",
         theme : {/literal}{if "TINYMCE_THEME"|defined}"{$smarty.const.TINYMCE_THEME}"{else}"advanced"{/if}{literal},
-	skin : {/literal}{if "TINYMCE_SKIN"|defined}"{$smarty.const.TINYMCE_SKIN}"{else}"o2k7"{/if}{literal},
+	skin : {/literal}{if "TINYMCE_SKIN"|defined}"{$smarty.const.TINYMCE_SKIN}"{else}"almidon"{/if}{literal},
 	skin_variant : {/literal}{if "TINYMCE_SKIN_VAR"|defined}"{$smarty.const.TINYMCE_SKIN_VAR}"{else}"silver"{/if}{literal},
 
         theme_advanced_buttons1 : {/literal}{if "TINYMCE_TOOLBAR1"|defined}"{$smarty.const.TINYMCE_TOOLBAR1}"{else}"bold,italic,underline,strikethrough,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,hr,pastetext,pasteword,selectall,fullscreen"{/if}{literal},
