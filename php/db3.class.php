@@ -81,7 +81,7 @@ class Data {
       $error_msg = $obj->getMessage();
       #if ($extra) $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
       $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
-      if (DEBUG === true) trigger_error(htmlentities($error_msg));
+      #if (DEBUG === true) trigger_error(htmlentities($error_msg));
       error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
       if ($die) die();
     } elseif (ALM_SQL_DEBUG !== false && $extra)
