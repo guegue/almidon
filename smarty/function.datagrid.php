@@ -73,7 +73,20 @@ define('NEXT','| <a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_PGNE
 define('NPG','<a href="_SELF_?q=_Q_&f=_FORM_&_FORM_sort=_SORT_&_FORM_pg=_NPG_"> _NPG_ </a>');
 define('CURRENTPG','<strong>_NPG_</strong>');
 define('PAGINATE','<table><tr><td nowrap><br>_PGS_<br></td></tr></table>');
-  
+
+define('DGCMD2RVER', '<td class="dgcmd"></a></td>');
+define('DGCMD2REDIT', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
+define('DGCMD2RDEL', '<td class="dgcmd"><a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" title="'. DEL__LB .'" alt="'.ALM_DEL_LB.'"></a></td>');
+define('DGCMD2VER', '<td class="dgcmd"><a class="dgcmd_linksss" href="_SELF_?f=_FORM_&action=record&_KEY1_=_ID1_&_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a></td>');
+define('DGCMD2EDIT', '<td class="dgcmd"><a class="dgcmd_linksss" href="_SELF_?f=_FORM_&action=record&_KEY1_=_ID1_&_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a><a href="_SELF_?f=_FORM_&action=mod&_KEY1_=_ID1_&_KEY2_=_ID2_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
+define('DGCMD2DEL', '<td class="dgcmd"><a class="dgcmd_linksss" href="_SELF_?f=_FORM_&action=record&_KEY1_=_ID1_&_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a></td>');
+define('DGCMDEDIT', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_={_ID_}&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a><a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_={_ID_}&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
+define('DGCMDVER', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_={_ID_}&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a></td>');
+define('DGCMDDEL', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&action=record&_KEY_={_ID_}&_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"></a></td>');
+define('DGCMDRVER', '<td class="dgcmd"></td>');
+define('DGCMDRDEL', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"></a></td>');
+define('DGCMDREDIT', '<td class="dgcmd"><a href="_SELF_?q=_Q_&f=_FORM_&action=mod&_KEY_={_ID_}&_PARENT_=_PARENTID_&_FORM_pg=_PG_&_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"></a></td>');
+
 
 function smarty_function_datagrid($params, &$smarty)
 {
@@ -302,7 +315,15 @@ function smarty_function_datagrid($params, &$smarty)
         }
         $_html_row .= $_tmp;
       }
-      $_dgcmdmod = ($key2) ? DGCMD2MOD : DGCMDMOD;
+      if($key2){ 
+	if(in_array(1,$_SESSION['credentials'][$table])){
+	   $_dgcmdmod = DGCMD2MOD;
+	}elseif(in_array(2,$_SESSION['credentials'][$table])){
+	
+	}
+      }else{
+	  $_dgcmdmod =DGCMDMOD;
+      }
       $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmdmod);
     } else {
       $_cols = 0;
@@ -389,9 +410,38 @@ function smarty_function_datagrid($params, &$smarty)
         $_cols++;
       }
       if ($key2)
-        $_dgcmd = ($_cols <= 3 || $parent) ? DGCMD2R : DGCMD2;
+        if ($_cols <= 3 || $parent){
+		if(in_array(1,$_SESSION['credentials'][$table])){
+		$_dgcmd = DGCMD2R;
+		}elseif(in_array(2,$_SESSION['credentials'][$table])){
+		$_dgcmd = DGCMD2RVER;
+		}
+
+	}else{
+		$_dgcmd = DGCMD2;
+	}
       else
-        $_dgcmd = ($_cols <= 3 || $parent) ? DGCMDR : DGCMD;
+        if($_cols <= 3 || $parent){
+	  if(in_array(1,$_SESSION['credentials'][$table])){	
+	     $_dgcmd =  DGCMDR;
+          }elseif(in_array(2,$_SESSION['credentials'][$table])){
+	     $_dgcmd =  DGCMDRVER;
+	  }elseif(in_array(4,$_SESSION['credentials'][$table])){
+	     $_dgcmd =  DGCMDREDIT;
+	  }elseif(in_array(5,$_SESSION['credentials'][$table])){
+	     $_dgcmd =  DGCMDRDEL;
+	  }
+	}else{
+	  if(in_array(1,$_SESSION['credentials'][$table])){	
+	     $_dgcmd =  DGCMD;
+          }elseif(in_array(2,$_SESSION['credentials'][$table])){
+	     $_dgcmd =  DGCMDVER;
+	  }elseif(in_array(4,$_SESSION['credentials'][$table])){
+	     $_dgcmd =  DGCMDEDIT;
+	  }elseif(in_array(5,$_SESSION['credentials'][$table])){
+	     $_dgcmd =  DGCMDDEL;
+	  }
+	}
       $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmd);
       $_html_cmd = preg_replace("/_ID1_/", $row[$key1], $_html_cmd);
       $_html_cmd = preg_replace("/_ID2_/", $row[$key2], $_html_cmd);

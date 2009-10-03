@@ -12,7 +12,16 @@
   {/if}
 {/if}
 </td>
-<td>{if $add===true || $row}{if $smarty.const.DB3 === true}{dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{else}{dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{/if}{else}&nbsp;<!--No esta permito agregar solo modificar-->{/if}</td>
+<td>
+   {if in_array(1,$credenciales) || (in_array(2,$credenciales) && $smarty.session.accion == 'leer') }
+	   {if $add===true || $row}{if $smarty.const.DB3 === true}
+	        {dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}
+	   {else}
+	        {dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}
+	   {/if}
+	   {else}&nbsp;<!--No esta permito agregar solo modificar-->{/if}
+   {/if}	   
+</td>
 </tr>
 </table>
 <br/>

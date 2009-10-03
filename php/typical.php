@@ -2,6 +2,7 @@
 if (!$object)
   $object = ($_REQUEST['o']) ? $_REQUEST['o'] : $_REQUEST['f'];
 $$object->readEnv();
+
 $action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : null;
 switch ($action) {
   case 'edit':
@@ -10,6 +11,7 @@ switch ($action) {
     break;
   case 'record':
     $row = $$object->readRecord();
+    $_SESSION['accion'] = 'leer';
     break;
   case 'add':
     $$object->addRecord();
@@ -227,3 +229,4 @@ function verifyNewTags (&$object) {
   }
   # End - Para los tags
 }
+

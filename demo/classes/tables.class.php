@@ -1,4 +1,8 @@
 <?php
+
+# Implementacion cubana de usurios y roles
+require_once('users.class.php');
+
 class paginaTable extends Table {
   function paginaTable() {
     $this->Table('pagina');

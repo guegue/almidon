@@ -60,6 +60,7 @@ define('FCMD',
   '<tr><td class="dgcmd"><input type="submit" value="'. ALM_EDIT_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. ALM_CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
 define('FCMDMOD',
   '<tr><td class="dgcmd"><input type="submit" value="'. ALM_SAVE_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. ALM_CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
+
 define('FCMDADD', '<tr><td class="dgcmd"><input type="submit" value="'. ALM_ADD_LB .'" /></td></tr>');
 define('PREV','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGPREV_">&lt; '. ALM_PREV_LB .'</a> |');
 define('NEXT','| <a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGNEXT_">'. ALM_NEXT_LB .' &gt;</a>&nbsp;');
@@ -199,7 +200,7 @@ function smarty_function_dataform($params, &$smarty)
             list($_si, $_no)  = split(':',$dd[$_key]['extra']);
             $_tchecked = ($_val == 't') ? "checked" : "";
             $_fchecked = ($_val == 'f') ? "checked" : "";
-            $_tmp = $_si . '<input type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on" />' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="" />';
+            $_tmp = $_si . '<input3 type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on" />' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="" />';
           } else {
             $_checked = ($_val == 't') ? "checked" : "";
             $_tmp = '<input type="checkbox" name="' . $_key . '" ' . $_checked . ' />';
@@ -366,6 +367,7 @@ function smarty_function_dataform($params, &$smarty)
   if ($type == 2) { $_html_cmd = FCMDADD; $action = "add"; }
   if ($type == 1) { $_html_cmd = FCMDMOD; $action = "save"; }
   if ($type == 0) { $_html_cmd = FCMD; $action = "edit"; }
+     
   //if ($cmd) 
     $_html_rows .= $_html_cmd;
   $_i++;
@@ -404,6 +406,7 @@ function smarty_function_dataform($params, &$smarty)
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
   $_referer = preg_replace("/\//", "\/", $_SERVER['PHP_SELF']);
+  
   if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']))
     $_referer = $_SERVER['PHP_SELF'];
   else
@@ -424,6 +427,15 @@ function smarty_function_dataform($params, &$smarty)
   $_html_result = preg_replace("/_OBJECT_/", $object, $_html_result);
   $_html_result = preg_replace("/_ACTION_/", $action, $_html_result);
   if ($type == 0) $_html_result = preg_replace('/old_/', '', $_html_result);
+  
+
+  if(strpos($_html_rows,'value="Agregar"') != '') {
+  	  $_SESSION['accion'] = 'add';
+  } elseif(isset($_SESSION['accion'])) {
+  	  unset($_SESSION['accion']);
+  } 
+  
+  
   
   return $_html_result;
 

@@ -574,6 +574,12 @@ function smarty_function_dataform2($params, &$smarty)
   $_html_result = preg_replace("/_ACTION_/", $action, $_html_result);
   if ($type == 0) $_html_result = preg_replace('/old_/', '', $_html_result);
   
+  if(strpos($_html_rows,'value="Agregar"') != '') {
+  	  $_SESSION['accion'] = 'add';
+  } elseif(isset($_SESSION['accion'])) {
+  	  unset($_SESSION['accion']);
+  } 
+  
   return $_html_result;
 
 }

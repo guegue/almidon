@@ -12,7 +12,9 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
         $key = substr($key, 0, strpos($key, 'Table'));
       } else { $key = substr($key, 0, strpos($key, 'table')); }
       // End
-      $adminlinks[$key] = $table_object->title;
+      if(isset($_SESSION['credentials'][$key])) {
+         $adminlinks[$key] = $table_object->title;
+      }   
       // {{{ Para que es esto?
       if(isset($extralinks)){
          foreach($extralinks as $key=>$link){
@@ -22,6 +24,7 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
       // }}} Para que es esto?
     }
   $smarty->assign('adminlinks', $adminlinks);
+
 } elseif(isset($sectionlinks)) {
   # If sectionlinks is defined 
   $params = explode('/', $_SERVER['REQUEST_URI']);
@@ -46,7 +49,6 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
       }
     }
   }
-
   $smarty->assign('cur_section', $section);
   $smarty->assign('sectionlinks', $sectionlinks);
   if(count($sectionlinks) > 1) {
@@ -55,6 +57,8 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
     list($part) = array_values($sectionlinks);
     $smarty->assign('adminlinks', $part['adminlinks']);
   }
+
+  //$smarty->assign('credentials', $_SESSION[]);
   unset($params);
   unset($section);
   unset($sectionlinks);
