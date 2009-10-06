@@ -23,7 +23,8 @@ define ('DOMAIN', 'local.almidon.org');
 define ('SQLLOG', ROOTDIR . '/logs/sql.log');
 define ('LOGFILE', ROOTDIR . '/logs/cms.log');
 define ('HOMEDIR', ROOTDIR .'/public_html');
-define ('URL', 'http://www.' . DOMAIN);
+# define ('URL', 'http://www.' . DOMAIN);
+define ('URL', 'http://' . DOMAIN);
 define ('EMAIL', 'info@' . DOMAIN);
 define ('PIXDIR', HOMEDIR.'/pix');
 
