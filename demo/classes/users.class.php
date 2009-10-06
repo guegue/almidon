@@ -34,9 +34,9 @@ class almaccessTable extends Table {
     $this->maxrows = 20;
     $this->order = 'idalmaccess';
     $this->addColumn('idalmaccess','serial',0,1,0,'Id');
-    $this->addColumn('idalmrole','int',100,0,'almrole','Rol');
-    $this->addColumn('idalmuser','int',100,0,'almuser','Usuario');
-    $this->addColumn('idalmform','int',100,0,'almform','Tabla');
+    $this->addColumn('idalmrole','int',0,0,'almrole','Rol');
+    $this->addColumn('idalmuser','int',0,0,'almuser','Usuario');
+    $this->addColumn('idalmform','int',0,0,'almform','Tabla');
   }
 }
 

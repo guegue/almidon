@@ -87,9 +87,10 @@ function genDD($object) {
   if($data->definition)
   $dd = array();
   foreach($data->definition as $column) {
-    if ($column['size'] == '0') $column['size'] = '&nbsp;';
-    if ($column['references'] == '0') $column['references'] = '&nbsp;';
-    $col = array($column['name'],$column['type'],$column['size'],$column['references'],$column['label']);
+    if ($column['size'] == '0') $column['size'] = null;
+    if ($column['name'] == $data->key) $column['PK'] = true;
+    if ($column['references'] == '0') $column['references'] = null;
+    $col = array($column['name'],$column['type'],$column['size'],$column['references'],$column['label'],$column['PK']);
     $dd[] = $col;
   }
   return $dd;
@@ -177,8 +178,9 @@ $options = array(
   'tables'=>'Probar tablas y base de datos',
   'sql'=>'Generar SQL basado en tables.class',
   'dd'=>'Generar diccionario de datos',
-  'erd'=>'Geenrar diagrama entidad relacion');
-if ($action != 'erd' && !$failed) {
+  'erd'=>'Geenrar diagrama entidad relacion',
+  'erdcol'=>'Geenrar diagrama entidad relacion detallado');
+if ($action != 'erd' && $action != 'erdcol' && !$failed) {
   print "Herramientas:<br/>";
   foreach($options as $k=>$option) {
     print "<li><a href=\"?action=$k\">$option</a><br/></li>";
@@ -254,13 +256,37 @@ if (!empty($action)) {
       $output .= "\n".'<tr align="center"><td colspan="5" bgcolor="#f0f0f0"><br/>'.getTitle($key)." ($key)</br><br/></td></tr>\n";
       $output .= "\n<tr><th>Nombre</th><th>Tipo</th><th>Tama&ntilde;o</th><th>Referencias</th><th>Descripci&oacute;n</th></tr>\n";
       foreach($dd as $col) {
-        $output .= "<tr>";
+        $color = ($col[5]) ? '#bbbbbb' : '#ffffff';
+        unset($col[5]);
+        unset($col[6]);
+        $output .= "<tr bgcolor=\"$color\">";
         foreach($col as $val)
-          $output .= "<td>$val</td>";
+          $output .= "<td>$val&nbsp;</td>";
         $output .= "</tr>\n";
       }
     }
     $output = "\n<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\">$output</table>\n";
+    break;
+  case 'erdcol':
+    $output = "\ndigraph g {\ngraph [\nrankdir = \"LR\"\n];\nnode [\nfontsize = \"16\"\nshape = \"ellipse\"\n];\nedge [\n];\n";
+    foreach($tables as $key) {
+      $j = 0;
+      $output .= "\"$key\" [\nlabel = " . '< <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0"> <TR ><TD PORT="ltcol0"> </TD> <TD bgcolor="grey90" border="1" COLSPAN="4"> \N </TD> <TD PORT="rtcol0"></TD></TR>';
+      $dd = genDD($key);
+      foreach($dd as $col) {
+        $i = 0;
+        $output .= '<TR><TD PORT="ltcol'.$j.'" ></TD><TD align="left">'. $col[0] .'</TD><TD align="left">'. $col[1] . (($col[2]) ? '('.$col[2].')' : '') .'</TD><TD align="left">'. (($col[5]) ? 'PK' : '') .'</TD><TD align="left">'. (($col[3]) ? 'FK' : '') .'</TD><TD align="left" PORT="rtcol'.$j.'"> </TD></TR>';
+        if ($col[3]) {
+          $links .= "\"$key\":rtcol$j -> \"$col[3]\":ltcol0 [\nid = $i\n];\n";
+          $i++;
+        }
+        $j++;
+      }
+      $output .= '</TABLE> >';
+      $output .= "\nshape = \"plaintext\"\n];\n";
+    }
+    $output .= $links;
+    $output .= "}\n";
     break;
   case 'erd':
     $output = "\ndigraph g {\ngraph [\nrankdir = \"LR\"\n];\nnode [\nfontsize = \"16\"\nshape = \"ellipse\"\n];\nedge [\n];\n";
@@ -322,6 +348,7 @@ if (!empty($action)) {
     }
     break;
   case 'erd':
+  case 'erdcol':
     header('Content-type: plain/text');
     header('Content-Disposition: attachment; filename="erd.dot"');
     print $output;
