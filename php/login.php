@@ -1,5 +1,5 @@
 <?php
-require_once(ALMIDONDIR . 'php/users.php');
+require_once(ALMIDONDIR . '/php/users.php');
 
 if(!empty($_POST)) {
    //Cargo credenciales y voy a 404 
