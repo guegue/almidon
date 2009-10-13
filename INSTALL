@@ -52,6 +52,10 @@ usando un usuario autorizado a crear bases de datos:
   $ su - postgres
   $ psql -f /var/www/almidon/demo/demo.sql
 
+Para implementar el uso de usuarios y roles, ahora indispensable:
+
+  $ psql -f /var/www/almidon/demo/users.sql
+
 Adicionalmente, una entrada en la configuración de postgres, pg_hba.conf puede ser
 necesaria, para permitir acceso local usando password:
 

@@ -1,4 +1,6 @@
-<?
+<?php
+
+# FIXME: agregar soporte a roles y usuarios
 
 class categoriaTable extends Table {
   function categoriaTable() {
