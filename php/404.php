@@ -37,10 +37,20 @@ if(isset($_SESSION['user'])) {
 	
 	# If I am... Go ahead try to create object (or setup)
 	if ($object) {
+	  if(!isset($_SESSION['credentials'][$object])) {
+	  	session_destroy(); 
+	    require_once(ALMIDONDIR . '/php/login.php');
+	    exit;	  	 
+	  }	
 	  if ($object == 'setup') {
 	    require(ALMIDONDIR.'/php/setup.php');
 	    exit;
 	  }
+	   if ($object == 'logout') {
+	  	session_destroy(); 
+	    require_once(ALMIDONDIR . '/php/login.php');
+	    exit;
+	  }	  
 	  $ot = $object . 'Table';
 	  $$object = new $ot;
 	  #If I'm a detail, not the master

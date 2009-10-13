@@ -319,7 +319,7 @@ function smarty_function_datagrid($params, &$smarty)
 	if(in_array(1,$_SESSION['credentials'][$table])){
 	   $_dgcmdmod = DGCMD2MOD;
 	}elseif(in_array(2,$_SESSION['credentials'][$table])){
-	
+	   $_dgcmdmod = DGCMD2MOD;
 	}
       }else{
 	  $_dgcmdmod =DGCMDMOD;
@@ -424,21 +424,21 @@ function smarty_function_datagrid($params, &$smarty)
         if($_cols <= 3 || $parent){
 	  if(in_array(1,$_SESSION['credentials'][$table])){	
 	     $_dgcmd =  DGCMDR;
-          }elseif(in_array(2,$_SESSION['credentials'][$table])){
+          }elseif(in_array(4,$_SESSION['credentials'][$table])){
 	     $_dgcmd =  DGCMDRVER;
-	  }elseif(in_array(4,$_SESSION['credentials'][$table])){
+	  }elseif(in_array(2,$_SESSION['credentials'][$table])){
 	     $_dgcmd =  DGCMDREDIT;
-	  }elseif(in_array(5,$_SESSION['credentials'][$table])){
+	  }elseif(in_array(3,$_SESSION['credentials'][$table])){
 	     $_dgcmd =  DGCMDRDEL;
 	  }
 	}else{
 	  if(in_array(1,$_SESSION['credentials'][$table])){	
 	     $_dgcmd =  DGCMD;
-          }elseif(in_array(2,$_SESSION['credentials'][$table])){
+          }elseif(in_array(4,$_SESSION['credentials'][$table])){
 	     $_dgcmd =  DGCMDVER;
-	  }elseif(in_array(4,$_SESSION['credentials'][$table])){
+	  }elseif(in_array(2,$_SESSION['credentials'][$table])){
 	     $_dgcmd =  DGCMDEDIT;
-	  }elseif(in_array(5,$_SESSION['credentials'][$table])){
+	  }elseif(in_array(3,$_SESSION['credentials'][$table])){
 	     $_dgcmd =  DGCMDDEL;
 	  }
 	}

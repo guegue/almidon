@@ -18,18 +18,42 @@ function get_credentials($iduser) {
 	  $tablasbd = new almformTable();
 	  $tablasbd->readEnv();
 	  $arrayTablas = $tablasbd->readData();
-	  foreach ($arrayTablas as $table) {
-	       $rolbd = new almaccessTable();
-	       $credentials = $rolbd->readDataFilter("almaccess.idalmuser=".$iduser." AND almaccess.idalmform=".$table['idalmform']." AND almaccess.idalmrole!=3"); 
-	  	   if(is_array($credentials)) {
-	  	   	    $i=0;
-		  	   	foreach ($credentials as $key => $valor) {
-		  	   		$credentialsql[$i] = $valor['idalmrole'];
-		  	   	    $i++;
-		  	   	}
-		  	    $arrayCredentials[$table['almform']] = $credentialsql;
-	  	   }
+	  $userbd = new almuserTable();
+	  $userbd->readEnv();	  
+	  $user = $userbd->readRecord($iduser);
+	    foreach ($arrayTablas as $table) {
+	  	   switch ($user['idalmrole']) {
+	  	   	   case ''://Personalizado
+		  	   $rolbd = new almaccessTable();
+		       $credentials = $rolbd->readDataFilter("almaccess.idalmuser=".$iduser." AND almaccess.idalmform=".$table['idalmform']." AND almaccess.idalmrole!=3"); 
+		       if(is_array($credentials)) {
+		  	   	    $i=0;
+			  	   	foreach ($credentials as $key => $valor) {
+			  	   		$credentialsql[$i] = $valor['idalmrole'];
+			  	   	    $i++;
+			  	   	}
+			  	    $arrayCredentials[$table['almform']] = $credentialsql;
+		       }
+		       break;
+	  	   case 1://superadmin
+	  	   	  $arrayCredentials[$table['almform']] = array(1);  
+	  	   	  break;  	    	  	   	
+  	  	   case 2://Editores
+	  	   	 if($table['almform'] != 'almuser' && $table['almform'] != 'almform' &&  $table['almform'] != 'almaccess' && $table['almform'] != 'almtuser' && $table['almform'] != 'almrole')
+	  	   	  	$arrayCredentials[$table['almform']] = array(2);
+	  	   	  break;	
+	  	   case 3://Correccion	
+	  	   	 if($table['almform'] != 'almuser' && $table['almform'] != 'almform' &&  $table['almform'] != 'almaccess' && $table['almform'] != 'almtuser' && $table['almform'] != 'almrole')
+	  	   	 	 $arrayCredentials[$table['almform']] = array(3);
+	  	   	  break;
+	  	   case 4://guest	
+	  	   	  if($table['almform'] != 'almuser' && $table['almform'] != 'almform' &&  $table['almform'] != 'almaccess' && $table['almform'] != 'almtuser' && $table['almform'] != 'almrole')
+	  	   	  	$arrayCredentials[$table['almform']] = array(4);
+	  	      break;  		    	   	  
+	       }	
+
 	  } 
-     return $arrayCredentials;
+      return $arrayCredentials;
 	  
 }
+

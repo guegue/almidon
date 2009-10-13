@@ -16,7 +16,7 @@
 
 <tr>
 <td>
-   {if in_array(1,$credenciales) || (in_array(2,$credenciales) && $smarty.session.accion == 'leer') }
+   {if in_array(1,$credenciales) || ((in_array(4,$credenciales) && $smarty.session.accion == 'leer')) || (in_array(2,$credenciales))}
 	   {if $add===true || $row}{if $smarty.const.DB3 === true}
 	        {dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}
 	   {else}

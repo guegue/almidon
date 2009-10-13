@@ -11,6 +11,7 @@ class almuserTable extends Table {
     $this->addColumn('password','password',200,0,0,'Clave');
     $this->addColumn('name','varchar',100,0,0,'Nombre');
     $this->addColumn('email','varchar',200,0,0,'Correo');
+    $this->addColumn('idalmrole','varchar',100,0,'almrole','tipo');
   }
 }
 

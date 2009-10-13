@@ -23,6 +23,7 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
       }
       // }}} Para que es esto?
     }
+  $adminlinks['logout'] = 'Salir'; //Link del Logout
   $smarty->assign('adminlinks', $adminlinks);
 
 } elseif(isset($sectionlinks)) {
