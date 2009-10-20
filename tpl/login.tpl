@@ -30,9 +30,8 @@
 	        		<div align="center"><input type="submit" name="submit" class="button" value="Entrar" /></div>
         		</div>
 		</form>
-                {if $bError}
-		<div class="error">Usuario y/o contrase&ntilde;a incorrectos</div>
-                {/if}
+                {if $sError}<div class="error">No hay soporte para sesisiones. Debe habilitar soporte para cookies antes de continuar.</div>{/if}
+                {if $bError}<div class="error">Usuario y/o contrase&ntilde;a incorrectos</div>{/if}
 	</div>
 </div>
 </body>
