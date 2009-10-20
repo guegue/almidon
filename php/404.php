@@ -38,27 +38,27 @@ if(isset($_SESSION['user'])) {
 	# If I am... Go ahead try to create object (or setup)
 	if ($object) {
 	  if(!isset($_SESSION['credentials'][$object])) {
-	  	session_destroy(); 
+	    session_destroy(); 
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;	  	 
-	  }	
+	  }
 	  if ($object == 'setup') {
 	    require(ALMIDONDIR.'/php/setup.php');
 	    exit;
 	  }
 	   if ($object == 'logout') {
-	  	session_destroy(); 
+	    session_destroy(); 
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;
 	  }	  
 	  $ot = $object . 'Table';
 	  $$object = new $ot;
-	  #If I'm a detail, not the master
+	  #If I'm a detail (not the master table)
 	  if($$object->is_detail) {
 	    require(ALMIDONDIR . '/php/detail.php');
 	    die();
 	  }
-	  # If it continues is because I'm master
+	  # If it continues it's because I'm the master table
 	  require(ALMIDONDIR . '/php/typical.php');
 	  $$object->destroy();
 	  $tpl = ($$object->cols > 5) ? 'abajo' : 'normal';
@@ -102,5 +102,11 @@ if(isset($_SESSION['user'])) {
 	# Display object's forms (or index)
 	$smarty->display($tpl);
 } else {
-   require_once(ALMIDONDIR . '/php/login.php');  
+  $params = explode('/', $_SERVER['REQUEST_URI']);
+  $object = $params[count($params)-1];
+  if ($object == 'captcha.png') {
+    require(ALMIDONDIR.'/php/captcha.png.php');
+    exit;
+  }
+  require_once(ALMIDONDIR . '/php/login.php');  
 }	

@@ -25,10 +25,14 @@
 		    		<div><input name="usrname" type="text" class="inputbox" size="15" /></div>
 	        		<b>Contrase&ntilde;a</b>
 	    	  		<div><input name="pass" type="password" class="inputbox" size="15" /></div>
+		                <b>CAPTCHA</b> <img src="captcha.png" width="55" height="20"/>
+				<div><input name="txtcaptcha" class="inputbox" type="text" size="8"/></div>
 	        		<div align="center"><input type="submit" name="submit" class="button" value="Entrar" /></div>
         		</div>
 		</form>
-		<div class="error">{if $bError}Usuario y Contrase&ntilde;a incorrectos{/if}</div>
+                {if $bError}
+		<div class="error">Usuario y/o contrase&ntilde;a incorrectos</div>
+                {/if}
 	</div>
 </div>
 </body>
