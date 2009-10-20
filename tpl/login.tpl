@@ -14,26 +14,22 @@
 {/literal}
 </head>
 <body onload="setFocus();">
-<div id="ctr" align="center">
+<div align="center">
 	<div class="login">
-		<div class="login-form">
-        	<form action="" method="post" name="loginForm" id="loginForm">
+		<div>
+        		<p><img src="/img/almidon-atma.png" width="262" height="78"/></p>
+    		</div>
+        	<form action="" method="post" id="loginForm" name="loginForm">
 			<div class="form-block">
-	        	<div class="inputlabel">Usuario</div>
-		    	<div><input name="usrname" type="text" class="inputbox" size="15" /></div>
-	        	<div class="inputlabel">Contrase&ntilde;a</div>
-	    	  <div><input name="pass" type="password" class="inputbox" size="15" /></div>
-	        	<div align="left"><input type="submit" name="submit" class="button" value="Login" /></div>
-        	</div>
-			</form>
-    	</div>
-		<div class="login-text">
-        	<p>Bienvenido al sitio de administraci&oacute;n de Almidon</p>
-			<p>Use un usuario valido para acceder a la consola de administraci&oacute;n</p>
-    	</div>
-		<div class="clr"></div>
+	        		<b>Usuario</b>
+		    		<div><input name="usrname" type="text" class="inputbox" size="15" /></div>
+	        		<b>Contrase&ntilde;a</b>
+	    	  		<div><input name="pass" type="password" class="inputbox" size="15" /></div>
+	        		<div align="center"><input type="submit" name="submit" class="button" value="Entrar" /></div>
+        		</div>
+		</form>
+		<div class="error">{if $bError}Usuario y Contrase&ntilde;a incorrectos{/if}</div>
 	</div>
 </div>
-<div id="break" class="login-text1" align="center">{if $bError}Usuario y Contrase&ntilde;a incorrectos{/if}</div>
 </body>
 </html>

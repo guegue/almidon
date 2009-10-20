@@ -1,52 +1,13 @@
-/**
-* @version $Id: admin_login.css,v 1.3 2004/08/26 05:20:54 rcastley Exp $
-* @package Mambo_4.5.1
-* @copyright (C) 2000 - 2004 Miro International Pty Ltd
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* Mambo is Free Software
-*/
-
 body {
-	margin: 0px;
-	padding: 0px;
-	color : #333;
 	background-color : #FFF;
 	font-size : 11px;
-	font-family : Arial, Helvetica, sans-serif;
+	font-family : "DejaVu Serif", Arial, Helvetica, sans-serif;
 }
 
-#wrapper {
-        border: 0px;
-        margin: 0px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0px;
+.error {
+	color : #F00;
+	font-weight : bold;
 }
-
-#header {
-        background-color: #FFF;
-        background-position: right top;
-        border-bottom: 4px solid #80B5D7;
-}
-
-#mambo {
-        position: relative;
-        width: 100%;
-        background: url(images/backgrounds/header_blue.jpg) #30569D no-repeat;
-        background-position: top right;
-        margin: 0px;
-        padding: 0px;
-}
-
-#break {
-	height: 20px;
-}
-
-form {
-    margin: 0px;
-}
-
-
 
 .button {
 	border : solid 1px #cccccc;
@@ -62,127 +23,18 @@ form {
 	margin-right: auto;
 	margin-top: 6em;
 	padding: 15px;
-	border: 1px solid #cccccc;
 	width: 429px;
-	background: #F1F3F5;
 }
-	
-.login h1 {
-	background: url(images/backgrounds/login_header.png) no-repeat;
-	background-position: left top;
-	color: #333;
-	margin: 0px;
-	height: 50px;
-	padding: 15px 4px 0 50px;
- 	text-align: left;
-	font-size: 1.5em;
-}
-
-.login p {
-	padding: 0 1em 0 1em;
-	}
 	
 .form-block {
-	border: 1px solid #cccccc;
-	background: #E9ECEF;
 	padding-top: 15px;
 	padding-left: 10px;
 	padding-bottom: 10px;
 	padding-right: 10px;
 }
 
-.login-form {
-	text-align: left;
-	float: right;
-	width: 60%;
-}
-
-.login-text {
-	text-align: left;
-	width: 40%;
-	float: left;
-}
-
-.login-text1 {
-	color:#FF0000
-}
-
-.inputlabel {
-	font-weight: bold;
-	text-align: left;
-	}
-
 .inputbox {
 	width: 150px;
 	margin: 0 0 1em 0;
 	border: 1px solid #cccccc;
-	}
-
-.clr {
-    clear:both;
-    }
-
-.ctr {
-	text-align: center;
 }
-
-.version {
-	font-size: 11px;
-}
-
-.footer {
-
-}
-.td_gris {
-	font-family: Arial, Helvetica, sans-serif;
-	color:#0000CC;
-	border-top-width: 1px;
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-left-width: 1px;
-	border-top-style: solid;
-	border-right-style: solid;
-	border-bottom-style: solid;
-	border-left-style: solid;
-	border-top-color: #CCCCCC;
-	border-right-color: #CCCCCC;
-	border-bottom-color: #CCCCCC;
-	border-left-color: #CCCCCC;
-}
-.td_gris_notbelow {
-	font-family: Arial, Helvetica, sans-serif;
-	color:#0000CC;
-	border-top-width: 1px;
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-left-width: 1px;
-	border-top-style: solid;
-	border-right-style: solid;
-	border-bottom-style: none;
-	border-left-style: solid;
-	border-top-color: #CCCCCC;
-	border-right-color: #CCCCCC;
-	border-bottom-color: #CCCCCC;
-	border-left-color: #CCCCCC;
-}
-.td_leftbottom_gris {
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-left-width: 1px;
-	border-top-style: none;
-	border-right-style: solid;
-	border-bottom-style: none;
-	border-left-style: solid;
-	border-right-color: #CCCCCC;
-	border-bottom-color: #CCCCCC;
-	border-left-color: #CCCCCC;
-}
-
-.font_body_link {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color: #333;
-	text-decoration: underline;
-}
-
-
