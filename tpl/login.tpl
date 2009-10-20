@@ -21,17 +21,17 @@
     		</div>
         	<form action="" method="post" id="loginForm" name="loginForm">
 			<div class="form-block">
-	        		<b>Usuario</b>
+	        		<b>{$smarty.const.ALM_USERNAME}</b>
 		    		<div><input name="usrname" type="text" class="inputbox" size="15" /></div>
-	        		<b>Contrase&ntilde;a</b>
+	        		<b>{$smarty.const.ALM_PASSWORD}</b>
 	    	  		<div><input name="pass" type="password" class="inputbox" size="15" /></div>
 		                <b>CAPTCHA</b> <img src="captcha.png" width="55" height="20"/>
 				<div><input name="txtcaptcha" class="inputbox" type="text" size="8"/></div>
-	        		<div align="center"><input type="submit" name="submit" class="button" value="Entrar" /></div>
+	        		<div align="center"><input type="submit" name="submit" class="button" value="{$smarty.const.LOGIN}" /></div>
         		</div>
 		</form>
-                {if $sError}<div class="error">No hay soporte para sesisiones. Debe habilitar soporte para cookies antes de continuar.</div>{/if}
-                {if $bError}<div class="error">Usuario y/o contrase&ntilde;a incorrectos</div>{/if}
+                {if $sError}<div class="error">{$smarty.const.ALM_PASS_ERROR}</div>{/if}
+                {if $bError}<div class="error">{$smarty.const.ALM_NO_COOKIE}</div>{/if}
 	</div>
 </div>
 </body>

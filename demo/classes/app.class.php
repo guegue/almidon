@@ -2,6 +2,7 @@
 require_once('config.php');
 $almidondir = defined('ALMIDODIR') ? ALMIDONDIR : $_SERVER['DOCUMENT_ROOT'] . '/../../';
 require_once($almidondir . '/php/db2.class.php');
+require_once($almidondir . '/php/lang.php');
 require_once($almidondir . '/php/Smarty/Smarty.class.php');
 
 $smarty = new Smarty;

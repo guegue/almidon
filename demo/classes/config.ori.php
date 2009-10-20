@@ -5,8 +5,8 @@
 #define ('ALMIDONDIR', '/usr/local/almidon/');
 define ('DEBUG', true);
 
-# Funciones que definen el comportamiento de PHP
-setlocale(LC_TIME, "es_ES");
+# Idioma
+# define ('ALM_LANG','en');
  
 # Constantes de conexion la base de datos
 $admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';
