@@ -1,17 +1,6 @@
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (.*) /cms/404.php [L]
 
-AuthType Basic
-AuthName "CMS: Demo de Almidon"
-AuthUserFile /var/www/almidon/demo/.htpasswd
-
-
-order allow,deny
-allow from all
-require valid-user
-
 php_flag display_errors on
-#php_value error_reporting 2039
 php_value error_reporting 6143

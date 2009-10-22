@@ -7,23 +7,20 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
   foreach($classes as $key)
     if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
       $table_object = new $key;
-      // Modificacion hecho por lo antes comentado entre php5 y php4
-      if(substr($key, 0, strpos($key, 'Table'))!==false) {
+      # Modificacion hecho por DiFeReNcIa entre php5 y php4
+      if(substr($key, 0, strpos($key, 'Table'))!==false)
         $key = substr($key, 0, strpos($key, 'Table'));
-      } else { $key = substr($key, 0, strpos($key, 'table')); }
-      // End
-      if(isset($_SESSION['credentials'][$key])) {
+      else
+        $key = substr($key, 0, strpos($key, 'table'));
+      if(isset($_SESSION['credentials'][$key]))
          $adminlinks[$key] = $table_object->title;
-      }   
-      // {{{ Para que es esto?
-      if(isset($extralinks)){
-         foreach($extralinks as $key=>$link){
+      # Para agregar links adicionales, lo que nos de la gana
+      if(isset($extralinks)) {
+         foreach($extralinks as $key=>$link)
            $adminlinks[$key] = $link;
-         }
       }
-      // }}} Para que es esto?
     }
-  $adminlinks['logout'] = 'Salir'; //Link del Logout
+  $adminlinks['logout'] = ALM_LOGOUT; //Logout link
   $smarty->assign('adminlinks', $adminlinks);
 
 } elseif(isset($sectionlinks)) {
@@ -64,4 +61,3 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
   unset($section);
   unset($sectionlinks);
 }
-?>

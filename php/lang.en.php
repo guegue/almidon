@@ -22,6 +22,7 @@ if(!defined('ALM_PASSWORD')) define('ALM_PASSWORD','Password');
 if(!defined('ALM_PASS_ERROR')) define('ALM_PASS_ERROR','Wrong username and/or password');
 if(!defined('ALM_NO_COOKIE')) define('ALM_NO_COOKIE','No session support. You must enable cookies support before continuing.');
 if(!defined('ALM_LOGIN')) define('ALM_LOGIN','Login');
+if(!defined('ALM_LOGOUT')) define('ALM_LOGOUT','Logout');
 
 # Set locale, for dates
 setlocale(LC_TIME, 'en_US.UTF-8');
