@@ -14,8 +14,8 @@ if(!empty($_POST)) {
   $txtcaptcha = preg_replace('/[^A-Za-z0-9]/', '', $_POST['txtcaptcha']);
   if ((md5($txtcaptcha) === $_SESSION['key']) && check_user($_POST['usrname'],$_POST['pass'])) {
     error_log("ALM CAPTCHA: Good $txtcaptcha " . md5($txtcaptcha) . "!== " . $_SESSION['key']);
-    $url = ((strpos($_SERVER['REQUEST_URI'],'logout') > 0) || (!isset($_SESSION['credentials'] [$object]))) ? '/admin' : $_SERVER['REQUEST_URI'];
-    header("location:". $url);
+    #$url = ((strpos($_SERVER['REQUEST_URI'],'logout') > 0) || (!isset($_SESSION['credentials'] [$object]))) ? '/admin' : $_SERVER['REQUEST_URI'];
+    header('location: ./');
   } else {
     if (md5($txtcaptcha) !== $_SESSION['key'])
       error_log("ALM CAPTCHA: Wrong $txtcaptcha " . md5($txtcaptcha) . "!== " . $_SESSION['key']);
