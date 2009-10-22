@@ -24,7 +24,7 @@ else require($_SERVER['DOCUMENT_ROOT'] . $app_base);
 $smarty->caching = false;
 
 # Who am I?
-if(isset($_SESSION['user'])) {
+if(isset($_SESSION['almuser'])) {
 	$params = explode('/', $_SERVER['REQUEST_URI']);
 	$object = $params[count($params)-1];
 	if (strpos($object, '?')) {

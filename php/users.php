@@ -2,8 +2,9 @@
 /**
  * users.php
  *
+ * funciones de manejo de usuarios y roles
+ *
  * function check_user-> Chequea el usuario y el password. 
- * 
  * function get_credentials->Carga las credenciales del usuario logeado
  *
  * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
@@ -21,7 +22,8 @@ function check_user($user, $pass) {
   if(is_array($arrayUser)) {
     //Cargar Credenciales
 	$_SESSION['credentials'] = get_credentials($arrayUser[0]['idalmuser']);
-    $_SESSION['user'] = $arrayUser[0]['idalmuser'];
+    $_SESSION['idalmuser'] = $arrayUser[0]['idalmuser'];
+    $_SESSION['almuser'] = $arrayUser[0]['almuser'];
     return true;
   }else{
     return false;
