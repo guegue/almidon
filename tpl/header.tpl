@@ -38,7 +38,7 @@ tinyMCE.init({
 <link rel="stylesheet" href="/cms/js/autocomplete/jquery.autocomplete.css" />
 <!-- Default CSS -->
 <link rel="stylesheet" href="/cms/css/adm.css">
-<title>{$title}</title>
+<title>{$title} - {$smarty.session.almuser} @ {$smarty.const.DOMAIN}</title>
 {confirm_delete}
 </head>
 <body>
@@ -53,13 +53,8 @@ tinyMCE.init({
   {/if}
 {elseif $adminlinks}
   {foreach key=key item=item from=$adminlinks name=i}<a href="{$key}"{if ($cur_page==$key)||($object==$key)} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}
-  {if $smarty.session.idusername}&nbsp;[{$smarty.session.idusername} ({$smarty.session.idrole}){if $smarty.const.LOGOUT===true} - <a href="/{$smarty.const.DOMAIN}/logout">salir</a>{/if}]{/if}
+  {if $smarty.session.almuser} [ {$smarty.session.almuser} ]{/if}
   <hr size="1" color="#97ACBA" noshade />
 {/if}
 {/strip}
-{*strip}{foreach key=key item=item from=$adminlinks}
-  <a href="{$key}">{$item}</a> | &nbsp;
-{/foreach}{/strip}
-{if $smarty.session.idusername}&nbsp;[{$smarty.session.idusername} ({$smarty.session.idrole}){if $smarty.const.LOGOUT===true} - <a href="/{$smarty.const.DOMAIN}/logout">salir</a>{/if}
-<hr size="1" color="#97ACBA" noshade> *}
 <h1>{$title|default:""}</h1>
