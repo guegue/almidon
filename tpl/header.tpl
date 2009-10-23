@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">  
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script language="JavaScript1.2" type="text/javascript" src="/cms/js/common.js"></script>
 <script language="JavaScript1.2" type="text/javascript" src="/cms/js/tools.js"></script>
 <!-- Editor HTML WYSSYG -->
@@ -37,7 +38,7 @@ tinyMCE.init({
 <script type="text/javascript" src="/cms/js/autocomplete/jquery.autocomplete.min.js"></script>
 <link rel="stylesheet" href="/cms/js/autocomplete/jquery.autocomplete.css" />
 <!-- Default CSS -->
-<link rel="stylesheet" href="/cms/css/adm.css">
+<link rel="stylesheet" href="/cms/css/adm.css"/>
 <title>{$title} - {$smarty.session.almuser} @ {$smarty.const.DOMAIN}</title>
 {confirm_delete}
 </head>
@@ -45,16 +46,16 @@ tinyMCE.init({
 {strip}
 {if $sectionlinks}
   {if $sectionlinks|@count >= 1}
-    <a href="{$smarty.const.SSL_URL}/"{if $cur_section=='inicio' || $cur_section|trim == ''} class="stay"{/if}>Inicio</a> | &nbsp;{foreach key=key item=item from=$sectionlinks name=i}<a href="{$smarty.const.SSL_URL}/{$key}/{$item.index}"{if $cur_section==$key} class="stay"{/if}>{$item.label}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}<hr size="1" color="#97ACBA" noshade />
+    <a href="{$smarty.const.SSL_URL}/"{if $cur_section=='inicio' || $cur_section|trim == ''} class="stay"{/if}>Inicio</a> | &nbsp;{foreach key=key item=item from=$sectionlinks name=i}<a href="{$smarty.const.SSL_URL}/{$key}/{$item.index}"{if $cur_section==$key} class="stay"{/if}>{$item.label}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}<hr size="1 noshade="noshade" />
   {/if}
   {if $adminlinks}
     {foreach key=key item=item from=$adminlinks name=j}<a href="{$smarty.const.SSL_URL}/{$cur_section}/{$key}"{if ($cur_page==$key)||($object==$key)} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.j.last} | &nbsp;{/if}{/foreach}
-  <hr size="1" color="#97ACBA" noshade />
+  <hr size="1" noshade="noshade" />
   {/if}
 {elseif $adminlinks}
   {foreach key=key item=item from=$adminlinks name=i}<a href="{$key}"{if ($cur_page==$key)||($object==$key)} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}
   {if $smarty.session.almuser} [ {$smarty.session.almuser} ]{/if}
-  <hr size="1" color="#97ACBA" noshade />
+  <hr size="1" noshade="noshade" />
 {/if}
 {/strip}
 <h1>{$title|default:""}</h1>
