@@ -178,8 +178,8 @@ $options = array(
   'tables'=>'Probar tablas y base de datos',
   'sql'=>'Generar SQL basado en tables.class',
   'dd'=>'Generar diccionario de datos',
-  'erd'=>'Geenrar diagrama entidad relacion',
-  'erdcol'=>'Geenrar diagrama entidad relacion detallado');
+  'erd'=>'Generar diagrama entidad relacion',
+  'erdcol'=>'Generar diagrama entidad relacion detallado');
 if ($action != 'erd' && $action != 'erdcol' && !$failed) {
   print "Herramientas:<br/>";
   foreach($options as $k=>$option) {

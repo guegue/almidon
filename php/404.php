@@ -24,33 +24,32 @@ else require($_SERVER['DOCUMENT_ROOT'] . $app_base);
 $smarty->caching = false;
 
 # Who am I?
+$params = explode('/', $_SERVER['REQUEST_URI']);
+$object = $params[count($params)-1];
+if (strpos($object, '?')) {
+  $object = substr($object, 0, strpos($object, '?'));
+  define('SELF', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'],'?')));
+} else {
+  define('SELF', $_SERVER['REQUEST_URI']);
+}
+if(strrpos($object, '.')!==false) $object = substr($object, 0, strrpos($object, '.'));
 if(isset($_SESSION['almuser'])) {
-	$params = explode('/', $_SERVER['REQUEST_URI']);
-	$object = $params[count($params)-1];
-	if (strpos($object, '?')) {
-	  $object = substr($object, 0, strpos($object, '?'));
-	  define('SELF', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'],'?')));
-	} else {
-	  define('SELF', $_SERVER['REQUEST_URI']);
-	}
-	if(strrpos($object, '.')!==false) $object = substr($object, 0, strrpos($object, '.'));
-	
 	# If I am... Go ahead try to create object (or setup)
 	if ($object) {
+	  if ($_SESSION['almuser'] === 'admin' && $object === 'setup') {
+	    require(ALMIDONDIR.'/php/setup.php');
+	    exit;
+	  }
+	  if ($object == 'logout') {
+	    session_destroy(); 
+	    require_once(ALMIDONDIR . '/php/login.php');
+	    exit;
+	  }	  
 	  if(!isset($_SESSION['credentials'][$object])) {
 	    session_destroy(); 
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;	  	 
 	  }
-	  if ($object == 'setup') {
-	    require(ALMIDONDIR.'/php/setup.php');
-	    exit;
-	  }
-	   if ($object == 'logout') {
-	    session_destroy(); 
-	    require_once(ALMIDONDIR . '/php/login.php');
-	    exit;
-	  }	  
 	  $ot = $object . 'Table';
 	  $$object = new $ot;
 	  #If I'm a detail (not the master table)
@@ -109,4 +108,4 @@ if(isset($_SESSION['almuser'])) {
     exit;
   }
   require_once(ALMIDONDIR . '/php/login.php');  
-}	
+}

@@ -42,7 +42,7 @@ CREATE TABLE agenda (
 CREATE TABLE noticia (
   idnoticia integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
   noticia varchar (500) ,
-  fecha datenull ,
+  fecha date ,
   texto text ,
   foto varchar (500)
 );
