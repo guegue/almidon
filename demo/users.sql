@@ -1,3 +1,5 @@
+\connect almidondemo
+
 CREATE TABLE almform (idalmform serial PRIMARY KEY, almform varchar(100));
 ALTER TABLE public.almform OWNER TO almidondemo;
 

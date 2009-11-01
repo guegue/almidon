@@ -69,7 +69,7 @@ de datos almidondemo y usuarios almidondemo y almidondemowww
 CONFIGURANDO ALMIDON
 ====================
 
-config.php en almidon/demo/public_html/classes/config.php
+config.php en almidon/demo/classes/config.php
 define las variable (o constantes) principales como:
 
   if (!defined('ADMIN')) define('ADMIN', false);
