@@ -33,13 +33,13 @@ if (strpos($object, '?')) {
   define('SELF', $_SERVER['REQUEST_URI']);
 }
 if(strrpos($object, '.')!==false) $object = substr($object, 0, strrpos($object, '.'));
+if (($_SESSION['almuser'] === 'admin' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1') && $object === 'setup') {
+  require(ALMIDONDIR.'/php/setup.php');
+  exit;
+}
 if(isset($_SESSION['almuser'])) {
 	# If I am... Go ahead try to create object (or setup)
 	if ($object) {
-	  if ($_SESSION['almuser'] === 'admin' && $object === 'setup') {
-	    require(ALMIDONDIR.'/php/setup.php');
-	    exit;
-	  }
 	  if ($object == 'logout') {
 	    session_destroy(); 
 	    require_once(ALMIDONDIR . '/php/login.php');
