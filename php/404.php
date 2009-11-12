@@ -1,5 +1,5 @@
 <?php
-session_start();
+// vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 /**
  * 404.php
  *
@@ -11,7 +11,9 @@ session_start();
  * @package almidon
  */
 
-# Tell Almidon to use admin user, admin links, etc
+session_start();
+
+# Tell Almidon to use admin db user, admin links, etc
 define('ADMIN', true);
 # Fetch app.class.php, wherever it is...
 $script_filename = $_SERVER['SCRIPT_FILENAME'];
@@ -33,30 +35,39 @@ if (strpos($object, '?')) {
   define('SELF', $_SERVER['REQUEST_URI']);
 }
 if(strrpos($object, '.')!==false) $object = substr($object, 0, strrpos($object, '.'));
-if (($_SESSION['almuser'] === 'admin' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1') && $object === 'setup') {
+
+# If user = admin, then allow setup...
+if (($_SESSION['idalmuser'] === 'admin' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1') && $object === 'setup') {
   require(ALMIDONDIR.'/php/setup.php');
   exit;
 }
-if(isset($_SESSION['almuser'])) {
+if(isset($_SESSION['idalmuser'])) {
 	# If I am... Go ahead try to create object (or setup)
 	if ($object) {
+
+          # Wanna go away? Go away...
 	  if ($object == 'logout') {
 	    session_destroy(); 
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;
-	  }	  
-	  if(!isset($_SESSION['credentials'][$object])) {
+	  }
+
+          # No credentials? Go away...
+	  if(!isset($_SESSION['credentials'][$object]) && $_SESSION['idalmuser'] !== 'admin') {
 	    session_destroy(); 
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;	  	 
 	  }
+
 	  $ot = $object . 'Table';
 	  $$object = new $ot;
+
 	  #If I'm a detail (not the master table)
 	  if($$object->is_detail) {
 	    require(ALMIDONDIR . '/php/detail.php');
-	    die();
+	    exit();
 	  }
+
 	  # If it continues it's because I'm the master table
 	  require(ALMIDONDIR . '/php/typical.php');
 	  $$object->destroy();
@@ -96,16 +107,18 @@ if(isset($_SESSION['almuser'])) {
 	    $tpl = ALMIDONDIR . '/tpl/index.tpl';
 	  }
 	}
-    $smarty->assign('credenciales',$_SESSION['credentials'][$object]);
+        $smarty->assign('credentials',$_SESSION['credentials'][$object]);
 	require (ALMIDONDIR . '/php/createlinks.php');
+
 	# Display object's forms (or index)
 	$smarty->display($tpl);
+
 } else {
   $params = explode('/', $_SERVER['REQUEST_URI']);
   $object = $params[count($params)-1];
   if ($object == 'captcha.png') {
     require(ALMIDONDIR.'/php/captcha.png.php');
-    exit;
+    exit();
   }
   require_once(ALMIDONDIR . '/php/login.php');  
 }

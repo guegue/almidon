@@ -316,16 +316,16 @@ function smarty_function_datagrid($params, &$smarty)
         $_html_row .= $_tmp;
       }
       if($key2){ 
-	if(in_array(1,$_SESSION['credentials'][$table])){
-	   $_dgcmdmod = DGCMD2MOD;
-	}elseif(in_array(2,$_SESSION['credentials'][$table])){
-	   $_dgcmdmod = DGCMD2MOD;
-	}
+        if($_SESSION['credentials'][$table] == 'full' ){
+           $_dgcmdmod = DGCMD2MOD;
+        }elseif($_SESSION['credentials'][$table] == 'edit' ){
+          $_dgcmdmod = DGCMD2MOD;
+        }
       }else{
-	  $_dgcmdmod =DGCMDMOD;
+        $_dgcmdmod =DGCMDMOD;
       }
       $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmdmod);
-    } else {
+      } else {
       $_cols = 0;
       foreach ($row as $_key=>$_val) {
         if ($maxcols && ($_cols >= $maxcols))
@@ -395,10 +395,10 @@ function smarty_function_datagrid($params, &$smarty)
             $_tmp = '<a href="' . $_SERVER['PHP_SELF'] . '?move=up&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/up.gif" border="0"/></a> <a href="' . $_SERVER['PHP_SELF'] . '?move=down&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/down.gif" border="0"/></a>';
             break;
           case 'text':
-     	  case 'html':
+         case 'html':
           case 'xhtml':
             # strip_tags quita los tags [x]html, preg_replace reemplaza los &nbsp; por espacio en blanco, el otro preg_replace quita mas de un espacio en blanco conjunto y lo reemplaza por un solo espacio y trim quita los espacios en blanco al final e inicio de la cadena.
-	    $_val = trim(preg_replace('/\s\s+/',' ',preg_replace('/&nbsp;/',' ',strip_tags($_val))));
+      $_val = trim(preg_replace('/\s\s+/',' ',preg_replace('/&nbsp;/',' ',strip_tags($_val))));
           default:
             if ($truncate)
               $_tmp = smarty_modifier_truncate($_val, 50);
@@ -409,39 +409,39 @@ function smarty_function_datagrid($params, &$smarty)
         $_html_row .= preg_replace("/_VALUE_/", $_tmp, DGCELL);
         $_cols++;
       }
-      if ($key2)
+      if ($key2) {
         if ($_cols <= 3 || $parent){
-		if(in_array(1,$_SESSION['credentials'][$table])){
-		$_dgcmd = DGCMD2R;
-		}elseif(in_array(2,$_SESSION['credentials'][$table])){
-		$_dgcmd = DGCMD2RVER;
-		}
-
-	}else{
-		$_dgcmd = DGCMD2;
-	}
-      else
+          if($_SESSION['credentials'][$table] == 'full'){
+            $_dgcmd = DGCMD2R;
+          }elseif($_SESSION['credentials'][$table] == 'edit'){
+            $_dgcmd = DGCMD2RVER;
+          }
+        }else{
+          $_dgcmd = DGCMD2;
+        }
+      } else {
         if($_cols <= 3 || $parent){
-	  if(in_array(1,$_SESSION['credentials'][$table])){	
-	     $_dgcmd =  DGCMDR;
-          }elseif(in_array(4,$_SESSION['credentials'][$table])){
-	     $_dgcmd =  DGCMDRVER;
-	  }elseif(in_array(2,$_SESSION['credentials'][$table])){
-	     $_dgcmd =  DGCMDREDIT;
-	  }elseif(in_array(3,$_SESSION['credentials'][$table])){
-	     $_dgcmd =  DGCMDRDEL;
-	  }
-	}else{
-	  if(in_array(1,$_SESSION['credentials'][$table])){	
-	     $_dgcmd =  DGCMD;
-          }elseif(in_array(4,$_SESSION['credentials'][$table])){
-	     $_dgcmd =  DGCMDVER;
-	  }elseif(in_array(2,$_SESSION['credentials'][$table])){
-	     $_dgcmd =  DGCMDEDIT;
-	  }elseif(in_array(3,$_SESSION['credentials'][$table])){
-	     $_dgcmd =  DGCMDDEL;
-	  }
-	}
+          if($_SESSION['credentials'][$table] == 'full'){
+            $_dgcmd =  DGCMDR;
+          }elseif($_SESSION['credentials'][$table] == 'edit'){
+            $_dgcmd =  DGCMDREDIT;
+          }elseif($_SESSION['credentials'][$table] == 'delete'){
+            $_dgcmd =  DGCMDRDEL;
+          }elseif($_SESSION['credentials'][$table] == 'read'){
+            $_dgcmd =  DGCMDRVER;
+          }
+        }else{
+          if($_SESSION['credentials'][$table] == 'full'){
+            $_dgcmd =  DGCMD;
+          }elseif($_SESSION['credentials'][$table] == 'edit'){
+            $_dgcmd =  DGCMDEDIT;
+          }elseif($_SESSION['credentials'][$table] == 'delete'){
+            $_dgcmd =  DGCMDDEL;
+          }elseif($_SESSION['credentials'][$table] == 'read'){
+            $_dgcmd =  DGCMDVER;
+          }
+        }
+      }
       $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmd);
       $_html_cmd = preg_replace("/_ID1_/", $row[$key1], $_html_cmd);
       $_html_cmd = preg_replace("/_ID2_/", $row[$key2], $_html_cmd);
@@ -510,5 +510,3 @@ function smarty_function_datagrid($params, &$smarty)
   return $_html_result;
 
 }
-
-?>

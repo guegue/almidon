@@ -21,9 +21,6 @@ mkdir $ROOTDIR/cache
 chown -R $2:$APACHEUSER $ROOTDIR
 chmod -R g+w $ROOTDIR/cache $ROOTDIR/logs $ROOTDIR/files $ROOTDIR/cache $ROOTDIR/templates_c
 ln -s $ROOTDIR/files $ROOTDIR/public_html/
-cp $ALMIDONDIR/new/secure/.htaccess $ROOTDIR/secure/
-perl -pi -e "s/example.org/$1/g" $ROOTDIR/secure/.htaccess
-perl -pi -e "s/example/$2/g" $ROOTDIR/secure/.htaccess
 cp $ALMIDONDIR/new/classes/* $ROOTDIR/classes/
 perl -pi -e "s/example.org/$1/g" $ROOTDIR/classes/config.php
 perl -pi -e "s/example/$2/g" $ROOTDIR/classes/config.php

@@ -6,12 +6,11 @@ class almuserTable extends Table {
     $this->title = 'Usuarios';
     $this->maxrows = 20;
     $this->order = 'idalmuser';
-    $this->addColumn('idalmuser','serial',0,1,0,'Id');
-    $this->addColumn('almuser','varchar',100,0,0,'Usuario');
+    $this->addColumn('idalmuser','varchar',16,1,0,'Id');
     $this->addColumn('password','password',200,0,0,'Clave');
-    $this->addColumn('name','varchar',100,0,0,'Nombre');
+    $this->addColumn('almuser','varchar',100,0,0,'Nombre');
     $this->addColumn('email','varchar',200,0,0,'Correo');
-    $this->addColumn('idalmrole','varchar',100,0,'almrole','Rol por defecto');
+    $this->addColumn('idalmrole','varchar',8,0,'almrole','Rol por defecto');
   }
 }
 
@@ -22,8 +21,8 @@ class almroleTable extends Table {
     $this->title = 'Roles';
     $this->maxrows = 20;
     $this->order = 'idalmrole';
-    $this->addColumn('idalmrole','serial',0,1,0,'Id');
-    $this->addColumn('almrole','varchar',100,0,0,'Rol');
+    $this->addColumn('idalmrole','varchar',8,1,0,'Id');
+    $this->addColumn('almrole','varchar',100,0,0,'Descripcion');
   }
 }
 
@@ -35,20 +34,37 @@ class almaccessTable extends Table {
     $this->maxrows = 20;
     $this->order = 'idalmaccess';
     $this->addColumn('idalmaccess','serial',0,1,0,'Id');
-    $this->addColumn('idalmrole','int',0,0,'almrole','Rol');
-    $this->addColumn('idalmuser','int',0,0,'almuser','Usuario');
-    $this->addColumn('idalmform','int',0,0,'almform','Tabla');
+    $this->addColumn('idalmrole','varchar',8,0,'almrole','Rol');
+    $this->addColumn('idalmuser','varchar',16,0,'almuser','Usuario');
+    $this->addColumn('idalmtable','varchar',32,0,'almtable','Tabla');
   }
 }
 
-class almformTable extends Table {
-  function almformTable() {
-    $this->Table('almform');
-    $this->key = 'idalmform';
-    $this->title = 'Formularios';
+class almtableTable extends Table {
+  function almtableTable() {
+    $this->Table('almtable');
+    $this->key = 'idalmtable';
+    $this->title = 'Tablas';
     $this->maxrows = 20;
-    $this->order = 'idalmform';
-    $this->addColumn('idalmform','serial',0,1,0,'Id');
-    $this->addColumn('almform','varchar',100,0,0,'Formulario');
+    $this->order = 'idalmtable';
+    $this->addColumn('idalmtable','varchar',32,1,0,'Id');
+    $this->addColumn('almtable','varchar',100,0,0,'Descripcion');
+  }
+}
+
+class almcolumnTable extends Table {
+  function almcolumnTable() {
+    $this->Table('almcolumn');
+    $this->key = 'idalmcolumn';
+    $this->title = 'Campos';
+    $this->maxrows = 20;
+    $this->order = 'idalmcolumn';
+    $this->addColumn('idalmcolumn','varchar',32,1,0,'Id');
+    $this->addColumn('type','varchar',16,0,0,'Tipo');
+    $this->addColumn('size','int',0,0,0,'Size');
+    $this->addColumn('pk','bool',0,0,0,'PK?');
+    $this->addColumn('fk','bool',0,0,0,'FK?');
+    $this->addColumn('almcolumn','varchar',100,0,0,'Descripcion');
+    $this->addColumn('idalmtable','varchar',32,0,'almtable','Tabla');
   }
 }

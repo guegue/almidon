@@ -14,21 +14,37 @@ switch ($action) {
     $_SESSION['accion'] = 'leer';
     break;
   case 'add':
-    $$object->addRecord();
-    # Para los tags
-    verifyNewTags($$object);
+    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit') {
+      $$object->addRecord();
+      # Para los tags
+      verifyNewTags($$object);
+    } else {
+      die("SEGURIDAD: Credenciales no tienen sentido!");
+    }
     break;
   case 'delete':
-    $$object->deleteRecord();
+    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['credentials'][$object] == 'delete') {
+      $$object->deleteRecord();
+    } else {
+      die("SEGURIDAD: Credenciales no tienen sentido!");
+    }
     break;
   case 'save':
-    $$object->updateRecord();
-    verifyNewTags($$object);
+    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit') {
+      $$object->updateRecord();
+      verifyNewTags($$object);
+    } else {
+      die("SEGURIDAD: Credenciales no tienen sentido!");
+    }
     break;
   case 'dgsave':
-    $maxcols = ($_REQUEST['maxcols']) ? $_REQUEST['maxcols'] : MAXCOLS;
-    # Por que nofiles? Tambien debe poder cambiar, nofiles es la tercera opcion de updateRecord
-    $$object->updateRecord(0, $maxcols, 0);
+    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit') {
+      $maxcols = ($_REQUEST['maxcols']) ? $_REQUEST['maxcols'] : MAXCOLS;
+      # Por que nofiles? Tambien debe poder cambiar, nofiles es la tercera opcion de updateRecord
+      $$object->updateRecord(0, $maxcols, 0);
+    } else {
+      die("SEGURIDAD: Credenciales no tienen sentido!");
+    }
     break;
   case 'move':
     $limit = $$object->limit;
@@ -97,12 +113,16 @@ if(isset($$object->detail)) {
     $$obj->readEnv();
     switch($_REQUEST['actiond']) {
       case 'delete':
-       if($_REQUEST['od']==$obj) {
-         $tmp = $$obj->readRecord();
-         $$obj->deleteRecord();
-        //$smarty->clear_all_cache();
-        header('Location: ./'.$object.'.php?f='.$object.'&action=record&'.$$object->key.'='.$tmp[$$object->key]);
-      }
+        if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['credentials'][$object] == 'delete') {
+          if($_REQUEST['od']==$obj) {
+            $tmp = $$obj->readRecord();
+            $$obj->deleteRecord();
+            //$smarty->clear_all_cache();
+            header('Location: ./'.$object.'.php?f='.$object.'&action=record&'.$$object->key.'='.$tmp[$$object->key]);
+          }
+        } else {
+          die("SEGURIDAD: Credenciales no tienen sentido!");
+        }
       break;
     }
     if($row) {

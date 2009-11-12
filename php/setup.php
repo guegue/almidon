@@ -176,6 +176,7 @@ if ($action == 'fixdb') {
 $options = array(
   'test'=>'Probar configuraci&oacute;n',
   'tables'=>'Probar tablas y base de datos',
+  'exec'=>'Ejecutar SQL',
   'sql'=>'Generar SQL basado en tables.class',
   'dd'=>'Generar diccionario de datos',
   'erd'=>'Generar diagrama entidad relacion',
@@ -244,6 +245,16 @@ if (!empty($action)) {
         }
       } else
         $tables_output .= "$green<br/>";
+    }
+    break;
+  case 'exec':
+    $sqlcmd = pg_escape_string($_REQUEST['sqlcmd']);
+    $output .= '<form><input type="hidden" name="action" value="exec"/><textarea name="sqlcmd" cols="80">'.$sqlcmd.'</textarea><br/><input type="submit"></form>';
+    if ($sqlcmd) {
+      $data = new Data();
+      $data->execSql($sqlcmd);
+      $sqldata = $data->getArray();
+      $output .= "<pre>" . print_r($sqldata,1) . "</pre>";
     }
     break;
   case 'sql':
@@ -339,12 +350,18 @@ if (!empty($action)) {
       $myhost = empty($host) ? '' : $host;
     }
     break;
+  case 'exec':
+    print $output;
+    break;
   case 'tables':
     print "$tables_output";
     if ($tables_failed) {
       print '<br/><font color="red">Debes corregir estos errores en la base de datos.</font><br/>Puedes ayudarte del <a href="?action=sql">sql generado desde tables.class</a> o del texto a continuaci&oacute;n:';
-      if (isset($sql_fix))
-        print '<pre>'.$sql_fix.'</pre>';
+      if (isset($sql_fix)) {
+        $sql_fix = trim($sql_fix);
+        print '<form><pre>'.$sql_fix.'</pre>';
+        print '<input type="hidden" name="action" value="exec"/><input type="hidden" name="sqlcmd" value="'.$sql_fix.'"/><input type="submit" value="Aplicar SQL"></form>';
+      }
     }
     break;
   case 'erd':

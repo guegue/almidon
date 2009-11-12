@@ -12,22 +12,7 @@
  * @package almidon
  */
 
-if (DEBUG === true) ini_set('display_errors', true);
-
-# Where is Almidon?
-if (!defined('ALMIDONDIR')) {
-  $almidondir = dirname(__FILE__);
-  $almidondir = substr($almidondir, 0, strrpos($almidondir,'/'));
-  define ('ALMIDONDIR', $almidondir);
-}
-
-# Use Almidon's PEAR
-set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
-
-# Other constants...
-if (!defined('ALM_SQL_DEBUG')) define('ALM_SQL_DEBUG', true);
-if (!defined('ALM_DEBUG')) define('ALM_DEBUG', false);
-if(!defined('ALM_ALLOW_TAGS')) define('ALM_ALLOW_TAGS', '<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><img4><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>');
+require('db.const.php');
 
 # Finally... the DAL...
 
@@ -48,45 +33,19 @@ class Data {
   var $cols;
 
   function Data () {
-    global $DSN;
-    if ($DSN)
-      $this->database =& MDB2::connect ($DSN);
-    else
-      $this->database =& MDB2::connect (DSN);
-    $this->check_error($this->database,'',true);
-    $this->num = 0;
-    $this->cols = 0;
-    $this->max = MAXROWS;
-    $this->current_pg = (isset($_REQUEST['pg'])) ? $_REQUEST['pg'] : '1';
+    require('db.data.php');
   }
 
   function check_error($obj, $extra = '', $die = false) {
-    if (PEAR::isError($obj)) {
-      $error_msg = $obj->getMessage();
-      $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
-      if (DEBUG === true) trigger_error(htmlentities($error_msg));
-      error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
-      if ($die) die();
-    } elseif (ALM_SQL_DEBUG !== false && $extra) {
-      $this->sql_log($extra);
-    }
+    require('db.error.php');
   }
-
+ 
   function sql_log($logtext) {
-    $loghandle = @fopen(SQLLOG, 'a');
-    if (is_writable(SQLLOG)) {
-      fwrite($loghandle, date("[D M d H:i:s Y]") . " " . $logtext . "\n");
-      fclose($loghandle);
-    }
-  }
-  
+    require('db.logging.php');
+  } 
+
   function query($sqlcmd) {
-    if (preg_match("/(?!')'(\s*?);/",$sqlcmd)) {
-      error_log(date("[D M d H:i:s Y]") . " Query invalido. " . $sqlcmd . "\n");
-      return false;
-    }
-    $result = $this->database->query($sqlcmd);
-    $this->check_error($result, $sqlcmd);
+    require('db.query.php');
     return $result;
   }
   
@@ -112,54 +71,22 @@ class Data {
 
   //Lee un statement sql y devuelve una lista de una sola columna (la primera)
   function getList($sqlcmd) {
-    $this->execSql($sqlcmd);
-    for ($i = 0; $i < $this->num; $i++) {
-      $row = $this->data->fetchRow(MDB2_FETCHMODE_ORDERED);
-      $array_rows[] = $row[0];
-    }
+    require('db.getlist.php');
     return $array_rows;
   }
 
   function getArray() {
-    for ($i = 0; $i < $this->num; $i++) {
-      $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
-      if (isset($row[$this->key]))
-      if ($row[$this->key] == $this->current_id)
-        $this->current_record = $row;
-      if ($this->html)
-        foreach ($row as $key => $val)
-          $row[$key] = htmlentities($val, ENT_COMPAT, 'UTF-8');
-      $array_rows[] = $row;
-    }
-    if (isset($array_rows))
-      return $array_rows;
+    require('db.getarray.php');
+    return (isset($array_rows) ? $array_rows : null);
   }
 
   function selectList($sqlcmd) {
-    $result = $this->query($sqlcmd);
-    $num = $result->numRows();
-    $menu = array();
-    for ($i=0; $i < $num; $i++) {
-      $r = $result->fetchRow(MDB2_FETCHMODE_ORDERED);
-      $new = array($r[0] => $r[1]);
-      $menu = $menu + $new;
-    }
+    require('db.selectlist.php');
     return $menu;
   }
 
-  function selectMenu($sqlcmd = '') {
-    if (!$sqlcmd)
-      $sqlcmd = "SELECT $this->key, $this->name FROM $this->name ORDER BY $this->name";
-    if (!preg_match("/SELECT/", $sqlcmd))
-      $sqlcmd = "SELECT id$sqlcmd, $sqlcmd FROM $sqlcmd ORDER BY $sqlcmd";
-    $result = $this->query($sqlcmd);
-    $num = $result->numRows();
-    $menu = array();
-    for ($i=0; $i < $num; $i++) {
-      $r = $result->fetchRow(MDB2_FETCHMODE_ORDERED);
-      $new = array($r[0] => $r[1]);
-      $menu = $menu + $new;
-    }
+  function selectMenu($sqlcmd = '', $filter = '') {
+    require('db.selectmenu.php');
     return $menu;
   }
 
@@ -241,55 +168,16 @@ class Table extends Data {
   }
 
   function addColumn($name, $type, $size = 100, $pk = 0, $references = 0, $label = '', $extra = '') {
-    $column = array('name'=>$name,'type'=>$type,'size'=>$size,'references'=>$references, 'label'=>$label, 'extra'=>$extra);
-    $this->definition[] = $column;
-    $this->dd[$name] = $column;
-    if ($references)
-      $this->join = 1;
-    $this->refreshFields();
-    $this->cols++;
+    require('db.addcolumn.php');
   }
 
-  function parsevar($tmpvar, $type = 'string', $html = false) {
-    if ($this->database) 
-      $tmpvar = $this->database->escape($tmpvar);
-    switch ($type) {
-      case 'varchar':
-        $type = 'string';
-        break;
-      case 'numeric':
-        $type = 'float';
-        break;
-      case 'int':
-      case 'smallint':
-      case 'serial':
-        $type = 'int';
-        break;
-      default:
-        $type = 'string';
-    }
-    settype($tmpvar,$type);
-    if ($type == 'string') {
-      $tmpvar = preg_replace("/<script[^>]*?>.*?<\/script>/i", "", $tmpvar);
-      $tmpvar = preg_replace("/javascript/i", "", $tmpvar); # es necesario?
-    } 
-    if ($type == 'string' && !$html) {
-      $tmpvar = strip_tags($tmpvar, ALM_ALLOW_TAGS);
-      #$tmpvar = preg_replace("/<|>/", "", $tmpvar);
-    }
+  function parsevar($tmpvar, $type = 'string', $html = false, $ena_js = false) {
+    require('db.parsevar.php');
     return $tmpvar;
   }
 
   function readArgs() {
-    $params = explode("/", $_SERVER['PATH_INFO']);
-    for($i = 1; $i < sizeof($params); $i++)
-      $args[$i] = $params[$i];
-    if (is_numeric($args[1])) {
-      $this->id = $args[1];
-      $this->action = $args[2];
-    } else {
-      $this->action = $args[1];
-    }
+    require('db.readargs.php');
     return $args;
   }
 
@@ -527,17 +415,11 @@ class Table extends Data {
   }
   
   function updateRecord($id = 0, $maxcols = 0, $nofiles = 0) {
-    if (!$id && isset($this->request['old_' . $this->key])) $id = $this->request['old_' . $this->key];
-    if (!$id) $id = $this->request[$this->key];
-    $values = $this->preUpdateRecord($maxcols, $nofiles);
-    $sqlcmd = "UPDATE $this->name SET $values WHERE $this->key = '$id'";
-    $result = $this->query($sqlcmd);
+    require('db.updaterecord.php');
   }
 
   function deleteRecord($id = 0) {
-    if (!$id) $id = $this->request[$this->key];
-    $sqlcmd = "DELETE FROM $this->name WHERE $this->key = '$id'";
-    $result = $this->query($sqlcmd);
+    require('db.deleterecord.php');
   }
 
   function getJoin() {
@@ -559,19 +441,7 @@ class Table extends Data {
   }
 
   function readRecord($id = 0) {
-    if (!$id && isset($this->request[$this->key])) $id = $this->request[$this->key];
-    #if (!$id) $id = $this->getVar("SELECT currval('" . $this->name . "_" . $this->key . "_seq')");
-    if (!$id) $id = $this->getVar("SELECT MAX(" . $this->key . ") FROM " . $this->name);
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin() . " WHERE $this->name.$this->key = '$id'";
-    } else
-      $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key = '$id'";
-    $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
-    if ($this->html)
-      foreach($row as $key=>$val)
-        $row[$key] = htmlentities($val);
-    $this->current_record = $row;
+    require('db.readrecord.php');
     return $row;
   }
 
@@ -589,84 +459,27 @@ class Table extends Data {
   }
 
   function fetchNext($current) {
-    $sqlcmd = "SELECT $this->key FROM $this->name";
-    if ($this->order)
-    	$sqlcmd .= " ORDER BY $this->order";
-    $this->execSql($sqlcmd);
-    $rows = @pg_fetch_all($this->data);
-    foreach($rows as $row) {
-      $value = $row[$this->key];
-      if ($next) {
-        $next = $value;
-        break;
-      } elseif ($value == $current)
-        $next = $value;
-    }
+    require('db.fetchnext.php');
     return $next;
   }
 
   function fetchPrev($current) {
-    $sqlcmd = "SELECT $this->key FROM $this->name";
-    if ($this->order)
-        $sqlcmd .= " ORDER BY $this->order";
-    $this->execSql($sqlcmd);
-    $rows = @pg_fetch_all($this->data);
-    foreach($rows as $row) {
-      $value = $row[$this->key];
-      if ($value == $current) {
-        $prev = $oldvalue;
-        break;
-      }
-      $oldvalue = $value;
-    }
+    require('db.fetchprev.php');
     return $prev;
   }
 
   function readData() {
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin();
-    } else {
-      $sqlcmd = "SELECT $this->fields FROM $this->name";
-    }
-    if ($this->order)
-      $sqlcmd .= " ORDER BY $this->order";
-    if ($this->limit)
-      $sqlcmd .= " LIMIT $this->limit";
-    if ($this->offset)
-      $sqlcmd .= " OFFSET $this->offset";
-    $this->execSql($sqlcmd);
+    require('db.readdata.php');
     return $this->getArray();
   }
 
   function readDataFilter($filter) {
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin();
-    }
-    else
-      $sqlcmd = "SELECT $this->fields FROM $this->name";
-    $sqlcmd .= " WHERE $filter";
-    if ($this->order)
-    	$sqlcmd .= " ORDER BY $this->order";
-    if ($this->limit)
-      $sqlcmd .= " LIMIT $this->limit";
-    if ($this->offset)
-      $sqlcmd .= " OFFSET $this->offset";
-    $this->execSql($sqlcmd);
+    require('db.readdatafilter.php');
     return $this->getArray();
-
   }
 
   function dumpData() {
-    print "<table border=1>";
-    $rows = $this->readData();
-    if ($rows)
-      foreach($rows as $row) {
-        print "<tr>";
-        foreach($row as $column)
-          print "<td>$column</td>";
-        print "</tr>";
-      }
-    print "</table>";
+    require('db.dumpdata.php');
   }
 
 }
@@ -676,68 +489,19 @@ class TableDoubleKey extends Table {
   var $key2;
 
   function deleteRecord($id1 = 0, $id2 = 0) {
-    if (!$id1) $id1 = $this->request[$this->key1];
-    if (!$id2) $id2 = $this->request[$this->key2];
-    $sqlcmd = "DELETE FROM $this->name WHERE $this->key1 = '$id1' AND $this->key2 = '$id2'";
-    $result = $this->query($sqlcmd);
+    require('db.deleterecord2.php');
   }
 
   function updateRecord($id1 = 0, $id2 = 0, $maxcols = 0, $nofiles = 0) {
-    if (!$id1) $id1 = $this->request['old_' . $this->key1];
-    if (!$id2) $id2 = $this->request['old_' . $this->key2];
-    $values = $this->preUpdateRecord($maxcols, $nofiles);
-    $sqlcmd = "UPDATE $this->name SET $values WHERE $this->key1 = '$id1' AND $this->key2 = '$id2'";
-    $result = $this->query($sqlcmd);
+    require('db.updaterecord2.php');
   }
 
   function readRecord($id1 = 0, $id2 = 0) {
-    if (!$id1) $id1 = $this->request[$this->key1];
-    if (!$id2) $id2 = $this->request[$this->key2];
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin() . " WHERE $this->name.$this->key1 = '$id1' AND $this->name.$this->key2 = '$id2'";
-    } else
-      $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key1 = '$id1' AND $this->name.$this->key2 = '$id2'";
-    $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
-    $this->current_record = $row;
+    require('db.readrecord2.php');
     return $row;
   }
 
   function readEnv() {
-    unset ($this->request);
-    unset ($this->files);
-    foreach($this->definition as $column) {
-      if ($column['type'] != 'external' && $column['type'] != 'auto') {
-        if (($column['type'] == 'file' || $column['type'] == 'image')  && $_FILES[$column['name']]['name']) {
-          $this->request[$column['name']] = $_FILES[$column['name']]['name'];
-          $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
-        } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
-          $date = ''; $time = '';
-          if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
-            $date = $this->parsevar($_REQUEST[$column['name']]);
-          else
-            $time = $this->parsevar($_REQUEST[$column['name']]);
-          if ($_REQUEST[$column['name'] . '_Year']) {
-            $year = $this->parsevar($_REQUEST[$column['name'] . '_Year'], 'int');
-            $month = $this->parsevar($_REQUEST[$column['name'] . '_Month'], 'int');
-            $day = $this->parsevar($_REQUEST[$column['name'] . '_Day'], 'int');
-            $date = $year . '-' . $month . '-' . $day;
-          }
-          if ($_REQUEST[$column['name'] . '_Hour']) {
-            $this->request[$column['name']] = $year . '-' . $month . '-' . $day;
-            $hour = $this->parsevar($_REQUEST[$column['name'] . '_Hour'], 'int');
-            $minute = $this->parsevar($_REQUEST[$column['name'] . '_Minute'], 'int');
-            $second = $this->parsevar($_REQUEST[$column['name'] . '_Second'], 'int');
-            $time = $hour . ':' . $minute . ':' . $second;
-          }
-          $datetime = trim("$date $time");
-          $this->request[$column['name']] = $datetime;
-        } else {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']); 
-        }
-      }
-    }
-    $this->request['old_' . $this->key1] = $_REQUEST['old_' . $this->key1];
-    $this->request['old_' . $this->key2] = $_REQUEST['old_' . $this->key2];
+    require('db.readenv2.php');
   }
 }

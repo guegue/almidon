@@ -12,16 +12,6 @@
  * @package almidon
  */
 
-// Constantes
-if (DEBUG === true) ini_set('display_errors', true);
-
-# Where is Almidon?
-if (!defined('ALMIDONDIR')) {
-  $almidondir = dirname(__FILE__);
-  $almidondir = substr($almidondir, 0, strrpos($almidondir,'/'));
-  define ('ALMIDONDIR', $almidondir);
-}
-
 # Use Almidon's PEAR
 if (defined('ALMIDONDIR')) {
   if(defined('KEEP_INCPATH')&&KEEP_INCPATH===false)
@@ -30,13 +20,7 @@ if (defined('ALMIDONDIR')) {
     set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
 }
 
-# Permisos por defecto para los directorios que se creen en files
-define('PERMIS_DIR',0775);
-
-# Other constants...
-if (!defined('ALM_SQL_DEBUG')) define('ALM_SQL_DEBUG', true);
-# Etiquetas permitidas
-if(!defined('ALM_ALLOW_TAGS')) define('ALM_ALLOW_TAGS', '<br/><br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup><object><param><embed><hr><hr /><hr/>');
+require('db.const.php');
 
 require('image.class.php');
 
@@ -60,57 +44,20 @@ class Data {
   var $cols;
   // }}} variables
 
-  // {{{ inicializacion y conexion
   function Data () {
-    global $DSN;
-    if ($DSN)
-      $this->database =& MDB2::connect ($DSN);
-    else
-      $this->database =& MDB2::connect (DSN);
-    $this->check_error($this->database,'',true);
-    $this->num = 0;
-    $this->cols = 0;
-    $this->max = MAXROWS;
-    $this->current_pg = isset($_REQUEST['pg']) ? (int)$_REQUEST['pg'] : '1';
+    require('db.data.php');
   }
-  // }}} inicializacion y conexion
 
-  // {{{ errores y logs
   function check_error($obj, $extra = '', $die = false) {
-    if (PEAR::isError($obj)) {
-      $error_msg = $obj->getMessage();
-      #if ($extra) $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
-      $error_msg .= " -- " . $extra . " -- " . $_SERVER['SCRIPT_NAME'];
-      #if (DEBUG === true) trigger_error(htmlentities($error_msg));
-      error_log(date("[D M d H:i:s Y]") . " Error: " . $error_msg . "\n");
-      if ($die) die();
-    } elseif (ALM_SQL_DEBUG !== false && $extra)
-      $this->sql_log($extra);
+    require('db.error.php');
   }
 
   function sql_log($logtext) {
-    $loghandle = fopen(SQLLOG, 'a');
-    fwrite($loghandle, date("[D M d H:i:s Y]") . " " . $logtext . "\n");
-    fclose($loghandle);
+    require('db.logging.php');
   }
-  // }}} errores y logs
 
-  // {{{ query
   function query($sqlcmd) {
-    if (preg_match("/(?!')'(\s*?);/",$sqlcmd)) {
-      error_log(date("[D M d H:i:s Y]") . " Query invalido. " . $sqlcmd . "\n");
-      return false;
-    }
-    $result = $this->database->query($sqlcmd);
-    $this->check_error($result, $sqlcmd);
-      /* if (preg_match("/violates foreign key/", $error_msg)) {
-        preg_match("/DETAIL: Key \((.*)\)\=\((.*?)\)(.*)from table \"(.*?)\"/", $error_msg, $error_detail);
-        preg_match("/Key \((.*?)\)=\((.*?)\)(.*?)\"(.*?)\"/", $error_msg, $error_detail);
-        $msg = "ERROR: Registro $error_detail[1]=$error_detail[2] es usado en la tabla $error_detail[4]";
-        if (DEBUG) print $msg;
-        global $smarty;
-        if ($smarty) $smarty->assign('error', "$msg <br/> $error_msg");
-      } */
+    require('db.query.php');
     return $result;
   }
 
@@ -136,61 +83,22 @@ class Data {
 
   //Lee un statement sql y devuelve una lista de una sola columna (la primera)
   function getList($sqlcmd) {
-    $this->execSql($sqlcmd);
-    for ($i = 0; $i < $this->num; $i++) {
-      $row = $this->data->fetchRow(MDB2_FETCHMODE_ORDERED);
-      $array_rows[] = $row[0];
-    }
+    require('db.getlist.php');
     return $array_rows;
   }
 
   function getArray() {
-    for ($i = 0; $i < $this->num; $i++) {
-      $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
-      if ($row[$this->key] == $this->current_id)
-        $this->current_record = $row;
-      if ($this->html)
-        foreach ($row as $key => $val)
-          $row[$key] = htmlentities($val, ENT_COMPAT, 'UTF-8');
-      $array_rows[] = $row;
-    }
-    if (isset($array_rows))
-      return $array_rows;
-    else return null;
+    require('db.getarray.php');
+    return (isset($array_rows) ? $array_rows : null);
   }
 
   function selectList($sqlcmd) {
-    $result = $this->query($sqlcmd);
-    $num = $result->numRows();
-    $menu = array();
-    for ($i=0; $i < $num; $i++) {
-      $r = $result->fetchRow(MDB2_FETCHMODE_ORDERED);
-      $new = array($r[0] => $r[1]);
-      $menu = $menu + $new;
-    }
+    require('db.selectlist.php');
     return $menu;
   }
 
   function selectMenu($sqlcmd = '', $filter = '') {
-    if (!$sqlcmd)
-      if(isset($this->dd[$this->name]))
-        $sqlcmd = "SELECT $this->key, $this->name FROM $this->name _WHERE_ ORDER BY $this->name.$this->name";
-      else
-        $sqlcmd = "SELECT $this->key, $this->key AS $this->name FROM $this->name _WHERE_ ORDER BY $this->name";
-    if (!preg_match("/SELECT/", $sqlcmd))
-      $sqlcmd = "SELECT id$sqlcmd, $sqlcmd FROM $sqlcmd _WHERE_ ORDER BY $sqlcmd";
-    if($filter)
-      $sqlcmd = preg_replace('/_WHERE_/ ',"WHERE $filter",$sqlcmd);
-    else
-      $sqlcmd = preg_replace('/_WHERE_/ ','',$sqlcmd);
-    $result = $this->query($sqlcmd);
-    $num = $result->numRows();
-    $menu = array();
-    for ($i=0; $i < $num; $i++) {
-      $r = $result->fetchRow(MDB2_FETCHMODE_ORDERED);
-      $new = array($r[0] => $r[1]);
-      $menu = $menu + $new;
-    }
+    require('db.selectmenu.php');
     return $menu;
   }
   // }}} funciones lectura de datos
@@ -333,61 +241,18 @@ class Table extends Data {
       - alias
   */
   function addColumn($name, $type, $size = 100, $pk = 0, $references = 0, $label = '', $extra = '') {
-  #print $type;
-    $column = array('name'=>$name,'type'=>$type,'size'=>$size,'references'=>$references, 'label'=>$label, 'extra'=>$extra);
-    $this->definition[] = $column;
-    $this->dd[$name] = $column;
-    if ($references)
-      $this->join = 1;
-    $this->refreshFields();
-    $this->cols++;
+    require('db.addcolumn.php');
   }
 
   function parsevar($tmpvar, $type = 'string', $html = false, $ena_js = false) {
-    if ($this->database)
-      $tmpvar = $this->database->escape($tmpvar);
-    switch ($type) {
-      case 'varchar':
-        $type = 'string';
-        break;
-      case 'numeric':
-        $type = 'float';
-        break;
-      case 'int':
-      case 'smallint':
-      case 'serial':
-        $type = 'int';
-        break;
-      default:
-        $type = 'string';
-    }
-    settype($tmpvar,$type);
-    if ($type == 'string' && !$ena_js) {
-      $tmpvar = preg_replace("/<script[^>]*?>.*?<\/script>/i", "", $tmpvar);
-      $tmpvar = preg_replace("/javascript/i", "", $tmpvar); # Es necesario?
-    }
-    if ($type == 'string' && !$html) {
-      $tmpvar = strip_tags($tmpvar, ALM_ALLOW_TAGS);
-      //$tmpvar = strip_tags($tmpvar, "<br><p><h1><h2><h3><b><i><div><span><img1><img2><img3><strong><li><ul><ol><table><tbody><tr><td><font><a><sup>");
-      #$tmpvar = preg_replace("/<|>/", "", $tmpvar);
-    }
-    return $tmpvar;
+    require('db.parsevar.php');
   }
 
   function readArgs() {
-    $params = explode("/", $_SERVER['PATH_INFO']);
-    for($i = 1; $i < sizeof($params); $i++)
-      $args[$i] = $params[$i];
-    if (is_numeric($args[1])) {
-      $this->id = $args[1];
-      $this->action = $args[2];
-    } else {
-      $this->action = $args[1];
-    }
-    return $args;
+    require('db.readargs.php');
   }
 
-  function readEnv() {
+  function readEnv($friendly = false) {
     include('db.readenv.php');
   }
 
@@ -395,7 +260,6 @@ class Table extends Data {
     $n = 0;
     $values ="";
     foreach($this->definition as $column) {
-      //if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order')
       if ($n > 0 && $column['type'] != 'external' && ($column['type'] != 'auto'||!empty($column['extra']['default'])) && $column['type'] != 'order' && $column['type'] != 'serial')
         $values .= ",";
       switch($column['type']) {
@@ -419,21 +283,8 @@ class Table extends Data {
         case 'image':
           if ($this->files[$column['name']]) {
           	$timemark = getdate();
-          	/*
-          	"seconds"	Representaci—n numŽrica de segundos	0 a 59
-			      "minutes"	Representaci—n numŽrica de minutos	0 a 59
-			      "hours"	Representaci—n numŽrica de horas	0 a 23
-			      "mday"	Representaci—n numŽrica del d’a del mes	1 a 31
-			      "wday"	Representaci—n numŽrica del d’a de la semana	0 (para el Domingo) a 6 (para el S‡bado)
-			      "mon"	Representaci—n numŽrica de un mes	1 a 12
-			      "year"	Una representaci—n numŽrica completa de un a–o, 4 d’gitos	Ejemplos: 1999 o 2003
-			      "yday"	Representaci—n numŽrica del d’a del a–o	0 a 365
-			      "weekday"	Una representaci—n textual completa del d’a de la semana	Sunday a Saturday
-			      "month"	Una representaci—n textual completa de un mes, como January o March	January a December
-			      0	Segundos desde el Epoch Unix, similar a los valores devueltos por time() y usados por date(). 	Depende del sistema, t’picamente -2147483648 a 2147483647 (equivalente al mktime).
-          	*/
             $filename =  $timemark[0] . "_" . $this->request[$column['name']];
-	    if (!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+	    if (!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, ALM_MASK);
             if(move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename)) {
               $this->request[$column['name']] = $filename;
 	      if ($column['extra']['sizes'] && defined('PIXDIR'))  {
@@ -445,8 +296,8 @@ class Table extends Data {
                 if ($timemark['mon']<10&&strlen($timemark['mon'])==1) $timemark['mon'] = "0" . $timemark['mon'];
                 // Comprueba que existan los directorios y sino
 	        // los crea
-	        if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
-	        if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
+	        if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], ALM_MASK);
+	        if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], ALM_MASK);
                 if($sizes)
                   for($idx=0;$idx<count($sizes);$idx++) {
                     $pic = null;
@@ -475,7 +326,7 @@ class Table extends Data {
         case 'file':
           if ($this->files[$column['name']]) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
-	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, ALM_MASK);
             if(move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename))
               $this->request[$column['name']] = $filename;
           } else {
@@ -578,7 +429,7 @@ class Table extends Data {
           } elseif ($this->files[$column['name']]) {
             $timemark = getdate();
             $filename =  $timemark[0] . "_" . $this->request[$column['name']];
-	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, ALM_MASK);
             if(move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename))
               $value = $this->database->escape($filename);
             else $value ='';
@@ -592,8 +443,8 @@ class Table extends Data {
               $image = new almImage();
               // Comprueba que existan los directorios y sino
               // los crea
-              if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], PERMIS_DIR);
-              if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], PERMIS_DIR);
+              if(!is_dir(PIXDIR."/".$timemark['year']))  mkdir(PIXDIR."/".$timemark['year'], ALM_MASK);
+              if(!is_dir(PIXDIR."/".$timemark['year']."/".$timemark['mon']))  mkdir(PIXDIR."/".$timemark['year']."/".$timemark['mon'], ALM_MASK);
               if($sizes)
                 for($idx=0;$idx<count($sizes);$idx++) {
                   $pic = null;
@@ -621,7 +472,7 @@ class Table extends Data {
               $values .= $column['name'] . "=" . $column['name'];
           } elseif ($this->files[$column['name']]) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
-	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, PERMIS_DIR);
+	    if(!is_dir(ROOTDIR . "/files/" . $this->name))  mkdir(ROOTDIR . "/files/" . $this->name, ALM_MASK);
             if(move_uploaded_file($this->files[$column['name']], ROOTDIR . "/files/" . $this->name . "/" . $filename))
               $value = $this->database->escape($filename);
             else $value = '';
@@ -679,17 +530,11 @@ class Table extends Data {
   }
 
   function updateRecord($id = 0, $maxcols = 0, $nofiles = 0) {
-    if (!$id && $this->request['old_' . $this->key]) $id = $this->request['old_' . $this->key];
-    if (!$id) $id = $this->request[$this->key];
-    $values = $this->preUpdateRecord($maxcols, $nofiles);
-    $sqlcmd = "UPDATE $this->name SET $values WHERE $this->key = '$id'";
-    $result = $this->query($sqlcmd);
+    require('db.updaterecord.php');
   }
 
   function deleteRecord($id = 0) {
-    if (!$id) $id = $this->request[$this->key];
-    $sqlcmd = "DELETE FROM $this->name WHERE $this->key = '$id'";
-    $result = $this->query($sqlcmd);
+    require('db.deleterecord.php');
   }
 
   function getJoin() {
@@ -724,20 +569,7 @@ class Table extends Data {
   }
 
   function readRecord($id = 0) {
-    if (!$id) $id = $this->request[$this->key];
-    # Nos devuelve el ultimo registro de la tabla, si es qe no se proporciona un id
-    #if (!$id) $id = $this->getVar("SELECT currval('$this->name"  . "_" . $this->key . "_seq')");
-    if (!$id) $id = $this->getVar("SELECT MAX(" . $this->key . ") FROM " . $this->name);
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin() . " WHERE $this->name.$this->key = '$id'";
-    } else
-      $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key = '$id'";
-    $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
-    if ($this->html)
-      foreach($row as $key=>$val)
-        $row[$key] = htmlentities($val);
-    $this->current_record = $row;
+    require('db.readrecord.php');
     return $row;
   }
 
@@ -755,86 +587,27 @@ class Table extends Data {
   }
 
   function fetchNext($current) {
-    $sqlcmd = "SELECT $this->key FROM $this->name";
-    if ($this->order)
-    	$sqlcmd .= " ORDER BY $this->order";
-    $this->execSql($sqlcmd);
-    $rows = @pg_fetch_all($this->data);
-    foreach($rows as $row) {
-      $value = $row[$this->key];
-      if ($next) {
-        $next = $value;
-        break;
-      } elseif ($value == $current)
-        $next = $value;
-    }
+    require('db.fetchnext.php');
     return $next;
   }
 
   function fetchPrev($current) {
-    $sqlcmd = "SELECT $this->key FROM $this->name";
-    if ($this->order)
-        $sqlcmd .= " ORDER BY $this->order";
-    $this->execSql($sqlcmd);
-    $rows = @pg_fetch_all($this->data);
-    foreach($rows as $row) {
-      $value = $row[$this->key];
-      if ($value == $current) {
-        $prev = $oldvalue;
-        break;
-      }
-      $oldvalue = $value;
-    }
+    require('db.fetchprev.php');
     return $prev;
   }
 
   function readData() {
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin();
-    } else {
-      $sqlcmd = "SELECT $this->fields FROM $this->name";
-    }
-    if ($this->filter)
-      $sqlcmd .= " WHERE $this->filter";
-    if ($this->order)
-      $sqlcmd .= " ORDER BY $this->order";
-    if ($this->limit)
-      $sqlcmd .= " LIMIT $this->limit";
-    if ($this->offset)
-      $sqlcmd .= " OFFSET $this->offset";
-    $this->execSql($sqlcmd);
+    require('db.readdata.php');
     return $this->getArray();
   }
 
   function readDataFilter($filter) {
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin();
-    }
-    else
-      $sqlcmd = "SELECT $this->fields FROM $this->name";
-    if ($this->filter || $filter)
-      $sqlcmd .= " WHERE ".(($this->filter)?$this->filter." AND ":"")."$filter";
-    if ($this->order)
-    	$sqlcmd .= " ORDER BY $this->order";
-    if ($this->limit)
-      $sqlcmd .= " LIMIT $this->limit";
-    if ($this->offset)
-      $sqlcmd .= " OFFSET $this->offset";
-    $this->execSql($sqlcmd);
+    require('db.readdatafilter.php');
     return $this->getArray();
   }
 
   function dumpData() {
-    print "<table border=1>";
-    $rows = $this->readData();
-    if ($rows)
-      foreach($rows as $row) {
-        print "<tr>";
-        foreach($row as $column)
-          print "<td>$column</td>";
-        print "</tr>";
-      }
-    print "</table>";
+    require('db.dumpdata.php');
   }
 
 }
@@ -844,75 +617,19 @@ class TableDoubleKey extends Table {
   var $key2;
 
   function deleteRecord($id1 = 0, $id2 = 0) {
-    if (!$id1) $id1 = $this->request[$this->key1];
-    if (!$id2) $id2 = $this->request[$this->key2];
-    $sqlcmd = "DELETE FROM $this->name WHERE $this->key1 = '$id1' AND $this->key2 = '$id2'";
-    $result = $this->query($sqlcmd);
+    require('db.deleterecord2.php');
   }
 
   function updateRecord($id1 = 0, $id2 = 0, $maxcols = 0, $nofiles = 0) {
-    if (!$id1) $id1 = $this->request['old_' . $this->key1];
-    if (!$id2) $id2 = $this->request['old_' . $this->key2];
-    $values = $this->preUpdateRecord($maxcols, $nofiles);
-    $sqlcmd = "UPDATE $this->name SET $values WHERE $this->key1 = '$id1' AND $this->key2 = '$id2'";
-    $result = $this->query($sqlcmd);
+    require('db.updaterecord2.php');
   }
 
   function readRecord($id1 = 0, $id2 = 0) {
-    if (!$id1) $id1 = $this->request[$this->key1];
-    if (!$id2) $id2 = $this->request[$this->key2];
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin() . " WHERE $this->name.$this->key1 = '$id1' AND $this->name.$this->key2 = '$id2'";
-    } else
-      $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key1 = '$id1' AND $this->name.$this->key2 = '$id2'";
-    $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
-    $this->current_record = $row;
+    require('db.readrecord2.php');
     return $row;
   }
 
   function readEnv() {
-    unset ($this->request);
-    unset ($this->files);
-    foreach($this->definition as $column) {
-      if ($column['type'] != 'external' && $column['type'] != 'auto') {
-        if (($column['type'] == 'file' || $column['type'] == 'image')  && $_FILES[$column['name']]['name']) {
-          $this->request[$column['name']] = $_FILES[$column['name']]['name'];
-          $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
-        } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
-          $date = ''; $time = '';
-          if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
-            $date = $this->parsevar($_REQUEST[$column['name']]);
-          else
-            $time = $this->parsevar($_REQUEST[$column['name']]);
-          if ($_REQUEST[$column['name'] . '_Year']) {
-            $year = $this->parsevar($_REQUEST[$column['name'] . '_Year'], 'int');
-            $month = $this->parsevar($_REQUEST[$column['name'] . '_Month'], 'int');
-            $day = $this->parsevar($_REQUEST[$column['name'] . '_Day'], 'int');
-            $date = $year . '-' . $month . '-' . $day;
-          }
-          if ($_REQUEST[$column['name'] . '_Hour']) {
-            $this->request[$column['name']] = $year . '-' . $month . '-' . $day;
-            $hour = $this->parsevar($_REQUEST[$column['name'] . '_Hour'], 'int');
-            $minute = $this->parsevar($_REQUEST[$column['name'] . '_Minute'], 'int');
-            $second = $this->parsevar($_REQUEST[$column['name'] . '_Second'], 'int');
-            $time = $hour . ':' . $minute . ':' . $second;
-          }
-          $datetime = trim("$date $time");
-          //echo $datetime;
-          $this->request[$column['name']] = $datetime;
-        } elseif ($column['type'] == 'auth_user') {
-          $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
-        } elseif($column['extra']['ena_js']!==false) {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type'], false, $column['extra']['ena_js']);
-        } else {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
-        }
-      }
-    }
-    $this->request['old_' . $this->key1] = $_REQUEST['old_' . $this->key1];
-    $this->request['old_' . $this->key2] = $_REQUEST['old_' . $this->key2];
+    require('db.readenv2.php');
   }
 }
-
-?>

@@ -1,0 +1,15 @@
+El uso de mysql es experimental, aunque tratamos de mantenerlo
+utilizable, no es siempre lo logramos.
+
+INSTALAR
+========
+
+ver INSTALL
+
+CAMBIOS
+=======
+
+En vez de importar los scripts demo.sql y users.sql, usar los *.mysql:
+
+  $ mysql < /var/www/almidon/demo/demo.mysql
+  $ mysql < /var/www/almidon/demo/users.mysql

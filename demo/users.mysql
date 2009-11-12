@@ -9,7 +9,7 @@ ALTER TABLE public.almrole OWNER TO almidondemo;
 CREATE TABLE almuser (idalmuser varchar(16) PRIMARY KEY, idalmrole varchar(8) REFERENCES almrole, password varchar(200) NOT NULL, almuser varchar(200) NOT NULL, email varchar(200));
 ALTER TABLE public.almuser OWNER TO almidondemo;
 
-CREATE TABLE almaccess (idalmrole varchar(8) REFERENCES almrole NULL, idalmuser varchar(16) REFERENCES almuser , idalmtable varchar(16) REFERENCES almtable, idalmaccess serial PRIMARY KEY);
+CREATE TABLE almaccess (idalmrole varchar(8) REFERENCES almrole NULL, idalmuser varchar(16) REFERENCES almuser , idalmtable varchar(16) REFERENCES almtable, idalmaccess PRIMARY KEY AUTO_INCREMENT);
 ALTER TABLE public.almaccess OWNER TO almidondemo;
 
 -- especificamos id porque puede usarse 'hard-coded' en algun lado

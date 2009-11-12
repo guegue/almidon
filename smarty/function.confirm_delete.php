@@ -14,19 +14,19 @@ define('SCRIPT', "
 <script type=\"text/javascript\" language=\"javascript\">
   function confirm_delete(o, idfield, id, desc) {
     if (window.confirm('\"'+desc+'\": ". ALM_AL_MSG_DEL ."')) {
-        location.href = '?o='+o+'&amp;action=delete&amp;'+idfield+'='+id;
+        location.href = '?o='+o+'&action=delete&'+idfield+'='+id;
     }
   }
 
   function confirm_delete_det(od, idfield, id, desc) {
     if (window.confirm('\"'+desc+'\": ". ALM_AL_MSG_DEL ."')) {
-        location.href = '?od='+od+'&amp;actiond=delete&amp;'+idfield+'='+id;
+        location.href = '?od='+od+'&actiond=delete&'+idfield+'='+id;
     }
   }
 
   function confirm_delete2(o, idfield1, idfield2, id1, id2, desc) {
     if (window.confirm('\"'+desc+'\": ". ALM_AL_MSG_DEL ."')) {
-        location.href = '?o='+o+'&amp;action=delete&amp;'+idfield1+'='+id1+'&amp;'+idfield2+'='+id2;
+        location.href = '?o='+o+'&action=delete&'+idfield1+'='+id1+'&'+idfield2+'='+id2;
     }
   }
 </script>

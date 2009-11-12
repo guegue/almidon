@@ -7,18 +7,23 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
   foreach($classes as $key)
     if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
       $table_object = new $key;
+
       # Modificacion hecho por DiFeReNcIa entre php5 y php4
       if(substr($key, 0, strpos($key, 'Table'))!==false)
         $key = substr($key, 0, strpos($key, 'Table'));
       else
         $key = substr($key, 0, strpos($key, 'table'));
-      if(isset($_SESSION['credentials'][$key]))
+
+      # Solo agrega link si el usuario tiene acceso a esa tabla o si es admin
+      if(isset($_SESSION['credentials'][$key]) || $_SESSION['idalmuser'] === 'admin' )
          $adminlinks[$key] = $table_object->title;
+
       # Para agregar links adicionales, lo que nos de la gana
       if(isset($extralinks)) {
          foreach($extralinks as $key=>$link)
            $adminlinks[$key] = $link;
       }
+
     }
   $adminlinks['logout'] = ALM_LOGOUT; //Logout link
   $smarty->assign('adminlinks', $adminlinks);
