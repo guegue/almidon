@@ -1,0 +1,34 @@
+INSTALAR
+======== 
+Paso 1: Obtener almidon
+
+ # cd /var/www
+ # wget http://almidon.org/download/almidon-latest.tar.gz
+ # tar -xvzf almidon-latest.tar.gz
+
+Paso 2: Configurar Apache2
+
+ # cp /var/www/almidon/demo/almidon.conf /etc/apache2/conf.d/
+ # /etc/init.d/apache2 restart
+
+Paso 3: Activar el modrewrite en Apache2
+
+ # a2enmod rewrite
+ # /etc/init.d/apache2 restart
+
+Paso 4: Permisos del demo: 'templates_c', 'logs', 'cache' debe ser escribible por el usuario web.
+Igual 'files' y sus subcarpertas.
+
+ # cd demo
+ # chmod -R o+w templates_c logs cache files
+
+Paso 5: Configurar Almidon
+
+Constantes de conexion a la base de datos (vienen configuradas por default para pgsql)
+
+ # vim /var/www/almidon/demo/classes/config.php
+
+ $admin_dsn = 'mysql://almidondemo:secreto1@/almidondemo';
+ $public_dsn = 'mysql://almidondemowww:secreto2@/almidondemo';
+
+Paso 6: Crear la base de datos de ejemplo y los usuarios.
