@@ -13,7 +13,7 @@
 {/if}
 </td>
 <td>
-    {if $credentials eq 'full' || ($credentials eq 'read' && $smarty.session.accion == 'leer') || $credentials eq 'edit'}
+    {if $smarty.session.idalm_user eq 'admin' || $credentials eq 'full' || ($credentials eq 'read' && $smarty.session.accion == 'leer') || $credentials eq 'edit'}
 	   {if $add===true || $row}{if $smarty.const.DB3 === true}
 	        {dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}
 	   {else}

@@ -1,4 +1,4 @@
-{include file="/www/cms/tpl/header.tpl"}
+{include file="$header"}
 <table>
 <tr valign="top">
 <td>
@@ -11,4 +11,4 @@
 <td>{dataform dd=$dd key1=$key1 key2=$key2 title=$title row=$row name="new" object=$object edit=$edit options=$options}</td>
 </tr>
 </table>
-{include file="/www/cms/tpl/footer.tpl"}
+{include file="$footer"}

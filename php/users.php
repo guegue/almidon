@@ -10,20 +10,20 @@
  * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
  * @version users.php,v 20091013 Alejandro y Alexis
- * @package almidon
+ * @package alm_idon
  */
 
 # Check username and password
 function check_user($user, $pass) {
   $pass = md5($pass);
-  $almuser = new almuserTable();
-  $almuser->readEnv();
-  $almuser_data = $almuser->readDataFilter("idalmuser='".$user."' AND password='".$pass."'");
-  if(is_array($almuser_data)) {
+  $alm_user = new alm_userTable();
+  $alm_user->readEnv();
+  $alm_user_data = $alm_user->readDataFilter("idalm_user='".$user."' AND password='".$pass."'");
+  if(is_array($alm_user_data)) {
     //Cargar Credenciales
-    $_SESSION['credentials'] = get_credentials($almuser_data[0]['idalmuser']);
-    $_SESSION['idalmuser'] = $almuser_data[0]['idalmuser'];
-    $_SESSION['almuser'] = $almuser_data[0]['almuser'];
+    $_SESSION['credentials'] = get_credentials($alm_user_data[0]['idalm_user']);
+    $_SESSION['idalm_user'] = $alm_user_data[0]['idalm_user'];
+    $_SESSION['alm_user'] = $alm_user_data[0]['alm_user'];
     return true;
   }else{
     return false;
@@ -31,44 +31,44 @@ function check_user($user, $pass) {
 }
 
 # Get user's credentials for each table
-function get_credentials($idalmuser) {
+function get_credentials($idalm_user) {
   //Recorro Arreglo de tablas para chequear permisos
-  $almuser = new almuserTable();
-  $almuser->readEnv();
-  $almtable = new almtableTable();
-  $almtable->readEnv();
-  $almtable_data = $almtable->readData();
-  $almuser_record = $almuser->readRecord($idalmuser);
-  $alm_tables = "/^(almtable|almuser|almaccess|almrole)$/";
-  foreach ($almtable_data as $table) {
-    switch ($almuser_record['idalmrole']) {
+  $alm_user = new alm_userTable();
+  $alm_user->readEnv();
+  $alm_table = new alm_tableTable();
+  $alm_table->readEnv();
+  $alm_table_data = $alm_table->readData();
+  $alm_user_record = $alm_user->readRecord($idalm_user);
+  $alm__tables = "/^(alm_table|alm_user|alm_access|alm_role)$/";
+  foreach ($alm_table_data as $table) {
+    switch ($alm_user_record['idalm_role']) {
       case '': // Si no hay role por defecto, revisar personalizacion
-        $almaccess = new almaccessTable();
+        $alm_access = new alm_accessTable();
         // role = 3 = ???
-        $credentials = $almaccess->readDataFilter("almaccess.idalmuser=".$idalmuser." AND almaccess.idalmtable=".$table['idalmtable']." AND almaccess.idalmrole!=3");
+        $credentials = $alm_access->readDataFilter("alm_access.idalm_user=".$idalm_user." AND alm_access.idalm_table=".$table['idalm_table']." AND alm_access.idalm_role!='deny'");
         if(is_array($credentials)) {
           $i=0;
           foreach ($credentials as $key => $valor) {
-            $credentialsql[$i] = $valor['idalmrole'];
+            $credentialsql[$i] = $valor['idalm_role'];
             $i++;
           }
-          $arrayCredentials[$table['idalmtable']] = $credentialsql;
+          $arrayCredentials[$table['idalm_table']] = $credentialsql;
         }
         break;
       case 'full': // total
-        $arrayCredentials[$table['idalmtable']] = 'full';
+        $arrayCredentials[$table['idalm_table']] = 'full';
         break;         
       case 'edit': // edicion
-        if(!preg_match($alm_tables, $table['idalmtable']))
-          $arrayCredentials[$table['idalmtable']] = 'edit';
+        if(!preg_match($alm__tables, $table['idalm_table']))
+          $arrayCredentials[$table['idalm_table']] = 'edit';
         break;
       case 'delete': // Correccion, solo borrar
-        if(!preg_match($alm_tables, $table['idalmtable']))
-          $arrayCredentials[$table['idalmtable']] = 'delete';
+        if(!preg_match($alm__tables, $table['idalm_table']))
+          $arrayCredentials[$table['idalm_table']] = 'delete';
         break;
       case 'read': // Guest, read-only...
-        if(!preg_match($alm_tables, $table['idalmtable']))
-          $arrayCredentials[$table['idalmtable']] = 'read';
+        if(!preg_match($alm__tables, $table['idalm_table']))
+          $arrayCredentials[$table['idalm_table']] = 'read';
         break;
       case 'deny': // No access
         # Nothing to do...

@@ -39,7 +39,7 @@ tinyMCE.init({
 <link rel="stylesheet" href="/cms/js/autocomplete/jquery.autocomplete.css" />
 <!-- Default CSS -->
 <link rel="stylesheet" href="/cms/css/adm.css"/>
-<title>{$title} - {$smarty.session.almuser} @ {$smarty.const.DOMAIN}</title>
+<title>{$title} - {$smarty.session.alm_user} @ {$smarty.const.DOMAIN}</title>
 {confirm_delete}
 </head>
 <body>
@@ -54,7 +54,7 @@ tinyMCE.init({
   {/if}
 {elseif $adminlinks}
   {foreach key=key item=item from=$adminlinks name=i}<a href="{$key}"{if ($cur_page==$key)||($object==$key)} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}
-  {if $smarty.session.almuser} [ {$smarty.session.almuser} ]{/if}
+  {if $smarty.session.alm_user} [ {$smarty.session.alm_user} ]{/if}
   <hr size="1" noshade="noshade" />
 {/if}
 {/strip}

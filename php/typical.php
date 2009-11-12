@@ -14,7 +14,7 @@ switch ($action) {
     $_SESSION['accion'] = 'leer';
     break;
   case 'add':
-    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit') {
+    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['idalm_user'] == 'admin') {
       $$object->addRecord();
       # Para los tags
       verifyNewTags($$object);
@@ -23,14 +23,14 @@ switch ($action) {
     }
     break;
   case 'delete':
-    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['credentials'][$object] == 'delete') {
+    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['credentials'][$object] == 'delete' || $_SESSION['idalm_user'] == 'admin') {
       $$object->deleteRecord();
     } else {
       die("SEGURIDAD: Credenciales no tienen sentido!");
     }
     break;
   case 'save':
-    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit') {
+    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['idalm_user'] == 'admin') {
       $$object->updateRecord();
       verifyNewTags($$object);
     } else {
@@ -38,7 +38,7 @@ switch ($action) {
     }
     break;
   case 'dgsave':
-    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit') {
+    if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['idalm_user'] == 'admin') {
       $maxcols = ($_REQUEST['maxcols']) ? $_REQUEST['maxcols'] : MAXCOLS;
       # Por que nofiles? Tambien debe poder cambiar, nofiles es la tercera opcion de updateRecord
       $$object->updateRecord(0, $maxcols, 0);
@@ -113,7 +113,7 @@ if(isset($$object->detail)) {
     $$obj->readEnv();
     switch($_REQUEST['actiond']) {
       case 'delete':
-        if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['credentials'][$object] == 'delete') {
+        if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['credentials'][$object] == 'delete' || $_SESSION['idalm_user'] == 'admin') {
           if($_REQUEST['od']==$obj) {
             $tmp = $$obj->readRecord();
             $$obj->deleteRecord();

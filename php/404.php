@@ -37,11 +37,11 @@ if (strpos($object, '?')) {
 if(strrpos($object, '.')!==false) $object = substr($object, 0, strrpos($object, '.'));
 
 # If user = admin, then allow setup...
-if (($_SESSION['idalmuser'] === 'admin' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1') && $object === 'setup') {
+if (($_SESSION['idalm_user'] === 'admin' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1') && $object === 'setup') {
   require(ALMIDONDIR.'/php/setup.php');
   exit;
 }
-if(isset($_SESSION['idalmuser'])) {
+if(isset($_SESSION['idalm_user'])) {
 	# If I am... Go ahead try to create object (or setup)
 	if ($object) {
 
@@ -53,7 +53,7 @@ if(isset($_SESSION['idalmuser'])) {
 	  }
 
           # No credentials? Go away...
-	  if(!isset($_SESSION['credentials'][$object]) && $_SESSION['idalmuser'] !== 'admin') {
+	  if(!isset($_SESSION['credentials'][$object]) && $_SESSION['idalm_user'] !== 'admin') {
 	    session_destroy(); 
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;	  	 

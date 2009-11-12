@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="/cms/css/admin_login.css" />
 <script language="javascript" type="text/javascript">
 	function setFocus() {
-		document.loginForm.almuser.select();
-		document.loginForm.almuser.focus();
+		document.loginForm.alm_user.select();
+		document.loginForm.alm_user.focus();
 	}
 </script>
 {/literal}
@@ -23,7 +23,7 @@
         	<form action="" method="post" id="loginForm" name="loginForm">
 			<div class="form-block">
 	        		<b>{$smarty.const.ALM_USERNAME}</b>
-		    		<div><input id="almuser" name="almuser" type="text" class="inputbox" size="15" /></div>
+		    		<div><input id="alm_user" name="alm_user" type="text" class="inputbox" size="15" /></div>
 	        		<b>{$smarty.const.ALM_PASSWORD}</b>
 	    	  		<div><input id="password" name="password" type="password" class="inputbox" size="15" /></div>
 		                <b>CAPTCHA</b> <img src="captcha.png" width="55" height="20" alt="CAPTCHA"/>

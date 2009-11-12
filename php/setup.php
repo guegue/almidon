@@ -201,23 +201,23 @@ if (!empty($action)) {
   }
   switch ($action) {
   case 'autotables':
-    $almtable = new almtableTable();
-    $almcolumn = new almcolumnTable();
-    $table_data = $almtable->readData();
+    $alm_table = new alm_tableTable();
+    $alm_column = new alm_columnTable();
+    $table_data = $alm_table->readData();
 
     foreach ($table_data as $table_datum) {
-      $output .= "class " . $table_datum['idalmtable'] . "Table extends Table {\n";
-      $output .= "  function ".$table_datum['idalmtable']."Table() {\n";
-      $output .= "    \$this->Table('".$table_datum['idalmtable']."');\n";
-    # $output .= $this->key = 'idfoto';
-      $output .= "    \$this->title ='".$table_datum['almtable']."';\n";
-    # $output .= $this->order ='idgaleria DESC, idfoto DESC';
-      $data = $almcolumn->readDataFilter("almcolumn.idalmtable='".$table_datum['idalmtable']."'");
+      $output .= "class " . $table_datum['idalm_table'] . "Table extends Table {\n";
+      $output .= "  function ".$table_datum['idalm_table']."Table() {\n";
+      $output .= "    \$this->Table('".$table_datum['idalm_table']."');\n";
+      $output .= "    \$this->key = '".$table_datum['key']."';\n";
+      $output .= "    \$this->title ='".$table_datum['alm_table']."';\n";
+      $output .= "    \$this->order ='".$table_datum['orden']."';\n";
+      $data = $alm_column->readDataFilter("alm_column.idalm_table='".$table_datum['idalm_table']."'");
       if ($data)
       foreach ($data as $datum) {
         if ($datum['pk'] == 't') $datum['pk'] = 1;
         if (empty($datum['fk'])) $datum['fk'] = 0;
-        $output .= "    \$this->addColumn('". $datum['idalmcolumn'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . $datum['almcolumn'] . "','" . $datum['extra']  . "');\n";
+        $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . $datum['alm_column'] . "','" . $datum['extra']  . "');\n";
       }
       $output .= "  }\n}\n";
     }

@@ -52,8 +52,8 @@ define('DG2', '<form action="_SELF_" method="POST" name="_FORM_">
 <input type="hidden" name="maxcols" value="_MAXCOLS_">
 <input type="hidden" name="f" value="_FORM_">
 <input type="hidden" name="action" value="save">
-<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_ _ROWS_ '.ALM_REC_LB.'</th></tr>
-<tr><td><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DGHEADER__DGHEADERCMD_</tr>
+<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th> <th align="right"><div align="right">(_ROWS_ '.ALM_REC_LB.')</div></th></tr>
+<tr><td colspan="2"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DGHEADER__DGHEADERCMD_</tr>
 _DGROW_
 </table></td></tr><tr><td class="paginate">_PAGINATE_</td></tr></table></form>');
 define('DGHEADERCMD', '<th>'.ALM_OPT_LB.'</th>');
@@ -111,7 +111,7 @@ function smarty_function_datagrid($params, &$smarty)
   $table = null;
   $parent = null;
   $truncate = true;
-  
+
   $extra = '';
   foreach($params as $_key => $_val) {
     switch($_key) {
@@ -316,13 +316,13 @@ function smarty_function_datagrid($params, &$smarty)
         $_html_row .= $_tmp;
       }
       if($key2){ 
-        if($_SESSION['credentials'][$table] == 'full' ){
+        if($_SESSION['credentials'][$table] == 'full' || $_SESSION['idalm_user'] === 'admin'){
            $_dgcmdmod = DGCMD2MOD;
         }elseif($_SESSION['credentials'][$table] == 'edit' ){
           $_dgcmdmod = DGCMD2MOD;
         }
       }else{
-        $_dgcmdmod =DGCMDMOD;
+        $_dgcmdmod = DGCMDMOD;
       }
       $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmdmod);
       } else {
@@ -411,7 +411,7 @@ function smarty_function_datagrid($params, &$smarty)
       }
       if ($key2) {
         if ($_cols <= 3 || $parent){
-          if($_SESSION['credentials'][$table] == 'full'){
+          if($_SESSION['credentials'][$table] == 'full' || $_SESSION['idalm_user'] === 'admin'){
             $_dgcmd = DGCMD2R;
           }elseif($_SESSION['credentials'][$table] == 'edit'){
             $_dgcmd = DGCMD2RVER;
@@ -421,7 +421,7 @@ function smarty_function_datagrid($params, &$smarty)
         }
       } else {
         if($_cols <= 3 || $parent){
-          if($_SESSION['credentials'][$table] == 'full'){
+          if($_SESSION['credentials'][$table] == 'full' || $_SESSION['idalm_user'] === 'admin'){
             $_dgcmd =  DGCMDR;
           }elseif($_SESSION['credentials'][$table] == 'edit'){
             $_dgcmd =  DGCMDREDIT;
@@ -431,7 +431,7 @@ function smarty_function_datagrid($params, &$smarty)
             $_dgcmd =  DGCMDRVER;
           }
         }else{
-          if($_SESSION['credentials'][$table] == 'full'){
+          if($_SESSION['credentials'][$table] == 'full' || $_SESSION['idalm_user'] === 'admin'){
             $_dgcmd =  DGCMD;
           }elseif($_SESSION['credentials'][$table] == 'edit'){
             $_dgcmd =  DGCMDEDIT;
