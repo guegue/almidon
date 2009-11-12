@@ -44,6 +44,12 @@ Igual 'files' y sus subcarpertas.
   $ cd demo
   $ chmod -R o+w templates_c logs cache files
 
+Para aprovechar la configuracion via web, es necesario dar permisos tambien a apache
+a config.php y a tables.calss.php.
+
+  $ cd classes
+  $ chmod o+w config.php tables.class.php
+
 CONFIGRANDO POSTGRESQL
 ======================
 

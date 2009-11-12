@@ -216,10 +216,23 @@ if (!empty($action)) {
       if ($data)
       foreach ($data as $datum) {
         if ($datum['pk'] == 't') $datum['pk'] = 1;
+        if ($datum['pk'] == 'f') $datum['pk'] = 0;
         if (empty($datum['fk'])) $datum['fk'] = 0;
+        else $datum['fk'] = "'".$datum['fk']."'";
         $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . $datum['alm_column'] . "','" . $datum['extra']  . "');\n";
       }
       $output .= "  }\n}\n";
+    }
+    if ($_REQUEST['save'] == '1') {
+      if (!is_writable(ROOTDIR.'/classes/tables.class.php')) {
+        print "No se puede escribir en classes/tables.class.php. Copiar el siguiente c&oacute;digo manualmente a tables.class.php:<br/><br/>\n";
+      } else {
+        $fp = fopen(ROOTDIR.'/classes/tables.class.php', 'w');
+        fwrite($fp, "<?php\n$output");
+        fclose($fp);
+        print "Se ha actualizado tables.class.php.<br/>";
+        exit;
+      }
     }
     break;
   case 'tables':
@@ -379,7 +392,9 @@ if (!empty($action)) {
     print $output;
     break;
   case 'autotables':
-    print highlight_string("<?php\n".$output);
+    print highlight_string("<?php\n".$output, 1);
+    print '<form>';
+    print '<input type="hidden" name="action" value="autotables"/><input type="hidden" name="save" value="1"/><input type="submit" value="Guardar tables.class.php"></form>';
     break;
   case 'tables':
     print "$tables_output";

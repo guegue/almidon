@@ -6,7 +6,7 @@
 define ('DEBUG', true);
 
 # Idioma
-# define ('ALM_LANG','en');
+define ('ALM_LANG','en');
  
 # Constantes de conexion la base de datos
 $admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';

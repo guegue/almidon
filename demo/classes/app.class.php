@@ -13,3 +13,4 @@ $smarty->cache_dir = ROOTDIR . '/cache/';
                                                                                 
 require('tables.class.php');
 require('extra.class.php');
+require('users.class.php');
