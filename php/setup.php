@@ -176,16 +176,18 @@ if ($action == 'fixdb') {
 $options = array(
   'test'=>'Probar configuraci&oacute;n',
   'tables'=>'Probar tablas y base de datos',
-  'exec'=>'Ejecutar SQL',
+  'exec'=>'Ejecutar c&oacute;digo SQL',
+  'autotables'=>'Generar tables.class.php',
   'sql'=>'Generar SQL basado en tables.class',
   'dd'=>'Generar diccionario de datos',
   'erd'=>'Generar diagrama entidad relacion',
   'erdcol'=>'Generar diagrama entidad relacion detallado');
 if ($action != 'erd' && $action != 'erdcol' && !$failed) {
-  print "Herramientas:<br/>";
+  print "<small>Herramientas:<br/>";
   foreach($options as $k=>$option) {
     print "<li><a href=\"?action=$k\">$option</a><br/></li>";
   }
+  print "</small>";
 }
 if (!empty($action)) {
   $classes = get_declared_classes();
@@ -198,6 +200,28 @@ if (!empty($action)) {
     }
   }
   switch ($action) {
+  case 'autotables':
+    $almtable = new almtableTable();
+    $almcolumn = new almcolumnTable();
+    $table_data = $almtable->readData();
+
+    foreach ($table_data as $table_datum) {
+      $output .= "class " . $table_datum['idalmtable'] . "Table extends Table {\n";
+      $output .= "  function ".$table_datum['idalmtable']."Table() {\n";
+      $output .= "    \$this->Table('".$table_datum['idalmtable']."');\n";
+    # $output .= $this->key = 'idfoto';
+      $output .= "    \$this->title ='".$table_datum['almtable']."';\n";
+    # $output .= $this->order ='idgaleria DESC, idfoto DESC';
+      $data = $almcolumn->readDataFilter("almcolumn.idalmtable='".$table_datum['idalmtable']."'");
+      if ($data)
+      foreach ($data as $datum) {
+        if ($datum['pk'] == 't') $datum['pk'] = 1;
+        if (empty($datum['fk'])) $datum['fk'] = 0;
+        $output .= "    \$this->addColumn('". $datum['idalmcolumn'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . $datum['almcolumn'] . "','" . $datum['extra']  . "');\n";
+      }
+      $output .= "  }\n}\n";
+    }
+    break;
   case 'tables':
     $sql_fix = '';
     $tables_failed = false;
@@ -239,7 +263,8 @@ if (!empty($action)) {
             if (PEAR::isError($data->data)) {
               $tables_output .= "&nbsp;&nbsp;&nbsp;&nbsp;<small>Error en campo $campo <!--".$data->data->getMessage() . "--></small><br/>";
               $size = ($data->dd[$campo]['size'] > 0) ? '('.$data->dd[$campo]['size'].')': '';
-              $sql_fix .= "ALTER TABLE $data->name ADD COLUMN " . genColumnSQL($data->dd[$campo], $dbtype, $dd[$campo]['name'] == $data->key).";\n";
+              if (!isset($data->key)) $data->key = false;
+              $sql_fix .= "ALTER TABLE $data->name ADD COLUMN " . genColumnSQL($data->dd[$campo], $dbtype, $dd[$campo]['name'] === $data->key).";\n";
             }
           }
         }
@@ -353,10 +378,13 @@ if (!empty($action)) {
   case 'exec':
     print $output;
     break;
+  case 'autotables':
+    print highlight_string("<?php\n".$output);
+    break;
   case 'tables':
     print "$tables_output";
     if ($tables_failed) {
-      print '<br/><font color="red">Debes corregir estos errores en la base de datos.</font><br/>Puedes ayudarte del <a href="?action=sql">sql generado desde tables.class</a> o del texto a continuaci&oacute;n:';
+      print '<br/><font color="red">Debes corregir estos errores en la base de datos.</font><br/>Puedes ayudarte del <a href="?action=sql">sql generado desde tables.class</a> o del c&oacute;digo a continuaci&oacute;n:';
       if (isset($sql_fix)) {
         $sql_fix = trim($sql_fix);
         print '<form><pre>'.$sql_fix.'</pre>';

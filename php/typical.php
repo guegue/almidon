@@ -164,7 +164,8 @@ $$object->limit = ($$object->maxrows)?$$object->maxrows:8;
 $order_is_valid = split(' ',trim($$object->order));
 if(count($order_is_valid) > 1) $order_is_valid = false;
 else $order_is_valid = true;
-if ($order_is_valid) {
+#if ($order_is_valid) {
+if ($order_is_valid && !isset($$object->key2)) {  // Temporalmente desabilitando para TableDoubleKey
   $_SESSION[$object . 'first'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " LIMIT 1");
   $_SESSION[$object . 'last'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " DESC LIMIT 1");
 }

@@ -49,22 +49,26 @@ class almtableTable extends Table {
     $this->order = 'idalmtable';
     $this->addColumn('idalmtable','varchar',32,1,0,'Id');
     $this->addColumn('almtable','varchar',100,0,0,'Descripcion');
+    $this->addColumn('key','varchar',32,0,0,'Primary Key');
+    $this->addColumn('orden','varchar',100,0,0,'Orden');
   }
 }
 
-class almcolumnTable extends Table {
+class almcolumnTable extends TableDoubleKey {
   function almcolumnTable() {
     $this->Table('almcolumn');
-    $this->key = 'idalmcolumn';
+    $this->key1 = 'idalmcolumn';
+    $this->key2 = 'idalmtable';
     $this->title = 'Campos';
     $this->maxrows = 20;
-    $this->order = 'idalmcolumn';
+    $this->order = 'idalmtable,idalmcolumn';
     $this->addColumn('idalmcolumn','varchar',32,1,0,'Id');
-    $this->addColumn('type','varchar',16,0,0,'Tipo');
+    $this->addColumn('idalmtable','varchar',32,0,'almtable','Table');
+    $this->addColumn('type','varchar',16,0,0,'Type');
     $this->addColumn('size','int',0,0,0,'Size');
-    $this->addColumn('pk','bool',0,0,0,'PK?');
-    $this->addColumn('fk','bool',0,0,0,'FK?');
-    $this->addColumn('almcolumn','varchar',100,0,0,'Descripcion');
-    $this->addColumn('idalmtable','varchar',32,0,'almtable','Tabla');
+    $this->addColumn('pk','bool',0,0,0,'Primary Key?');
+    $this->addColumn('fk','varchar',16,0,0,'Foreign Key Table');
+    $this->addColumn('almcolumn','varchar',100,0,0,'Description');
+    $this->addColumn('extra','varchar',500,0,0,'Extras');
   }
 }
