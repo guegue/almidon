@@ -30,6 +30,7 @@ if(!defined('ALM_NODATA')) define('ALM_NODATA','No hay Datos');
 if(!defined('ALM_SHOWALL')) define('ALM_SHOWALL','Mostrar todo');
 if(!defined('ALM_LOGIN')) define('ALM_LOGIN','Entrar');
 if(!defined('ALM_LOGOUT')) define('ALM_LOGOUT','Salir');
+if(!defined('ALM_SETUP')) define('ALM_SETUP','Configurar');
 if(!defined('ALM_USERNAME')) define('ALM_USERNAME','Usuario');
 if(!defined('ALM_PASSWORD')) define('ALM_PASSWORD','Contrase&ntilde;a');
 if(!defined('ALM_PASS_ERROR')) define('ALM_PASS_ERROR','Usuario y/o contrase&ntilde;a incorrectos');

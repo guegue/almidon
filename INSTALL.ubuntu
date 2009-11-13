@@ -31,4 +31,4 @@ Constantes de conexion a la base de datos (vienen configuradas por default para 
  $admin_dsn = 'mysql://almidondemo:secreto1@/almidondemo';
  $public_dsn = 'mysql://almidondemowww:secreto2@/almidondemo';
 
-Paso 6: Crear la base de datos de ejemplo y los usuarios.
+Paso 6: Crear la base de datos de ejemplo.

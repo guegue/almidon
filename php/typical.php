@@ -4,6 +4,7 @@ if (!$object)
 $$object->readEnv();
 
 $action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : null;
+if (!isset($_SESSION['credentials'][$object])) $_SESSION['credentials'][$object] = 'unknown'; 
 switch ($action) {
   case 'edit':
     $edit = true;
@@ -41,7 +42,10 @@ switch ($action) {
     if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['idalm_user'] == 'admin') {
       $maxcols = ($_REQUEST['maxcols']) ? $_REQUEST['maxcols'] : MAXCOLS;
       # Por que nofiles? Tambien debe poder cambiar, nofiles es la tercera opcion de updateRecord
-      $$object->updateRecord(0, $maxcols, 0);
+      if (isset($$object->key2))
+        $$object->updateRecord(0, 0, $maxcols, 0);
+      else
+        $$object->updateRecord(0, $maxcols, 0);
     } else {
       die("SEGURIDAD: Credenciales no tienen sentido!");
     }
@@ -174,7 +178,8 @@ $count_key = $$object->key ? $$object->key : $$object->key1;
 $smarty->assign('num_rows', $$object->getVar("SELECT COUNT(".$count_key.") FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));
 $smarty->assign('dd', $$object->dd);
 $smarty->assign('key', $$object->key);
-$smarty->assign('search', $$object->search);
+if (isset($$object->search))
+  $smarty->assign('search', $$object->search);
 $smarty->assign('add', isset($$object->add)?$$object->add:true);
 if (isset($$object->key1))
   $smarty->assign('key1', $$object->key1);

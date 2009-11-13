@@ -9,7 +9,6 @@ ver INSTALL
 CAMBIOS
 =======
 
-En vez de importar los scripts demo.sql y users.sql, usar los *.mysql:
+En vez de importar el script demo.sql, usar demo.mysql:
 
   $ mysql < /var/www/almidon/demo/demo.mysql
-  $ mysql < /var/www/almidon/demo/users.mysql

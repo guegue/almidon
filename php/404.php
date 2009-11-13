@@ -63,7 +63,7 @@ if(isset($_SESSION['idalm_user'])) {
 	  $$object = new $ot;
 
 	  #If I'm a detail (not the master table)
-	  if($$object->is_detail) {
+	  if(isset($$object->is_detail)) {
 	    require(ALMIDONDIR . '/php/detail.php');
 	    exit();
 	  }
@@ -107,7 +107,8 @@ if(isset($_SESSION['idalm_user'])) {
 	    $tpl = ALMIDONDIR . '/tpl/index.tpl';
 	  }
 	}
-        $smarty->assign('credentials',$_SESSION['credentials'][$object]);
+        if (isset($_SESSION['credentials'][$object]))
+          $smarty->assign('credentials',$_SESSION['credentials'][$object]);
 	require (ALMIDONDIR . '/php/createlinks.php');
 
 	# Display object's forms (or index)

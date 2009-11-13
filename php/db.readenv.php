@@ -91,8 +91,8 @@
           $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
         } elseif ($column['type'] == 'auth_user') {
           $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
-        } elseif($column['extra']['ena_js']!==false) {
-          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type'], false, $column['extra']['ena_js']);
+        } elseif(isset($column['extra']['allow_js']) && $column['extra']['allow_js']!==false) {
+          $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type'], false, $column['extra']['allow_js']);
         } else {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type']);
         }

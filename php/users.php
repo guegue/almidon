@@ -39,12 +39,11 @@ function get_credentials($idalm_user) {
   $alm_table->readEnv();
   $alm_table_data = $alm_table->readData();
   $alm_user_record = $alm_user->readRecord($idalm_user);
-  $alm__tables = "/^(alm_table|alm_user|alm_access|alm_role)$/";
+  $alm_tables = "/^(alm_table|alm_user|alm_access|alm_role|alm_column)$/";
   foreach ($alm_table_data as $table) {
     switch ($alm_user_record['idalm_role']) {
       case '': // Si no hay role por defecto, revisar personalizacion
         $alm_access = new alm_accessTable();
-        // role = 3 = ???
         $credentials = $alm_access->readDataFilter("alm_access.idalm_user=".$idalm_user." AND alm_access.idalm_table=".$table['idalm_table']." AND alm_access.idalm_role!='deny'");
         if(is_array($credentials)) {
           $i=0;
@@ -59,15 +58,15 @@ function get_credentials($idalm_user) {
         $arrayCredentials[$table['idalm_table']] = 'full';
         break;         
       case 'edit': // edicion
-        if(!preg_match($alm__tables, $table['idalm_table']))
+        if(!preg_match($alm_tables, $table['idalm_table']))
           $arrayCredentials[$table['idalm_table']] = 'edit';
         break;
       case 'delete': // Correccion, solo borrar
-        if(!preg_match($alm__tables, $table['idalm_table']))
+        if(!preg_match($alm_tables, $table['idalm_table']))
           $arrayCredentials[$table['idalm_table']] = 'delete';
         break;
       case 'read': // Guest, read-only...
-        if(!preg_match($alm__tables, $table['idalm_table']))
+        if(!preg_match($alm_tables, $table['idalm_table']))
           $arrayCredentials[$table['idalm_table']] = 'read';
         break;
       case 'deny': // No access

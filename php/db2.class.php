@@ -171,7 +171,7 @@ class Table extends Data {
     require('db.addcolumn.php');
   }
 
-  function parsevar($tmpvar, $type = 'string', $html = false, $ena_js = false) {
+  function parsevar($tmpvar, $type = 'string', $html = false, $allow_js = false) {
     require('db.parsevar.php');
     return $tmpvar;
   }
@@ -296,6 +296,7 @@ class Table extends Data {
 
   function preUpdateRecord($maxcols = 0, $nofiles = 0) {
     $n = 0;
+    $skipped_cols = 0;
     $values = "";
     foreach($this->definition as $column) {
       if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
@@ -305,6 +306,7 @@ class Table extends Data {
       	case 'auto':
       	case 'order':
         case 'serial':
+          $skipped_cols++;
           $n--;
           break;
         case 'int':
@@ -409,7 +411,7 @@ class Table extends Data {
           break;
       }
       $n++;
-      if ($maxcols && (($n+1) >= $maxcols)) break;
+      if ($maxcols && (($n+$skipped_cols) >= $maxcols)) break;
     }
     return $values;
   }

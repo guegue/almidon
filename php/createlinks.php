@@ -4,7 +4,7 @@
 if (!isset($sectionlinks)&&!isset($adminlinks)) {
   # if sectionlinks and adminlinks are not settings
   $classes = get_declared_classes();
-  foreach($classes as $key)
+  foreach($classes as $key) {
     if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
       $table_object = new $key;
 
@@ -23,11 +23,13 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
          foreach($extralinks as $key=>$link)
            $adminlinks[$key] = $link;
       }
-
     }
-  $adminlinks['logout'] = ALM_LOGOUT; //Logout link
+  }
+  # Links adicionales
+  if ($_SESSION['idalm_user'] === 'admin' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1')
+    $adminlinks['setup'] = ALM_SETUP;
+  $adminlinks['logout'] = ALM_LOGOUT;
   $smarty->assign('adminlinks', $adminlinks);
-
 } elseif(isset($sectionlinks)) {
   # If sectionlinks is defined 
   $params = explode('/', $_SERVER['REQUEST_URI']);

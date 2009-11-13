@@ -5,6 +5,40 @@ ALTER DATABASE almidondemo OWNER TO almidondemo;
 
 \connect almidondemo
 
+-- *********************************
+-- * Parte esencial de almidon     *
+-- *********************************
+
+CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100), key varchar(32), orden varchar (100), rank int);
+ALTER TABLE public.alm_table OWNER TO almidondemo;
+
+CREATE TABLE alm_column (idalm_column varchar (32), idalm_table varchar (32) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(16), alm_column varchar(100), extra varchar(500), rank int, PRIMARY KEY (idalm_column, idalm_table));
+ALTER TABLE public.alm_column OWNER TO almidondemo;
+
+CREATE TABLE alm_role (idalm_role varchar(8) PRIMARY KEY, alm_role varchar(100));
+ALTER TABLE public.alm_role OWNER TO almidondemo;
+
+CREATE TABLE alm_user (idalm_user varchar(16) PRIMARY KEY, idalm_role varchar(8) REFERENCES alm_role, password varchar(200) NOT NULL, alm_user varchar(200) NOT NULL, email varchar(200));
+ALTER TABLE public.alm_user OWNER TO almidondemo;
+
+CREATE TABLE alm_access (idalm_role varchar(8) REFERENCES alm_role NULL, idalm_user varchar(16) REFERENCES alm_user , idalm_table varchar(16) REFERENCES alm_table, idalm_access serial PRIMARY KEY);
+ALTER TABLE public.alm_access OWNER TO almidondemo;
+
+-- especificamos id porque puede usarse 'hard-coded' en algun lado
+INSERT INTO alm_role VALUES ('full', 'Control Total');
+INSERT INTO alm_role VALUES ('edit', 'Edicion');
+INSERT INTO alm_role VALUES ('delete', 'Correccion');
+INSERT INTO alm_role VALUES ('read', 'Lectura');
+INSERT INTO alm_role VALUES ('deny', 'Sin Accesso');
+
+-- usuario admin - cambiar password!
+INSERT INTO alm_user VALUES ('admin', 'full', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'admin@example.com');
+
+-- *********************************
+-- * Parte del demo                *
+-- ********************************* 
+
+-- tablas demo
 CREATE TABLE agenda (idagenda serial PRIMARY KEY, agenda varchar(500), fecha date, lugar varchar(120), texto text, organiza varchar(500));
 ALTER TABLE public.agenda OWNER TO almidondemo;
 
@@ -65,3 +99,53 @@ INSERT INTO pagina (idpagina, pagina, foto, descripcion) VALUES (4, 'Licencia GP
 INSERT INTO pagina (idpagina, pagina, foto, descripcion) VALUES (5, 'Más información...', '', 'Wiki: http://almidon.org/
 Trac: http://trac.almidon.org/
 Demo: http://demo.almidon.org/');
+
+-- usuarios demo
+INSERT INTO alm_user VALUES ('demo', 'read', 'fe01ce2a7fbac8fafaed7c982a04e229', 'Demo', 'demo@example.com');
+INSERT INTO alm_user VALUES ('alice', NULL, 'fe01ce2a7fbac8fafaed7c982a04e229', 'Alice', 'alice@example.com');
+
+-- tablas a las cuales el acceso se puede personalizar
+INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('pagina', 'Paginas', 'idpagina', 'pagina', 1);
+INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('doc', 'Documentos', 'iddoc', 'doc', 2);
+INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('enlace', 'Enlaces', 'idenlace', 'enlace', 3);
+INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('galeria', 'Galerias', 'idgaleria', 'galeria', 4);
+INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('foto', 'Fotos', 'idfoto', 'foto', 5);
+INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('agenda', 'Agenda', 'idagenda', 'agenda', 6);
+INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('noticia', 'Noticias', 'idnoticia', 'fecha', 7);
+
+-- 'control total' para 'alice' en 'pagina'
+INSERT INTO alm_access VALUES ('full', 'alice', 'pagina');
+
+-- campos para tables.class.php
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('foto', 'pagina', 'image', 0, false, '', 'Foto', NULL, NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('descripcion', 'pagina', 'text', 0, false, '', 'Descripcion', NULL, NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('fecha', 'galeria', 'date', 0, false, '', 'Fecha', NULL, NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('idgaleria', 'foto', 'int', 0, false, 'galeria', 'Galeria', NULL, NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('fecha', 'agenda', 'date', 0, false, '', 'Fecha', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('lugar', 'agenda', 'varchar', 120, false, '', 'Lugar', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('texto', 'agenda', 'text', 0, false, '', 'Evento', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('organiza', 'agenda', 'varchar', 500, false, '', 'Organizado por', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('archivo', 'doc', 'file', 0, false, '', 'Archivo', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('portada', 'doc', 'image', 0, false, '', 'Imagen', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('descripcion', 'doc', 'xhtml', 0, false, '', 'Descripcion', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('fecha', 'noticia', 'datenull', 0, false, '', 'Fecha', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('texto', 'noticia', 'text', 0, false, '', 'Texto', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('foto', 'noticia', 'image', 0, false, '', 'Foto', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('url', 'enlace', 'varchar', 600, false, '', 'Direccion web', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('texto', 'enlace', 'text', 0, false, '', 'Texto', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('imagen', 'enlace', 'image', 0, false, '', 'Imagen', '', NULL);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('idagenda', 'agenda', 'serial', 0, true, '', 'ID', '', 1);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('agenda', 'agenda', 'varchar', 500, false, '', 'Titulo', '', 2);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('iddoc', 'doc', 'serial', 0, true, '', 'ID', '', 1);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('doc', 'doc', 'varchar', 500, false, '', 'Titulo', '', 2);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('idenlace', 'enlace', 'serial', 0, true, '', 'ID', '', 1);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('enlace', 'enlace', 'varchar', 500, false, '', 'Titulo', '', 2);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('idfoto', 'foto', 'serial', 0, true, '', 'ID', NULL, 1);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('foto', 'foto', 'varchar', 500, false, '', 'Titulo', NULL, 2);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('imagen', 'foto', 'image', 0, false, '', 'Foto', '100,300x300', 3);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('idgaleria', 'galeria', 'serial', 0, true, '', 'ID', NULL, 1);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('galeria', 'galeria', 'varchar', 500, false, '', 'Titulo', NULL, 2);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('idnoticia', 'noticia', 'serial', 0, true, '', 'ID', '', 1);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('noticia', 'noticia', 'varchar', 500, false, '', 'Titulo', '', 2);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('idpagina', 'pagina', 'serial', 0, true, '', 'ID', NULL, 1);
+INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('pagina', 'pagina', 'varchar', 500, false, '', 'Titulo', NULL, 2);

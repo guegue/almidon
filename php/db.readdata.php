@@ -4,7 +4,7 @@
     } else {
       $sqlcmd = "SELECT $this->fields FROM $this->name";
     }
-    if ($this->filter)
+    if (isset($this->filter))
       $sqlcmd .= " WHERE $this->filter";
     if ($this->order)
       $sqlcmd .= " ORDER BY $this->order";

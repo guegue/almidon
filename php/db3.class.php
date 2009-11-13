@@ -244,7 +244,7 @@ class Table extends Data {
     require('db.addcolumn.php');
   }
 
-  function parsevar($tmpvar, $type = 'string', $html = false, $ena_js = false) {
+  function parsevar($tmpvar, $type = 'string', $html = false, $allow_js = false) {
     require('db.parsevar.php');
   }
 

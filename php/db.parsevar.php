@@ -18,7 +18,7 @@
     }
     settype($tmpvar,$type);
     #if ($type == 'string') {
-    if ($type == 'string' && !$ena_js) {
+    if ($type == 'string' && !$allow_js) {
       $tmpvar = preg_replace("/<script[^>]*?>.*?<\/script>/i", "", $tmpvar);
     } 
     if ($type == 'string' && !$html) {

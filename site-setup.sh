@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+# !!! NOTA: DESACTUALIZADO !!!
+#
 # setup.sh debe ayudar a configurar un sitio web para trabajar con almidon
 # copia una serie de archivos que son indispensables, otros que son utiles
 # pero su uso es opcional, igual se puede copiar el demo y usar como punto

@@ -1,5 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+$alm_tables = "/^(alm_table|alm_user|alm_access|alm_role|alm_column)$/";
 function performTests() {
     global $failed, $test_output, $action, $admin_db_failed, $public_db_failed, $admin_dsn, $public_dsn, $smarty;
     $failed = false;
@@ -89,6 +90,7 @@ function genDD($object) {
   foreach($data->definition as $column) {
     if ($column['size'] == '0') $column['size'] = null;
     if ($column['name'] == $data->key) $column['PK'] = true;
+    else $column['PK'] = null;
     if ($column['references'] == '0') $column['references'] = null;
     $col = array($column['name'],$column['type'],$column['size'],$column['references'],$column['label'],$column['PK']);
     $dd[] = $col;
@@ -96,6 +98,7 @@ function genDD($object) {
   return $dd;
 }
 function genColumnSQL($column, $dbtype, $key = false) {
+  $sql = '';
   $type = $column['type'];
   if ($type == 'external') return;
   if ($type == 'file' || $type == 'image' || $type == 'autoimage') {
@@ -136,7 +139,7 @@ function genSQL($object) {
   if($data->definition)
   foreach($data->definition as $column) {
     unset($size);
-    if ($type == 'external') next($data->definition);
+    if (isset($type) && $type == 'external') next($data->definition);
     if ($i) $sql .= " ,\n";
     $sql .= genColumnSQL($column, $dbtype, $column['name'] == $data->key );
     ++$i;
@@ -172,7 +175,6 @@ if ($action == 'fixdb') {
 } else {
   performTests();
 }
-
 $options = array(
   'test'=>'Probar configuraci&oacute;n',
   'tables'=>'Probar tablas y base de datos',
@@ -183,10 +185,12 @@ $options = array(
   'erd'=>'Generar diagrama entidad relacion',
   'erdcol'=>'Generar diagrama entidad relacion detallado');
 if ($action != 'erd' && $action != 'erdcol' && !$failed) {
+  print "<html>\n<head>\n<title>Almidon - Setup</title>\n</head>\n<body>\n";
   print "<small>Herramientas:<br/>";
   foreach($options as $k=>$option) {
     print "<li><a href=\"?action=$k\">$option</a><br/></li>";
   }
+  print '<li><a href="./">Regresar a administraci&oacute;n</a><br/></li>';
   print "</small>";
 }
 if (!empty($action)) {
@@ -196,7 +200,8 @@ if (!empty($action)) {
     if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
       if(substr($key, 0, strpos($key, 'Table')) !== false) $key = substr($key, 0, strpos($key, 'Table'));
       else $key = substr($key, 0, strpos($key, 'table'));
-      $tables[] = $key;
+      if(!preg_match($alm_tables, $key))
+        $tables[] = $key;
     }
   }
   switch ($action) {
@@ -223,7 +228,7 @@ if (!empty($action)) {
       }
       $output .= "  }\n}\n";
     }
-    if ($_REQUEST['save'] == '1') {
+    if (isset($_REQUEST['save']) && $_REQUEST['save'] == '1') {
       if (!is_writable(ROOTDIR.'/classes/tables.class.php')) {
         print "No se puede escribir en classes/tables.class.php. Copiar el siguiente c&oacute;digo manualmente a tables.class.php:<br/><br/>\n";
       } else {
@@ -286,7 +291,10 @@ if (!empty($action)) {
     }
     break;
   case 'exec':
-    $sqlcmd = pg_escape_string($_REQUEST['sqlcmd']);
+    if (isset($_REQUEST['sqlcmd']))
+      $sqlcmd = pg_escape_string($_REQUEST['sqlcmd']);
+    else
+      $sqlcmd = '';
     $output .= '<form><input type="hidden" name="action" value="exec"/><textarea name="sqlcmd" cols="80">'.$sqlcmd.'</textarea><br/><input type="submit"></form>';
     if ($sqlcmd) {
       $data = new Data();
@@ -317,6 +325,7 @@ if (!empty($action)) {
     $output = "\n<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\">$output</table>\n";
     break;
   case 'erdcol':
+    $links = '';
     $output = "\ndigraph g {\ngraph [\nrankdir = \"LR\"\n];\nnode [\nfontsize = \"16\"\nshape = \"ellipse\"\n];\nedge [\n];\n";
     foreach($tables as $key) {
       $j = 0;
@@ -420,4 +429,7 @@ if (!empty($action)) {
     print "$output";
     break;
   }
+}
+if ($action != 'erd' && $action != 'erdcol' && !$failed) {
+  print "</body>\n</html>\n";
 }

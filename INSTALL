@@ -40,15 +40,11 @@ Nota, local.almidon.org de apuntar a 127.0.0.1
 
 Permisos del demo: 'templates_c', 'logs', 'cache' debe ser escribible por el usuario web.
 Igual 'files' y sus subcarpertas.
-
-  $ cd demo
-  $ chmod -R o+w templates_c logs cache files
-
 Para aprovechar la configuracion via web, es necesario dar permisos tambien a apache
 a config.php y a tables.calss.php.
 
-  $ cd classes
-  $ chmod o+w config.php tables.class.php
+  $ cd demo
+  $ chmod -R o+w templates_c logs cache files classes/config.php classes/tables.class.php
 
 CONFIGRANDO POSTGRESQL
 ======================
@@ -59,10 +55,6 @@ usando un usuario autorizado a crear bases de datos:
   $ su - postgres
   $ psql -f /var/www/almidon/demo/demo.sql
 
-Para implementar el uso de usuarios y roles, ahora indispensable:
-
-  $ psql -f /var/www/almidon/demo/users.sql
-
 Adicionalmente, una entrada en la configuración de postgres, pg_hba.conf puede ser
 necesaria, para permitir acceso local usando password:
 
@@ -70,6 +62,8 @@ necesaria, para permitir acceso local usando password:
 local   all         all                               md5
 
 Nota: el script sql elige los password secreto1 y secreto2 para sus usuarios
+y el password admin para el admin via web.
+
 Nota: si es la segunda vez que instalas el demo, asegurate de borrar la base
 de datos almidondemo y usuarios almidondemo y almidondemowww
 
@@ -85,7 +79,7 @@ define las variable (o constantes) principales como:
   define ('DEBUG', true);
   define ('ROOTDIR', '/var/www');
   define ('DOMAIN', 'example.org');
-  define ('ALMIDONDIR', '/usr/local/almidon/');
+  define ('ALMIDONDIR', '/var/www/almidon/');
 
 DSN es el valor para acceder a la base de datos, cambiar "pass" por cada
 password elegido para cada usuario, almidondemo y almidondemowww.
