@@ -9,8 +9,9 @@
  * @version login.php,v 20091022 Alejandro y Alexis
  * @package almidon
  */
-session_start();
-if ($_POST && !$_SESSION['session']) {
+if (!isset($_SESSION))
+  session_start();
+if ($_POST && !isset($_SESSION['session'])) {
   error_log("ALM: No hay soporte para sesiones.");
   $smarty->assign('sError', true);
   $tpl = 'login';

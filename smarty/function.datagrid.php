@@ -315,14 +315,14 @@ function smarty_function_datagrid($params, &$smarty)
         }
         $_html_row .= $_tmp;
       }
-      if($key2){ 
-        if($_SESSION['credentials'][$table] == 'full' || $_SESSION['idalm_user'] === 'admin'){
+      if ($key2) {
+        if ($_SESSION['credentials'][$table] == 'full' || $_SESSION['credentials'][$table] == 'edit' || $_SESSION['idalm_user'] === 'admin'){
            $_dgcmdmod = DGCMD2MOD;
-        }elseif($_SESSION['credentials'][$table] == 'edit' ){
-          $_dgcmdmod = DGCMD2MOD;
         }
-      }else{
-        $_dgcmdmod = DGCMDMOD;
+      } else {
+        if($_SESSION['credentials'][$table] == 'full' || $_SESSION['credentials'][$table] == 'edit' || $_SESSION['idalm_user'] === 'admin'){
+          $_dgcmdmod = DGCMDMOD;
+        }
       }
       $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmdmod);
       } else {

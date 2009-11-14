@@ -9,7 +9,8 @@
  * @version users.php,v 20091020 Javier Wilson
  * @package almidon
  */
-session_start();
+if (!isset($_SESSION))
+  session_start();
 $md5 = md5(microtime() * mktime());
 $string = substr($md5,0,5);
 $captcha = imagecreate(55,20);

@@ -12,6 +12,7 @@
  */
 
 session_start();
+if (!isset($_SESSION['idalm_user'])) $_SESSION['idalm_user'] = null;
 
 # Tell Almidon to use admin db user, admin links, etc
 define('ADMIN', true);
@@ -47,7 +48,8 @@ if(isset($_SESSION['idalm_user'])) {
 
           # Wanna go away? Go away...
 	  if ($object == 'logout') {
-	    session_destroy(); 
+	    session_destroy();
+            session_start();
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;
 	  }
@@ -55,6 +57,7 @@ if(isset($_SESSION['idalm_user'])) {
           # No credentials? Go away...
 	  if(!isset($_SESSION['credentials'][$object]) && $_SESSION['idalm_user'] !== 'admin') {
 	    session_destroy(); 
+            session_start();
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;	  	 
 	  }
