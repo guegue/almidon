@@ -7,14 +7,18 @@
       }
     }
 
-    if (!preg_match("/SELECT/", $sqlcmd))
-      $sqlcmd = "SELECT id$sqlcmd, $sqlcmd FROM $sqlcmd _WHERE_ ORDER BY $sqlcmd";
+    global $global_dd;
+    if (!preg_match("/^SELECT/", $sqlcmd)) {
+      $table = $sqlcmd;
+      $id = $global_dd[$table]['key'];
+      $descriptor = $global_dd[$table]['descriptor'];
+      $sqlcmd = "SELECT $id, $descriptor FROM $sqlcmd _WHERE_ ORDER BY $descriptor";
+    }
 
     if($filter)
       $sqlcmd = preg_replace('/_WHERE_/ ',"WHERE $filter",$sqlcmd);
     else
       $sqlcmd = preg_replace('/_WHERE_/ ','',$sqlcmd);
-
 
     $result = $this->query($sqlcmd);
     $num = $result->numRows();

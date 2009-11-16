@@ -11,6 +11,8 @@ define ('ALM_LANG','en');
 # Constantes de conexion la base de datos
 $admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';
 $public_dsn = 'pgsql://almidondemowww:secreto2@/almidondemo';
+$admin_password = '';
+
 if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN===true) define ('DSN', $admin_dsn);
 else define ('DSN', $public_dsn);

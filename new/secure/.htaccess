@@ -10,13 +10,5 @@ RewriteCond %{REQUEST_URI} !^/robots.txt$
 RewriteCond %{REQUEST_URI} !\.(gif¦jpe?g¦png¦css¦js¦pdf¦doc¦xml)$
 RewriteRule (.*) /cms/404.php [L]
 
-AuthType Basic
-AuthName "CMS: example.org"
-AuthUserFile /www/example.org/.htpasswd
-
-order allow,deny
-allow from all
-require valid-user
-
 php_flag display_errors on
 php_value error_reporting 2039

@@ -158,21 +158,25 @@ if (isset($edit))
 if (isset($row))
   $smarty->assign('row', $row);
 $smarty->assign('options', fillOpt($$object));
+
 # Limits/Paginando
-if(!isset($$object->maxrows)) $$object->maxrows = 8;
-else $$object->maxrows = (int) $$object->maxrows;
-$$object->offset = (isset($$object->pg))?(((int)$$object->pg)-1)*$$object->maxrows:0;
-$$object->limit = ($$object->maxrows)?$$object->maxrows:8;
-# End Limits
+  if(!isset($$object->maxrows)) $$object->maxrows = 8;
+  else $$object->maxrows = (int) $$object->maxrows;
+  $$object->offset = (isset($$object->pg))?(((int)$$object->pg)-1)*$$object->maxrows:0;
+  $$object->limit = ($$object->maxrows)?$$object->maxrows:8;
+# -- End Limits
+
 # To know who the first one and the last one is, this is useful when use order type of field
-$order_is_valid = split(' ',trim($$object->order));
-if(count($order_is_valid) > 1) $order_is_valid = false;
-else $order_is_valid = true;
-#if ($order_is_valid) {
-if ($order_is_valid && !isset($$object->key2)) {  // Temporalmente desabilitando para TableDoubleKey
-  $_SESSION[$object . 'first'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " LIMIT 1");
-  $_SESSION[$object . 'last'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " DESC LIMIT 1");
-}
+# FIXME: Are we even using this?
+  $order_is_valid = split(' ',trim($$object->order));
+  if(count($order_is_valid) > 1) $order_is_valid = false;
+  else $order_is_valid = true;
+  if (isset($$object->order) && $order_is_valid && !isset($$object->key2)) {  // Temporalmente desabilitando para TableDoubleKey
+    $_SESSION[$object . 'first'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " LIMIT 1");
+    $_SESSION[$object . 'last'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " DESC LIMIT 1");
+  }
+# -- end order
+
 $smarty->assign('rows', $$object->readData());
 $count_key = $$object->key ? $$object->key : $$object->key1;
 $smarty->assign('num_rows', $$object->getVar("SELECT COUNT(".$count_key.") FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));
@@ -196,19 +200,14 @@ function fillOpt(&$object) {
     if ($object->dd[$key]['references']) {
       # esta linea mantiene la compatibilidad con db2
       if (!is_array($object->dd[$key]['extra']) && !empty($object->dd[$key]['extra'])) {
-        if (preg_match("/\|\|/", $object->dd[$key]['extra'])) {
-          $ot = $object->dd[$key]['references'] . 'Table';
-          $robject = new $ot;
-          $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']);
-        }
-        else {
-	  $pos = strpos($object->dd[$key]['references'],'.');
-          if($pos!==false) {
-            $references = substr($object->dd[$key]['references'],0,$pos);
-          } else $references = $object->dd[$key]['references'];
-          $options[$key] = $object->selectMenu($references, $where);
-        }
-      // Esto sucede solo si extra esta manteniendo el formato ordenado de array de la version db3
+        $pos = strpos($object->dd[$key]['references'],'.');
+        if($pos!==false) {
+          $references = substr($object->dd[$key]['references'],0,$pos);
+        } else $references = $object->dd[$key]['references'];
+        # FIXME: $where dio notices, por que?
+        $options[$key] = $object->selectMenu($references, $where);
+        #$options[$key] = $object->selectMenu($references);
+      # esto sucede solo si extra esta manteniendo el formato ordenado de array de la version db3
       } elseif (!isset($object->dd[$key]['extra']['depend']) && !isset($object->dd[$key]['extra']['readonly'])) {
         $where = '';
         if(isset($object->dd[$key]['extra']['filteropt']))
@@ -255,4 +254,3 @@ function verifyNewTags (&$object) {
   }
   # End - Para los tags
 }
-

@@ -163,7 +163,10 @@ function smarty_function_dataform($params, &$smarty)
           $_selected = $_preset[$_key];
         } else {
           $_selected = $_val;
-          $_val = $row[$dd[$_key]['references']];
+          if (!isset($references[$dd[$_key]['references']])) $references[$dd[$_key]['references']] = 0;
+          $references[$dd[$_key]['references']]++;
+          $n = ($references[$dd[$_key]['references']] == 1) ? '' : $references[$dd[$_key]['references']];
+          $_val = $row[$dd[$_key]['references'] . $n];
         }
         $dd[$_key]['type'] = 'references';
       }
@@ -297,7 +300,10 @@ function smarty_function_dataform($params, &$smarty)
         continue;
       }
       if ($dd[$_key]['references']) {
-        $_val = $row[$dd[$_key]['references']];
+        if (!isset($references[$dd[$_key]['references']])) $references[$dd[$_key]['references']] = 0;
+        $references[$dd[$_key]['references']]++;
+        $n = ($references[$dd[$_key]['references']] == 1) ? '' : $references[$dd[$_key]['references']];
+        $_val = $row[$dd[$_key]['references'] . $n];
       }
       switch ($dd[$_key]['type']) {
         case 'char':
@@ -401,7 +407,7 @@ function smarty_function_dataform($params, &$smarty)
       $_paginate .= NEXT;
   }
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/cms/404.php')
+  if ($_SERVER['PHP_SELF'] == '/almidon/404.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);

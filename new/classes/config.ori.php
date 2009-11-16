@@ -5,12 +5,12 @@
 #define ('ALMIDONDIR', '/usr/local/almidon/');
 define ('DEBUG', true);
 
-# Funciones que definen el comportamiento de PHP
-setlocale(LC_TIME, "es_ES");
+# Idioma
+define ('ALM_LANG','es');
  
 # Constantes de conexion la base de datos
-$admin_dsn = 'pgsql://example:secreto1@/example';
-$public_dsn = 'pgsql://examplewww:secreto2@/example';
+$admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';
+$public_dsn = 'pgsql://almidondemowww:secreto2@/almidondemo';
 if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN===true) define ('DSN', $admin_dsn);
 else define ('DSN', $public_dsn);
@@ -23,7 +23,8 @@ define ('DOMAIN', 'local.almidon.org');
 define ('SQLLOG', ROOTDIR . '/logs/sql.log');
 define ('LOGFILE', ROOTDIR . '/logs/cms.log');
 define ('HOMEDIR', ROOTDIR .'/public_html');
-define ('URL', 'http://www.' . DOMAIN);
+# define ('URL', 'http://www.' . DOMAIN);
+define ('URL', 'http://' . DOMAIN);
 define ('EMAIL', 'info@' . DOMAIN);
 define ('PIXDIR', HOMEDIR.'/pix');
 

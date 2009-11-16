@@ -72,7 +72,8 @@ class Data {
   //Lee un statement sql y devuelve una lista de una sola columna (la primera)
   function getList($sqlcmd) {
     require('db.getlist.php');
-    return $array_rows;
+    if (isset($array_rows))
+      return $array_rows;
   }
 
   function getArray() {
@@ -130,6 +131,7 @@ class Table extends Data {
   }
 
   function refreshFields() {
+    global $global_dd;
     $n = 0;
     $ns = 0;
     $this->fields_noserial = '';
@@ -153,13 +155,15 @@ class Table extends Data {
         $this->all_fields .= $column['name'];
       else
         $this->all_fields .= $this->name . "." . $column['name'];
-      if ($column['references']) {
-        #if ($column['extra'])
-        if (preg_match("/\|\|/", $column['extra'])) {
-          $this->all_fields .= ",(" . $column['extra'] . ") AS " . $column['references'];
+      if ($column['references'] && isset($global_dd[$column['references']]['descriptor'])) {
+        if (!isset($references[$column['references']])) $references[$column['references']] = 0;
+        $references[$column['references']]++;
+        if ($references[$column['references']] == 1) {
+	  $this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'];
         } else {
-	  $this->all_fields .= "," . $column['references'] . "." . $column['references'];
-	  #$this->all_fields .= "," . $column['references'] . "." . $column['name'];
+          $tmptable = $column['references'] . $references[$column['references']];
+          $tmpcolumn =  $global_dd[$column['references']]['descriptor'];
+	  $this->all_fields .= "," . $tmptable . "." . $tmpcolumn . " AS " . $tmptable;
         }
       }
       $n++;
@@ -425,6 +429,7 @@ class Table extends Data {
   }
 
   function getJoin() {
+    global $global_dd;
     $join = "";
     $references = array();
     foreach ($this->definition as $column)
@@ -432,10 +437,10 @@ class Table extends Data {
         if (!isset($references[$column['references']])) $references[$column['references']] = 0;
         $references[$column['references']]++;
         if ($references[$column['references']] == 1) {
-          $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $column['name'];
+          $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $global_dd[$column['references']]['key'];
         } else {
           $tmptable = $column['references'] . $references[$column['references']];
-          $tmpcolumn =  "id" . $column['references'];
+          $tmpcolumn =  $global_dd[$column['references']]['key'];
           $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $tmpcolumn;
         }
       }

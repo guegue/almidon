@@ -173,6 +173,7 @@ function smarty_function_datagrid($params, &$smarty)
 
   # Crea los encabezados del datagrid
   $_cols = 0;
+
   if (!empty($headers)) {
     foreach ($headers as $_key=>$_val) {
       if ($maxcols && ($_cols >= $maxcols))
@@ -180,7 +181,16 @@ function smarty_function_datagrid($params, &$smarty)
       if ($parent == $_key || $dd[$_key]['type'] == 'external')
         continue;
       $_html_header = DGHEADERCELL;
-      $_field =  ($dd[$_key]['references']) ?  ($dd[$_key]['references']) : $_key;
+
+      # Para permitir referencias multiples a la misma tabla
+      if ($dd[$_key]['references']) {
+        $references[$dd[$_key]['references']] = 0;
+        $references[$dd[$_key]['references']]++;
+        $n = ($references[$dd[$_key]['references']] == 1) ? '' : $references[$dd[$_key]['references']];
+        $_field = $dd[$_key]['references'] . $n;
+      } else {
+        $_field = $_key;
+      }
       if ($_SESSION[$name . 'sort'] == $_field) {
         $_img = '<img src="/cms/img/up.gif" border="0" />';
         $_html_header = preg_replace("/_DESC_/", ' desc', $_html_header);
@@ -199,6 +209,7 @@ function smarty_function_datagrid($params, &$smarty)
       $_html_headers .= $_html_header;
       ++$_cols;
     }
+    unset($references);
   } else {
     foreach ($rows[0] as $_key=>$_val) {
       if ($maxcols && ($_cols >= $maxcols))
@@ -213,6 +224,7 @@ function smarty_function_datagrid($params, &$smarty)
   $_i = 0;
   $pg = ($_SESSION[$name . 'pg']) ? $_SESSION[$name . 'pg'] : 1; 
   foreach ((array)$rows as $row) {
+    unset($references);
     /* if ($paginate && $_SESSION[$name . 'pg'] && $_i < ($maxrows * ($pg - 1) )) {
       $_need_paginate = true;
       $_i++;
@@ -233,7 +245,10 @@ function smarty_function_datagrid($params, &$smarty)
           $dd[$_key]['type'] = 'hidden';
         } elseif ($dd[$_key]['references']) {
           $_selected = $_val;
-          $_val = $row[$dd[$_key]['references']];
+          if (!isset($references[$dd[$_key]['references']])) $references[$dd[$_key]['references']] = 0;
+          $references[$dd[$_key]['references']]++;
+          $n = ($references[$dd[$_key]['references']] == 1) ? '' : $references[$dd[$_key]['references']];
+          $_val = $row[$dd[$_key]['references'] . $n];
           $dd[$_key]['type'] = 'references';
         }
         switch ($dd[$_key]['type']) {
@@ -325,7 +340,7 @@ function smarty_function_datagrid($params, &$smarty)
         }
       }
       $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmdmod);
-      } else {
+    } else {
       $_cols = 0;
       foreach ($row as $_key=>$_val) {
         if ($maxcols && ($_cols >= $maxcols))
@@ -338,7 +353,10 @@ function smarty_function_datagrid($params, &$smarty)
           continue;
         }
         if ($dd[$_key]['references']) {
-          $_val = $row[$dd[$_key]['references']];
+          if (!isset($references[$dd[$_key]['references']])) $references[$dd[$_key]['references']] = 0;
+          $references[$dd[$_key]['references']]++;
+          $n = ($references[$dd[$_key]['references']] == 1) ? '' : $references[$dd[$_key]['references']];
+          $_val = $row[$dd[$_key]['references'] . $n];
         }
         switch ($dd[$_key]['type']) {
           case 'char':
@@ -489,7 +507,7 @@ function smarty_function_datagrid($params, &$smarty)
   $_html_result = preg_replace("/_PARENT_/", $parent, $_html_result);
   $_html_result = preg_replace("/_PARENTID_/", $parentid, $_html_result);
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/cms/404.php')
+  if ($_SERVER['PHP_SELF'] == '/almidon/404.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);

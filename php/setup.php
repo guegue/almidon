@@ -56,6 +56,16 @@ function performTests() {
       $failed=true;
       $test_output .= $red;
     }
+    $test_output .= "BD Almidonizada? ";
+    $sqlcmd = "SELECT relname FROM pg_class WHERE  pg_class.relkind = 'r' AND pg_class.relname LIKE 'alm_%'";
+    $data = new Data();
+    $var = $data->getList($sqlcmd);
+    if (count($var) >= 5) {
+       $test_output .= '<font color="green">'.print_r($var,1).'</font>';
+    } else {
+      #$failed = true;
+      $test_output .= $red;
+    }
     if ($failed) {
       $action='failed';
       $test_output .= '<br/><br/><font color="red">Por favor corregir antes de continuar con la instalaci&oacute;n</font>';
@@ -177,13 +187,15 @@ if ($action == 'fixdb') {
 }
 $options = array(
   'test'=>'Probar configuraci&oacute;n',
-  'tables'=>'Probar tablas y base de datos',
+  'tables'=>'Aplicar cambios a BD desde tables.class.php',
+  'alm_tables'=>'Almidonizar BD (crea alm_tables, etc)',
+  'autotables'=>'Generar tables.class.php desde alm_tables',
+  'sql2almidon'=>'Generar tables.class.php desde BD',
   'exec'=>'Ejecutar c&oacute;digo SQL',
-  'autotables'=>'Generar tables.class.php',
-  'sql'=>'Generar SQL basado en tables.class',
-  'dd'=>'Generar diccionario de datos',
-  'erd'=>'Generar diagrama entidad relacion',
-  'erdcol'=>'Generar diagrama entidad relacion detallado');
+  'sql'=>'Ver SQL basado en tables.class',
+  'dd'=>'Ver diccionario de datos',
+  'erd'=>'Ver diagrama entidad relacion',
+  'erdcol'=>'Ver diagrama entidad relacion detallado');
 if ($action != 'erd' && $action != 'erdcol' && !$failed) {
   print "<html>\n<head>\n<title>Almidon - Setup</title>\n</head>\n<body>\n";
   print "<small>Herramientas:<br/>";
@@ -205,6 +217,118 @@ if (!empty($action)) {
     }
   }
   switch ($action) {
+  case 'alm_tables':
+    $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/almidon.sql');
+    $alm_tables_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/tables.sql');
+    $data = new Data();
+    $sqlcmd = "SELECT relname FROM pg_class WHERE  pg_class.relkind = 'r' AND pg_class.relname LIKE 'alm_%'";
+    $data = new Data();
+    $data->execSql($sqlcmd);
+    $var = $data->getList($sqlcmd);
+    if (count($var) >= 5) {
+       $output .= 'Tablas de almidon ya existen. Re-generando solo meta-datos.<br/>';
+      $data->execSql($alm_tables_sqlcmd);
+    } else {
+      $data->execSql($alm_sqlcmd);
+      $output = "BD Almidonizada!<br/>Codigo SQL aplicado:<br/><pre>$alm_sqlcmd</pre><br/>";
+    }
+    $alm_table = new alm_tableTable();
+    $alm_column = new alm_columnTable();
+    # Nota: no hay soporte para TableDoubleKey yet...
+    $rank = 1;
+    $output .= "Re-generando: ";
+    foreach($tables as $key) {
+      $keyTable = $key . 'Table';
+      $data = new $keyTable;
+      $alm_column->execSql("DELETE FROM alm_column WHERE idalm_table='$key'");
+      $alm_table->deleteRecord($key);
+      $alm_table->request['idalm_table'] = $key;
+      $alm_table->request['key'] = $data->key;
+      $alm_table->request['alm_table'] = $data->name;
+      $alm_table->request['orden'] = $data->order;
+      $alm_table->request['rank'] = $rank;
+      $alm_table->addRecord();
+      $rank++;
+      $i = 1;
+      if($data->definition)
+        foreach($data->definition as $column) {
+          if (isset($type) && $type == 'external') next($data->definition);
+          $alm_column->request['idalm_table'] = $key;
+          $alm_column->request['idalm_column'] = $column['name'];
+          $alm_column->request['type'] = $column['type'];
+          $alm_column->request['size'] = $column['size'];
+          $alm_column->request['pk'] = ($column['name'] == $data->key) ? '1' : '0';
+          $alm_column->request['fk'] = $column['references'];
+          $alm_column->request['alm_column'] = $column['label'];
+          $alm_column->request['rank'] = $i;
+          $alm_column->request['extra'] = '';
+          $alm_column->addRecord();
+          ++$i;
+        }
+      $output .= "$key ";
+      }
+    break;
+  case 'sql2almidon':
+    $output = '';
+    #usa mismo colnames que alm_table para facilitar luego usar el mismo codigo como parser
+    #$sqlcmd = "SELECT c.oid, c.relname AS idalm_table FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE  c.relkind = 'r' AND n.nspname='public';";
+    $sqlcmd = "SELECT c.oid, c.relname AS idalm_table FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE  c.relkind = 'r' AND n.nspname='public' AND c.relname NOT LIKE 'alm_%';";
+    $data = new Data();
+    $data->execSql($sqlcmd);
+    $sqldata = $data->getArray();
+    foreach ($sqldata as $table_datum) {
+      $table_output = '';
+      $table_output .= "class " . $table_datum['idalm_table'] . "Table extends Table {\n";
+      $table_output .= "  function ".$table_datum['idalm_table']."Table() {\n";
+      $table_output .= "    \$this->Table('".$table_datum['idalm_table']."');\n";
+      $table_output .= "    \$this->key = '".$table_datum['idalm_table']."';\n";
+      $table_output .= "    \$this->title ='".$table_datum['idalm_table']."';\n";
+      #$output .= "    \$this->order ='".$table_datum['orden']."';\n";
+      $sqlcmd = "SELECT attname AS idalm_column,pg_type.typname AS type, atttypmod-4 AS size, contype AS key, (SELECT relname FROM pg_class WHERE pg_class.oid=confrelid) AS fk FROM pg_catalog.pg_attribute JOIN pg_type ON atttypid=pg_type.oid LEFT OUTER JOIN pg_constraint ON attrelid=conrelid AND attnum = ANY (conkey) WHERE attname NOT IN ('xmin','cmin','cmax','xmax','max_value','min_value','ctid','tableoid') AND attrelid='".$table_datum['oid']."' AND NOT attisdropped";
+      $data->execSql($sqlcmd);
+      $cols = $data->getArray();
+      $key = null;
+      $key1 = null;
+      $key2 = null;
+      foreach ($cols as $datum) {
+        if ($datum['size'] <= 0) $datum['size'] = 0;
+        if ($datum['type'] == 'int4') $datum['type'] = 'int';
+        $datum['pk'] = 0;
+        if ($datum['key'] == 'p') {
+          $datum['pk'] = 1;
+          if (!empty($key)) {
+            $key1 = $key;
+            $key2 = $datum['idalm_column'];
+            $key = null;
+          } else {
+            $key = $datum['idalm_column'];
+          }
+        }
+        if (empty($datum['fk'])) $datum['fk'] = 0;
+        else $datum['fk'] = "'" .$datum['fk']."'";
+        $table_output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . $datum['idalm_column'] . "','');\n";
+      }
+      if (isset($key2)) {
+            $table_output = preg_replace("/key = '".$table_datum['idalm_table']."';/","key1 = '".$key1."';\n    \$this->key2 = '".$key2."';",$table_output);
+            $table_output = preg_replace("/extends Table/", "extends TableDoubleKey", $table_output);
+      } else {
+            $table_output = preg_replace("/key = '".$table_datum['idalm_table']."';/","key = '".$key."';",$table_output);
+      }
+      $table_output .= "  }\n}\n";
+      $output .= $table_output;
+    }
+    if (isset($_REQUEST['save']) && $_REQUEST['save'] == '1') {
+      if (!is_writable(ROOTDIR.'/classes/tables.class.php')) {
+        print "No se puede escribir en classes/tables.class.php. Copiar el siguiente c&oacute;digo manualmente a tables.class.php:<br/><br/>\n";
+      } else {
+        $fp = fopen(ROOTDIR.'/classes/tables.class.php', 'w');
+        fwrite($fp, "<?php\n$output");
+        fclose($fp);
+        print "Se ha actualizado tables.class.php.<br/>";
+        exit;
+      }
+    }
+    break;
   case 'autotables':
     $alm_table = new alm_tableTable();
     $alm_column = new alm_columnTable();
@@ -216,7 +340,8 @@ if (!empty($action)) {
       $output .= "    \$this->Table('".$table_datum['idalm_table']."');\n";
       $output .= "    \$this->key = '".$table_datum['key']."';\n";
       $output .= "    \$this->title ='".$table_datum['alm_table']."';\n";
-      $output .= "    \$this->order ='".$table_datum['orden']."';\n";
+      if (!empty($table_datum['orden']))
+        $output .= "    \$this->order ='".$table_datum['orden']."';\n";
       $data = $alm_column->readDataFilter("alm_column.idalm_table='".$table_datum['idalm_table']."'");
       if ($data)
       foreach ($data as $datum) {
@@ -282,6 +407,7 @@ if (!empty($action)) {
               $tables_output .= "&nbsp;&nbsp;&nbsp;&nbsp;<small>Error en campo $campo <!--".$data->data->getMessage() . "--></small><br/>";
               $size = ($data->dd[$campo]['size'] > 0) ? '('.$data->dd[$campo]['size'].')': '';
               if (!isset($data->key)) $data->key = false;
+              if (!isset($dd)) $dd = null;
               $sql_fix .= "ALTER TABLE $data->name ADD COLUMN " . genColumnSQL($data->dd[$campo], $dbtype, $dd[$campo]['name'] === $data->key).";\n";
             }
           }
@@ -295,7 +421,10 @@ if (!empty($action)) {
       $sqlcmd = pg_escape_string($_REQUEST['sqlcmd']);
     else
       $sqlcmd = '';
-    $output .= '<form><input type="hidden" name="action" value="exec"/><textarea name="sqlcmd" cols="80">'.$sqlcmd.'</textarea><br/><input type="submit"></form>';
+    if (!isset($_REQUEST['fix']))
+      $output .= '<form><input type="hidden" name="action" value="exec"/><textarea name="sqlcmd" cols="80">'.$sqlcmd.'</textarea><br/><input type="submit" value="Ejecutar SQL"></form>';
+    else
+      $output .= "SQL Aplicado: " . $sqlcmd;
     if ($sqlcmd) {
       $data = new Data();
       $data->execSql($sqlcmd);
@@ -400,10 +529,17 @@ if (!empty($action)) {
   case 'exec':
     print $output;
     break;
-  case 'autotables':
+  case 'sql2almidon':
+    $save_tables = '<br/><form><input type="hidden" name="action" value="sql2almidon"/><input type="hidden" name="save" value="1"/><input type="submit" value="Guardar en tables.class.php"></form>';
+    print $save_tables;
     print highlight_string("<?php\n".$output, 1);
-    print '<form>';
-    print '<input type="hidden" name="action" value="autotables"/><input type="hidden" name="save" value="1"/><input type="submit" value="Guardar tables.class.php"></form>';
+    print $save_tables;
+    break;
+  case 'autotables':
+    $save_tables = '<br/><form><input type="hidden" name="action" value="autotables"/><input type="hidden" name="save" value="1"/><input type="submit" value="Guardar en tables.class.php"></form>';
+    print $save_tables;
+    print highlight_string("<?php\n".$output, 1);
+    print $save_tables;
     break;
   case 'tables':
     print "$tables_output";
@@ -412,7 +548,7 @@ if (!empty($action)) {
       if (isset($sql_fix)) {
         $sql_fix = trim($sql_fix);
         print '<form><pre>'.$sql_fix.'</pre>';
-        print '<input type="hidden" name="action" value="exec"/><input type="hidden" name="sqlcmd" value="'.$sql_fix.'"/><input type="submit" value="Aplicar SQL"></form>';
+        print '<input type="hidden" name="action" value="exec"/><input type="hidden" name="sqlcmd" value="'.$sql_fix.'"/><input type="hidden" name="fix" value="1"/><input type="submit" value="Aplicar SQL"></form>';
       }
     }
     break;
@@ -424,6 +560,9 @@ if (!empty($action)) {
     break;
   case 'sql':
     print "<pre>$output</pre>";
+    break;
+  case 'alm_tables':
+    print $output;
     break;
   case 'dd':
     print "$output";
