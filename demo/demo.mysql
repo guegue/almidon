@@ -1,7 +1,11 @@
+DROP DATABASE IF EXISTS almidondemo;
 CREATE DATABASE almidondemo;
 GRANT ALL ON almidondemo.* TO almidondemo@localhost IDENTIFIED BY 'secreto1';
 GRANT SELECT ON almidondemo.* TO almidondemowww@localhost IDENTIFIED BY 'secreto2';
 
+USE almidondemo;
+
+DROP TABLE IF EXISTS pagina;
 CREATE TABLE pagina (
   idpagina integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
   pagina varchar (500) ,
@@ -9,12 +13,14 @@ CREATE TABLE pagina (
   descripcion text
 );
 
+DROP TABLE IF EXISTS galeria;
 CREATE TABLE galeria (
   idgaleria integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
   galeria varchar (500) ,
   fecha date
 );
 
+DROP TABLE IF EXISTS foto;
 CREATE TABLE foto (
   idfoto integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
   idgaleria int REFERENCES galeria ,
@@ -22,6 +28,7 @@ CREATE TABLE foto (
   imagen varchar (500)
 );
 
+DROP TABLE IF EXISTS doc;
 CREATE TABLE doc (
   iddoc integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
   doc varchar (500) ,
@@ -30,6 +37,7 @@ CREATE TABLE doc (
   descripcion text
 );
 
+DROP TABLE IF EXISTS agenda;
 CREATE TABLE agenda (
   idagenda integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
   agenda varchar (500) ,
@@ -39,6 +47,7 @@ CREATE TABLE agenda (
   organiza varchar (500)
 );
 
+DROP TABLE IF EXISTS noticia;
 CREATE TABLE noticia (
   idnoticia integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
   noticia varchar (500) ,
@@ -47,6 +56,7 @@ CREATE TABLE noticia (
   foto varchar (500)
 );
 
+DROP TABLE IF EXISTS enlace;
 CREATE TABLE enlace (
   idenlace integer PRIMARY KEY NOT NULL AUTO_INCREMENT ,
   enlace varchar (500) ,
@@ -95,17 +105,20 @@ Demo: http://demo.almidon.org/');
 
 -- Traido de users.mysql
 
-CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100));
-ALTER TABLE public.alm_table OWNER TO alm_idondemo;
+DROP TABLE IF EXISTS alm_table;
+CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100), pkey varchar(32), orden varchar (100), rank int);
 
+DROP TABLE IF EXISTS alm_column;
+CREATE TABLE alm_column (idalm_column varchar (32), idalm_table varchar (32) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(16), alm_column varchar(100), extra varchar(500), rank int, PRIMARY KEY (idalm_column, idalm_table));
+
+DROP TABLE IF EXISTS alm_role;
 CREATE TABLE alm_role (idalm_role varchar(8) PRIMARY KEY, alm_role varchar(100));
-ALTER TABLE public.alm_role OWNER TO alm_idondemo;
 
+DROP TABLE IF EXISTS alm_user;
 CREATE TABLE alm_user (idalm_user varchar(16) PRIMARY KEY, idalm_role varchar(8) REFERENCES alm_role, password varchar(200) NOT NULL, alm_user varchar(200) NOT NULL, email varchar(200));
-ALTER TABLE public.alm_user OWNER TO alm_idondemo;
 
-CREATE TABLE alm_access (idalm_role varchar(8) REFERENCES alm_role NULL, idalm_user varchar(16) REFERENCES alm_user , idalm_table varchar(16) REFERENCES alm_table, idalm_access PRIMARY KEY AUTO_INCREMENT);
-ALTER TABLE public.alm_access OWNER TO alm_idondemo;
+DROP TABLE IF EXISTS alm_access;
+CREATE TABLE alm_access (idalm_role varchar(8) REFERENCES alm_role, idalm_user varchar(16) REFERENCES alm_user , idalm_table varchar(16) REFERENCES alm_table, idalm_access int PRIMARY KEY AUTO_INCREMENT);
 
 -- especificamos id porque puede usarse 'hard-coded' en algun lado
 INSERT INTO alm_role VALUES ('full', 'Control Total');
@@ -119,16 +132,16 @@ INSERT INTO alm_user VALUES ('demo', 'read', 'fe01ce2a7fbac8fafaed7c982a04e229',
 INSERT INTO alm_user VALUES ('alice', NULL, 'fe01ce2a7fbac8fafaed7c982a04e229', 'Alice', 'alice@example.com');
 
 -- tablas a las cuales el acceso se puede personalizar
-INSERT INTO alm_table (idalm_table, alm_table, key, orden) VALUES ('agenda', 'Agenda', 'idagenda', 'agenda');
-INSERT INTO alm_table (idalm_table, alm_table, key, orden) VALUES ('doc', 'Documentos', 'iddoc', 'doc');
-INSERT INTO alm_table (idalm_table, alm_table, key, orden) VALUES ('enlace', 'Enlaces', 'idenlace', 'enlace');
-INSERT INTO alm_table (idalm_table, alm_table, key, orden) VALUES ('foto', 'Fotos', 'idfoto', 'foto');
-INSERT INTO alm_table (idalm_table, alm_table, key, orden) VALUES ('galeria', 'Galerias', 'idgaleria', 'galeria');
-INSERT INTO alm_table (idalm_table, alm_table, key, orden) VALUES ('noticia', 'Noticias', 'idnoticia', 'fecha');
-INSERT INTO alm_table (idalm_table, alm_table, key, orden) VALUES ('pagina', 'Paginas', 'idpagina', 'pagina');
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden) VALUES ('agenda', 'Agenda', 'idagenda', 'agenda');
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden) VALUES ('doc', 'Documentos', 'iddoc', 'doc');
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden) VALUES ('enlace', 'Enlaces', 'idenlace', 'enlace');
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden) VALUES ('foto', 'Fotos', 'idfoto', 'foto');
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden) VALUES ('galeria', 'Galerias', 'idgaleria', 'galeria');
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden) VALUES ('noticia', 'Noticias', 'idnoticia', 'fecha');
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden) VALUES ('pagina', 'Paginas', 'idpagina', 'pagina');
 
 -- 'control total' para 'alice' en 'pagina'
-INSERT INTO alm_access VALUES ('full', 'alice', 'pagina');
+INSERT INTO alm_access (idalm_role,idalm_user,idalm_table) VALUES ('full', 'alice', 'pagina');
 
 -- campos para tables.class.php
 INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra) VALUES ('idpagina', 'pagina', 'serial', 0, true, '', 'ID', NULL);

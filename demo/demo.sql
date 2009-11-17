@@ -1,4 +1,4 @@
-DROP DATABASE almidondemo;
+DROP DATABASE IF EXISTS almidondemo;
 CREATE DATABASE almidondemo WITH TEMPLATE = template0 ENCODING = 'UTF8';
 CREATE USER almidondemo WITH PASSWORD 'secreto1';
 CREATE USER almidondemowww WITH PASSWORD 'secreto2';
@@ -10,18 +10,23 @@ ALTER DATABASE almidondemo OWNER TO almidondemo;
 -- * Parte esencial de almidon     *
 -- *********************************
 
-CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100), key varchar(32), orden varchar (100), rank int);
+DROP TABLE IF EXISTS alm_table CASCADE;
+CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100), pkey varchar(32), orden varchar (100), rank int);
 ALTER TABLE public.alm_table OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS alm_column CASCADE;
 CREATE TABLE alm_column (idalm_column varchar (32), idalm_table varchar (32) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(16), alm_column varchar(100), extra varchar(500), rank int, PRIMARY KEY (idalm_column, idalm_table));
 ALTER TABLE public.alm_column OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS alm_role CASCADE;
 CREATE TABLE alm_role (idalm_role varchar(8) PRIMARY KEY, alm_role varchar(100));
 ALTER TABLE public.alm_role OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS alm_user CASCADE;
 CREATE TABLE alm_user (idalm_user varchar(16) PRIMARY KEY, idalm_role varchar(8) REFERENCES alm_role, password varchar(200) NOT NULL, alm_user varchar(200) NOT NULL, email varchar(200));
 ALTER TABLE public.alm_user OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS alm_access CASCADE;
 CREATE TABLE alm_access (idalm_role varchar(8) REFERENCES alm_role NULL, idalm_user varchar(16) REFERENCES alm_user , idalm_table varchar(16) REFERENCES alm_table, idalm_access serial PRIMARY KEY);
 ALTER TABLE public.alm_access OWNER TO almidondemo;
 
@@ -40,24 +45,31 @@ INSERT INTO alm_user VALUES ('admin', 'full', '21232f297a57a5a743894a0e4a801fc3'
 -- ********************************* 
 
 -- tablas demo
+DROP TABLE IF EXISTS agenda CASCADE;
 CREATE TABLE agenda (idagenda serial PRIMARY KEY, agenda varchar(500), fecha date, lugar varchar(120), texto text, organiza varchar(500));
 ALTER TABLE public.agenda OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS doc CASCADE;
 CREATE TABLE doc (iddoc serial PRIMARY KEY, doc varchar(500), portada varchar(500), descripcion text, archivo varchar(500));
 ALTER TABLE public.doc OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS enlace CASCADE;
 CREATE TABLE enlace (idenlace serial PRIMARY KEY, enlace varchar(500), url varchar(600), texto text, imagen varchar(500));
 ALTER TABLE public.enlace OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS galeria CASCADE;
 CREATE TABLE galeria (idgaleria serial PRIMARY KEY, galeria varchar(500), fecha date);
 ALTER TABLE public.galeria OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS foto CASCADE;
 CREATE TABLE foto (idfoto serial PRIMARY KEY, idgaleria integer REFERENCES galeria, foto varchar(500), imagen varchar(500));
 ALTER TABLE public.foto OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS noticia CASCADE;
 CREATE TABLE noticia (idnoticia serial PRIMARY KEY, noticia varchar(500), fecha date, texto text, foto varchar(500));
 ALTER TABLE public.noticia OWNER TO almidondemo;
 
+DROP TABLE IF EXISTS pagina CASCADE;
 CREATE TABLE pagina (idpagina serial PRIMARY KEY, pagina varchar(500), foto varchar(500), descripcion text);
 ALTER TABLE public.pagina OWNER TO almidondemo;
 
@@ -106,13 +118,13 @@ INSERT INTO alm_user VALUES ('demo', 'read', 'fe01ce2a7fbac8fafaed7c982a04e229',
 INSERT INTO alm_user VALUES ('alice', NULL, 'fe01ce2a7fbac8fafaed7c982a04e229', 'Alice', 'alice@example.com');
 
 -- tablas a las cuales el acceso se puede personalizar
-INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('pagina', 'Paginas', 'idpagina', 'pagina', 1);
-INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('doc', 'Documentos', 'iddoc', 'doc', 2);
-INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('enlace', 'Enlaces', 'idenlace', 'enlace', 3);
-INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('galeria', 'Galerias', 'idgaleria', 'galeria', 4);
-INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('foto', 'Fotos', 'idfoto', 'foto', 5);
-INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('agenda', 'Agenda', 'idagenda', 'agenda', 6);
-INSERT INTO alm_table (idalm_table, alm_table, key, orden, rank) VALUES ('noticia', 'Noticias', 'idnoticia', 'fecha', 7);
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden, rank) VALUES ('pagina', 'Paginas', 'idpagina', 'pagina', 1);
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden, rank) VALUES ('doc', 'Documentos', 'iddoc', 'doc', 2);
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden, rank) VALUES ('enlace', 'Enlaces', 'idenlace', 'enlace', 3);
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden, rank) VALUES ('galeria', 'Galerias', 'idgaleria', 'galeria', 4);
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden, rank) VALUES ('foto', 'Fotos', 'idfoto', 'foto', 5);
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden, rank) VALUES ('agenda', 'Agenda', 'idagenda', 'agenda', 6);
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden, rank) VALUES ('noticia', 'Noticias', 'idnoticia', 'fecha', 7);
 
 -- 'control total' para 'alice' en 'pagina'
 INSERT INTO alm_access VALUES ('full', 'alice', 'pagina');

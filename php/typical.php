@@ -17,6 +17,7 @@ switch ($action) {
   case 'add':
     if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['idalm_user'] == 'admin') {
       $$object->addRecord();
+      if($object === 'alm_column' || $object === 'alm_table') $$object->syncFromAlm();
       # Para los tags
       verifyNewTags($$object);
     } else {
@@ -26,6 +27,7 @@ switch ($action) {
   case 'delete':
     if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['credentials'][$object] == 'delete' || $_SESSION['idalm_user'] == 'admin') {
       $$object->deleteRecord();
+      if($object === 'alm_column' || $object === 'alm_table') $$object->syncFromAlm();
     } else {
       die("SEGURIDAD: Credenciales no tienen sentido!");
     }
@@ -33,6 +35,7 @@ switch ($action) {
   case 'save':
     if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['idalm_user'] == 'admin') {
       $$object->updateRecord();
+      if($object === 'alm_column' || $object === 'alm_table') $$object->syncFromAlm();
       verifyNewTags($$object);
     } else {
       die("SEGURIDAD: Credenciales no tienen sentido!");
@@ -46,6 +49,7 @@ switch ($action) {
         $$object->updateRecord(0, 0, $maxcols, 0);
       else
         $$object->updateRecord(0, $maxcols, 0);
+      if($object === 'alm_column' || $object === 'alm_table') $$object->syncFromAlm();
     } else {
       die("SEGURIDAD: Credenciales no tienen sentido!");
     }

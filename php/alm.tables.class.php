@@ -49,7 +49,7 @@ class alm_tableTable extends Table {
     $this->order = 'rank';
     $this->addColumn('idalm_table','varchar',32,1,0,'Id');
     $this->addColumn('alm_table','varchar',100,0,0,'Descripcion');
-    $this->addColumn('key','varchar',32,0,0,'Primary Key');
+    $this->addColumn('pkey','varchar',32,0,0,'Primary Key');
     $this->addColumn('orden','varchar',100,0,0,'Order By');
     $this->addColumn('rank','int',0,0,0,'Orden');
   }

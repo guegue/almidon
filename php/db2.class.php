@@ -49,6 +49,16 @@ class Data {
     return $result;
   }
   
+  #function tablesColumnExists($column_name) {
+  #  $exists = preg_match("/(,|^)$column_name(,|$)/",$this->fields);
+  #  return $exists;
+  #}
+
+  #function catalogColumnExists($column_name) {
+  #  require('db.catalogcolumnexists.php');
+  #  return $exists;
+  #}
+
   function execSql($sqlcmd) {
     $this->data = $this->query($sqlcmd);
     if (!PEAR::isError($this->data) && $this->data && (strpos($sqlcmd,'SELECT') !== false))
@@ -128,6 +138,21 @@ class Table extends Data {
     $this->schema = $schema;
     if ($schema && $schema != 'public')
       $this->query("SET search_path = $schema, public, pg_catalog");
+  }
+
+  # Aplica cambios necesarios a la BD desde tables.class.php
+  function syncToDB() {
+    require('db.synctodb.php');
+  }
+
+  # Aplica cambios necesario a tables.class.php
+  function syncFromAlm() {
+    $autosave = true;
+    require('setup.autotables.php');
+    if (!$saved)
+      echo "tables.class.php no escribible!<br/>\n";
+    else
+      echo "tables.class.php actualizado!<br/>\n";
   }
 
   function refreshFields() {

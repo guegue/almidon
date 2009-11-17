@@ -15,11 +15,16 @@
 
 # Check username and password
 function check_user($user, $pass) {
+  global $emergency_password;
   $pass = md5($pass);
   $alm_user = new alm_userTable();
   $alm_user->readEnv();
-  $alm_user_data = $alm_user->readDataFilter("idalm_user='".$user."' AND password='".$pass."'");
-  if(is_array($alm_user_data)) {
+  $alm_user_data = @$alm_user->readDataFilter("idalm_user='".$user."' AND password='".$pass."'");
+  if (PEAR::isError($alm_user->data) && $pass === $emergency_password) {
+    $_SESSION['idalm_user'] = 'admin';
+    $_SESSION['alm_user'] = 'Emergency';
+    return true;
+  } elseif(is_array($alm_user_data)) {
     //Cargar Credenciales
     $_SESSION['credentials'] = get_credentials($alm_user_data[0]['idalm_user']);
     $_SESSION['idalm_user'] = $alm_user_data[0]['idalm_user'];

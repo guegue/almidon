@@ -11,7 +11,12 @@ define ('ALM_LANG','en');
 # Constantes de conexion la base de datos
 $admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';
 $public_dsn = 'pgsql://almidondemowww:secreto2@/almidondemo';
-$admin_password = '';
+
+# Permite conectarse a la BD sin "almidonizarla"
+$emergency_password = '21232f297a57a5a743894a0e4a801fc3';
+
+# Aplicar cambios automaticos a BD
+define('ALM_SYNC', true);
 
 if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN===true) define ('DSN', $admin_dsn);

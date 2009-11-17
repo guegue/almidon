@@ -40,6 +40,6 @@ foreach($classes as $key) {
       $global_dd[$table_object->name]['descriptor'] = $table_object->name;
     } else {
       $global_dd[$table_object->name]['descriptor'] = $table_object->key;
-}
+    }
   }
 }

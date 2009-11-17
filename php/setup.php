@@ -1,162 +1,11 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+require_once('setup.gensql.php');
+require_once('setup.tests.php');
+require_once('setup.dd.php');
+
 $alm_tables = "/^(alm_table|alm_user|alm_access|alm_role|alm_column)$/";
-function performTests() {
-    global $failed, $test_output, $action, $admin_db_failed, $public_db_failed, $admin_dsn, $public_dsn, $smarty;
-    $failed = false;
-    $red = '<font color="red">FALL&Oacute;</font>';
-    $green = '<font color="green">PAS&Oacute;</font>';
-    $test_output = "Probando conexion a base de datos (admin)... ";
-    $db =& MDB2::connect ($admin_dsn);
-    if (PEAR::isError($db)) {
-      $error_msg = $db->getMessage();
-      $test_output .= "$red <i>$error_msg</i><br/>";
-      $failed = true;
-      $admin_db_failed = true;
-    } else {
-      $test_output .= "$green<br/>";
-    }
-    $test_output .= "Probando conexion a base de datos (public)... ";
-    $db =& MDB2::connect ($public_dsn);
-    if (PEAR::isError($db)) {
-      $error_msg = $db->getMessage();
-      $test_output .= "$red <i>$error_msg</i><br/>";
-      $failed = true;
-      $public_db_failed = true;
-    } else {
-      $test_output .= "$green<br/>";
-    }
-    $test_output .= "Probando configuracion de PHP... ";
-    if (get_cfg_var('short_open_tag') != 1) {
-      $test_output .= "$red <i>short_open_tag = ".get_cfg_var('short_open_tag')."</i><br/>";
-      $failed=true;
-    } else {
-      $test_output .= "$green<br/>";
-    }
-    $test_output .= "Probando permisos de directorios... ";
-    if (checkPerms($smarty->compile_dir) !== true)
-      $test_output .= "$red <i> $smarty->compile_dir = ".checkPerms($smarty->compile_dir)."</i><br/>";
-    if (checkPerms($smarty->cache_dir) !== true)
-      $test_output .= "$red <i> $smarty->cache_dir = ".checkPerms($smarty->cache_dir)."</i><br/>";
-    $logs_dir = ROOTDIR . '/logs';
-    if (checkPerms($logs_dir) !== true)
-      $test_output .= "$red <i> $logs_dir = ".checkPerms($logs_dir)."</i><br/>";
-    $files_dir = ROOTDIR . '/files';
-    if (checkPerms($files_dir) !== true)
-      $test_output .= "$red <i> $files_dir = ".checkPerms($files_dir)."</i><br/>";
-    if (checkPerms($smarty->compile_dir) === true && checkPerms($smarty->cache_dir) === true) {
-      $test_output .= "$green<br/>";
-    } else {
-      $failed=true;
-    }
-    $test_output .= "Dónde está almidón? ";
-    if (defined('ALMIDONDIR')) {
-      $test_output .= '<font color="green">'.ALMIDONDIR.'</font><br/>';
-    } else {
-      $failed=true;
-      $test_output .= $red;
-    }
-    $test_output .= "BD Almidonizada? ";
-    $sqlcmd = "SELECT relname FROM pg_class WHERE  pg_class.relkind = 'r' AND pg_class.relname LIKE 'alm_%'";
-    $data = new Data();
-    $var = $data->getList($sqlcmd);
-    if (count($var) >= 5) {
-       $test_output .= '<font color="green">'.print_r($var,1).'</font>';
-    } else {
-      #$failed = true;
-      $test_output .= $red;
-    }
-    if ($failed) {
-      $action='failed';
-      $test_output .= '<br/><br/><font color="red">Por favor corregir antes de continuar con la instalaci&oacute;n</font>';
-    }
-}
 if (!defined('ADMIN')) define ('ADMIN', true);
-function checkPerms($filepath) {
-  if (!file_exists($filepath)) return "No existe.";
-  if (is_writeable($filepath)) return true;
-  else return "Sin permisos de escritura.";
-}
-function getTitle($object) {
-  $o = $object . "Table";
-  $data = new $o;
-  return $data->title;
-}
-function genLinks($object) {
-  $o = $object . "Table";
-  $data = new $o;
-  if($data->definition)
-  $dd = array();
-  foreach($data->definition as $column) {
-    if ($column['references'] != '0') $dd[] = $column['references'];
-  }
-  return $dd;
-}
-function genDD($object) {
-  $o = $object . "Table";
-  $data = new $o;
-  if($data->definition)
-  $dd = array();
-  foreach($data->definition as $column) {
-    if ($column['size'] == '0') $column['size'] = null;
-    if ($column['name'] == $data->key) $column['PK'] = true;
-    else $column['PK'] = null;
-    if ($column['references'] == '0') $column['references'] = null;
-    $col = array($column['name'],$column['type'],$column['size'],$column['references'],$column['label'],$column['PK']);
-    $dd[] = $col;
-  }
-  return $dd;
-}
-function genColumnSQL($column, $dbtype, $key = false) {
-  $sql = '';
-  $type = $column['type'];
-  if ($type == 'external') return;
-  if ($type == 'file' || $type == 'image' || $type == 'autoimage') {
-    $type = 'varchar';
-    $size = '500';
-  } elseif ($type == 'html' || $type == 'xhtml') {
-    $type = 'text';
-    $size = null;
-  } elseif ($type == 'datetime') {
-    $type = 'timestamp';
-    $size = null;
-  } elseif ($type == 'auth_user') {
-    $type = 'varchar';
-    $size = '32';
-  } elseif ($type == 'datenull') {
-    $type = 'date';
-    $size = null;
-  }
-  if ($dbtype == 'pgsql') {
-    if ($type == 'order') $type = 'serial NULL';
-  } elseif ($dbtype == 'mysql') {
-    if ($type == 'order' ||  $type == 'serial') $type = 'int AUTO_INCREMENT';
-  }
-  $size = $column['size'];
-  $size = preg_replace("/\./", ",", $size);
-  $sql .= "  ".$column['name']." ".$type;
-  if ($size) $sql .= " (".$size.")";
-  if ($key) $sql .= " PRIMARY KEY NOT NULL";
-  if ($column['references']) $sql .= " REFERENCES ".$column['references'];
-  return $sql;
-}
-function genSQL($object) {
-  $o = $object . "Table";
-  $data = new $o;
-  $dbtype = $data->database->dsn['phptype'];
-  $sql = "CREATE TABLE $data->name (\n";
-  $i = 0;
-  if($data->definition)
-  foreach($data->definition as $column) {
-    unset($size);
-    if (isset($type) && $type == 'external') next($data->definition);
-    if ($i) $sql .= " ,\n";
-    $sql .= genColumnSQL($column, $dbtype, $column['name'] == $data->key );
-    ++$i;
-  }
-  $sql .= "\n);\n\n";
-  return($sql);
-}
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
@@ -190,7 +39,7 @@ $options = array(
   'tables'=>'Aplicar cambios a BD desde tables.class.php',
   'alm_tables'=>'Almidonizar BD (crea alm_tables, etc)',
   'autotables'=>'Generar tables.class.php desde alm_tables',
-  'sql2almidon'=>'Generar tables.class.php desde BD',
+  'sql2almidon'=>'Generar tables.class.php desde BD (PostgreSQL)',
   'exec'=>'Ejecutar c&oacute;digo SQL',
   'sql'=>'Ver SQL basado en tables.class',
   'dd'=>'Ver diccionario de datos',
@@ -221,12 +70,17 @@ if (!empty($action)) {
     $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/almidon.sql');
     $alm_tables_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/tables.sql');
     $data = new Data();
-    $sqlcmd = "SELECT relname FROM pg_class WHERE  pg_class.relkind = 'r' AND pg_class.relname LIKE 'alm_%'";
+    list($type,$tmp) = split('://',$admin_dsn);
+    if ($type == 'pgsql') {
+      $sqlcmd = "SELECT relname FROM pg_class WHERE  pg_class.relkind = 'r' AND pg_class.relname LIKE 'alm_%'";
+    } elseif($type == 'mysql') {
+      $sqlcmd = "SHOW TABLES LIKE 'alm_%'";
+    }
     $data = new Data();
     $data->execSql($sqlcmd);
     $var = $data->getList($sqlcmd);
     if (count($var) >= 5) {
-       $output .= 'Tablas de almidon ya existen. Re-generando solo meta-datos.<br/>';
+      $output .= 'Tablas de almidon ya existen. Re-generando solo meta-datos.<br/>';
       $data->execSql($alm_tables_sqlcmd);
     } else {
       $data->execSql($alm_sqlcmd);
@@ -244,7 +98,7 @@ if (!empty($action)) {
       $alm_table->deleteRecord($key);
       $alm_table->request['idalm_table'] = $key;
       $alm_table->request['key'] = $data->key;
-      $alm_table->request['alm_table'] = $data->name;
+      $alm_table->request['alm_table'] = $data->title;
       $alm_table->request['orden'] = $data->order;
       $alm_table->request['rank'] = $rank;
       $alm_table->addRecord();
@@ -271,7 +125,6 @@ if (!empty($action)) {
   case 'sql2almidon':
     $output = '';
     #usa mismo colnames que alm_table para facilitar luego usar el mismo codigo como parser
-    #$sqlcmd = "SELECT c.oid, c.relname AS idalm_table FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE  c.relkind = 'r' AND n.nspname='public';";
     $sqlcmd = "SELECT c.oid, c.relname AS idalm_table FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE  c.relkind = 'r' AND n.nspname='public' AND c.relname NOT LIKE 'alm_%';";
     $data = new Data();
     $data->execSql($sqlcmd);
@@ -284,7 +137,7 @@ if (!empty($action)) {
       $table_output .= "    \$this->key = '".$table_datum['idalm_table']."';\n";
       $table_output .= "    \$this->title ='".$table_datum['idalm_table']."';\n";
       #$output .= "    \$this->order ='".$table_datum['orden']."';\n";
-      $sqlcmd = "SELECT attname AS idalm_column,pg_type.typname AS type, atttypmod-4 AS size, contype AS key, (SELECT relname FROM pg_class WHERE pg_class.oid=confrelid) AS fk FROM pg_catalog.pg_attribute JOIN pg_type ON atttypid=pg_type.oid LEFT OUTER JOIN pg_constraint ON attrelid=conrelid AND attnum = ANY (conkey) WHERE attname NOT IN ('xmin','cmin','cmax','xmax','max_value','min_value','ctid','tableoid') AND attrelid='".$table_datum['oid']."' AND NOT attisdropped";
+      $sqlcmd = "SELECT attname AS idalm_column,pg_type.typname AS type, atttypmod-4 AS size, contype AS key, (SELECT relname FROM pg_class WHERE pg_class.oid=confrelid) AS fk FROM pg_attribute JOIN pg_type ON atttypid=pg_type.oid LEFT OUTER JOIN pg_constraint ON attrelid=conrelid AND attnum = ANY (conkey) WHERE attname NOT IN ('xmin','cmin','cmax','xmax','max_value','min_value','ctid','tableoid') AND attrelid='".$table_datum['oid']."' AND NOT attisdropped";
       $data->execSql($sqlcmd);
       $cols = $data->getArray();
       $key = null;
@@ -330,38 +183,14 @@ if (!empty($action)) {
     }
     break;
   case 'autotables':
-    $alm_table = new alm_tableTable();
-    $alm_column = new alm_columnTable();
-    $table_data = $alm_table->readData();
-
-    foreach ($table_data as $table_datum) {
-      $output .= "class " . $table_datum['idalm_table'] . "Table extends Table {\n";
-      $output .= "  function ".$table_datum['idalm_table']."Table() {\n";
-      $output .= "    \$this->Table('".$table_datum['idalm_table']."');\n";
-      $output .= "    \$this->key = '".$table_datum['key']."';\n";
-      $output .= "    \$this->title ='".$table_datum['alm_table']."';\n";
-      if (!empty($table_datum['orden']))
-        $output .= "    \$this->order ='".$table_datum['orden']."';\n";
-      $data = $alm_column->readDataFilter("alm_column.idalm_table='".$table_datum['idalm_table']."'");
-      if ($data)
-      foreach ($data as $datum) {
-        if ($datum['pk'] == 't') $datum['pk'] = 1;
-        if ($datum['pk'] == 'f') $datum['pk'] = 0;
-        if (empty($datum['fk'])) $datum['fk'] = 0;
-        else $datum['fk'] = "'".$datum['fk']."'";
-        $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . $datum['alm_column'] . "','" . $datum['extra']  . "');\n";
-      }
-      $output .= "  }\n}\n";
-    }
-    if (isset($_REQUEST['save']) && $_REQUEST['save'] == '1') {
-      if (!is_writable(ROOTDIR.'/classes/tables.class.php')) {
-        print "No se puede escribir en classes/tables.class.php. Copiar el siguiente c&oacute;digo manualmente a tables.class.php:<br/><br/>\n";
-      } else {
-        $fp = fopen(ROOTDIR.'/classes/tables.class.php', 'w');
-        fwrite($fp, "<?php\n$output");
-        fclose($fp);
+    $autosave = false;
+    require('setup.autotables.php');
+    if (isset($saved)) {
+      if ($saved) {
         print "Se ha actualizado tables.class.php.<br/>";
         exit;
+      } else {
+        print "No se puede escribir en classes/tables.class.php. Copiar el siguiente c&oacute;digo manualmente a tables.class.php:<br/><br/>\n";
       }
     }
     break;
@@ -393,7 +222,7 @@ if (!empty($action)) {
         $error_msg = '<small>'.preg_replace('/(.*)\n(.*)/','\1',$native_msg).'</small>';
         $tables_output .= "$red <!-- <i>$error_msg</i> --><br/>";
         $tables_failed = true;
-        $sqlcmd = "SELECT * FROM $data->name";
+        $sqlcmd = "SELECT * FROM $data->name LIMIT 1";
         @$data->execSql($sqlcmd);
         if (PEAR::isError($data->data)) {
           $tables_output .= "&nbsp;&nbsp;&nbsp;&nbsp;<small>Error general en la tabla <!--".$data->data->getMessage() . "--></small><br/>";
@@ -407,8 +236,9 @@ if (!empty($action)) {
               $tables_output .= "&nbsp;&nbsp;&nbsp;&nbsp;<small>Error en campo $campo <!--".$data->data->getMessage() . "--></small><br/>";
               $size = ($data->dd[$campo]['size'] > 0) ? '('.$data->dd[$campo]['size'].')': '';
               if (!isset($data->key)) $data->key = false;
-              if (!isset($dd)) $dd = null;
-              $sql_fix .= "ALTER TABLE $data->name ADD COLUMN " . genColumnSQL($data->dd[$campo], $dbtype, $dd[$campo]['name'] === $data->key).";\n";
+              if (!isset($global_dd[$campo])) $global_dd[$campo] = null;
+              if (!isset($global_dd[$campo]['name'])) $global_dd[$campo]['name'] = null;
+              $sql_fix .= "ALTER TABLE $data->name ADD COLUMN " . genColumnSQL($data->dd[$campo], $dbtype, $global_dd[$campo]['name'] === $data->key).";\n";
             }
           }
         }
@@ -417,10 +247,11 @@ if (!empty($action)) {
     }
     break;
   case 'exec':
-    if (isset($_REQUEST['sqlcmd']))
-      $sqlcmd = pg_escape_string($_REQUEST['sqlcmd']);
-    else
+    if (isset($_REQUEST['sqlcmd'])) {
+      $sqlcmd = $this->database->escape($_REQUEST['sqlcmd']);
+    } else {
       $sqlcmd = '';
+    }
     if (!isset($_REQUEST['fix']))
       $output .= '<form><input type="hidden" name="action" value="exec"/><textarea name="sqlcmd" cols="80">'.$sqlcmd.'</textarea><br/><input type="submit" value="Ejecutar SQL"></form>';
     else

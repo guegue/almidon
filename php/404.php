@@ -62,6 +62,16 @@ if(isset($_SESSION['idalm_user'])) {
 	    exit;	  	 
 	  }
 
+          # Actualiza BD SQL con datos de tables.class.php
+          $alm_tables = "/^(alm_table|alm_user|alm_access|alm_role|alm_column)Table/i";
+          foreach($classes as $key) {
+            if (!preg_match($alm_tables, $key) && stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
+              $table_object = new $key;
+              $table_object->syncToDB();
+            }
+          }
+          # -- fin actualiza
+
 	  $ot = $object . 'Table';
 	  $$object = new $ot;
 

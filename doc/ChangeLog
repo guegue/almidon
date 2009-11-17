@@ -1,0 +1,22 @@
+2009-11-17:
+  * Hacer cambios "live" a la estructura de datos e interface, funciona en pgsql y mysql:
+    * Al modificar o agregar un registro en alm_table o alm_column, re-crea tables.class.php: typical.php
+    * Cambios en tables.class.php afecta la BD automaticamente, aplica codigo SQL.: almidon.php
+  * ALM_SYNC permite o evita aplicacion de cambios a tables.class y BD automaticos
+  * Mejoras generales para mejor soportes a mysql: varios, demo.mysql
+  * Cambios en tomando colaboracion de Jose Davila DROP TABLE IF EXISTS: demo.sql, demo.mysql
+  * $emergency_password permite entrar a la BD sin "almidonizarla": config.php
+
+2009-11-16:
+  * Herramientas de admon para jugar almidon<-->tables.class<-->sql: setup.php
+  * Actualizacion de demo-setup.sh y site-setup.sh
+    * demo-setup.sh hace toda la instalacion (excepto pg_hba.conf)
+    * site-setup.sh funciona pero messy en stdout (no log)
+  * Reduccion de sql solo a demo.sql (users.sql era temporal)
+  * Campo FK no mas *tiene* que llamarse 'id' + <tablename>
+  * Mejora de seguridad al separar /cms de /almidon (publico y admin).
+  * Creacion de /docs para animarnos a iniciar la documentacion.
+  * No mas soporte para campos extra "raros", para ir migrando a DB3
+
+2009-11-15:
+   * ChangeLog creado

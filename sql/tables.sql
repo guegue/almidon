@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS alm_table CASCADE;
-CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100), key varchar(32), orden varchar (100), rank int);
+CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100), pkey varchar(32), orden varchar (100), rank int);
 ALTER TABLE alm_table OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_column CASCADE;
