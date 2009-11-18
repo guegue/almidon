@@ -36,22 +36,28 @@ if ($action == 'fixdb') {
 }
 $options = array(
   'test'=>'Probar configuraci&oacute;n',
-  'tables'=>'Aplicar cambios a BD desde tables.class.php',
   'alm_tables'=>'Almidonizar BD (crea alm_tables, etc)',
-  'autotables'=>'Generar tables.class.php desde alm_tables',
-  'sql2almidon'=>'Generar tables.class.php desde BD (PostgreSQL)',
-  'exec'=>'Ejecutar c&oacute;digo SQL',
+  'sql2almidon'=>'Generar tables.class.php desde BD',
+  'exec'=>'Ejecutar c&oacute;digo SQL');
+$optionsdd = array(
   'sql'=>'Ver SQL basado en tables.class',
   'dd'=>'Ver diccionario de datos',
   'erd'=>'Ver diagrama entidad relacion',
   'erdcol'=>'Ver diagrama entidad relacion detallado');
+$advanced = array(
+  'tables'=>'Aplicar cambios a BD desde tables.class.php',
+  'autotables'=>'Generar tables.class.php desde alm_tables',
+);
 if ($action != 'erd' && $action != 'erdcol' && !$failed) {
   print "<html>\n<head>\n<title>Almidon - Setup</title>\n</head>\n<body>\n";
-  print "<small>Herramientas:<br/>";
-  foreach($options as $k=>$option) {
+  print '<small>';
+  print '<a href="./">Regresar a administraci&oacute;n</a><br/><br/>';
+  print 'Herramientas:<br/>';
+  foreach($options as $k=>$option)
     print "<li><a href=\"?action=$k\">$option</a><br/></li>";
-  }
-  print '<li><a href="./">Regresar a administraci&oacute;n</a><br/></li>';
+  print "<br/>Diccionario de datos:<br/>";
+  foreach($optionsdd as $k=>$option)
+    print "<li><a href=\"?action=$k\">$option</a><br/></li>";
   print "</small>";
 }
 if (!empty($action)) {
@@ -68,7 +74,6 @@ if (!empty($action)) {
   switch ($action) {
   case 'alm_tables':
     $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/almidon.sql');
-    $alm_tables_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/tables.sql');
     $data = new Data();
     list($type,$tmp) = split('://',$admin_dsn);
     if ($type == 'pgsql') {
@@ -77,11 +82,13 @@ if (!empty($action)) {
       $sqlcmd = "SHOW TABLES LIKE 'alm_%'";
     }
     $data = new Data();
-    $data->execSql($sqlcmd);
+    $data->getList($sqlcmd);
     $var = $data->getList($sqlcmd);
     if (count($var) >= 5) {
-      $output .= 'Tablas de almidon ya existen. Re-generando solo meta-datos.<br/>';
-      $data->execSql($alm_tables_sqlcmd);
+      $output .= '<br/>Tablas de almidon ya existen. Re-generando solo meta-datos.<br/>';
+      $data->execSql("DELETE FROM alm_access");
+      $data->execSql("DELETE FROM alm_column");
+      $data->execSql("DELETE FROM alm_table");
     } else {
       $data->execSql($alm_sqlcmd);
       $output = "BD Almidonizada!<br/>Codigo SQL aplicado:<br/><pre>$alm_sqlcmd</pre><br/>";
@@ -124,11 +131,28 @@ if (!empty($action)) {
     break;
   case 'sql2almidon':
     $output = '';
-    #usa mismo colnames que alm_table para facilitar luego usar el mismo codigo como parser
-    $sqlcmd = "SELECT c.oid, c.relname AS idalm_table FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE  c.relkind = 'r' AND n.nspname='public' AND c.relname NOT LIKE 'alm_%';";
     $data = new Data();
+    $dbtype = $data->database->dsn['phptype'];
+    #usa mismo colnames que alm_table para facilitar luego usar el mismo codigo como parser
+    if ($dbtype == 'pgsql')
+      $sqlcmd = "SELECT c.oid, c.relname AS idalm_table FROM pg_class c LEFT JOIN pg_namespace n ON n.oid = c.relnamespace WHERE  c.relkind = 'r' AND n.nspname='public' AND c.relname NOT LIKE 'alm_%';";
+    elseif ($dbtype == 'mysql')
+      $sqlcmd = "SHOW tables";
+    else
+      die ("dbtype not supported!");
     $data->execSql($sqlcmd);
     $sqldata = $data->getArray();
+    if ($dbtype == 'mysql') {
+      foreach($sqldata as $key => $atable) {
+        if (!preg_match('/^alm_/', $atable['tables_in_almidondemo'])) {
+          list($akey, $aval) = each($atable);
+          $new_table_datum = array('idalm_table'=>$aval);
+          $new_sqldata[] = $new_table_datum;
+        }
+      }
+      $sqldata = $new_sqldata;
+    }
+    if ($sqldata)
     foreach ($sqldata as $table_datum) {
       $table_output = '';
       $table_output .= "class " . $table_datum['idalm_table'] . "Table extends Table {\n";
@@ -137,15 +161,40 @@ if (!empty($action)) {
       $table_output .= "    \$this->key = '".$table_datum['idalm_table']."';\n";
       $table_output .= "    \$this->title ='".$table_datum['idalm_table']."';\n";
       #$output .= "    \$this->order ='".$table_datum['orden']."';\n";
-      $sqlcmd = "SELECT attname AS idalm_column,pg_type.typname AS type, atttypmod-4 AS size, contype AS key, (SELECT relname FROM pg_class WHERE pg_class.oid=confrelid) AS fk FROM pg_attribute JOIN pg_type ON atttypid=pg_type.oid LEFT OUTER JOIN pg_constraint ON attrelid=conrelid AND attnum = ANY (conkey) WHERE attname NOT IN ('xmin','cmin','cmax','xmax','max_value','min_value','ctid','tableoid') AND attrelid='".$table_datum['oid']."' AND NOT attisdropped";
+      if ($dbtype == 'pgsql') {
+        $sqlcmd = "SELECT attname AS idalm_column,pg_type.typname AS type, atttypmod-4 AS size, contype AS key, (SELECT relname FROM pg_class WHERE pg_class.oid=confrelid) AS fk FROM pg_attribute JOIN pg_type ON atttypid=pg_type.oid LEFT OUTER JOIN pg_constraint ON attrelid=conrelid AND attnum = ANY (conkey) WHERE attname NOT IN ('xmin','cmin','cmax','xmax','max_value','min_value','ctid','tableoid') AND attrelid='".$table_datum['oid']."' AND NOT attisdropped";
+      } elseif ($dbtype == 'mysql') {
+        $sqlcmd = "SHOW COLUMNS FROM " . $table_datum['idalm_table'];
+      } else {
+        die ("dbtype not supported!");
+      }
       $data->execSql($sqlcmd);
       $cols = $data->getArray();
+      if ($dbtype == 'mysql') {
+        $new_cols = array();
+        foreach($cols as $key => $acol) {
+           preg_match('/(.*)\((.*)\)/',$acol['type'],$type_size);
+           if (count($type_size)==3) {
+             $type = $type_size[1];
+             $size = $type_size[2];
+           } else {
+             $type = $acol['type'];
+             $size = 0;
+           }
+           if ($acol['extra'] == 'auto_increment')
+             $type = 'serial';
+           $pkey = ($acol['key'] == 'PRI') ? 'p' : '';
+           $new_cols[] = array('idalm_column'=>$acol['field'],'size'=>$size,'type'=>$type,'key'=>$pkey);
+        }
+        $cols = $new_cols;
+      }
       $key = null;
       $key1 = null;
       $key2 = null;
       foreach ($cols as $datum) {
         if ($datum['size'] <= 0) $datum['size'] = 0;
         if ($datum['type'] == 'int4') $datum['type'] = 'int';
+        if ($datum['type'] == 'int') $datum['size'] = 0;
         $datum['pk'] = 0;
         if ($datum['key'] == 'p') {
           $datum['pk'] = 1;
@@ -248,7 +297,8 @@ if (!empty($action)) {
     break;
   case 'exec':
     if (isset($_REQUEST['sqlcmd'])) {
-      $sqlcmd = $this->database->escape($_REQUEST['sqlcmd']);
+      $data = new Data;
+      $sqlcmd = $data->database->escape($_REQUEST['sqlcmd']);
     } else {
       $sqlcmd = '';
     }

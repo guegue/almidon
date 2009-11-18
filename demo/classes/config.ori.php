@@ -13,7 +13,7 @@ $admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';
 $public_dsn = 'pgsql://almidondemowww:secreto2@/almidondemo';
 
 # Permite conectarse a la BD sin "almidonizarla"
-$emergency_password = 'admin';
+$emergency_password = '21232f297a57a5a743894a0e4a801fc3';
 
 # Aplicar cambios automaticos a BD
 define('ALM_SYNC', true);

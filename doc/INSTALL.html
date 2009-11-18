@@ -23,6 +23,7 @@ ver <a href="README.html">README</a>
 <h2>CONFIGURANDO APACHE</h2>
 
 <p>Dentro del directorio "almidon" está el directorio pub que debe mapearse como /cms
+php como /almidon, files como /files, y secure como se guste.
 en Apache, y el directorio demo/public_html que debe ser el DocumentRoot.
 Un ejemplo de configuracion de Apache se encuentra en <a href="../demo/almidon.conf">demo/almidon.conf</a>:</p>
 
@@ -33,6 +34,8 @@ Un ejemplo de configuracion de Apache se encuentra en <a href="../demo/almidon.c
         DocumentRoot /var/www/almidon/demo/public_html
         Alias /cms /var/www/almidon/pub
         Alias /almidon /var/www/almidon/php
+        Alias /files /var/www/almidon/demo/files
+        Alias /admin /var/www/almidon/demo/secure
         &lt;Directory /var/www/almidon&gt;
                 Options +FollowSymLinks +MultiViews
 		AllowOverride FileInfo AuthConfig Limit Options

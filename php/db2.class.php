@@ -1,5 +1,5 @@
 <?php
-// vim: set expandtab tabstop=2 shiftwidth=2 fdm=marker:
+// vim:set expandtab tabstop=2 shiftwidth=2 fdm=marker:
 
 /**
  * db2.class.php
@@ -61,7 +61,7 @@ class Data {
 
   function execSql($sqlcmd) {
     $this->data = $this->query($sqlcmd);
-    if (!PEAR::isError($this->data) && $this->data && (strpos($sqlcmd,'SELECT') !== false))
+    if (!PEAR::isError($this->data) && $this->data && (preg_match('/^SELECT/',$sqlcmd) || preg_match('/^SHOW/',$sqlcmd)))
       $this->num = $this->data->numRows();
   }
 
@@ -537,3 +537,4 @@ class TableDoubleKey extends Table {
     require('db.readenv2.php');
   }
 }
+
