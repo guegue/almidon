@@ -1,0 +1,39 @@
+body		{ font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; font-size: 10px; color: #000000}
+input, select, textarea, td { font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; font-size: 10px; color: #000000;}
+p		{ font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; font-size: 11px; text-align : justify;}
+p.navigator	{ text-align : left; font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; font-size: 11px;}
+h1		{ font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; font-size: 11pt; text-align: Left;}
+h2		{ font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; color: #988774; font-size: 10pt; text-align: Left; font-weight: bold; margin-top: 0; margin-bottom: 0 }
+h3		{ font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; font-size: 12pt; text-align: Left; color:#988774; font-weight: bold }
+a		{ font-size: 11px; text-decoration: none; color: #7E817C; font-weight : normal;}
+a.hover		{ text-decoration: underline;}
+/*      Agregue video_empty     */
+td.cmd, .video_empty		{ border: 1px solid #000000; font-size: 8pt; background: #818778; color: #FFFFFF text-decoration: none;}
+.video_empty	{display:none;}
+td		{ font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; font-size: 11px;}
+td.dark		{ background-color: #ccc;}
+.light		{ background:#EEEEEE;}
+.light_b	{ background:#DDDDDD;}
+.cmd		{ font-family: "Trebuchet MS", helvetica, verdana, sans-serif, arial; font-size: 8pt; color: #FFFFFF; text-decoration: none; font-weight: bold;}
+.odd		{ background-color: #ddd; border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; white-space: nowrap;}
+.even		{ background-color: #eee; border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; white-space: nowrap;}
+.evenn		{ background-color: #eee; border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; white-space: wrap; }
+.od		{ font-size: 10pt; font-weight: normal; text-align: left; color: #000; background-color: #ccc; border-right: none; border-bottom: solid #888 1px; white-space: nowrap; }
+td.paginate	{ font-size: 8pt; font-weight: normal; }
+td.last		{ border-bottom: none; white-space: nowrap;}
+td.number	{ text-align: right; white-space: nowrap;}
+td.section	{ font-size: 10pt; color: #fff; background-color: #818778; letter-spacing: 2px; border-top: solid #888 1px; border-bottom: solid #888 1px; white-space: nowrap;}
+table.stdtable	{ border: solid #000 1px; margin-top: 10px; margin-bottom: 10px; cellpadding="10" cellspacing="10"}
+table.stdtable th	{ font-size: 10pt; font-weight: normal; text-align: left; color: #000; background-color: #ccc; border-right: none; border-bottom: solid #888 1px; white-space: nowrap; }
+table.substdtable	{ border: none; margin: 0; }
+table.substdtable tr th	{ border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; }
+table.substdtable tr td	{ padding-left: 5px; padding-right: 5px; border-right: solid #888 1px; }
+table.dgtable		{ border: solid #000 1px; margin-top: 10px; margin-bottom: 10px; cellpadding="10" cellspacing="10"}
+table.dgtable th	{ font-size: 10pt; font-weight: normal; text-align: left; color: #000; background-color: #ccc; border-right: none; border-bottom: solid #888 1px; white-space: nowrap; }
+table.dgsubtable	{ border: none; margin: 0; }
+table.dgsubtable tr th	{ border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; }
+table.dgsubtable tr td	{ padding-left: 5px; padding-right: 5px; border-right: solid #888 1px; }
+.dgrow			{ background-color: #ddd; border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; white-space: nowrap;}
+.dgrow2			{ background-color: #eee; border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; white-space: nowrap;}
+a.stay 			{color:#0a57a0; font-weight:bold;}
+a.stay:hover 		{color:#52545b; text-decoration:underline;}

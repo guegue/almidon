@@ -1,0 +1,46 @@
+body, td, pre {color:#000; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px; margin:8px;}
+body {background:#FFF;}
+body.mceForceColors {background:#FFF; color:#000;}
+h1 {font-size: 2em}
+h2 {font-size: 1.5em}
+h3 {font-size: 1.17em}
+h4 {font-size: 1em}
+h5 {font-size: .83em}
+h6 {font-size: .75em}
+.mceItemTable, .mceItemTable td, .mceItemTable th, .mceItemTable caption, .mceItemVisualAid {border: 1px dashed #BBB;}
+a.mceItemAnchor {width:12px; line-height:6px; overflow:hidden; padding-left:12px; background:url(img/items.gif) no-repeat bottom left;}
+img.mceItemAnchor {width:12px; height:12px; background:url(img/items.gif) no-repeat;}
+img {border:0;}
+table {cursor:default}
+table td, table th {cursor:text}
+ins {border-bottom:1px solid green; text-decoration: none; color:green}
+del {color:red; text-decoration:line-through}
+cite {border-bottom:1px dashed blue}
+acronym {border-bottom:1px dotted #CCC; cursor:help}
+abbr, html\:abbr {border-bottom:1px dashed #CCC; cursor:help}
+p { margin:0;padding:0; }
+/* Etiquetas propias del sitio web */
+div.picture600x400 { float:none; background-color:#efefef; display:block; width:600px; padding:6px; }
+div.picture288x318, div.picture232x155, div.picture138x90 { margin-right: 10px; margin-bottom:10px; }
+div.picture288x318 { float:left; background-color:#efefef; display:block; width:288px; padding:6px; }
+div.picture232x155 { float:left; background-color:#efefef; display:block; width:232px; padding:6px; }
+div.picture138x90 { float:left; background-color:#efefef; display:block; width:138px; padding:6px; }
+div.note { margin-top:8px; color:#636363;font-size:font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; }
+blockquote { border:none; border-top:1px solid #8588a8; border-bottom:2px solid #8588a8; margin:0; padding:6; width:232px; margin-bottom:10px; }
+blockquote h2 { margin:0;padding:0;margin-bottom:3px;font-size:13px; }
+blockquote.left { float:left; margin-right:10px; }
+blockquote.right { float:right; margin-left:10px; }
+blockquote a { color: #afafaf; }
+blockquote a:hover { text-decoration:underline; }
+
+/* IE */
+* html body {
+scrollbar-3dlight-color:#F0F0EE;
+scrollbar-arrow-color:#676662;
+scrollbar-base-color:#F0F0EE;
+scrollbar-darkshadow-color:#DDD;
+scrollbar-face-color:#E0E0DD;
+scrollbar-highlight-color:#F0F0EE;
+scrollbar-shadow-color:#F0F0EE;
+scrollbar-track-color:#F5F5F5;
+}
