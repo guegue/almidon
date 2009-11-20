@@ -1,3 +1,13 @@
+
+
+2009-11-19:
+  * No mas phpthumb, el nuevo pic.php, mejor performance y soporte para cache
+    No hay soporte para crop, quiero estudiar esto con Christian. 
+    No hay soporte para "allowed sizes", verlo con Christian.
+  * No mas MultiViews, realmente solo lo usabamos por pic.php, ahora usamos rewrite
+  * Mejora un poquito errores de default.php
+  * Se comenzo soporte para sqlite3: demo.sqlite
+
 2009-11-18:
   * Soporte para mysql en instalacion de demo: ./demo-setup.sh mysql
   * Soporte para mysql en setup tools: Almidonizar, sql2almidon: setup.php
