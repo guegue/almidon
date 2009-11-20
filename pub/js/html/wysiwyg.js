@@ -26,13 +26,13 @@
 \* ---------------------------------------------------------------------- */
 
 // Images Directory
-imagesDir = "/cms/html/icons/";
+imagesDir = "/cms/js/html/icons/";
 
 // CSS Directory
-cssDir = "/cms/html/styles/";
+cssDir = "/cms/js/html/styles/";
 
 // Popups Directory
-popupsDir = "/cms/html/popups/";
+popupsDir = "/cms/js/html/popups/";
 
 // WYSIWYG Width and Height
 wysiwygWidth = 420;
