@@ -40,10 +40,10 @@ $options = array(
   'sql2almidon'=>'Generar tables.class.php desde BD',
   'exec'=>'Ejecutar c&oacute;digo SQL');
 $optionsdd = array(
-  'sql'=>'Ver SQL basado en tables.class',
-  'dd'=>'Ver diccionario de datos',
-  'erd'=>'Ver diagrama entidad relacion',
-  'erdcol'=>'Ver diagrama entidad relacion detallado');
+  'sql'=>'SQL basado en tables.class',
+  'dd'=>'Diccionario de datos (DD)',
+  'erd'=>'Diagrama entidad relacion (DER)',
+  'erdcol'=>'Diagrama entidad relacion detallado (DER)');
 $advanced = array(
   'tables'=>'Aplicar cambios a BD desde tables.class.php',
   'autotables'=>'Generar tables.class.php desde alm_tables',
@@ -58,6 +58,12 @@ if ($action != 'erd' && $action != 'erdcol' && !$failed) {
   print "<br/>Diccionario de datos:<br/>";
   foreach($optionsdd as $k=>$option)
     print "<li><a href=\"?action=$k\">$option</a><br/></li>";
+  print "<br/>Enlaces:<br/>";
+  print '<li><a href="'.URL.'">'.URL.'</a></li>';
+  print '<li><a href="/doc/">Documentaci&oacute;n</a></li>';
+  print '<li><a href="http://almidon.org/">Wiki</a></li>';
+  print '<li><a href="http://trac.almidon.org/">Trac</a></li>';
+  print '<br/>Almidon. Version: ' . file_get_contents('../doc/VERSION') . '<br/>';
   print "</small>";
 }
 if (!empty($action)) {

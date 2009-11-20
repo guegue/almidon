@@ -474,7 +474,8 @@ class Table extends Data {
 
   function readRecord($id = 0) {
     require('db.readrecord.php');
-    return $row;
+    if (isset($row))
+      return $row;
   }
 
   function readRecordSQL($sqlcmd) {

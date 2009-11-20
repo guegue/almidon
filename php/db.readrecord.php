@@ -7,8 +7,11 @@
     } else
       $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key = '$id'";
     $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
-    if ($this->html)
-      foreach($row as $key=>$val)
-        $row[$key] = htmlentities($val);
-    $this->current_record = $row;
+    if (!PEAR::isError($this->data)) {
+      $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
+      if ($this->html) {
+        foreach($row as $key=>$val)
+          $row[$key] = htmlentities($val);
+      }
+      $this->current_record = $row;
+    }

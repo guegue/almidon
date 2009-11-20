@@ -46,7 +46,7 @@ if(isset($_SESSION['idalm_user'])) {
 	# If I am... Go ahead try to create object (or setup)
 	if ($object) {
 
-          # Wanna go away? Go away...
+    # Wanna go away? Go away...
 	  if ($object == 'logout') {
 	    session_destroy();
             session_start();
@@ -54,7 +54,7 @@ if(isset($_SESSION['idalm_user'])) {
 	    exit;
 	  }
 
-          # No credentials? Go away...
+    # No credentials? Go away...
 	  if(!isset($_SESSION['credentials'][$object]) && $_SESSION['idalm_user'] !== 'admin') {
 	    session_destroy(); 
             session_start();
@@ -62,15 +62,15 @@ if(isset($_SESSION['idalm_user'])) {
 	    exit;	  	 
 	  }
 
-          # Actualiza BD SQL con datos de tables.class.php
-          $alm_tables = "/^(alm_table|alm_user|alm_access|alm_role|alm_column)Table/i";
-          foreach($classes as $key) {
-            if (!preg_match($alm_tables, $key) && stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
-              $table_object = new $key;
-              $table_object->syncToDB();
-            }
-          }
-          # -- fin actualiza
+    # Actualiza BD SQL con datos de tables.class.php
+    $alm_tables = "/^(alm_table|alm_user|alm_access|alm_role|alm_column)Table/i";
+    foreach($classes as $key) {
+      if (!preg_match($alm_tables, $key) && stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
+        $table_object = new $key;
+        $table_object->syncToDB();
+      }
+    }
+    # -- fin actualiza
 
 	  $ot = $object . 'Table';
 	  $$object = new $ot;

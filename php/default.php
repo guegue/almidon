@@ -3,6 +3,7 @@
  * default.php
  *
  * rewrite magic: para generar pagina publica automaticamente (via mod_rewrite)
+ * FIXME: magic is messy and not so useful. use objects! gallery.picasa.php...
  *
  * @copyright &copy; 2005-2008 Guegue Comunicaciones - guegue.com
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
@@ -39,10 +40,14 @@ if (!class_exists($object)) {
   if (class_exists($pagina_object)) {
     $pagina_data = new $pagina_object;
     if (!isset($idpagina)) $idpagina = $obj;
-    $smarty->assign('row', $pagina_data->readRecord($idpagina));
-    #$obj = $pagina;
-    if (file_exists($smarty->template_dir . $idpagina . '.tpl'))
+    $row = $pagina_data->readRecord($idpagina);
+    if ($row) {
+      $smarty->assign('row', $row);
+      if (file_exists($smarty->template_dir . $idpagina . '.tpl'))
       $tpl = $idpagina . '.tpl';
+    } else {
+      error_log("FIXME: que hacer?");
+    }
   }
 }
 
@@ -114,4 +119,3 @@ if (isset($rows)) $smarty->assign('rows', $rows);
 
 # especifica display
 $smarty->display($tpl);
-?>
