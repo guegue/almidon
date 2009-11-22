@@ -1,6 +1,6 @@
 <?php
     for ($i = 0; $i < $this->num; $i++) {
-      $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
+      $row = almdata::fetchRow($this->data);
       if (isset($row[$this->key]))
       if ($row[$this->key] == $this->current_id)
         $this->current_record = $row;

@@ -1,4 +1,11 @@
+2009-11-22:
+  * Comenzando a quitar MDB2. AlmData como mini-wrapper: db.dal.php
+  * Mejorando un poco el performance, no repetir connect a DB por DSN: db.dal.php
+  * Comenzando a mejorar el "relajo" de manejo de errores: db2, dal y error
 
+2009-11-20:
+  * Continuando con la limpieza de symlinks, rev 256 quedo sin symlinks
+  completamente.
 
 2009-11-19:
   * No mas phpthumb, el nuevo pic.php, mejor performance y soporte para cache

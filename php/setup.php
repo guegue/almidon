@@ -409,7 +409,6 @@ if (!empty($action)) {
       print "</table>";
       print "<input type=\"submit\" value=\"Guardar\"/>";
       print "</form>";
-      // connect to a database named "mary" on "localhost" at port "5432"
       $myhost = empty($host) ? '' : $host;
     }
     break;

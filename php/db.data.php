@@ -1,10 +1,9 @@
 <?php
     global $DSN;
     if ($DSN)
-      $this->database =& MDB2::connect ($DSN);
+      $this->database = almdata::connect ($DSN);
     else
-      $this->database =& MDB2::connect (DSN);
-    $this->check_error($this->database,'',true);
+      $this->database = almdata::connect (DSN);
     $this->num = 0;
     $this->cols = 0;
     $this->max = MAXROWS;

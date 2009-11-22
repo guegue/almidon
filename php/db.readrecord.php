@@ -7,8 +7,8 @@
     } else
       $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key = '$id'";
     $this->execSql($sqlcmd);
-    if (!PEAR::isError($this->data)) {
-      $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
+    if (!almdata::isError($sqlcmd)) {
+      $row = almdata::fetchRow($this->data);
       if ($this->html) {
         foreach($row as $key=>$val)
           $row[$key] = htmlentities($val);

@@ -1,13 +1,13 @@
 <?php
 function performTests() {
-    global $failed, $test_output, $action, $admin_db_failed, $public_db_failed, $admin_dsn, $public_dsn, $smarty, $global_dd;
+    global $failed, $test_output, $action, $admin_db_failed, $public_db_failed, $admin_dsn, $public_dsn, $smarty, $global_dd, $alm_connect;
     $failed = false;
     $red = '<font color="red">FALL&Oacute;</font>';
     $green = '<font color="green">PAS&Oacute;</font>';
     $test_output = "Probando conexion a base de datos (admin)... ";
-    $db =& MDB2::connect ($admin_dsn);
-    if (PEAR::isError($db)) {
-      $error_msg = $db->getMessage();
+    $db = almdata::connect ($admin_dsn);
+    if (almdata::basicError($db, $admin_dsn) || !$alm_connect[$admin_dsn]) {
+      $error_msg = almdata::basicError($db, $admin_dsn);
       $test_output .= "$red <i>$error_msg</i><br/>";
       $failed = true;
       $admin_db_failed = true;
@@ -15,9 +15,9 @@ function performTests() {
       $test_output .= "$green<br/>";
     }
     $test_output .= "Probando conexion a base de datos (public)... ";
-    $db =& MDB2::connect ($public_dsn);
-    if (PEAR::isError($db)) {
-      $error_msg = $db->getMessage();
+    $db = almdata::connect ($public_dsn);
+    if (almdata::basicError($db, $public_dsn) || !$alm_connect[$public_dsn]) {
+      $error_msg = almdata::basicError($db, $public_dsn);
       $test_output .= "$red <i>$error_msg</i><br/>";
       $failed = true;
       $public_db_failed = true;
@@ -62,7 +62,7 @@ function performTests() {
       $sqlcmd = "SHOW TABLES LIKE 'alm_%';";
     }
     $data = new Data();
-    $var = $data->getList($sqlcmd);
+    $var = @$data->getList($sqlcmd);
     if (count($var) >= 5) {
        $test_output .= '<font color="green">'.print_r($var,1).'</font>';
     } else {

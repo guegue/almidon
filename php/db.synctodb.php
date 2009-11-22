@@ -2,11 +2,11 @@
   global $global_dd;
   # Aplica a BD SQL los cambios necesarios
   require_once('setup.gensql.php');
-  $dbtype = $this->database->dsn['phptype'];
+  $dbtype = $this->dbtype;
   $sqlcmd = "SELECT $this->fields FROM $this->name LIMIT 1";
   @$this->execSql($sqlcmd);
   $sql_fix = '';
-  if (PEAR::isError($this->data)) {
+  if (almdata::isError($this->data)) {
     #$existe = $this->catalogTableExists($this->name);
     $sqlcmd = "SELECT * FROM $this->name LIMIT 1";
     @$this->execSql($sqlcmd);

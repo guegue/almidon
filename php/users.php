@@ -20,7 +20,7 @@ function check_user($user, $pass) {
   $alm_user = new alm_userTable();
   $alm_user->readEnv();
   $alm_user_data = @$alm_user->readDataFilter("idalm_user='".$user."' AND password='".$pass."'");
-  if (PEAR::isError($alm_user->data) && $pass === $emergency_password) {
+  if (almdata::basicError($alm_user->data, $admin_dsn) && $pass === $emergency_password) {
     $_SESSION['idalm_user'] = 'admin';
     $_SESSION['alm_user'] = 'Emergency';
     return true;

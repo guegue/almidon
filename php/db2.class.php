@@ -4,7 +4,7 @@
 /**
  * db2.class.php
  *
- * DAL entre almidon y PEAR::MDB2
+ * DAL para almidon
  *
  * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
@@ -16,7 +16,7 @@ require('db.const.php');
 
 # Finally... the DAL...
 
-require_once('MDB2.php');
+require_once('db.dal.php');
 
 class Data {
   var $data;
@@ -36,7 +36,7 @@ class Data {
     require('db.data.php');
   }
 
-  function check_error($obj, $extra = '', $die = false) {
+  function check_error($sqlcmd, $extra = '', $die = false) {
     require('db.error.php');
   }
  
@@ -61,8 +61,9 @@ class Data {
 
   function execSql($sqlcmd) {
     $this->data = $this->query($sqlcmd);
-    if (!PEAR::isError($this->data) && $this->data && (preg_match('/^SELECT/',$sqlcmd) || preg_match('/^SHOW/',$sqlcmd)))
-      $this->num = $this->data->numRows();
+    if (!almdata::isError($sqlcmd) && $this->data && (preg_match('/^SELECT/',$sqlcmd) || preg_match('/^SHOW/',$sqlcmd))) {
+      $this->num = almdata::rows($this->data);
+    }
   }
 
   //Mejor usar readDataSQL, funcion repetida
@@ -75,8 +76,9 @@ class Data {
     $this->execSql($sqlcmd);
     #if (!PEAR::isError($this->data))
     if ($this->data)
-      $row = $this->data->fetchRow(MDB2_FETCHMODE_ORDERED);
-    return $row[0];
+      $row = almdata::fetchRow($this->data, false);
+    if (isset($row[0]))
+      return $row[0];
   }
 
   //Lee un statement sql y devuelve una lista de una sola columna (la primera)
@@ -111,7 +113,7 @@ class Data {
   }
 
   function destroy() {
-    $this->database->disconnect();
+    almdata::disconnect();
   }
 }
 
@@ -254,7 +256,7 @@ class Table extends Data {
                 imagejpeg($new_image,PIXDIR.'/'.$size.'_'.$filename,72);
               }
             }
-            $value = $this->database->escape($this->request[$column['name']]);
+            $value = almdata::escape($this->request[$column['name']]);
           }
           $values .= "'" . $value . "'";
           break;
@@ -270,7 +272,7 @@ class Table extends Data {
             $this->request[$column['name']] = 'NULL';
             $values .= $this->request[$column['name']];
           } else {
-            $value = $this->database->escape($this->request[$column['name']]);
+            $value = almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           }
           break;
@@ -279,13 +281,13 @@ class Table extends Data {
             $this->request[$column['name']] = 'NULL';
             $values .= $this->request[$column['name']];
           } else {
-            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           }
           break;
         case 'text':
           if (isset($this->request[$column['name']])) {
-            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {
             $values .= "NULL";
@@ -302,7 +304,7 @@ class Table extends Data {
         case 'datenull':
           $value = $this->request[$column['name']];
           if (isset($value) && $value != '0-00-0' && !empty($value)) {
-            $value = $this->database->escape($this->request[$column['name']]);
+            $value = almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {
             $values .= 'NULL';
@@ -310,7 +312,7 @@ class Table extends Data {
           break;
         default:
           if (isset($this->request[$column['name']])) {
-            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {
             $values .= "NULL";
@@ -356,7 +358,7 @@ class Table extends Data {
             $filename =  mktime() . "_" . $this->request[$column['name']];
             if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
-            $value = $this->database->escape($filename);
+            $value = almdata::escape($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
             if ($column['extra'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']);
             if(isset($sizes)) {
@@ -384,7 +386,7 @@ class Table extends Data {
             $filename =  mktime() . "_" . $this->request[$column['name']];
             if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
-            $value = $this->database->escape($filename);
+            $value = almdata::escape($filename);
             $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;
@@ -393,7 +395,7 @@ class Table extends Data {
             $this->request[$column['name']] = 'NULL';
             $values .= $column['name'] . "=" . $this->request[$column['name']];
           } else {
-            $value = $this->database->escape($this->request[$column['name']]);
+            $value = almdata::escape($this->request[$column['name']]);
             $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;
@@ -402,13 +404,13 @@ class Table extends Data {
             $this->request[$column['name']] = 'NULL';
             $values .= $column['name'] . "=" . $this->request[$column['name']];
           } else {
-            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;
         case 'text':
           if (isset($this->request[$column['name']])) {
-            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= $column['name'] . "=" ."'" . $value . "'";
           } else {
             $values .= $column['name'] . "=NULL";
@@ -424,7 +426,7 @@ class Table extends Data {
         case 'datenull':
           $value = $this->request[$column['name']];
           if (isset($value) && $value != '0-00-0') {
-            $value = $this->database->escape($this->request[$column['name']]);
+            $value = almdata::escape($this->request[$column['name']]);
             $values .= $column['name'] . "= '" . $value . "'";
           } else {
             $values .= $column['name'] . "=NULL";
@@ -432,7 +434,7 @@ class Table extends Data {
           break;
         default:
           if (isset($this->request[$column['name']])) {
-            $value = ($this->escaped) ? $this->request[$column['name']] : $this->database->escape($this->request[$column['name']]);
+            $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= $column['name'] . "=" ."'" . $value . "'";
           } else {
             $values .= $column['name'] . "=NULL";
@@ -480,7 +482,7 @@ class Table extends Data {
 
   function readRecordSQL($sqlcmd) {
     $this->execSql($sqlcmd);
-    $row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
+    $row = almdata::fetchRow($this->data);
     $this->current_record = $row;
     return $row;
   }

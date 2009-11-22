@@ -21,10 +21,10 @@
       $sqlcmd = preg_replace('/_WHERE_/ ','',$sqlcmd);
 
     $result = $this->query($sqlcmd);
-    $num = $result->numRows();
+    $num = almdata::rows($result);
     $menu = array();
     for ($i=0; $i < $num; $i++) {
-      $r = $result->fetchRow(MDB2_FETCHMODE_ORDERED);
+      $r = almdata::fetchRow($result, false);
       $new = array($r[0] => $r[1]);
       $menu = $menu + $new;
     }

@@ -1,6 +1,6 @@
 <?php
-    if ($this->database) 
-      $tmpvar = $this->database->escape($tmpvar);
+    if ($this->database)
+      $tmpvar = almdata::escape($tmpvar);
     switch ($type) {
       case 'varchar':
         $type = 'string';
