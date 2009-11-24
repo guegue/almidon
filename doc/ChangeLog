@@ -1,3 +1,9 @@
+2009-11-24:
+  * Continuando con limpieza /new, no es necesario, copiar del demo
+    /backup porque es mas hosting que desarrollo. /php/pear/HTML ya no se usa,
+    se usa jquery. /php/typical.cp.php copia inutil.
+  * Quitando +x de archivos php que no lo necesitan.
+
 2009-11-22:
   * Comenzando a quitar MDB2. AlmData como mini-wrapper: db.dal.php
   * Mejorando un poco el performance, no repetir connect a DB por DSN: db.dal.php

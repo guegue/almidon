@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# setup.sh debe ayudar a configurar un sitio web para trabajar con almidon
+# site-setup.sh debe ayudar a configurar un sitio web para trabajar con almidon
 # copia una serie de archivos que son indispensables y establece permisos.
 #
 if [ -z $3 ]; then
@@ -21,7 +21,7 @@ chown -R $2:$APACHEUSER $ROOTDIR
 chmod -R g+w $ROOTDIR/cache $ROOTDIR/logs $ROOTDIR/files $ROOTDIR/cache $ROOTDIR/templates_c $ROOTDIR/classes/config.php $ROOTDIR/classes/tables.class.php
 ln -s $ROOTDIR/files $ROOTDIR/public_html/
 echo "Configurando '$ROOTDIR/classes/config.php'"
-cp $ALMIDONDIR/new/classes/* $ROOTDIR/classes/
+cp $ALMIDONDIR/demo/classes/* $ROOTDIR/classes/
 perl -pi -e "s/local.almidon.org/$1/g" $ROOTDIR/classes/config.php
 perl -pi -e "s/almideondemo/$2/g" $ROOTDIR/classes/config.php
 echo "Creando base de datos '$2'"
