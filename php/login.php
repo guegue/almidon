@@ -24,7 +24,7 @@ if(!empty($_POST)) {
   //Cargo credenciales y voy a 404 
   $txtcaptcha = preg_replace('/[^A-Za-z0-9]/', '', $_POST['txtcaptcha']);
   if ((md5($txtcaptcha) === $_SESSION['key']) && check_user($_POST['alm_user'],$_POST['password'])) {
-    error_log("ALM CAPTCHA: Good $txtcaptcha " . md5($txtcaptcha) . "!== " . $_SESSION['key']);
+    #error_log("ALM CAPTCHA: Good $txtcaptcha " . md5($txtcaptcha) . "!== " . $_SESSION['key']);
     header('location: ./');
   } else {
     if (md5($txtcaptcha) !== $_SESSION['key'])

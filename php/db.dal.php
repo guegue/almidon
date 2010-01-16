@@ -20,7 +20,7 @@ class AlmData {
     list($dbtype,$tmp) = preg_split('/:\/\//',$dsn);
     list($auth,$dbname) = preg_split('/\//',$tmp);
     list($auth,$host) = preg_split('/@/',$auth);
-    list($username,$pass) = split(':',$auth);
+    list($username,$pass) = preg_split('/:/',$auth);
     return array($dbtype,$dbname,$host,$username,$pass);
   }
 

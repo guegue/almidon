@@ -7,6 +7,9 @@ define ('DEBUG', true);
 
 # Idioma, por ahora solo "es" y "en"
 define ('ALM_LANG','en');
+
+# Time Zone
+date_default_timezone_set('America/Managua');
  
 # Constantes de conexion la base de datos
 $admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';

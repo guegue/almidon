@@ -15,7 +15,7 @@
 
 # Check username and password
 function check_user($user, $pass) {
-  global $emergency_password;
+  global $emergency_password, $admin_dsn;
   $pass = md5($pass);
   $alm_user = new alm_userTable();
   $alm_user->readEnv();
