@@ -79,7 +79,7 @@ class almImage {
           $cropTop = $res_h - $h;
           break;
         default:
-         list($cropLeft, $cropTop) = split(",", $pos);
+         list($cropLeft, $cropTop) = preg_split('/,/', $pos);
          $cropLeft = (int)trim($cropLeft);
          $cropTop = (int)trim($cropTop);
        }

@@ -150,8 +150,8 @@ function smarty_function_dataform2($params, &$smarty)
       $labels[$_key] = $_val['label'];
   }
   if ($preset) {
-    list($_field, $_text) = split(",", $preset);
-    list($_fieldname, $_fieldvalue) = split("=", $_field);
+    list($_field, $_text) = preg_split('/,/', $preset);
+    list($_fieldname, $_fieldvalue) = preg_split('/=/', $_field);
     $_preset[$_fieldname] = $_fieldvalue;
     $_preset_text[$_fieldname] = $_text;
   }
@@ -208,7 +208,7 @@ function smarty_function_dataform2($params, &$smarty)
               XML_UNSERIALIZER_OPTION_ATTRIBUTES_PARSE    => true,
               XML_UNSERIALIZER_OPTION_ATTRIBUTES_ARRAYKEY => false
             );
-            $unserializer = &new XML_Unserializer($options);
+            $unserializer = new XML_Unserializer($options);
             $status = $unserializer->unserialize($_val, false);
             if (PEAR::isError($status)){
               echo 'Error: ' . $status->getMessage();
@@ -253,7 +253,7 @@ function smarty_function_dataform2($params, &$smarty)
         case 'boolean':
         case 'bool':
           if (preg_match("/:/", $dd[$_key]['extra']['range'])) {
-            list($_si, $_no)  = split(':',$dd[$_key]['extra']['range']);
+            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['range']);
             $_tchecked = ($_val == 't') ? "checked" : "";
             $_fchecked = ($_val == 'f') ? "checked" : "";
             $_tmp = $_si . '<input type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on" />' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="" />';
@@ -264,14 +264,14 @@ function smarty_function_dataform2($params, &$smarty)
           break;
         case 'datenull':
           if (preg_match("/:/", $dd[$_key]['extra']['range']))
-            list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']['range']);
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']['range']);
           if (!isset($_val) || empty($_val)) $_val = '--';;
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
           break;
         case 'date':
           if(!$_val)  $_val = $dd[$_key]['extra']['default'];
           if (preg_match("/:/", $dd[$_key]['extra']['range']))
-            list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']['range']);
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']['range']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year), $smarty);
           break;
         case 'time':
@@ -280,14 +280,14 @@ function smarty_function_dataform2($params, &$smarty)
         case 'datetime':
           if(!$_val)  $_val = $dd[$_key]['extra']['default'];
           if (preg_match("/:/", $dd[$_key]['extra']['range']))
-            list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']['range']);
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']['range']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year), $smarty);
           $_tmp .= smarty_function_html_select_time(array('prefix'=>$_key . '_', 'time'=>$_val, 'display_seconds'=>false), $smarty);
           break;
         case 'datetimenull':
           if(!$_val)  $_val = $dd[$_key]['extra']['default'];
           if (preg_match("/:/", $dd[$_key]['extra']['range']))
-            list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']['range']);
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']['range']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
           $_tmp .= smarty_function_html_select_time(array('prefix'=>$_key . '_', 'time'=>$_val, 'display_seconds'=>false), $smarty);
           break;
@@ -419,7 +419,7 @@ function smarty_function_dataform2($params, &$smarty)
           $_si = "S&iacute;";
           $_no = "No";
           if ($dd[$_key]['extra']['label_bool']) {
-            list($_si, $_no)  = split(':',$dd[$_key]['extra']['label_bool']);
+            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['label_bool']);
           }
           $_tmp = ($_val == 't') ? $_si : $_no;
           break;
@@ -434,7 +434,7 @@ function smarty_function_dataform2($params, &$smarty)
               XML_UNSERIALIZER_OPTION_ATTRIBUTES_PARSE    => true,
               XML_UNSERIALIZER_OPTION_ATTRIBUTES_ARRAYKEY => false
             );
-            $unserializer = &new XML_Unserializer($options);
+            $unserializer = new XML_Unserializer($options);
             $status = $unserializer->unserialize($_val, false);
             if (PEAR::isError($status)){
               echo 'Error: ' . $status->getMessage();
@@ -539,7 +539,7 @@ function smarty_function_dataform2($params, &$smarty)
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
 
   # christian | a new way to know if this pages is the 404.php file
-  $params = split('/',$_SERVER['PHP_SELF']);
+  $params = preg_split('/\//',$_SERVER['PHP_SELF']);
   $page = $params[count($params) - 1];
   # end
   if ($page == '404.php' || $page == '404c.php')

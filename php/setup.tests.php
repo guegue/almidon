@@ -55,7 +55,7 @@ function performTests() {
       $test_output .= $red;
     }
     $test_output .= "BD Almidonizada? ";
-    list($type,$tmp) = split('://',$admin_dsn);
+    list($type,$tmp) = preg_split('/:\/\//',$admin_dsn);
     if ($type == 'pgsql') {
       $sqlcmd = "SELECT relname FROM pg_class WHERE  pg_class.relkind = 'r' AND pg_class.relname LIKE 'alm_%'";
     } elseif($type == 'mysql') {

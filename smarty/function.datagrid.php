@@ -275,7 +275,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'boolean':
           case 'bool':
             if ($dd[$_key]['extra']) {
-              list($_si, $_no)  = split(':',$dd[$_key]['extra']);
+              list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']);
               $_tchecked = ($_val == 't') ? "checked" : "";
               $_fchecked = ($_val == 'f') ? "checked" : "";
               $_tmp = $_si . '<input type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on">' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="">';
@@ -291,10 +291,10 @@ function smarty_function_datagrid($params, &$smarty)
           case 'varchar':
           case 'char':
             if (preg_match("/=/", $dd[$_key]['extra'])) {
-              $_list = split(":", $dd[$_key]['extra']);
+              $_list = preg_split('/:/', $dd[$_key]['extra']);
               $_options = '';
               foreach($_list as $_list_pair) {
-                list($_list_key, $_list_val) = split("=", $_list_pair);
+                list($_list_key, $_list_val) = preg_split('/=/', $_list_pair);
                 $_options[$_list_key] = $_list_val;
               }
               $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_val), $smarty);
@@ -361,10 +361,10 @@ function smarty_function_datagrid($params, &$smarty)
         switch ($dd[$_key]['type']) {
           case 'char':
             if (preg_match("/=/", $dd[$_key]['extra'])) {
-              $_list = split(":", $dd[$_key]['extra']);
+              $_list = preg_split('/:/', $dd[$_key]['extra']);
               $_options = '';
               foreach($_list as $_list_pair) {
-                list($_list_key, $_list_val) = split("=", $_list_pair);
+                list($_list_key, $_list_val) = preg_split('/=/', $_list_pair);
                 $_options[$_list_key] = $_list_val;
               }
               $_tmp = $_options[$_val];
@@ -379,7 +379,7 @@ function smarty_function_datagrid($params, &$smarty)
             $_si = "S&iacute";
             $_no = "No";
             if ($dd[$_key]['extra']) {
-              list($_si, $_no)  = split(':',$dd[$_key]['extra']);
+              list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']);
             }
             $_tmp = ($_val == 't') ? $_si : $_no;
             break;

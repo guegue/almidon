@@ -247,7 +247,7 @@ class Table extends Data {
             if(isset($sizes)) {
               foreach($sizes as $size) {
                 $image = imagecreatefromstring(file_get_contents(ROOTDIR.'/files/'.$this->name.'/'.$filename));
-                list($ancho,$alto) = split('x', $size);
+                list($ancho,$alto) = preg_split('/x/', $size);
                 $alto_original = imagesy($image);
                 $ancho_original = imagesx($image);
                 if (!$alto) $alto = ceil($alto_original*($ancho/$ancho_original));
@@ -364,7 +364,7 @@ class Table extends Data {
             if(isset($sizes)) {
               foreach($sizes as $size) {
                 $image = imagecreatefromstring(file_get_contents(ROOTDIR.'/files/'.$this->name.'/'.$filename));
-                list($ancho,$alto) = split('x', $size);
+                list($ancho,$alto) = preg_split('/x/', $size);
                 $alto_original = imagesy($image);
                 $ancho_original = imagesx($image);
                 if (!$alto) $alto = ceil($alto_original*($ancho/$ancho_original));

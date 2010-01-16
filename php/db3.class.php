@@ -301,7 +301,7 @@ class Table extends Data {
                 if($sizes)
                   for($idx=0;$idx<count($sizes);$idx++) {
                     $pic = null;
-	            list($w, $h, $crop) = split("x", trim($sizes[$idx]));
+	            list($w, $h, $crop) = preg_split('/x/', trim($sizes[$idx]));
 		    if($crop&&$h) {
                       $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
                     } else {
@@ -421,7 +421,7 @@ class Table extends Data {
                 if ($timemark['mon']<10 && strlen($timemark['mon'])==1)  $timemark['mon'] = "0" . $timemark['mon'];
                 if($sizes)
 	          foreach($sizes as $size) {
-	            list($w, $h, $crop) = split("x", trim($size));
+	            list($w, $h, $crop) = preg_split('/x/', trim($size));
 	            if(file_exists(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']])) unlink(PIXDIR . "/" .$timemark['year']."/".$timemark['mon']."/".$w.($h?"x$h":""). "_" . $this->request['old_'.$column['name']]);
 	          }
   	        }
@@ -448,7 +448,7 @@ class Table extends Data {
               if($sizes)
                 for($idx=0;$idx<count($sizes);$idx++) {
                   $pic = null;
-                  list($w, $h, $crop) = split("x", trim($sizes[$idx]));
+                  list($w, $h, $crop) = preg_split('/x/', trim($sizes[$idx]));
                   if($crop&&$h) {
                     $pic = $image->crop(ROOTDIR . "/files/" . $this->name . "/" . $filename,$w,$h);
                   } else {

@@ -81,7 +81,7 @@ if (!empty($action)) {
   case 'alm_tables':
     $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/almidon.sql');
     $data = new Data();
-    list($type,$tmp) = split('://',$admin_dsn);
+    list($type,$tmp) = preg_split('/:\/\//',$admin_dsn);
     if ($type == 'pgsql') {
       $sqlcmd = "SELECT relname FROM pg_class WHERE  pg_class.relkind = 'r' AND pg_class.relname LIKE 'alm_%'";
     } elseif($type == 'mysql') {
@@ -283,7 +283,7 @@ if (!empty($action)) {
           $tables_output .= "&nbsp;&nbsp;&nbsp;&nbsp;<small>Error general en la tabla <!--".$data->data->getMessage() . "--></small><br/>";
           $sql_fix .= genSQL($data->name);
         } else {
-          $campos = split(',',$data->fields);
+          $campos = preg_split('/,/',$data->fields);
           foreach($campos as $campo) {
             $sqlcmd = "SELECT $campo FROM $data->name";
             @$data->execSql($sqlcmd);
@@ -385,16 +385,16 @@ if (!empty($action)) {
     if (isset($test_output)) print $test_output;
     if (isset($admin_db_failed) || isset($public_db_failed)) {
       print '<br/>Revise los datos de conexi&oacute;n en classes/config.php: <br/><!--<table border="1"><tr><td>'.DSN.'</td></tr></table>-->';
-      list($ptype,$ptmp) = split('://',$public_dsn);
-      list($pauth,$pdbname) = split('/',$ptmp);
-      list($pauth,$phost) = split('@',$pauth);
+      list($ptype,$ptmp) = preg_split('/:\/\//',$public_dsn);
+      list($pauth,$pdbname) = preg_split('/\//',$ptmp);
+      list($pauth,$phost) = preg_split('/@/',$pauth);
       $pahost = empty($phost) ? '(local)' : $phost;
-      list($pusername,$ppass) = split(':',$pauth);
-      list($type,$tmp) = split('://',$admin_dsn);
-      list($auth,$dbname) = split('/',$tmp);
-      list($auth,$host) = split('@',$auth);
+      list($pusername,$ppass) = preg_split('/:/',$pauth);
+      list($type,$tmp) = preg_split('/:\/\//',$admin_dsn);
+      list($auth,$dbname) = preg_split('/\//',$tmp);
+      list($auth,$host) = preg_split('/@/',$auth);
       $ahost = empty($host) ? '(local)' : $host;
-      list($username,$pass) = split(':',$auth);
+      list($username,$pass) = preg_split('/:/',$auth);
       print "<form action=\"\" method=\"POST\">";
       print "<input type=\"hidden\" name=\"action\" value=\"fixdb\"/>";
       print "<table><tr><td></td><td>ADMIN</td><td>PUBLIC</td></tr>";

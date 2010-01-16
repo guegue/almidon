@@ -140,8 +140,8 @@ function smarty_function_dataform($params, &$smarty)
       $labels[$_key] = $_val['label'];
   }
   if ($preset) {
-    list($_field, $_text) = split(",", $preset);
-    list($_fieldname, $_fieldvalue) = split("=", $_field);
+    list($_field, $_text) = preg_split('/,/', $preset);
+    list($_fieldname, $_fieldvalue) = preg_split('/=/', $_field);
     $_preset[$_fieldname] = $_fieldvalue;
     $_preset_text[$_fieldname] = $_text;
   }
@@ -200,7 +200,7 @@ function smarty_function_dataform($params, &$smarty)
         case 'boolean':
         case 'bool':
           if (preg_match("/:/", $dd[$_key]['extra'])) {
-            list($_si, $_no)  = split(':',$dd[$_key]['extra']);
+            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']);
             $_tchecked = ($_val == 't') ? "checked" : "";
             $_fchecked = ($_val == 'f') ? "checked" : "";
             $_tmp = $_si . '<input3 type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on" />' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="" />';
@@ -211,13 +211,13 @@ function smarty_function_dataform($params, &$smarty)
           break;
         case 'datenull':
           if (preg_match("/:/", $dd[$_key]['extra']))
-            list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']);
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']);
           if (!isset($_val) || empty($_val)) $_val = '--';;
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
           break;
         case 'date':
           if (preg_match("/:/", $dd[$_key]['extra']))
-            list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']);
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year), $smarty);
           break;
         case 'time':
@@ -225,7 +225,7 @@ function smarty_function_dataform($params, &$smarty)
           break;
         case 'datetime':
           if (preg_match("/:/", $dd[$_key]['extra']))
-            list($_start_year, $_end_year)  = split(':',$dd[$_key]['extra']);
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year), $smarty);
           $_tmp .= smarty_function_html_select_time(array('prefix'=>$_key . '_', 'time'=>$_val, 'display_seconds'=>false), $smarty);
           break;
@@ -246,11 +246,11 @@ function smarty_function_dataform($params, &$smarty)
         #  break;
         case 'varchar':
         case 'char':
-          if (preg_match("/=/", $dd[$_key]['extra'])) {
-            $_list = split(":", $dd[$_key]['extra']);
+          if (preg_match('/=/', $dd[$_key]['extra'])) {
+            $_list = preg_split('/:/', $dd[$_key]['extra']);
             $_options = '';
             foreach($_list as $_list_pair) {
-              list($_list_key, $_list_val) = split("=", $_list_pair);
+              list($_list_key, $_list_val) = preg_split('/=/', $_list_pair);
               $_options[$_list_key] = $_list_val; 
             }
             $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_val), $smarty);
@@ -288,8 +288,8 @@ function smarty_function_dataform($params, &$smarty)
         default:
           $_tmp = $_val;
       }
-      $_tmp = ereg_replace("_FCELL_", $_tmp, FROW);
-      $_tmp = ereg_replace("_LABEL_", $labels[$_key], $_tmp);
+      $_tmp = preg_replace("/_FCELL_/", $_tmp, FROW);
+      $_tmp = preg_replace("/_LABEL_/", $labels[$_key], $_tmp);
       if (!$hidden) $_html_rows .= $_tmp;
       $hidden = false;
     }
@@ -307,11 +307,11 @@ function smarty_function_dataform($params, &$smarty)
       }
       switch ($dd[$_key]['type']) {
         case 'char':
-          if (preg_match("/=/", $dd[$_key]['extra'])) {
-            $_list = split(":", $dd[$_key]['extra']);
+          if (preg_match('/=/', $dd[$_key]['extra'])) {
+            $_list = preg_split('/:/', $dd[$_key]['extra']);
             $_options = '';
             foreach($_list as $_list_pair) {
-              list($_list_key, $_list_val) = split("=", $_list_pair);
+              list($_list_key, $_list_val) = preg_split('/=/', $_list_pair);
               $_options[$_list_key] = $_list_val; 
             }
             $_tmp = $_options[$_val];
@@ -324,7 +324,7 @@ function smarty_function_dataform($params, &$smarty)
           $_si = "S&iacute;";
           $_no = "No";
           if ($dd[$_key]['extra']) {
-            list($_si, $_no)  = split(':',$dd[$_key]['extra']);
+            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']);
           }
           $_tmp = ($_val == 't') ? $_si : $_no;
           break;
@@ -393,7 +393,7 @@ function smarty_function_dataform($params, &$smarty)
     $_html_result = preg_replace("/_FHEADERCMD_/", FHEADERCMD, $_html_result);
     $_html_result = preg_replace("/_FHEADERCMD_/", '', $_html_result);
   $_html_result = preg_replace("/_TITLE_/", $title, $_html_result);
-  $_html_result = ereg_replace("_FROW_", $_html_rows, $_html_result);
+  $_html_result = preg_replace("/_FROW_/", $_html_rows, $_html_result);
   #$_npgs = ceil(count($rows) / $maxrows);
   $_paginate = '';
   if ($paginate && $_npgs > 1) {

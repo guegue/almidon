@@ -176,7 +176,7 @@ function smarty_function_datagrid2($params, &$smarty)
   # Crea el Buscador del datagrid
   if(!empty($search)) {
     $_html_search = preg_replace("/_FIELDS_/", 'Filtro', DS);
-    $fields = split(',',trim($search));
+    $fields = preg_split('/,/',trim($search));
     $_html_sch = '';
     if($fields)
       foreach($fields as $field) {
@@ -285,7 +285,7 @@ function smarty_function_datagrid2($params, &$smarty)
             case 'boolean':
             case 'bool':
               if ($dd[$_key]['extra']['label_bool']) {
-                list($_si, $_no)  = split(':',$dd[$_key]['extra']['label_bool']);
+                list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['label_bool']);
                 $_tchecked = ($_val == 't') ? "checked" : "";
                 $_fchecked = ($_val == 'f') ? "checked" : "";
                 $_tmp = $_si . '<input type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on">' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="">';
@@ -378,7 +378,7 @@ function smarty_function_datagrid2($params, &$smarty)
               $_si = "S&iacute";
               $_no = "No";
               if ($dd[$_key]['extra']['label_bool']) {
-                list($_si, $_no)  = split(':',$dd[$_key]['extra']['label_bool']);
+                list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['label_bool']);
               }
               $_tmp = ($_val == 't') ? $_si : $_no;
               break;
@@ -393,7 +393,7 @@ function smarty_function_datagrid2($params, &$smarty)
                   XML_UNSERIALIZER_OPTION_ATTRIBUTES_PARSE    => true,
                   XML_UNSERIALIZER_OPTION_ATTRIBUTES_ARRAYKEY => false
                 );
-                $unserializer = &new XML_Unserializer($options);
+                $unserializer = new XML_Unserializer($options);
                 $status = $unserializer->unserialize($_val, false);
                 if (PEAR::isError($status)){
                   echo 'Error: ' . $status->getMessage();
@@ -516,7 +516,7 @@ function smarty_function_datagrid2($params, &$smarty)
     $_html_result = preg_replace("/_PARENTID_/", $parentid, $_html_result);
     $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
     # christian | a new way to know if this pages is the 404.php file
-    $params = split('/',$_SERVER['PHP_SELF']);
+    $params = preg_split('/\//',$_SERVER['PHP_SELF']);
     $page = $params[count($params) - 1];
     # end
     if ($page == '404.php' || $page == '404c.php')
@@ -542,7 +542,7 @@ function smarty_function_datagrid2($params, &$smarty)
       if($_SESSION[$table . 'query']) $_html_result .= DSL . "<br />";
     }
     # christian | a new way to know if this pages is the 404.php file
-    $params = split('/',$_SERVER['PHP_SELF']);
+    $params = preg_split('/\//',$_SERVER['PHP_SELF']);
     $page = $params[count($params) - 1];
     # end
     if ($page == '404.php' || $page == '404c.php')

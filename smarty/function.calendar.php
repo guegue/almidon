@@ -81,7 +81,7 @@ class MonthPayload_Decorator extends Calendar_Decorator
             #$stamp2 = $this->cE->dateToStamp($this->year, $this->month, $i+1);
             foreach ($events as $event) {
               // Listar solo los dias de inicio del evento
-              list($start, $time) = split(' ', $event['start']);
+              list($start, $time) = preg_split('/ /', $event['start']);
               if ($stamp1 == $start) {
                     $this->children[$i]->addEntry($event);
                     $this->children[$i]->setSelected();

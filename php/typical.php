@@ -76,7 +76,7 @@ switch ($action) {
     unset($limit);
     break;
   case 'search':
-    $cols = split(',',$$object->search);
+    $cols = preg_split('/,/',$$object->search);
     $s_ftr = '';
     $q_ftr = '';
     if($cols) {
@@ -113,7 +113,7 @@ $$object->pg = (isset($_SESSION[$object . 'pg'])) ? $_SESSION[$object . 'pg'] : 
 $detail = array();
 if(isset($$object->detail)) {
   $smarty->assign('have_detail', true);
-  $classes = split(',',$$object->detail);
+  $classes = preg_split('/,/',$$object->detail);
   foreach ($classes as $class) {
     $obj = trim($class);
     $ot = $obj.'Table';
@@ -172,7 +172,7 @@ $smarty->assign('options', fillOpt($$object));
 
 # To know who the first one and the last one is, this is useful when use order type of field
 # FIXME: Are we even using this?
-  $order_is_valid = split(' ',trim($$object->order));
+  $order_is_valid = preg_split('/ /',trim($$object->order));
   if(count($order_is_valid) > 1) $order_is_valid = false;
   else $order_is_valid = true;
   if (isset($$object->order) && $order_is_valid && !isset($$object->key2)) {  // Temporalmente desabilitando para TableDoubleKey
@@ -244,7 +244,7 @@ function verifyNewTags (&$object) {
     unset($tags);
     if(!empty($col['extra']['autocomplete_tb']) && $object->name != $col['extra']['autocomplete_tb']) {
       $object->sql_log("Examinando en busca de nuevas palabras claves");
-      $tags = split(',',trim($_REQUEST[$col['name']]));
+      $tags = preg_split('/,/',trim($_REQUEST[$col['name']]));
       if($tags)
         foreach($tags as $tag) {
           $tag = trim($tag);

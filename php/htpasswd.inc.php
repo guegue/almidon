@@ -51,7 +51,7 @@ function load_htpasswd()
   $res = Array();
   foreach(file(HTPASSWDFILE) as $l)
   {
-    list($user, $pass) = split(':',$l);
+    list($user, $pass) = preg_split('/:/',$l);
     $pass = chop($pass);
     $res[] = array('usuario' => $user, 'passwd' => $pass);
   }

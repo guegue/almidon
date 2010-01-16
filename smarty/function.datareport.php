@@ -210,7 +210,7 @@ global $_old_row, $group, $_key, $_val, $dd, $rows, $subtotals;
           $_si = "S&iacute";
           $_no = "No";
           if ($dd[$_key]['extra']) {
-            list($_si, $_no)  = split(':',$dd[$_key]['extra']);
+            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']);
           }
           $_tmp = ($_val == 't') ? $_si : $_no;
           break;

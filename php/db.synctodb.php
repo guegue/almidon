@@ -15,7 +15,7 @@
       $this->execSql($sql_fix);
       echo "AUTO SQL $sql_fix<br/>\n";
     } else {
-      $campos = split(',',$this->fields);
+      $campos = preg_split('/,/',$this->fields);
       foreach($campos as $campo) {
         #$existe = $this->catalogColumnExists($campo['name']);
         $sqlcmd = "SELECT $campo FROM $this->name LIMIT 1";

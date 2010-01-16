@@ -43,7 +43,7 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
   if($sectionlinks) {
     foreach($sectionlinks as $key => $val) {
       if(!empty($val['objects'])) {
-        $objects = split(",",$val['objects']);
+        $objects = preg_split('/,/',$val['objects']);
         $sectionlinks[$key]['adminlinks'] = array();
         foreach($objects as $object) {
           $class = $object.'Table';
