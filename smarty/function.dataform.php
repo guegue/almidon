@@ -68,8 +68,6 @@ define('NPG','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_NPG_"> _NPG_ </a>
 define('CURRENTPG','<strong>_NPG_</strong>');
 define('PAGINATE','<table><tr><td nowrap><br>_PGS_<br></td></tr></table>');
 
-require_once('rteSafe.php');
-
 function smarty_function_dataform($params, &$smarty)
 {
   require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
@@ -240,10 +238,6 @@ function smarty_function_dataform($params, &$smarty)
           $_tmp .= "<script language=\"JavaScript\">\ngenerate_wysiwyg('" . $_key . "');\n</script>\n";
           #$_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edithtml(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">maximizar</a>';
           break;
-        #case 'html':
-        #  $_val = rteSafe($_val);
-        #  $_tmp = '<script language="JavaScript" type="text/javascript">' . "\nwriteRichText('" . $_key . "', '" . $_val . "', 520, 200, true, false);\n</script>\n";
-        #  break;
         case 'varchar':
         case 'char':
           if (preg_match('/=/', $dd[$_key]['extra'])) {

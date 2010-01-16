@@ -73,8 +73,6 @@ define('NPG','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_NPG_"> _NPG_ </a>
 define('CURRENTPG','<strong>_NPG_</strong>');
 define('PAGINATE','<table><tr class="adm"><td nowrap><br>_PGS_<br></td></tr></table>');
 
-require_once('rteSafe.php');
-
 function smarty_function_dataform2($params, &$smarty)
 {
   require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
@@ -305,10 +303,6 @@ function smarty_function_dataform2($params, &$smarty)
           $_tmp = '<textarea rows="5" cols="40" class="adm" id="' . $_key . '" name="' . $_key . '"'.(($dd[$_key]['extra']['style'])?' style="'.$dd[$_key]['extra']['style'].'"':'').'>' . $_val . '</textarea>';
           $_tmp .= "<script language=\"JavaScript\">\ntinyMCE.execCommand(\"mceAddControl\", true,\"$_key\");\n</script>\n";
 	  break;
-        #case 'html':
-        #  $_val = rteSafe($_val);
-        #  $_tmp = '<script language="JavaScript" type="text/javascript">' . "\nwriteRichText('" . $_key . "', '" . $_val . "', 520, 200, true, false);\n</script>\n";
-        #  break;
         case 'varchar':
         case 'char':
           if ($dd[$_key]['extra']['arr_values']) {
