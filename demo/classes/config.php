@@ -5,6 +5,9 @@
 #define ('ALMIDONDIR', '/usr/local/almidon/');
 define ('DEBUG', true);
 
+# Usar DB3 en vez de DB2 (FIXME: ambos deben unirse)
+#define ('DB3', true);
+
 # Idioma, por ahora solo "es" y "en"
 define ('ALM_LANG','en');
 

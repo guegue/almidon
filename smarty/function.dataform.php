@@ -258,7 +258,7 @@ function smarty_function_dataform($params, &$smarty)
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
           } else {
             $_val = preg_replace("/\"/", "&quot;", $_val);
-            $_tmp = preg_replace("/_VALUE_/", $_val, FCELLMODSTR);
+            $_tmp = preg_replace("/_VALUE_/", qdollar($_val), FCELLMODSTR);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
           }
@@ -276,7 +276,7 @@ function smarty_function_dataform($params, &$smarty)
           } else {
             $_options = $options[$_key];
             $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_selected), $smarty);
-            $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
+            $_tmp = preg_replace("/_REFERENCE_/", qdollar($_tmp), FCELLMODREF);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
           }
           break;
@@ -288,7 +288,7 @@ function smarty_function_dataform($params, &$smarty)
         default:
           $_tmp = $_val;
       }
-      $_tmp = preg_replace("/_FCELL_/", $_tmp, FROW);
+      $_tmp = preg_replace("/_FCELL_/", qdollar($_tmp), FROW);
       $_tmp = preg_replace("/_LABEL_/", $labels[$_key], $_tmp);
       if (!$hidden) $_html_rows .= $_tmp;
       $hidden = false;
@@ -363,12 +363,12 @@ function smarty_function_dataform($params, &$smarty)
           $_tmp = smarty_modifier_wordwrap($_val);
           $_tmp = smarty_modifier_nl2br($_tmp);
       }
-      $_tmp = ereg_replace("_FCELL_", $_tmp, FROW);
-      $_tmp = ereg_replace("_LABEL_", $labels[$_key], $_tmp);
+      $_tmp = preg_replace('/_FCELL_/', qdollar($_tmp), FROW);
+      $_tmp = preg_replace('/_LABEL_/', $labels[$_key], $_tmp);
       if (!$hidden) $_html_rows .= $_tmp;
       $hidden = false;
     }
-    $_html_cmd = ereg_replace("{_ID_}", $row[$key], FCMD);
+    $_html_cmd = preg_replace("/{_ID_}/", $row[$key], FCMD);
   }
   if ($type == 2) { $_html_cmd = FCMDADD; $action = "add"; }
   if ($type == 1) { $_html_cmd = FCMDMOD; $action = "save"; }
@@ -393,7 +393,7 @@ function smarty_function_dataform($params, &$smarty)
     $_html_result = preg_replace("/_FHEADERCMD_/", FHEADERCMD, $_html_result);
     $_html_result = preg_replace("/_FHEADERCMD_/", '', $_html_result);
   $_html_result = preg_replace("/_TITLE_/", $title, $_html_result);
-  $_html_result = preg_replace("/_FROW_/", $_html_rows, $_html_result);
+  $_html_result = preg_replace("/_FROW_/", qdollar($_html_rows), $_html_result);
   #$_npgs = ceil(count($rows) / $maxrows);
   $_paginate = '';
   if ($paginate && $_npgs > 1) {

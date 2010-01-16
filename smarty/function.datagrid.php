@@ -285,7 +285,7 @@ function smarty_function_datagrid($params, &$smarty)
             }
             break;
           case 'text':
-            $_tmp = preg_replace("/_VALUE_/",  htmlentities($_val,ENT_COMPAT,'UTF-8'), DGCELLMODSTR);
+            $_tmp = preg_replace("/_VALUE_/",  qdollar(htmlentities($_val,ENT_COMPAT,'UTF-8')), DGCELLMODSTR);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             break;
           case 'varchar':
@@ -301,7 +301,7 @@ function smarty_function_datagrid($params, &$smarty)
               $_tmp = preg_replace("/_REFERENCE_/", $_tmp, DGCELLMODREF);
               $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             } else {
-              $_tmp = preg_replace("/_VALUE_/",  htmlentities($_val,ENT_COMPAT,'UTF-8'), DGCELLMODSTR);
+              $_tmp = preg_replace("/_VALUE_/",  qdollar(htmlentities($_val,ENT_COMPAT,'UTF-8')), DGCELLMODSTR);
               $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
               $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
             }
@@ -315,7 +315,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'references':
             $_options = $options[$_key];
             $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_selected), $smarty);
-            $_tmp = preg_replace("/_REFERENCE_/", $_tmp, DGCELLMODREF);
+            $_tmp = preg_replace("/_REFERENCE_/", qdollar($_tmp), DGCELLMODREF);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             break;
           case 'order':
@@ -325,7 +325,7 @@ function smarty_function_datagrid($params, &$smarty)
             $_tmp = $_val;
         }
         if ($dd[$_key]['type'] != 'hidden') {
-          $_tmp = preg_replace("/_VALUE_/", $_tmp, DGCELL);
+          $_tmp = preg_replace("/_VALUE_/", qdollar($_tmp), DGCELL);
           $_cols++;
         }
         $_html_row .= $_tmp;
@@ -424,7 +424,7 @@ function smarty_function_datagrid($params, &$smarty)
               $_tmp = smarty_modifier_wordwrap($_val, 50, "<br/>");
             $_tmp = smarty_modifier_url($_tmp);
         }
-        $_html_row .= preg_replace("/_VALUE_/", $_tmp, DGCELL);
+        $_html_row .= preg_replace("/_VALUE_/", qdollar($_tmp), DGCELL);
         $_cols++;
       }
       if ($key2) {
@@ -471,7 +471,7 @@ function smarty_function_datagrid($params, &$smarty)
     if (!($_i % 2)) {
       $_tmp = preg_replace("/class=\"dgrow\"/", "class=\"dgrow2\"", $_tmp);
     }
-    $_html_rows .= preg_replace("/_DGCELL_/", $_html_row, $_tmp);
+    $_html_rows .= preg_replace("/_DGCELL_/", qdollar($_html_row), $_tmp);
     if ($paginate && $maxrows && ($_i >= ($maxrows * $pg)) ) {
       $_need_paginate = true;
       break;
@@ -484,7 +484,7 @@ function smarty_function_datagrid($params, &$smarty)
     $_html_result = preg_replace("/_DGHEADERCMD_/", '', $_html_result);
   $_html_result = preg_replace("/_TITLE_/", $title, $_html_result);
   $_html_result = preg_replace("/_ROWS_/", $num_rows, $_html_result);
-  $_html_result = preg_replace("/_DGROW_/", $_html_rows, $_html_result);
+  $_html_result = preg_replace("/_DGROW_/", qdollar($_html_rows), $_html_result);
 
   # Paginacion del datagrid
   $_npgs = ceil($num_rows / $maxrows);

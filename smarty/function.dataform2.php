@@ -318,7 +318,7 @@ function smarty_function_dataform2($params, &$smarty)
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
           } else {
             $_val = preg_replace("/\"/", "&quot;", $_val);
-            $_tmp = preg_replace("/_VALUE_/", $_val, FCELLMODSTR);
+            $_tmp = preg_replace("/_VALUE_/", qdollar($_val), FCELLMODSTR);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
             if($dd[$_key]['extra']['source']) {
@@ -356,7 +356,7 @@ function smarty_function_dataform2($params, &$smarty)
           } else {
             if($dd[$_key]['extra']['readonly']) {
               $_tmp = preg_replace("/_FIELD_/", $_key, FCELLHIDEN);
-              $_tmp = preg_replace("/_VALUE_/", $_selected, $_tmp);
+              $_tmp = preg_replace("/_VALUE_/", qdollar($_selected), $_tmp);
               $_tmp = preg_replace("/_LABEL_/", $_val, $_tmp);
             } else {
               $_options = $options[$_key];
@@ -381,8 +381,8 @@ function smarty_function_dataform2($params, &$smarty)
         default:
           $_tmp = $_val;
       }
-      if(!$_ispreset) $_tmp = ereg_replace("_FCELL_", $_tmp, FROW);
-      $_tmp = ereg_replace("_LABEL_", $labels[$_key], $_tmp);
+      if(!$_ispreset) $_tmp = preg_replace("/_FCELL_/", qdollar($_tmp), FROW);
+      $_tmp = preg_replace("/_LABEL_/", $labels[$_key], $_tmp);
       if (!$hidden) $_html_rows .= $_tmp;
       $hidden = false;
     }
@@ -492,13 +492,13 @@ function smarty_function_dataform2($params, &$smarty)
 	  }
       }
       if(!$_preset[$_key]) {
-        $_tmp = ereg_replace("_FCELL_", $_tmp, FROW);
-        $_tmp = ereg_replace("_LABEL_", $labels[$_key], $_tmp);
+        $_tmp = preg_replace('/_FCELL_/', qdollar($_tmp), FROW);
+        $_tmp = preg_replace('/_LABEL_/', $labels[$_key], $_tmp);
       }
       if (!$hidden) $_html_rows .= $_tmp;
       $hidden = false;
     }
-    $_html_cmd = ereg_replace("{_ID_}", $row[$key], FCMD);
+    $_html_cmd = preg_replace('/{_ID_}/', $row[$key], FCMD);
     if(!empty($_pre)) $_pre = '<input type="hidden" name="preset" value="' .$_pre . '" />';
   }
   if ($type == 2) { $_html_cmd = FCMDADD; $action = "add"; }
@@ -523,7 +523,7 @@ function smarty_function_dataform2($params, &$smarty)
     $_html_result = preg_replace("/_FHEADERCMD_/", FHEADERCMD, $_html_result);
     $_html_result = preg_replace("/_FHEADERCMD_/", '', $_html_result);
   $_html_result = preg_replace("/_TITLE_/", $title, $_html_result);
-  $_html_result = ereg_replace("_FROW_", $_html_rows, $_html_result);
+  $_html_result = preg_replace('/_FROW_/', qdollar($_html_rows), $_html_result);
   #$_npgs = ceil(count($rows) / $maxrows);
   $_paginate = '';
   if ($paginate && $_npgs > 1) {
@@ -542,7 +542,7 @@ function smarty_function_dataform2($params, &$smarty)
   $params = preg_split('/\//',$_SERVER['PHP_SELF']);
   $page = $params[count($params) - 1];
   # end
-  if ($page == '404.php' || $page == '404c.php')
+  if ($page == '404.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);

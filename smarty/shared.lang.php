@@ -28,4 +28,3 @@ if(!defined('ALM_SEARCH_LB')) define('ALM_SEARCH_LB','Buscar');
 if(!defined('ALM_RESET_LB')) define('ALM_RESET_LB','Limpiar');
 if(!defined('ALM_NODATA')) define('ALM_NODATA','No hay Datos');
 if(!defined('ALM_SHOWALL')) define('ALM_SHOWALL','Mostrar todo');
-?>

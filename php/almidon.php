@@ -43,3 +43,8 @@ foreach($classes as $key) {
     }
   }
 }
+
+# qdollar se usa para "escape" cadenas en pgreg_replace que usan "$" como signo de dolar, y no backreference
+function qdollar($value) {
+  return str_replace('$', '\$', $value);
+}
