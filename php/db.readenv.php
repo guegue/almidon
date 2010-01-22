@@ -22,6 +22,7 @@
         $i++;
       }
     }
+    if ($this->definition)
     foreach($this->definition as $column) {
       # Si es fecha o video, el valor del request no coincide con el nombre en tables.class
       if(preg_match('/^(date|datetime|datenull|time)$/', $column['type']) && !isset($_REQUEST[$column['name']])) {

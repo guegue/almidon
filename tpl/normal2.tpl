@@ -3,7 +3,7 @@
 <tr valign="top">
 <td>
 {if $rows}
-  {datagrid rows=$rows key1=$key1 key2=$key2 title=$title dd=$dd options=$options maxcols=5 maxrows=5 paginate=true cmd=true name=$object}
+  {datagrid rows=$rows key1=$key1 key2=$key2 title=$title dd=$dd options=$options maxcols=5 maxrows=5 paginate=true cmd=true name=$object num_rows=$num_rows}
 {else}
   No hay datos.
 {/if}

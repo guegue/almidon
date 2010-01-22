@@ -186,11 +186,15 @@ class Table extends Data {
         if (!isset($references[$column['references']])) $references[$column['references']] = 0;
         $references[$column['references']]++;
         if ($references[$column['references']] == 1) {
-	  $this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'];
+          if (!empty($column['extra']['display'])) {
+            $this->all_fields .= "," . $column['extra']['display'] . ' AS ' . $column['references'];
+          } else {
+            $this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'];
+          }
         } else {
           $tmptable = $column['references'] . $references[$column['references']];
           $tmpcolumn =  $global_dd[$column['references']]['descriptor'];
-	  $this->all_fields .= "," . $tmptable . "." . $tmpcolumn . " AS " . $tmptable;
+          $this->all_fields .= "," . $tmptable . "." . $tmpcolumn . " AS " . $tmptable;
         }
       }
       $n++;

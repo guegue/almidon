@@ -69,7 +69,7 @@ define('DGCMD2R', '<td class="dgcmd"><a href="javascript:confirm_delete2(\'_FORM
 define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_&amp;_PARENT_=_PARENTID_"><img src="/cms/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'.ALM_CAN_LB.'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'.ALM_SAVE_LB.'"></a></td>');
 define('DGCMD2MOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&amp;_KEY1_=_ID1_&amp;_KEY2_=_ID2_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'.ALM_CAN_LB.'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'.ALM_SAVE_LB.'"></a></td>');
 define('PREV','<a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_SORT_&amp;_FORM_pg=_PGPREV_">&lt; '.ALM_PREV_LB.'</a> |');
-define('NEXT','| <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_SORT_&amp;_FORM_pg=_PGNEXT_">'.ALM_SAVE_LB.' &gt;</a>&nbsp;');
+define('NEXT','| <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_SORT_&amp;_FORM_pg=_PGNEXT_">'.ALM_NEXT_LB.' &gt;</a>&nbsp;');
 define('NPG','<a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_SORT_&amp;_FORM_pg=_NPG_"> _NPG_ </a>');
 define('CURRENTPG','<strong>_NPG_</strong>');
 define('PAGINATE','<table><tr><td nowrap><br>_PGS_<br></td></tr></table>');

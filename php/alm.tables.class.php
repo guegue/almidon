@@ -71,6 +71,6 @@ class alm_columnTable extends TableDoubleKey {
     $this->addColumn('pk','bool',0,0,0,'Primary Key?');
     $this->addColumn('fk','varchar',16,0,0,'Foreign Key Table');
     $this->addColumn('alm_column','varchar',100,0,0,'Description');
-    $this->addColumn('extra','varchar',500,0,0,'Extras');
+    $this->addColumn('extra','text',0,0,0,'Extras');
   }
 }

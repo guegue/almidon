@@ -10,7 +10,7 @@
     #$existe = $this->catalogTableExists($this->name);
     $sqlcmd = "SELECT * FROM $this->name LIMIT 1";
     @$this->execSql($sqlcmd);
-    if (PEAR::isError($this->data)) {
+    if (almdata::isError($this->data)) {
       $sql_fix = genSQL($this->name);
       $this->execSql($sql_fix);
       echo "AUTO SQL $sql_fix<br/>\n";
@@ -20,7 +20,7 @@
         #$existe = $this->catalogColumnExists($campo['name']);
         $sqlcmd = "SELECT $campo FROM $this->name LIMIT 1";
         @$this->execSql($sqlcmd);
-        if (PEAR::isError($this->data)) {
+        if (almdata::isError($this->data)) {
           $size = (isset($this->dd[$campo]['size']) && $this->dd[$campo]['size'] > 0) ? '('.$this->dd[$campo]['size'].')': '';
            if (!isset($this->key)) $this->key = false;
           if (!isset($global_dd[$campo])) $global_dd[$campo] = null;

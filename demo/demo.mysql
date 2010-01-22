@@ -109,7 +109,7 @@ DROP TABLE IF EXISTS alm_table;
 CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100), pkey varchar(32), orden varchar (100), rank int);
 
 DROP TABLE IF EXISTS alm_column;
-CREATE TABLE alm_column (idalm_column varchar (32), idalm_table varchar (32) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(16), alm_column varchar(100), extra varchar(500), rank int, PRIMARY KEY (idalm_column, idalm_table));
+CREATE TABLE alm_column (idalm_column varchar (32), idalm_table varchar (32) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(16), alm_column varchar(100), extra text, rank int, PRIMARY KEY (idalm_column, idalm_table));
 
 DROP TABLE IF EXISTS alm_role;
 CREATE TABLE alm_role (idalm_role varchar(8) PRIMARY KEY, alm_role varchar(100));

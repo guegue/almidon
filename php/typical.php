@@ -147,7 +147,7 @@ if(isset($$object->detail)) {
 		'title' => $$obj->title,
 		'maxrows'=> $$obj->maxrows,
 		'maxcols'=> $$obj->maxcols,
-                'num_rows'=> $$obj->getVar("SELECT COUNT(".$$obj->key.") FROM ".$$obj->name." WHERE ".$filter)
+                'num_rows'=> $$obj->getVar("SELECT COUNT(*) FROM ".$$obj->name." WHERE ".$filter)
 	    );
     } 
   }
@@ -183,7 +183,7 @@ $smarty->assign('options', fillOpt($$object));
 
 $smarty->assign('rows', $$object->readData());
 $count_key = $$object->key ? $$object->key : $$object->key1;
-$smarty->assign('num_rows', $$object->getVar("SELECT COUNT(".$count_key.") FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));
+$smarty->assign('num_rows', $$object->getVar("SELECT COUNT(*) FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));
 $smarty->assign('dd', $$object->dd);
 $smarty->assign('key', $$object->key);
 if (isset($$object->search))
@@ -200,6 +200,7 @@ if (isset($$object->maxcols))
   $smarty->assign('maxcols', $$object->maxcols);
 
 function fillOpt(&$object) {
+  if ($object->dd)
   foreach ($object->dd as $key => $val)
     if ($object->dd[$key]['references']) {
       # esta linea mantiene la compatibilidad con db2

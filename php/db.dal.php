@@ -136,6 +136,8 @@ class AlmData {
       $hash = md5($sqlcmd);
       if (isset($this->errors[$hash]))
         return true;
+    } else {
+      $hash = null;
     }
     $db_error = $this->db_error;
     $error = @$db_error();

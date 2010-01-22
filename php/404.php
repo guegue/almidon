@@ -67,7 +67,8 @@ if(isset($_SESSION['idalm_user'])) {
     foreach($classes as $key) {
       if (!preg_match($alm_tables, $key) && stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
         $table_object = new $key;
-        $table_object->syncToDB();
+        if (!empty($table_object->dd))
+          $table_object->syncToDB();
       }
     }
     # -- fin actualiza

@@ -35,9 +35,10 @@ function genColumnSQL($column, $dbtype, $key = false) {
   return $sql;
 }
 function genSQL($object) {
+  global $admin_dsn;
   $o = $object . "Table";
   $data = new $o;
-  $dbtype = $data->database->dsn['phptype'];
+  list($dbtype,$tmp) = preg_split('/:\/\//',$admin_dsn);
   $sql = "CREATE TABLE $data->name (\n";
   $i = 0;
   if($data->definition)
