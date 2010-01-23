@@ -6,10 +6,18 @@
     if (!isset($output)) $output = '';
 
     foreach ($table_data as $table_datum) {
-      $output .= "class " . $table_datum['idalm_table'] . "Table extends Table {\n";
+      $doublekey = preg_match('/,/',$table_datum['pkey']);
+      $table_type = ($doublekey) ? 'TableDoubleKey' : 'Table';
+      $output .= "class " . $table_datum['idalm_table'] . "Table extends $table_type {\n";
       $output .= "  function ".$table_datum['idalm_table']."Table() {\n";
       $output .= "    \$this->Table('".$table_datum['idalm_table']."');\n";
-      $output .= "    \$this->key = '".$table_datum['pkey']."';\n";
+      if ($doublekey) {
+        list($pkey1,$pkey2) = preg_split('/,/',$table_datum['pkey']);
+        $output .= "    \$this->key1 = '".$pkey1."';\n";
+        $output .= "    \$this->key2 = '".$pkey2."';\n";
+      } else {
+        $output .= "    \$this->key = '".$table_datum['pkey']."';\n";
+      }
       $output .= "    \$this->title ='".$table_datum['alm_table']."';\n";
       if (!empty($table_datum['orden']))
         $output .= "    \$this->order ='".$table_datum['orden']."';\n";

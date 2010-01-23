@@ -19,17 +19,19 @@
           $this->files[$column['name']] = $_FILES[$column['name']]['tmp_name'];
         } elseif (preg_match('/^(date|datetime|datenull|time)$/', $column['type'])) {
           $date = ''; $time = '';
-          if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
-            $date = $this->parsevar($_REQUEST[$column['name']]);
-          else
-            $time = $this->parsevar($_REQUEST[$column['name']]);
+          if (isset($_REQUEST[$column['name']])) {
+            if (preg_match('/^(date|datetime|datenull)$/', $column['type']))
+              $date = $this->parsevar($_REQUEST[$column['name']]);
+            else
+              $time = $this->parsevar($_REQUEST[$column['name']]);
+          }
           if ($_REQUEST[$column['name'] . '_Year']) {
             $year = $this->parsevar($_REQUEST[$column['name'] . '_Year'], 'int');
             $month = $this->parsevar($_REQUEST[$column['name'] . '_Month'], 'int');
             $day = $this->parsevar($_REQUEST[$column['name'] . '_Day'], 'int');
             $date = $year . '-' . $month . '-' . $day;
           }
-          if ($_REQUEST[$column['name'] . '_Hour']) {
+          if (isset($_REQUEST[$column['name'] . '_Hour'])) {
             $this->request[$column['name']] = $year . '-' . $month . '-' . $day;
             $hour = $this->parsevar($_REQUEST[$column['name'] . '_Hour'], 'int');
             $minute = $this->parsevar($_REQUEST[$column['name'] . '_Minute'], 'int');

@@ -49,6 +49,9 @@ function genSQL($object) {
     $sql .= genColumnSQL($column, $dbtype, $column['name'] == $data->key );
     ++$i;
   }
+  if (isset($data->key2)) {
+    $sql .= ", PRIMARY KEY ( $data->key1 , $data->key2 ) ";
+  }
   $sql .= "\n);\n\n";
   return($sql);
 }
