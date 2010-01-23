@@ -124,7 +124,8 @@ class Table extends Data {
   var $title;
   var $request;
   var $files;
-  var $fields;
+  var $fields; // comma-separated list of fields: name, age, sex
+  var $table_fields; // comma-separated list: person.name, person.age, person.sex
   var $fields_noserial;
   var $key;
   var $order;
@@ -164,9 +165,11 @@ class Table extends Data {
     $this->fields_noserial = '';
     $this->all_fields = '';
     $this->fields = '';
+    $this->table_fields = '';
     foreach($this->definition as $column) {
       if ($n > 0) {
         $this->fields .= ",";
+        $this->table_fields .= ",";
         $this->all_fields .= ",";
       }
       if ($this->schema != 'public')
@@ -178,6 +181,7 @@ class Table extends Data {
       else
         $this->fields_noserial .= $column['name'];
       $this->fields .= $column['name'];
+      $this->table_fields .= $this->name . '.' . $column['name'];
       if ($column['type'] == 'external')
         $this->all_fields .= $column['name'];
       else

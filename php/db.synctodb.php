@@ -3,7 +3,7 @@
   # Aplica a BD SQL los cambios necesarios
   require_once('setup.gensql.php');
   $dbtype = $this->dbtype;
-  $sqlcmd = "SELECT $this->fields FROM $this->name LIMIT 1";
+  $sqlcmd = "SELECT $this->table_fields FROM $this->name LIMIT 1";
   @$this->execSql($sqlcmd);
   $sql_fix = '';
   if (almdata::isError($this->data)) {
@@ -15,12 +15,13 @@
       $this->execSql($sql_fix);
       echo "AUTO SQL $sql_fix<br/>\n";
     } else {
-      $campos = preg_split('/,/',$this->fields);
+      $campos = preg_split('/,/',$this->table_fields);
       foreach($campos as $campo) {
         #$existe = $this->catalogColumnExists($campo['name']);
         $sqlcmd = "SELECT $campo FROM $this->name LIMIT 1";
         @$this->execSql($sqlcmd);
         if (almdata::isError($this->data)) {
+          list($tmp, $campo) = preg_split('/\./', $campo);
           $size = (isset($this->dd[$campo]['size']) && $this->dd[$campo]['size'] > 0) ? '('.$this->dd[$campo]['size'].')': '';
            if (!isset($this->key)) $this->key = false;
           if (!isset($global_dd[$campo])) $global_dd[$campo] = null;

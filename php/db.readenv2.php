@@ -52,3 +52,4 @@
       $this->request['old_' . $this->key1] = $_REQUEST['old_' . $this->key1];
       $this->request['old_' . $this->key2] = $_REQUEST['old_' . $this->key2];
     }
+    $this->escaped = true;

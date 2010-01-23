@@ -20,7 +20,12 @@
         if ($datum['pk'] == 'f') $datum['pk'] = 0;
         if (empty($datum['fk'])) $datum['fk'] = 0;
         else $datum['fk'] = "'".$datum['fk']."'";
-        $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . $datum['alm_column'] . "','" . $datum['extra']  . "');\n";
+        $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . addslashes($datum['alm_column']) . "'";
+        if (!empty($datum['extra'])) {
+          #$output .= "," . addslashes($datum['extra']);
+          $output .= "," . $datum['extra'];
+        }
+        $output .= ");\n";
       }
       $output .= "  }\n}\n";
     }
