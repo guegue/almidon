@@ -1,16 +1,4 @@
 <?php
-class paginaTable extends Table {
-  function paginaTable() {
-    $this->Table('pagina');
-    $this->key = 'idpagina';
-    $this->title ='Paginas';
-    $this->order ='pagina';
-    $this->addColumn('idpagina','serial',0,1,0,'ID');
-    $this->addColumn('pagina','varchar',500,0,0,'Titulo');
-    $this->addColumn('foto','image',0,0,0,'Foto');
-    $this->addColumn('descripcion','text',0,0,0,'Descripcion');
-  }
-}
 class personTable extends Table {
   function personTable() {
     $this->Table('person');
@@ -44,6 +32,18 @@ class personTable extends Table {
     $this->addColumn('comments','text',0,0,0,'Comments');
   }
 }
+class paginaTable extends Table {
+  function paginaTable() {
+    $this->Table('pagina');
+    $this->key = 'idpagina';
+    $this->title ='Paginas';
+    $this->order ='pagina';
+    $this->addColumn('idpagina','serial',0,1,0,'ID');
+    $this->addColumn('pagina','varchar',500,0,0,'Titulo');
+    $this->addColumn('foto','image',0,0,0,'Foto');
+    $this->addColumn('descripcion','text',0,0,0,'Descripcion');
+  }
+}
 class docTable extends Table {
   function docTable() {
     $this->Table('doc');
@@ -69,18 +69,6 @@ class planguageTable extends TableDoubleKey {
     $this->addColumn('level','int',0,0,0,'Level (1 - excellent; 5 - basic)');
   }
 }
-class pcountryTable extends TableDoubleKey {
-  function pcountryTable() {
-    $this->Table('pcountry');
-    $this->key1 = 'idperson';
-    $this->key2 = 'idcountry';
-    $this->title ='Person - Countries';
-    $this->order ='pcountry.idperson,pcountry.idcountry';
-    $this->addColumn('idperson','int',0,1,'person','Person',array('display'=>"familyname||', '||name"));
-    $this->addColumn('idcountry','char',2,1,'country','Country of experience');
-    $this->addColumn('comments','text',0,0,0,'Comments');
-  }
-}
 class enlaceTable extends Table {
   function enlaceTable() {
     $this->Table('enlace');
@@ -94,15 +82,16 @@ class enlaceTable extends Table {
     $this->addColumn('imagen','image',0,0,0,'Imagen');
   }
 }
-class galeriaTable extends Table {
-  function galeriaTable() {
-    $this->Table('galeria');
-    $this->key = 'idgaleria';
-    $this->title ='Galerias';
-    $this->order ='galeria';
-    $this->addColumn('idgaleria','serial',0,1,0,'ID');
-    $this->addColumn('galeria','varchar',500,0,0,'Titulo');
-    $this->addColumn('fecha','date',0,0,0,'Fecha');
+class pcountryTable extends TableDoubleKey {
+  function pcountryTable() {
+    $this->Table('pcountry');
+    $this->key1 = 'idperson';
+    $this->key2 = 'idcountry';
+    $this->title ='Person - Countries';
+    $this->order ='pcountry.idperson,pcountry.idcountry';
+    $this->addColumn('idperson','int',0,1,'person','Person',array('display'=>"familyname||', '||name"));
+    $this->addColumn('idcountry','char',2,1,'country','Country of experience');
+    $this->addColumn('comments','text',0,0,0,'Comments');
   }
 }
 class eomTable extends Table {
@@ -113,6 +102,17 @@ class eomTable extends Table {
     $this->order ='ideom';
     $this->addColumn('ideom','serial',0,1,0,'Id');
     $this->addColumn('eom','varchar',200,0,0,'EOM');
+  }
+}
+class galeriaTable extends Table {
+  function galeriaTable() {
+    $this->Table('galeria');
+    $this->key = 'idgaleria';
+    $this->title ='Galerias';
+    $this->order ='galeria';
+    $this->addColumn('idgaleria','serial',0,1,0,'ID');
+    $this->addColumn('galeria','varchar',500,0,0,'Titulo');
+    $this->addColumn('fecha','date',0,0,0,'Fecha');
   }
 }
 class fotoTable extends Table {
@@ -140,20 +140,6 @@ class peomTable extends TableDoubleKey {
     $this->addColumn('dateto','date',0,0,0,'To');
   }
 }
-class peducationTable extends Table {
-  function peducationTable() {
-    $this->Table('peducation');
-    $this->key = 'idpeducation';
-    $this->title ='Education';
-    $this->order ='peducation.idperson,idpeducation';
-    $this->addColumn('idpeducation','serial',0,1,0,'Id');
-    $this->addColumn('idperson','int',0,0,'person','Person',array('display'=>"familyname||', '||name"));
-    $this->addColumn('institution','varchar',500,0,0,'Institution');
-    $this->addColumn('datefrom','date',0,0,0,'From');
-    $this->addColumn('dateto','date',0,0,0,'To');
-    $this->addColumn('diploma','varchar',200,0,0,'Diploma obtained');
-  }
-}
 class agendaTable extends Table {
   function agendaTable() {
     $this->Table('agenda');
@@ -166,6 +152,20 @@ class agendaTable extends Table {
     $this->addColumn('lugar','varchar',120,0,0,'Lugar');
     $this->addColumn('texto','text',0,0,0,'Evento');
     $this->addColumn('organiza','varchar',500,0,0,'Organizado por');
+  }
+}
+class peducationTable extends Table {
+  function peducationTable() {
+    $this->Table('peducation');
+    $this->key = 'idpeducation';
+    $this->title ='Education';
+    $this->order ='peducation.idperson,idpeducation';
+    $this->addColumn('idpeducation','serial',0,1,0,'Id');
+    $this->addColumn('idperson','int',0,0,'person','Person',array('display'=>"familyname||', '||name"));
+    $this->addColumn('institution','varchar',500,0,0,'Institution');
+    $this->addColumn('datefrom','date',0,0,0,'From');
+    $this->addColumn('dateto','date',0,0,0,'To');
+    $this->addColumn('diploma','varchar',200,0,0,'Diploma obtained');
   }
 }
 class noticiaTable extends Table {

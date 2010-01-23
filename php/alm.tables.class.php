@@ -52,6 +52,7 @@ class alm_tableTable extends Table {
     $this->addColumn('pkey','varchar',32,0,0,'Primary Key');
     $this->addColumn('orden','varchar',100,0,0,'Order By');
     $this->addColumn('rank','int',0,0,0,'Orden');
+    $this->addColumn('hidden','bool',0,0,0,'Oculta');
   }
 }
 
