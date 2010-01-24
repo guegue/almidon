@@ -57,7 +57,7 @@ if(isset($_SESSION['idalm_user'])) {
     # No credentials? Go away...
 	  if(!isset($_SESSION['credentials'][$object]) && $_SESSION['idalm_user'] !== 'admin') {
 	    session_destroy(); 
-            session_start();
+      session_start();
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;	  	 
 	  }
@@ -121,8 +121,8 @@ if(isset($_SESSION['idalm_user'])) {
 	    $tpl = ALMIDONDIR . '/tpl/index.tpl';
 	  }
 	}
-        if (isset($_SESSION['credentials'][$object]))
-          $smarty->assign('credentials',$_SESSION['credentials'][$object]);
+  if (isset($_SESSION['credentials'][$object]))
+    $smarty->assign('credentials',$_SESSION['credentials'][$object]);
 	require (ALMIDONDIR . '/php/createlinks.php');
 
 	# Display object's forms (or index)

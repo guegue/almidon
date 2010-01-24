@@ -94,16 +94,6 @@ class pcountryTable extends TableDoubleKey {
     $this->addColumn('comments','text',0,0,0,'Comments');
   }
 }
-class eomTable extends Table {
-  function eomTable() {
-    $this->Table('eom');
-    $this->key = 'ideom';
-    $this->title ='EOM';
-    $this->order ='ideom';
-    $this->addColumn('ideom','serial',0,1,0,'Id');
-    $this->addColumn('eom','varchar',200,0,0,'EOM');
-  }
-}
 class galeriaTable extends Table {
   function galeriaTable() {
     $this->Table('galeria');
@@ -115,16 +105,14 @@ class galeriaTable extends Table {
     $this->addColumn('fecha','date',0,0,0,'Fecha');
   }
 }
-class fotoTable extends Table {
-  function fotoTable() {
-    $this->Table('foto');
-    $this->key = 'idfoto';
-    $this->title ='Fotos';
-    $this->order ='foto';
-    $this->addColumn('idfoto','serial',0,1,0,'ID');
-    $this->addColumn('foto','varchar',500,0,0,'Titulo');
-    $this->addColumn('imagen','image',0,0,0,'Foto');
-    $this->addColumn('idgaleria','int',0,0,'galeria','Galeria');
+class eomTable extends Table {
+  function eomTable() {
+    $this->Table('eom');
+    $this->key = 'ideom';
+    $this->title ='EOM';
+    $this->order ='ideom';
+    $this->addColumn('ideom','serial',0,1,0,'Id');
+    $this->addColumn('eom','varchar',200,0,0,'EOM');
   }
 }
 class peomTable extends TableDoubleKey {
@@ -138,6 +126,18 @@ class peomTable extends TableDoubleKey {
     $this->addColumn('ideom','int',0,1,'eom','EOM');
     $this->addColumn('datefrom','date',0,0,0,'From');
     $this->addColumn('dateto','date',0,0,0,'To');
+  }
+}
+class fotoTable extends Table {
+  function fotoTable() {
+    $this->Table('foto');
+    $this->key = 'idfoto';
+    $this->title ='Fotos';
+    $this->order ='foto';
+    $this->addColumn('idfoto','serial',0,1,0,'ID');
+    $this->addColumn('foto','varchar',500,0,0,'Titulo');
+    $this->addColumn('imagen','image',0,0,0,'Foto');
+    $this->addColumn('idgaleria','int',0,0,'galeria','Galeria');
   }
 }
 class agendaTable extends Table {
