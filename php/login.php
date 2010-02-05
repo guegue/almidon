@@ -19,6 +19,7 @@ if ($_POST && !isset($_SESSION['session'])) {
   exit;
 }
 $_SESSION['session'] = 1;
+require_once(ALMIDONDIR . '/php/lang.php');
 require_once(ALMIDONDIR . '/php/users.php');
 if(!empty($_POST)) {
   //Cargo credenciales y voy a 404 

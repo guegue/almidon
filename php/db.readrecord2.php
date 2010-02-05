@@ -6,7 +6,19 @@
     } else
       $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key1 = '$id1' AND $this->name.$this->key2 = '$id2'";
     $this->execSql($sqlcmd);
+<<<<<<< .mine
+    if (!almdata::isError($sqlcmd)) {
+      $row = almdata::fetchRow($this->data);
+      if ($this->html) {
+        foreach($row as $key=>$val)
+          $row[$key] = htmlentities($val);
+      }
+      $this->current_record = $row;
+    }
+    //$row = $this->data->fetchRow(MDB2_FETCHMODE_ASSOC);
+    //$this->current_record = $row;=======
     if (!almdata::isError($sqlcmd)) {
       $row = almdata::fetchRow($this->data);
       $this->current_record = $row;
     }
+>>>>>>> .r268

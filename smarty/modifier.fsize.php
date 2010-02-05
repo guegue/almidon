@@ -25,11 +25,16 @@
 *            2003-05-21    Version 0.1b    - initial release
 * -------------------------------------------------------------
 */
-function smarty_modifier_fsize($file, $table = 'doc',$format = '',$precision = 2, $dec_point = ".", $thousands_sep = ",")
+function smarty_modifier_fsize($file, $table = 'doc',$format = '',$precision = 2, $dec_point = ".", $thousands_sep = ",",$external=false)
 {
-  require_once SMARTY_DIR.'plugins/modifier.fsize_format.php';
-  $_file =  ROOTDIR . "/files/" . $table."/".$file;
-  $_size = filesize($_file);
+  require_once dirname(__FILE__) . '/modifier.fsize_format.php';
+  if($external)
+    $_file = $table . "/" . $file;
+  else
+    $_file =  ROOTDIR . "/files/" . $table."/".$file;
+  if(file_exists($_file)) {
+    $_size = filesize($_file);
+  }
   return smarty_modifier_fsize_format($_size,$format,$precision,$dec_point,$thousands_sep);
 } //~ end function
 ?>

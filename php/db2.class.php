@@ -102,7 +102,7 @@ class Data {
     require('db.selectmenu.php');
     return $menu;
   }
-
+  
   //Pagina los datos del query actual segun $num y $max
   function getNumbering() {
     unset($this->pg);
@@ -247,11 +247,13 @@ class Table extends Data {
         case 'image':
           $value = '';
           if (isset($this->files[$column['name']])) {
-            $filename =  mktime() . "_" . $this->request[$column['name']];
+            #$filename =  mktime() . "_" . $this->request[$column['name']];
+            $timemark = mktime();
+            $filename =  $timemark . "_" . $this->request[$column['name']];
             if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
             move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
             $this->request[$column['name']] = $filename;
-            if ($column['extra'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']);
+            if ($column['extra'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
             if(isset($sizes)) {
               foreach($sizes as $size) {
                 $image = imagecreatefromstring(file_get_contents(ROOTDIR.'/files/'.$this->name.'/'.$filename));
@@ -261,7 +263,10 @@ class Table extends Data {
                 if (!$alto) $alto = ceil($alto_original*($ancho/$ancho_original));
                 $new_image = imagecreatetruecolor ($ancho, $alto);
                 imagecopyresampled($new_image, $image, 0, 0, 0, 0, $ancho, $alto, $ancho_original, $alto_original);
-                imagejpeg($new_image,PIXDIR.'/'.$size.'_'.$filename,72);
+                #imagejpeg($new_image,PIXDIR.'/'.$size.'_'.$filename,72);
+                #this code puts the year and month
+                if(file_exists(PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark)) || mkdir(PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark),0777,true))
+                  imagejpeg($new_image , PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark) . '/' . $ancho . ($alto?"x$alto":"") . '_' . $filename,72);
               }
             }
             $value = almdata::escape($this->request[$column['name']]);
@@ -523,6 +528,10 @@ class Table extends Data {
 
   function dumpData() {
     require('db.dumpdata.php');
+  }
+  
+  function escape($var) {
+  	  return almdata::escape($var);
   }
 
 }

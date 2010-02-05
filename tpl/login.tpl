@@ -4,8 +4,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>almidon @ {$smarty.const.DOMAIN}</title>
+<link rel="stylesheet" href="{$smarty.const.URL}/cms/css/admin_login.css" />
 {literal}
-<link rel="stylesheet" href="/cms/css/admin_login.css" />
 <script language="javascript" type="text/javascript">
 	function setFocus() {
 		document.loginForm.alm_user.select();
@@ -18,7 +18,7 @@
 <div align="center">
 	<div class="login">
 		<div>
-        		<p><img src="/img/almidon-atma.png" width="262" height="78" alt="Almidon Logo" title="Almidon" /></p>
+        		<p><img src="{$smarty.const.URL}/img/almidon-atma.png" width="262" height="78" alt="{$smarty.const.DOMAIN} - Website Logo" title="{$smarty.const.DOMAIN} - WebSite Logo" /></p>
     		</div>
         	<form action="" method="post" id="loginForm" name="loginForm">
 			<div class="form-block">
