@@ -18,7 +18,7 @@
 <div align="center">
 	<div class="login">
 		<div>
-        		<p><img src="{$smarty.const.URL}/img/almidon-atma.png" width="262" height="78" alt="{$smarty.const.DOMAIN} - Website Logo" title="{$smarty.const.DOMAIN} - WebSite Logo" /></p>
+        		<p><img src="{$smarty.const.URL}/img/website-logo.png" width="262" height="78" alt="{$smarty.const.DOMAIN} - Website Logo" title="{$smarty.const.DOMAIN} - WebSite Logo" /></p>
     		</div>
         	<form action="" method="post" id="loginForm" name="loginForm">
 			<div class="form-block">

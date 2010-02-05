@@ -49,7 +49,7 @@ if(isset($_SESSION['idalm_user'])) {
     # Wanna go away? Go away...
 	  if ($object == 'logout') {
 	    session_destroy();
-            session_start();
+      session_start();
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;
 	  }
