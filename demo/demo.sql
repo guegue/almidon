@@ -11,11 +11,11 @@ ALTER DATABASE almidondemo OWNER TO almidondemo;
 -- *********************************
 
 DROP TABLE IF EXISTS alm_table CASCADE;
-CREATE TABLE alm_table (idalm_table varchar(16) PRIMARY KEY, alm_table varchar(100), pkey varchar(32), orden varchar (100), rank int);
+CREATE TABLE alm_table (idalm_table varchar(48) PRIMARY KEY, alm_table varchar(100), pkey varchar(50), orden varchar (100), rank int, hidden bool);
 ALTER TABLE public.alm_table OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_column CASCADE;
-CREATE TABLE alm_column (idalm_column varchar (32), idalm_table varchar (32) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(16), alm_column varchar(100), extra text, rank int, PRIMARY KEY (idalm_column, idalm_table));
+CREATE TABLE alm_column (idalm_column varchar (50), idalm_table varchar (48) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(48), alm_column varchar(100), extra text, rank int, PRIMARY KEY (idalm_column, idalm_table));
 ALTER TABLE public.alm_column OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_role CASCADE;
@@ -27,7 +27,7 @@ CREATE TABLE alm_user (idalm_user varchar(16) PRIMARY KEY, idalm_role varchar(8)
 ALTER TABLE public.alm_user OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_access CASCADE;
-CREATE TABLE alm_access (idalm_role varchar(8) REFERENCES alm_role NULL, idalm_user varchar(16) REFERENCES alm_user , idalm_table varchar(16) REFERENCES alm_table, idalm_access serial PRIMARY KEY);
+CREATE TABLE alm_access (idalm_role varchar(8) REFERENCES alm_role NULL, idalm_user varchar(16) REFERENCES alm_user , idalm_table varchar(48) REFERENCES alm_table, idalm_access serial PRIMARY KEY);
 ALTER TABLE public.alm_access OWNER TO almidondemo;
 
 -- especificamos id porque puede usarse 'hard-coded' en algun lado

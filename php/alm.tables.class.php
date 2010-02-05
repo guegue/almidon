@@ -47,9 +47,9 @@ class alm_tableTable extends Table {
     $this->title = 'Tablas';
     $this->maxrows = 20;
     $this->order = 'rank';
-    $this->addColumn('idalm_table','varchar',32,1,0,'Id');
+    $this->addColumn('idalm_table','varchar',48,1,0,'Id');
     $this->addColumn('alm_table','varchar',100,0,0,'Descripcion');
-    $this->addColumn('pkey','varchar',32,0,0,'Primary Key');
+    $this->addColumn('pkey','varchar',50,0,0,'Primary Key');
     $this->addColumn('orden','varchar',100,0,0,'Order By');
     $this->addColumn('rank','int',0,0,0,'Orden');
     $this->addColumn('hidden','bool',0,0,0,'Oculta');
@@ -64,13 +64,13 @@ class alm_columnTable extends TableDoubleKey {
     $this->title = 'Campos';
     $this->maxrows = 20;
     $this->order = 'idalm_table,rank';
-    $this->addColumn('idalm_table','varchar',32,0,'alm_table','Table');
-    $this->addColumn('idalm_column','varchar',32,1,0,'Id');
+    $this->addColumn('idalm_table','varchar',48,0,'alm_table','Table');
+    $this->addColumn('idalm_column','varchar',50,1,0,'Id');
     $this->addColumn('type','varchar',16,0,0,'Type');
     $this->addColumn('size','int',0,0,0,'Size');
     $this->addColumn('rank','int',0,0,0,'Orden');
     $this->addColumn('pk','bool',0,0,0,'Primary Key?');
-    $this->addColumn('fk','varchar',16,0,0,'Foreign Key Table');
+    $this->addColumn('fk','varchar',48,0,0,'Foreign Key Table');
     $this->addColumn('alm_column','varchar',100,0,0,'Description');
     $this->addColumn('extra','text',0,0,0,'Extras');
   }
