@@ -27,6 +27,7 @@ function check_user($user, $pass) {
   } elseif(is_array($alm_user_data)) {
     //Cargar Credenciales
     $_SESSION['credentials'] = get_credentials($alm_user_data[0]['idalm_user']);
+    $_SESSION['idalm_role'] = $alm_user_data[0]['idalm_role'];
     $_SESSION['idalm_user'] = $alm_user_data[0]['idalm_user'];
     $_SESSION['alm_user'] = $alm_user_data[0]['alm_user'];
     return true;

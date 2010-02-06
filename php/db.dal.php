@@ -78,7 +78,7 @@ class AlmData {
   function connect($dsn, $options = false) {
 
     global $alm_connect;
-
+    
     list($dbtype,$dbname,$host,$username,$pass) = almdata::parseDSN($dsn);
 
     if (!isset($alm_connect[$dsn])) {
@@ -166,7 +166,19 @@ class AlmData {
   }
   function query($sqlcmd) {
     $db_query = $this->db_query;
-    return @$db_query($sqlcmd);
+ 
+    # Modificado - Christian - sino se agrega estas lineas cuando halla más de una cnx abierta mantiene la primera abierta
+    global $alm_connect;
+    global $DSN;
+
+    if(count($alm_connect) >= 1) {
+      if(!empty($DSN)) $cnx = $alm_connect[$DSN];
+      elseif(defined('DSN')) $cnx = $alm_connect[DSN];
+      else list($cnx) = $alm_connect;
+    } else $cnx = null;
+    # End Modificado
+
+    return @$db_query($cnx, $sqlcmd);
   }
   function fetchRow($data = null, $assoc = true) {
     if ($assoc)

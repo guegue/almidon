@@ -9,6 +9,7 @@
  * @version login.php,v 20091022 Alejandro y Alexis
  * @package almidon
  */
+
 if (!isset($_SESSION))
   session_start();
 if ($_POST && !isset($_SESSION['session'])) {

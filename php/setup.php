@@ -1,11 +1,11 @@
 <?php
+define ('ADMIN', true);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 require_once('setup.gensql.php');
 require_once('setup.tests.php');
 require_once('setup.dd.php');
 
 $alm_tables = "/^(alm_table|alm_user|alm_access|alm_role|alm_column)$/";
-if (!defined('ADMIN')) define ('ADMIN', true);
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
@@ -87,8 +87,6 @@ if (!empty($action)) {
     } elseif($type == 'mysql') {
       $sqlcmd = "SHOW TABLES LIKE 'alm_%'";
     }
-    $data = new Data();
-    $data->getList($sqlcmd);
     $var = $data->getList($sqlcmd);
     if (count($var) >= 5) {
       $output .= '<br/>Tablas de almidon ya existen. Re-generando solo meta-datos.<br/>';

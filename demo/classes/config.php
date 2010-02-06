@@ -45,5 +45,4 @@ define ('MAXROWS', 5);
 define ('MAXCOLS', 6);
 
 # Constantes de valores (IDs) de las tablas
-
 define('IDPAGINA', 1);
