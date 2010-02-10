@@ -128,12 +128,14 @@ function smarty_function_datagrid2($params, &$smarty)
       case 'dd':
         $$_key = (array)$_val;
         break;
+      case 'shortEdit':
+        if(isset($params[$_key])) $$_key = (bool)$_val;
+        break;
       case 'paginate':
       case 'cmd':
       case 'truncate':
       case 'have_detail': 
       case 'is_detail':
-      case 'shortEdit':
         $$_key = (bool)$_val;
         break;
       case 'selected':
