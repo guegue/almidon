@@ -3,7 +3,7 @@
 <tr valign="top">
 <td>
 {if $smarty.const.DB3 === true}
-  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:8 paginate=true cmd=$cmd|default:true name=$object have_detail=$have_detail num_rows=$num_rows}
+  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:8 paginate=true cmd=$cmd|default:true name=$object have_detail=$have_detail num_rows=$num_rows shortEdit=$shortEdit}
 {else}
   {if $rows}
   {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object num_rows=$num_rows}
