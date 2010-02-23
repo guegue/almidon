@@ -23,7 +23,7 @@ $subdir = $params[4];
 $filename = $params[5];
 
 # Gets image info
-$fullpath = ROOTDIR . '/files/' . $subdir . '/' . $filename;
+$fullpath = ROOTDIR . '/files/' . $subdir . '/' . urldecode($filename);
 $getimagesizeinfo = getimagesize($fullpath);
 $mime = $getimagesizeinfo['mime'];
 $ImageCreateFromFunction = array(

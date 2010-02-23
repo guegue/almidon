@@ -302,6 +302,10 @@ function smarty_function_datagrid2($params, &$smarty)
               $_tmp = preg_replace("/_VALUE_/", qdollar($_val), DGCELLMODTXT);
               $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
               break;
+            case 'xhtml':
+              $_tmp = '<textarea rows="5" cols="40" class="adm" id="grid' . $_key . '" name="' . $_key . '"'.(($dd[$_key]['extra']['style'])?' style="'.$dd[$_key]['extra']['style'].'"':'').'>' . $_val . '</textarea>';
+              $_tmp .= "<script language=\"JavaScript\">\ntinyMCE.execCommand(\"mceAddControl\", true,\"grid$_key\");\n</script>\n";
+              break;
             case 'varchar':
             case 'char':
               if ($dd[$_key]['extra']['arr_values']) {
