@@ -167,7 +167,7 @@ class AlmData {
   function query($sqlcmd) {
     $db_query = $this->db_query;
  
-    return @$db_query($cnx, $sqlcmd);
+    return @$db_query($sqlcmd);
   }
   function fetchRow($data = null, $assoc = true) {
     if ($assoc)
