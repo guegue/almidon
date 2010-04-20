@@ -6,8 +6,5 @@ if(defined('ALM_DETECT_LANG') && ALM_DETECT_LANG===true) {
 } elseif(defined('ALM_LANG')) {
   if(file_exists(dirname(__FILE__) . '/lang.' . ALM_LANG . '.php'))  include dirname(__FILE__) . '/lang.' . ALM_LANG . '.php';
 } else {
-  setlocale(LC_TIME, 'es_ES');
+  include(include dirname(__FILE__) . '/lang.es.php' );
 }
-# End
-
-include(include dirname(__FILE__) . '/lang.es.php' );
