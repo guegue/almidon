@@ -26,7 +26,7 @@ if(!defined('ALM_ADMIN_TITLE'))  define('ALM_ADMIN_TITLE','Administración');
 if(!defined('ALM_WCOME')) define('ALM_WCOME','Bienvenido! Conectado como:');
 if(!defined('ALM_SEARCH_LB')) define('ALM_SEARCH_LB','Buscar');
 if(!defined('ALM_RESET_LB')) define('ALM_RESET_LB','Limpiar');
-if(!defined('ALM_NODATA')) define('ALM_NODATA','No hay Datos');
+if(!defined('ALM_NODATA')) define('ALM_NODATA','No hay datos');
 if(!defined('ALM_SHOWALL')) define('ALM_SHOWALL','Mostrar todo');
 if(!defined('ALM_LOGIN')) define('ALM_LOGIN','Entrar');
 if(!defined('ALM_LOGOUT')) define('ALM_LOGOUT','Salir');
