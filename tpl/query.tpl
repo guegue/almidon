@@ -31,7 +31,7 @@ window.close();
 {if $row}
   {if $smarty.const.DB3 === true}{dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{else}{dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}{/if}
 {else}
-  No hay datos.
+  {$smarty.const.ALM_NODATA}
 {/if}
 </body>
 </html>

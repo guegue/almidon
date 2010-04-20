@@ -5,7 +5,7 @@
 {if $rows}{$cmd}
   {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=7 maxrows=10 paginate=true cmd=$cmd|default:true name=$object}
 {else}
-  No hay datos.
+  {$smarty.const.ALM_NODATA}
 {/if}
 </td>
 </tr>
