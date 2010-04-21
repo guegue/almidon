@@ -14,7 +14,3 @@
       }
       $this->current_record = $row;
     }
-    if (!almdata::isError($sqlcmd)) {
-      $row = almdata::fetchRow($this->data);
-      $this->current_record = $row;
-    }
