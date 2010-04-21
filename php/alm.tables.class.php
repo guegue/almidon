@@ -3,7 +3,7 @@ class alm_userTable extends Table {
   function alm_userTable() {
     $this->Table('alm_user');
     $this->key = 'idalm_user';
-    $this->title = 'Usuarios';
+    $this->title = ALM_USERS;
     $this->maxrows = 20;
     $this->order = 'idalm_user';
     $this->addColumn('idalm_user','varchar',16,1,0,'Id');
@@ -18,7 +18,7 @@ class alm_roleTable extends Table {
   function alm_roleTable() {
     $this->Table('alm_role');
     $this->key = 'idalm_role';
-    $this->title = 'Roles';
+    $this->title = ALM_ROLES;
     $this->maxrows = 20;
     $this->order = 'idalm_role';
     $this->addColumn('idalm_role','varchar',8,1,0,'Id');
@@ -30,7 +30,7 @@ class alm_accessTable extends Table {
   function alm_accessTable() {
     $this->Table('alm_access');
     $this->key = 'idalm_access';
-    $this->title = 'Acceso';
+    $this->title = ALM_ACCESS;
     $this->maxrows = 20;
     $this->order = 'idalm_access';
     $this->addColumn('idalm_access','serial',0,1,0,'Id');
@@ -44,7 +44,7 @@ class alm_tableTable extends Table {
   function alm_tableTable() {
     $this->Table('alm_table');
     $this->key = 'idalm_table';
-    $this->title = 'Tablas';
+    $this->title = ALM_TABLES;
     $this->maxrows = 20;
     $this->order = 'rank';
     $this->addColumn('idalm_table','varchar',48,1,0,'Id');
@@ -61,7 +61,7 @@ class alm_columnTable extends TableDoubleKey {
     $this->Table('alm_column');
     $this->key1 = 'idalm_column';
     $this->key2 = 'idalm_table';
-    $this->title = 'Campos';
+    $this->title = ALM_FIELDS;
     $this->maxrows = 20;
     $this->order = 'idalm_table,rank';
     $this->addColumn('idalm_table','varchar',48,0,'alm_table','Table');

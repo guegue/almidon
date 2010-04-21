@@ -25,6 +25,11 @@ define('ALM_NO_COOKIE','No session support. You must enable cookies support befo
 define('ALM_LOGIN','Login');
 define('ALM_LOGOUT','Logout');
 define('ALM_SETUP','Setup');
+define('ALM_USERS','Users');
+define('ALM_ROLES','Roles');
+define('ALM_ACCESS','Access');
+define('ALM_TABLES','Tables');
+define('ALM_FIELDS','Fields');
 
 # Set locale, for dates
 setlocale(LC_TIME, 'en_US.UTF-8');

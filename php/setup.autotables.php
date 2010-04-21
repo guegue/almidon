@@ -18,6 +18,8 @@
       } else {
         $output .= "    \$this->key = '".$table_datum['pkey']."';\n";
       }
+      $hidden = ($table_datum['hidden'] == 't') ? 'true' : 'false';
+      $output .= "    \$this->hidden = ".$hidden.";\n";
       $output .= "    \$this->title ='".$table_datum['alm_table']."';\n";
       if (!empty($table_datum['orden']))
         $output .= "    \$this->order ='".$table_datum['orden']."';\n";
@@ -41,6 +43,8 @@
       if (!is_writable(ROOTDIR.'/classes/tables.class.php')) {
         $saved = false;
       } else {
+        $today = date('YmdHis');
+        copy(ROOTDIR.'/classes/tables.class.php', ROOTDIR.'/logs/tables.class.'.$today.'.php');
         $fp = fopen(ROOTDIR.'/classes/tables.class.php', 'w');
         fwrite($fp, "<?php\n$output");
         fclose($fp);

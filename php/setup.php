@@ -80,6 +80,10 @@ if (!empty($action)) {
   switch ($action) {
   case 'alm_tables':
     $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/almidon.sql');
+
+    # Remove OWNER TO, since only postgres can do so
+    $alm_sqlcmd = preg_replace('/^(.*)OWNER TO(.*);$/m','',$alm_sqlcmd);
+
     $data = new Data();
     list($type,$tmp) = preg_split('/:\/\//',$admin_dsn);
     if ($type == 'pgsql') {
@@ -108,7 +112,7 @@ if (!empty($action)) {
       $alm_column->execSql("DELETE FROM alm_column WHERE idalm_table='$key'");
       $alm_table->deleteRecord($key);
       $alm_table->request['idalm_table'] = $key;
-      $alm_table->request['key'] = $data->key;
+      $alm_table->request['pkey'] = $data->key;
       $alm_table->request['alm_table'] = $data->title;
       $alm_table->request['orden'] = $data->order;
       $alm_table->request['rank'] = $rank;
@@ -227,6 +231,8 @@ if (!empty($action)) {
       if (!is_writable(ROOTDIR.'/classes/tables.class.php')) {
         print "No se puede escribir en classes/tables.class.php. Copiar el siguiente c&oacute;digo manualmente a tables.class.php:<br/><br/>\n";
       } else {
+        $today = date('YmdHis');
+        copy(ROOTDIR.'/classes/tables.class.php', ROOTDIR.'/logs/tables.class.'.$today.'.php');
         $fp = fopen(ROOTDIR.'/classes/tables.class.php', 'w');
         fwrite($fp, "<?php\n$output");
         fclose($fp);
