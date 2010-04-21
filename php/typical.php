@@ -161,7 +161,8 @@ if (isset($edit))
   $smarty->assign('edit', $edit);
 if (isset($row))
   $smarty->assign('row', $row);
-$smarty->assign('shortEdit',$$object->shortEdit);
+if (isset($$object->shortEdit))
+  $smarty->assign('shortEdit',$$object->shortEdit);
 $smarty->assign('options', fillOpt($$object));
 
 # Limits/Paginando

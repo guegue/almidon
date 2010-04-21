@@ -66,7 +66,11 @@ class Data {
     if ($this->data && (strpos($sqlcmd,'SELECT') !== false))
       $this->num = $this->data->numRows();
   }
-  // }}} query
+
+  function http_auth_user() {
+    require('db.http_auth_user.php');
+    return $auth_user;
+  }
 
   // {{{ funciones lectura de datos
   //Mejor usar readDataSQL, funcion repetida
@@ -149,24 +153,6 @@ class Table extends Data {
     if ($schema && $schema != 'public')
       $this->query("SET search_path = $schema, public, pg_catalog");
     $this->hide = false;
-  }
-
-  function http_digest_parse($digest = null) {
-    if(!isset($digest)) $digest = $_SERVER['PHP_AUTH_DIGEST'];
-    # edit needed parts, as you  want
-    preg_match_all('@(username|nonce|uri|nc|cnonce|qop|response)'.'=[\'"]?([^\'",]+)@', $digest, $t);
-    $data = array_combine($t[1], $t[2]);
-    # all parts found?
-    return (count($data)==7) ? $data : false;
-  }
-
-  function http_auth_user() {
-    if(!empty($_SERVER['PHP_AUTH_DIGEST'])) {
-      $_data = $this->http_digest_parse();
-      return $_data['username'];
-    } else {
-      return $_SERVER['PHP_AUTH_USER'];
-    }
   }
 
   // {{{ refreshFields()

@@ -66,6 +66,11 @@ class Data {
     }
   }
 
+  function http_auth_user() {
+    require('db.http_auth_user.php');
+    return $auth_user;
+  }
+
   //Mejor usar readDataSQL, funcion repetida
   function readList($sqlcmd) {
     $this->execSql($sqlcmd);

@@ -5,6 +5,11 @@ function performTests() {
     $red = '<font color="red">FALL&Oacute;</font>';
     $green = '<font color="green">PAS&Oacute;</font>';
     $test_output = "Probando conexion a base de datos (admin)... ";
+
+    # Old versions don't use admin_dsn public_dsn but simply a DSN constant
+    if (!isset($admin_dsn)) $admin_dsn = DSN;
+    if (!isset($public_dsn)) $public_dsn = DSN;
+
     $db = almdata::connect ($admin_dsn);
     if (almdata::basicError($db, $admin_dsn) || !$alm_connect[$admin_dsn]) {
       $error_msg = almdata::basicError($db, $admin_dsn);

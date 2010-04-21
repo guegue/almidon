@@ -78,7 +78,7 @@ class AlmData {
   function connect($dsn, $options = false) {
 
     global $alm_connect;
-    
+
     list($dbtype,$dbname,$host,$username,$pass) = almdata::parseDSN($dsn);
 
     if (!isset($alm_connect[$dsn])) {
