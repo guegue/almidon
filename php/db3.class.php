@@ -219,9 +219,9 @@ class Table extends Data {
 	  - sizes
 	  - range
       - defualt
-	  - arr_values
+	  - list_values
 	  - label_bool
-	  - filteropt
+	  - filter
 	  For FK (Foreign Key)
       - display
       - alias
@@ -402,7 +402,7 @@ class Table extends Data {
 	      if(file_exists(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']])) unlink(ROOTDIR . "/files/" . $this->name . "/" . $this->request['old_'.$column['name']]);
   	      if ($column['extra']['sizes'] && defined('PIXDIR'))  $sizes = explode(',',trim($column['extra']['sizes']));
      	      if (isset($sizes)) {
-       	        // esta linea da un warning: Warning: Wrong parameter count for strpos() in /www/cms/php/db3.class.php on line 550 Warning: Wrong parameter count for substr() in /www/cms/php/db3.class.php on line 550
+       	        // FIXME: esta linea da un warning: Warning: Wrong parameter count for strpos() in /www/cms/php/db3.class.php on line 550 Warning: Wrong parameter count for substr() in /www/cms/php/db3.class.php on line 550
 	        $timemark = getdate(substr($this->request['old_'.$column['name']],0,strpos($this->request['old_'.$column['name']]),"_"));
                 if ($timemark['mon']<10 && strlen($timemark['mon'])==1)  $timemark['mon'] = "0" . $timemark['mon'];
                 if($sizes)

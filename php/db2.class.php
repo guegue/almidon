@@ -143,6 +143,7 @@ class Table extends Data {
   function Table($name, $schema = 'public') {
     $this->Data();
     $this->name = $name;
+    # FIXME: schemas solo los soporta postgresql? estamos usando esto?
     $this->schema = $schema;
     if ($schema && $schema != 'public')
       $this->query("SET search_path = $schema, public, pg_catalog");

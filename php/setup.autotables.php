@@ -32,10 +32,14 @@
         if ($datum['pk'] == 'f') $datum['pk'] = 0;
         if (empty($datum['fk'])) $datum['fk'] = 0;
         else $datum['fk'] = "'".$datum['fk']."'";
+        if (!empty($datum['idalm_role'])) {
+          $extra = "array('role'=>'".$datum['idalm_role']."')";
+        }
         $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . addslashes($datum['alm_column']) . "'";
-        if (!empty($datum['extra'])) {
+        if (!empty($extra)) {
           #$output .= "," . addslashes($datum['extra']);
-          $output .= "," . $datum['extra'];
+          $output .= "," . $extra;
+          unset($extra);
         }
         $output .= ");\n";
       }

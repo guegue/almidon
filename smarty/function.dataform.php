@@ -147,7 +147,9 @@ function smarty_function_dataform($params, &$smarty)
   $_html_rows = '';
   $_html_result = '';
 
-  # Crea las filas del dataform
+  #
+  # Crea las filas del dataform en modo edicion
+  #
   $_i = 0;
   if ($type) {
     foreach ((array)$dd as $_key=>$_val) {
@@ -156,6 +158,10 @@ function smarty_function_dataform($params, &$smarty)
       }
       if ($type == 2) $_val = '';
       if ($type == 1) $_val = $row[$_val['name']];
+      # Tenemos permiso para mostrar este campo?
+      if (isset($dd[$_key]['extra']['role']) && $dd[$_key]['extra']['role'] !== $_SESSION['idalm_role']) {
+        $dd[$_key]['type'] = 'hidden';
+      }
       if ($dd[$_key]['references'] && $dd[$_key]['type'] != 'hidden') {
         if ($_preset[$_key]) {
           $_selected = $_preset[$_key];
@@ -240,13 +246,8 @@ function smarty_function_dataform($params, &$smarty)
           break;
         case 'varchar':
         case 'char':
-          if (preg_match('/=/', $dd[$_key]['extra'])) {
-            $_list = preg_split('/:/', $dd[$_key]['extra']);
-            $_options = '';
-            foreach($_list as $_list_pair) {
-              list($_list_key, $_list_val) = preg_split('/=/', $_list_pair);
-              $_options[$_list_key] = $_list_val; 
-            }
+          if ($dd[$_key]['extra']['list_values']) {
+            $_options = $dd[$_key]['extra']['list_values'];
             $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_val), $smarty);
             $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
@@ -259,9 +260,16 @@ function smarty_function_dataform($params, &$smarty)
           break;
         case 'numeric':
         case 'int':
-          $_tmp = preg_replace("/_VALUE_/", $_val, FCELLMODSTR);
-          $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
-          $_tmp = preg_replace("/_SIZE_/", 10, $_tmp);
+          if ($dd[$_key]['extra']['list_values']) {
+            $_options = $dd[$_key]['extra']['list_values'];
+            $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_val), $smarty);
+            $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
+            $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+          } else {
+            $_tmp = preg_replace("/_VALUE_/", $_val, FCELLMODSTR);
+            $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+            $_tmp = preg_replace("/_SIZE_/", 10, $_tmp);
+          }
           break;
         case 'references':
           if ($_preset[$_key]) {
@@ -288,10 +296,17 @@ function smarty_function_dataform($params, &$smarty)
       $hidden = false;
     }
   } else {
+  #
+  # Crea las filas del dataform en modo lectura
+  #
     foreach ((array)$row as $_key=>$_val) {
       $_tmp = '';
       if (!$dd[$_key]) {
         continue;
+      }
+      # Tenemos permiso para mostrar este campo?
+      if (isset($dd[$_key]['extra']['role']) && $dd[$_key]['extra']['role'] !== $_SESSION['idalm_role']) {
+        $dd[$_key]['type'] = 'hidden';
       }
       if ($dd[$_key]['references']) {
         if (!isset($references[$dd[$_key]['references']])) $references[$dd[$_key]['references']] = 0;
@@ -301,13 +316,8 @@ function smarty_function_dataform($params, &$smarty)
       }
       switch ($dd[$_key]['type']) {
         case 'char':
-          if (preg_match('/=/', $dd[$_key]['extra'])) {
-            $_list = preg_split('/:/', $dd[$_key]['extra']);
-            $_options = '';
-            foreach($_list as $_list_pair) {
-              list($_list_key, $_list_val) = preg_split('/=/', $_list_pair);
-              $_options[$_list_key] = $_list_val; 
-            }
+          if ($dd[$_key]['extra']['list_values']) {
+            $_options = $dd[$_key]['extra']['list_values'];
             $_tmp = $_options[$_val];
           } else {
             $_tmp = smarty_modifier_truncate($_val, 50);
@@ -353,9 +363,18 @@ function smarty_function_dataform($params, &$smarty)
           $_tmp = '';
           break;
         default:
-          #$_tmp = smarty_modifier_truncate($_val, 50);
-          $_tmp = smarty_modifier_wordwrap($_val);
-          $_tmp = smarty_modifier_nl2br($_tmp);
+          if($dd[$_key]['extra']['list_values']) {
+            $_options = $dd[$_key]['extra']['list_values'];
+            $_val = $_options[trim($_val)];
+          }
+          if($_preset[$_key]) {
+            $_tmp = '';
+            if(!empty($_pre))   $_pre .= ',';
+            $_pre .= $_key .'='.$_preset[$_key];
+          } else {
+            $_tmp = smarty_modifier_wordwrap($_val);
+            $_tmp = smarty_modifier_nl2br($_tmp);
+          }
       }
       $_tmp = preg_replace('/_FCELL_/', qdollar($_tmp), FROW);
       $_tmp = preg_replace('/_LABEL_/', $labels[$_key], $_tmp);

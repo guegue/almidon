@@ -217,8 +217,8 @@ function fillOpt(&$object) {
       # esto sucede solo si extra esta manteniendo el formato ordenado de array de la version db3
       } elseif (!isset($object->dd[$key]['extra']['depend']) && !isset($object->dd[$key]['extra']['readonly'])) {
         $where = '';
-        if(isset($object->dd[$key]['extra']['filteropt']))
-          $where = $object->dd[$key]['extra']['filteropt'];
+        if(isset($object->dd[$key]['extra']['filter']))
+          $where = $object->dd[$key]['extra']['filter'];
         if(isset($object->dd[$key]['extra']['display'])) {
           $ot = $object->dd[$key]['references'] . 'Table';
           $robject = new $ot;

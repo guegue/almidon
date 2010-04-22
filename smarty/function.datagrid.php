@@ -171,14 +171,20 @@ function smarty_function_datagrid($params, &$smarty)
   $_html_rows = '';
   $_html_result = '';
 
+  #
   # Crea los encabezados del datagrid
+  #
   $_cols = 0;
 
   if (!empty($headers)) {
     foreach ($headers as $_key=>$_val) {
       if ($maxcols && ($_cols >= $maxcols))
         break;
-      if ($parent == $_key || $dd[$_key]['type'] == 'external')
+      # Tenemos permiso para mostrar este campo?
+      if (isset($dd[$_key]['extra']['role']) && $dd[$_key]['extra']['role'] !== $_SESSION['idalm_role']) {
+        $dd[$_key]['type'] = 'hidden';
+      }
+      if ($parent == $_key || $dd[$_key]['type'] == 'external' || $dd[$_key]['type'] == 'hidden')
         continue;
       $_html_header = DGHEADERCELL;
 
@@ -219,17 +225,14 @@ function smarty_function_datagrid($params, &$smarty)
       ++$_cols;
     }
   }
-  
-  # Crea las filas del datagrid
+ 
   $_i = 0;
   $pg = ($_SESSION[$name . 'pg']) ? $_SESSION[$name . 'pg'] : 1; 
   foreach ((array)$rows as $row) {
     unset($references);
-    /* if ($paginate && $_SESSION[$name . 'pg'] && $_i < ($maxrows * ($pg - 1) )) {
-      $_need_paginate = true;
-      $_i++;
-      continue;
-    } */
+    # 
+    # Crea las filas del datagrid en modo edicion
+    #
     $_html_row = '';
     $_chosen = ($key2) ? ($_REQUEST[$key1] == $row[$key1] && $_REQUEST[$key2] == $row[$key2]) : ($_REQUEST[$key] == $row[$key]); 
     if ($_REQUEST['f'] == $name && $_REQUEST['action'] == 'mod' && $_chosen) {
@@ -239,6 +242,10 @@ function smarty_function_datagrid($params, &$smarty)
           break;
         if (!$dd[$_key]) {
           continue;
+        }
+        # Tenemos permiso para mostrar este campo?
+        if (isset($dd[$_key]['extra']['role']) && $dd[$_key]['extra']['role'] !== $_SESSION['idalm_role']) {
+          $dd[$_key]['type'] = 'hidden';
         }
         if ($parent == $_key) {
           $parentid = $_val;
@@ -252,9 +259,6 @@ function smarty_function_datagrid($params, &$smarty)
           $dd[$_key]['type'] = 'references';
         }
         switch ($dd[$_key]['type']) {
-          case 'hidden':
-            $_tmp = '<input type="hidden" name="'.$_key.'" value="'.$_val.'"  />';
-            break;
           case 'file':
           case 'image':
           case 'img':
@@ -321,6 +325,13 @@ function smarty_function_datagrid($params, &$smarty)
           case 'order':
             $_tmp = '- +';
             break;
+          #case 'hidden':
+          #  $_tmp = '<input type="hidden" name="'.$_key.'" value="'.$_val.'"  />';
+          #  break;
+          case 'hidden':
+            $hidden = true;
+            $_tmp = '';
+            break;
           default:
             $_tmp = $_val;
         }
@@ -341,12 +352,19 @@ function smarty_function_datagrid($params, &$smarty)
       }
       $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmdmod);
     } else {
+    # 
+    # Crea las filas del datagrid en modo lectura
+    #
       $_cols = 0;
       foreach ($row as $_key=>$_val) {
         if ($maxcols && ($_cols >= $maxcols))
           break;
         if (!$dd[$_key] || $dd[$_key]['type'] == 'external') {
           continue;
+        }
+        # Tenemos permiso para mostrar este campo?
+        if (isset($dd[$_key]['extra']['role']) && $dd[$_key]['extra']['role'] !== $_SESSION['idalm_role']) {
+          $dd[$_key]['type'] = 'hidden';
         }
         if ($parent == $_key) {
           $parentid = $_val;
@@ -412,11 +430,15 @@ function smarty_function_datagrid($params, &$smarty)
           case 'order':
             $_tmp = '<a href="' . $_SERVER['PHP_SELF'] . '?move=up&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/up.gif" border="0"/></a> <a href="' . $_SERVER['PHP_SELF'] . '?move=down&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/down.gif" border="0"/></a>';
             break;
+          case 'hidden':
+            $hidden = true;
+            $_tmp = '';
+            break;
           case 'text':
-         case 'html':
+          case 'html':
           case 'xhtml':
             # strip_tags quita los tags [x]html, preg_replace reemplaza los &nbsp; por espacio en blanco, el otro preg_replace quita mas de un espacio en blanco conjunto y lo reemplaza por un solo espacio y trim quita los espacios en blanco al final e inicio de la cadena.
-      $_val = trim(preg_replace('/\s\s+/',' ',preg_replace('/&nbsp;/',' ',strip_tags($_val))));
+            $_val = trim(preg_replace('/\s\s+/',' ',preg_replace('/&nbsp;/',' ',strip_tags($_val))));
           default:
             if ($truncate)
               $_tmp = smarty_modifier_truncate($_val, 50);
@@ -424,8 +446,11 @@ function smarty_function_datagrid($params, &$smarty)
               $_tmp = smarty_modifier_wordwrap($_val, 50, "<br/>");
             $_tmp = smarty_modifier_url($_tmp);
         }
-        $_html_row .= preg_replace("/_VALUE_/", qdollar($_tmp), DGCELL);
-        $_cols++;
+        if ($dd[$_key]['type'] != 'hidden') {
+          $_tmp = preg_replace("/_VALUE_/", qdollar($_tmp), DGCELL);
+          $_cols++;
+        }
+        $_html_row .= $_tmp;
       }
       if ($key2) {
         if ($_cols <= 3 || $parent){

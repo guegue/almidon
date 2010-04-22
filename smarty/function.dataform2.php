@@ -305,8 +305,8 @@ function smarty_function_dataform2($params, &$smarty)
 	  break;
         case 'varchar':
         case 'char':
-          if ($dd[$_key]['extra']['arr_values']) {
-            $_options = $dd[$_key]['extra']['arr_values'];
+          if ($dd[$_key]['extra']['list_values']) {
+            $_options = $dd[$_key]['extra']['list_values'];
             $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_val), $smarty);
             $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
@@ -329,8 +329,8 @@ function smarty_function_dataform2($params, &$smarty)
           break;
         case 'numeric':
         case 'int':
-          if ($dd[$_key]['extra']['arr_values']) {
-            $_options = $dd[$_key]['extra']['arr_values'];
+          if ($dd[$_key]['extra']['list_values']) {
+            $_options = $dd[$_key]['extra']['list_values'];
             $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_val), $smarty);
             $_tmp = preg_replace("/_REFERENCE_/", $_tmp, FCELLMODREF);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
@@ -401,8 +401,8 @@ function smarty_function_dataform2($params, &$smarty)
       }
       switch ($dd[$_key]['type']) {
         case 'char':
-          if ($dd[$_key]['extra']['arr_values']) {
-            $_options = $dd[$_key]['extra']['arr_values'];
+          if ($dd[$_key]['extra']['list_values']) {
+            $_options = $dd[$_key]['extra']['list_values'];
             $_tmp = $_options[$_val];
           } else {
             $_tmp = smarty_modifier_truncate($_val, 50);
@@ -471,11 +471,10 @@ function smarty_function_dataform2($params, &$smarty)
           $_tmp = '';
           break;
         default:
-    	  if($dd[$_key]['extra']['arr_values']) {
-            $_options = $dd[$_key]['extra']['arr_values'];
+    	  if($dd[$_key]['extra']['list_values']) {
+            $_options = $dd[$_key]['extra']['list_values'];
             $_val = $_options[trim($_val)];
           }
-          #$_tmp = smarty_modifier_truncate($_val, 50);
 	  if($_preset[$_key]) {
 	    $_tmp = '';
 	    if(!empty($_pre))	$_pre .= ',';

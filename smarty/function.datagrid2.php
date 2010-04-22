@@ -308,8 +308,8 @@ function smarty_function_datagrid2($params, &$smarty)
               break;
             case 'varchar':
             case 'char':
-              if ($dd[$_key]['extra']['arr_values']) {
-                $_options = $dd[$_key]['extra']['arr_values'];
+              if ($dd[$_key]['extra']['list_values']) {
+                $_options = $dd[$_key]['extra']['list_values'];
                 $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>trim($_val)), $smarty);
                 $_tmp = preg_replace("/_REFERENCE_/", qdollar($_tmp), DGCELLMODREF);
                 $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
@@ -372,8 +372,8 @@ function smarty_function_datagrid2($params, &$smarty)
           }
           switch ($dd[$_key]['type']) {
             case 'char':
-              if ($dd[$_key]['extra']['arr_values']) {
-                $_options = $dd[$_key]['extra']['arr_values'];
+              if ($dd[$_key]['extra']['list_values']) {
+                $_options = $dd[$_key]['extra']['list_values'];
 	        $_tmp = $_options[trim($_val)];
               } else {
                 $_tmp = smarty_modifier_truncate($_val, 50);
@@ -453,8 +453,8 @@ function smarty_function_datagrid2($params, &$smarty)
               # strip_tags quita los tags [x]html, preg_replace reemplaza los &nbsp; por espacio en blanco, el otro preg_replace quita mas de un espacio en blanco conjunto y lo reemplaza por un solo espacio y trim quita los espacios en blanco al final e inicio de la cadena.
 	      $_val = trim(preg_replace('/\s\s+/',' ',preg_replace('/&nbsp;/',' ',strip_tags($_val))));
 	    case 'varchar':
-	      if ($dd[$_key]['extra']['arr_values']) {
-                $_options = $dd[$_key]['extra']['arr_values'];
+	      if ($dd[$_key]['extra']['list_values']) {
+                $_options = $dd[$_key]['extra']['list_values'];
                 $_tmp = $_options[trim($_val)];
 	        break;
               }
