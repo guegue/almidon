@@ -142,7 +142,7 @@ class Table extends Data {
   var $escaped;
   var $id;
   var $action;
-  var $detail;
+  var $child;
   var $hide;
   // }}} variables Table
 

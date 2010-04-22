@@ -76,19 +76,24 @@ if(isset($_SESSION['idalm_user'])) {
 	  $ot = $object . 'Table';
 	  $$object = new $ot;
 
-	  #If I'm a detail (not the master table)
-	  if(isset($$object->is_detail)) {
-	    require(ALMIDONDIR . '/php/detail.php');
+	  #If I'm a child (not the master table)
+	  if(!empty($$object->parent)) {
+	    require(ALMIDONDIR . '/php/child.php');
 	    exit();
 	  }
 
 	  # If it continues it's because I'm the master table
 	  require(ALMIDONDIR . '/php/typical.php');
 	  $$object->destroy();
-	  $tpl = ($$object->cols > 5) ? 'abajo' : 'normal';
+
+          # Decide which tpl we should use: child, down or normal
+          $tpl = ((!empty($$object->parent)) ? 'child' : (($$object->cols > 5) ? 'down' : 'normal'));
+
 	  if (isset($$object->key2)) $tpl .= '2';
 	  $tpl = ALMIDONDIR . '/tpl/' . $tpl . '.tpl';
-	  if (file_exists(ROOTDIR.'/templates/admin/header.tpl')) {
+          if (!empty($$object->parent)) {
+            $smarty->assign('header',ALMIDONDIR.'/tpl/child_header.tpl');
+	  } elseif (file_exists(ROOTDIR.'/templates/admin/header.tpl')) {
 	    $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
 	  } else {
 	    $smarty->assign('header',ALMIDONDIR.'/tpl/header.tpl');

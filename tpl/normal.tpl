@@ -3,7 +3,7 @@
 <tr valign="top">
 <td>
 {if $smarty.const.DB3 === true}
-  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:8 paginate=true cmd=$cmd|default:true name=$object have_detail=$have_detail num_rows=$num_rows shortEdit=$shortEdit}
+  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:8 paginate=true cmd=$cmd|default:true name=$object have_child=$have_child num_rows=$num_rows shortEdit=$shortEdit}
 {else}
   {if $rows}
   {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object num_rows=$num_rows}
@@ -25,16 +25,16 @@
 </tr>
 </table>
 <br/>
-{if $detail._fkey}
-<h2>Detalle</h2>
+{if $child._fkey}
+<h2>{$smarty.const.ALM_DETAIL} : {$child[i].title}</h2>
 <table>
 <tr valign="top">
 <td>
-  {if $detail.rows}
-    {datagrid parent=$detail._fkey rows=$detail.rows key=$detail.key" title=$detail.title dd=$detail.dd maxcols=$detail.maxcols|default:5 maxrows=$detail.maxrows|default:15 paginate=true cmd=true name=$detail.name object=$detail.name options=$detail._options is_detail=true num_rows=$detail.num_rows}
-    <br /><a href="javascript:openwindow('{$detail.name}.php?parent={$detail._fkey}&{$detail._fkey}={$detail._fkey_value|escape}');">Agregar</a>
+  {if $child.rows}
+    {datagrid parent=$child._fkey rows=$child.rows key=$child.key" title=$child.title dd=$child.dd maxcols=$child.maxcols|default:5 maxrows=$child.maxrows|default:15 paginate=true cmd=true name=$child.name object=$child.name options=$child._options is_child=true num_rows=$child.num_rows}
+    <br /><a href="javascript:openwindow('{$child.name}.php?parent={$child._fkey}&{$child._fkey}={$child._fkey_value|escape}');">Agregar</a>
   {else}
-    No existen items relacionados. <a href="javascript:openwindow('{$detail.name}.php?parent={$detail._fkey}&{$detail._fkey}={$detail._fkey_value|escape}');">Agregar detalle</a>
+    {$smarty.const.ALM_NORDATA}. <a href="javascript:openwindow('{$child.name}.php?parent={$child._fkey}&{$child._fkey}={$child._fkey_value|escape}');">{$smarty.const.ALM_ADD_LB}</a>
   {/if}
 </td>
 </tr>

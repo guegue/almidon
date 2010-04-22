@@ -108,8 +108,8 @@ function smarty_function_datagrid2($params, &$smarty)
   $table = null;
   $parent = null;
   $truncate = true;
-  $is_detail = null;
-  $have_detail = null;
+  $is_child = null;
+  $have_child = null;
   
   $extra = '';
   foreach($params as $_key => $_val) {
@@ -134,8 +134,8 @@ function smarty_function_datagrid2($params, &$smarty)
       case 'paginate':
       case 'cmd':
       case 'truncate':
-      case 'have_detail': 
-      case 'is_detail':
+      case 'have_child': 
+      case 'is_child':
         $$_key = (bool)$_val;
         break;
       case 'selected':
@@ -470,10 +470,10 @@ function smarty_function_datagrid2($params, &$smarty)
         }
         if ($key2)
           $_dgcmd = ($_cols <= 3 || $parent) ? DGCMD2R : DGCMD2;
-        elseif ($is_detail) {
+        elseif ($is_child) {
           $_dgcmd = DGCMD_det;
         } else
-          $_dgcmd = (($_cols <= 3 || $parent) && !$have_detail) ? ($shortEdit===false?DGCMD_NOSHORT_EDIT:DGCMDR) : DGCMD;
+          $_dgcmd = (($_cols <= 3 || $parent) && !$have_child) ? ($shortEdit===false?DGCMD_NOSHORT_EDIT:DGCMDR) : DGCMD;
         $_html_cmd = preg_replace("/{_ID_}/", $row[$key], $_dgcmd);
         $_html_cmd = preg_replace("/_ID1_/", $row[$key1], $_html_cmd);
         $_html_cmd = preg_replace("/_ID2_/", $row[$key2], $_html_cmd);

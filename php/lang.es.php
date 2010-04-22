@@ -16,7 +16,8 @@ define('ALM_ADMIN_TITLE','Administración');
 define('ALM_WCOME','Bienvenido! Conectado como:');
 define('ALM_SEARCH_LB','Buscar');
 define('ALM_RESET_LB','Limpiar');
-define('ALM_NODATA','No hay Datos');
+define('ALM_NODATA','No hay datos');
+define('ALM_NORDATA','No hay datos relacionados');
 define('ALM_SHOWALL','Mostrar todo');
 define('ALM_USERNAME','Usuario');
 define('ALM_PASSWORD','Contrase&ntilde;a');
@@ -30,6 +31,7 @@ define('ALM_ROLES','Roles');
 define('ALM_ACCESS','Accesso');
 define('ALM_TABLES','Tablas');
 define('ALM_FIELDS','Campos');
+define('ALM_DETAIL','Detalle');
 
 # Set locale, for dates
 setlocale(LC_TIME, 'es_ES.UTF-8');

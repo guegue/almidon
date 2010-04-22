@@ -108,12 +108,12 @@ if (isset($_REQUEST[$object . 'sort']) && !empty($_REQUEST[$object . 'sort'])) $
 if (isset($_REQUEST[$object . 'pg']) && !empty($_REQUEST[$object . 'pg'])) $_SESSION[$object . 'pg'] = $_REQUEST[$object . 'pg'];
 $$object->order = (isset($_SESSION[$object . 'sort'])) ? $_SESSION[$object .'sort'] : $$object->order;
 $$object->pg = (isset($_SESSION[$object . 'pg'])) ? $_SESSION[$object . 'pg'] : 1;
-// Codigo nuevo, agregado para la funcionalidad del detalle
-// Detalle
-$detail = array();
-if(isset($$object->detail)) {
-  $smarty->assign('have_detail', true);
-  $classes = preg_split('/,/',$$object->detail);
+
+# Adding master-child functionality
+$child = array();
+if(isset($$object->child)) {
+  $smarty->assign('have_child', true);
+  $classes = preg_split('/,/',$$object->child);
   foreach ($classes as $class) {
     $obj = trim($class);
     $ot = $obj.'Table';
@@ -135,7 +135,7 @@ if(isset($$object->detail)) {
     }
     if($row) {
       $filter = "$obj.".$$object->key." = '".$row[$$object->key]."'";
-      $detail[] = array (
+      $child[] = array (
 		'name' => $obj,
 		'_ftable' => $object,
 		'_fkey' => $$object->key,
@@ -155,8 +155,8 @@ if(isset($$object->detail)) {
 // --
 $smarty->assign('object', $object);
 $smarty->assign('cur_page', "$object.php");
-if (isset($detail))
-  $smarty->assign('detail', $detail);
+if (isset($child))
+  $smarty->assign('child', $child);
 if (isset($edit))
   $smarty->assign('edit', $edit);
 if (isset($row))

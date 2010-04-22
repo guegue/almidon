@@ -3,7 +3,7 @@
 <tr valign="top">
 <td>
 {if $smarty.const.DB3 === true}
-  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:10 paginate=true cmd=$cmd|default:true name=$object have_detail=$have_detail num_rows=$num_rows search=$search}
+  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:10 paginate=true cmd=$cmd|default:true name=$object have_child=$have_child num_rows=$num_rows search=$search}
 {else}
   {if $rows}
   {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:5 paginate=true cmd=true name=$object num_rows=$num_rows}
@@ -27,18 +27,18 @@
 </td>
 </tr>
 </table>
-{section name=i loop=$detail}
+{section name=i loop=$child}
 <br />
-{if $detail[i]._fkey}
-<h2>Detalle: {$detail[i].title}</h2>
+{if $child[i]._fkey}
+<h2>{$smarty.const.ALM_DETAIL} : {$child[i].title}</h2>
 <table>
 <tr valign="top">
 <td>
-  {if $detail[i].rows}
-    {datagrid2 parent=$detail[i]._fkey rows=$detail[i].rows key=$detail[i].key title=$detail[i].title dd=$detail[i].dd maxcols=$detail[i].maxcols|default:5 maxrows=$detail[i].maxrows|default:8 paginate=true cmd=true name=$detail[i].name object=$detail[i].name options=$detail[i]._options is_detail=true num_rows=$detail[i].num_rows}
-    <br /><a href="javascript:openwindow('{$detail[i].name}.php?parent={$detail[i]._fkey}&{$detail[i]._fkey}={$detail[i]._fkey_value|escape}');">Agregar</a>
+  {if $child[i].rows}
+    {datagrid2 parent=$child[i]._fkey rows=$child[i].rows key=$child[i].key title=$child[i].title dd=$child[i].dd maxcols=$child[i].maxcols|default:5 maxrows=$child[i].maxrows|default:8 paginate=true cmd=true name=$child[i].name object=$child[i].name options=$child[i]._options is_child=true num_rows=$child[i].num_rows}
+    <br /><a href="javascript:openwindow('{$child[i].name}.php?parent={$child[i]._fkey}&{$child[i]._fkey}={$child[i]._fkey_value|escape}');">Agregar</a>
   {else}
-    No existen items relacionados. <a href="javascript:openwindow('{$detail[i].name}.php?parent={$detail[i]._fkey}&{$detail[i]._fkey}={$detail[i]._fkey_value|escape}');">Agregar detalle</a>
+    {$smarty.const.ALM_NORDATA}. <a href="javascript:openwindow('{$child[i].name}.php?parent={$child[i]._fkey}&{$child[i]._fkey}={$child[i]._fkey_value|escape}');">{$smarty.const.ALM_ADD_LB}</a>
   {/if}
 </td>
 </tr>

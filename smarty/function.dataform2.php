@@ -20,7 +20,7 @@
  *       - object     name of the object to save - string
  *       - table      table o image dir - string
  *       - preset     id already set
- *       - is_detail  it is a detail form
+ *       - is_child  it is a child form
  * Purpose:  Prints dataform from datasource
  *       according to the passed parameters
  * @param array
@@ -97,7 +97,7 @@ function smarty_function_dataform2($params, &$smarty)
   $edit = false;
   $table = null;
   $preset = null;
-  $is_detail = false;
+  $is_child = false;
   
   $extra = '';
   foreach($params as $_key => $_val) {
@@ -117,7 +117,7 @@ function smarty_function_dataform2($params, &$smarty)
         $$_key = (array)$_val;
         break;
       case 'paginate':
-      case 'is_detail':
+      case 'is_child':
       case 'edit':
         $$_key = (bool)$_val;
         break;
@@ -542,13 +542,13 @@ function smarty_function_dataform2($params, &$smarty)
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
 
   $_referer = preg_replace("/\//", "\/", $_SERVER['PHP_SELF']);
-  if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']) || $is_detail || $_SERVER['PHP_SELF'] == '/cms/query.php') {
+  if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']) || $is_child || $_SERVER['PHP_SELF'] == '/cms/query.php') {
     $_referer = $_SERVER['PHP_SELF'];
   } else {
     if(defined('SELF'))  $_referer = SELF;
     else $_referer = $_SERVER['PHP_SELF'];
   }
-  if($is_detail)  $_referer .= '?action=close';
+  if($is_child)  $_referer .= '?action=close';
   // Si es el popup de consulta
   if($_SERVER['PHP_SELF'] == '/cms/query.php') {  $_referer .= '?action=close'; }
   

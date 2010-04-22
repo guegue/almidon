@@ -3,9 +3,9 @@
 <tr valign="top">
 <td>
 {if DB3 === true}
-{dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options preset=$preset is_detail=true}</td>
+{dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options preset=$preset is_child=true}</td>
 {else}
-{dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options preset=$preset is_detail=true}</td>
+{dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options preset=$preset is_child=true}</td>
 {/if}
 </tr>
 </table>
