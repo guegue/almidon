@@ -54,7 +54,7 @@
     <tr>
       <td class="dgcmd">
        {if $smarty.request.action != 'mod'}
-       <input value="Agregar" type="submit">
+       <input value="{$smarty.const.ALM_ADD_LB}" type="submit">
        {else}
        <input value="Guardar" type="submit" />&nbsp;<input value="Cancelar" type="button" onclick="location.href='{$smarty.const.SELF}'" />
        {/if}

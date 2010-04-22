@@ -410,8 +410,8 @@ function smarty_function_dataform2($params, &$smarty)
           break;
         case 'bool':
         case 'boolean':
-          $_si = "S&iacute;";
-          $_no = "No";
+          $_si = ALM_YES;
+          $_no = ALM_NO;
           if ($dd[$_key]['extra']['label_bool']) {
             list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['label_bool']);
           }

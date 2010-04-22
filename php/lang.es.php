@@ -1,5 +1,7 @@
 <?php
 define('ALM_LANG_DONE', true);
+define('ALM_YES','S&iacute;');
+define('ALM_NO','No');
 define('ALM_EDIT_LB','Editar');
 define('ALM_CAN_LB','Cancelar');
 define('ALM_SAVE_LB','Guardar');

@@ -19,7 +19,9 @@
         $output .= "    \$this->key = '".$table_datum['pkey']."';\n";
       }
       $hidden = ($table_datum['hidden'] == 't') ? 'true' : 'false';
-      $output .= "    \$this->hidden = ".$hidden.";\n";
+      if ($hidden === 'true') $output .= "    \$this->hidden = ".$hidden.";\n";
+      if (!empty($table_datum['parent'])) $output .= "    \$this->parent ='".$table_datum['parent']."';\n";
+      if (!empty($table_datum['child'])) $output .= "    \$this->child ='".$table_datum['child']."';\n";
       $output .= "    \$this->title ='".$table_datum['alm_table']."';\n";
       if (!empty($table_datum['orden']))
         $output .= "    \$this->order ='".$table_datum['orden']."';\n";

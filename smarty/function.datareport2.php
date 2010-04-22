@@ -209,8 +209,8 @@ global $_old_row, $group, $_key, $_val, $dd, $rows, $subtotals, $counter;
           break;
         case 'bool':
         case 'boolean':
-          $_si = "S&iacute";
-          $_no = "No";
+          $_si = ALM_YES;
+          $_no = ALM_NO;
           if ($dd[$_key]['extra']) {
             list($_si, $_no)  = split(':',$dd[$_key]['extra']);
           }
