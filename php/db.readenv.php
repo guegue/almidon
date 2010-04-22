@@ -91,7 +91,11 @@
           $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
           $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
         } elseif ($column['type'] == 'auth_user') {
-          $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
+          # is this HTTP auth or ALM auth?
+          if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_DIGEST']))
+            $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
+          else
+            $this->request[$column['name']] = $_SESSION['idalm_user'];
         } elseif(isset($column['extra']['allow_js']) && $column['extra']['allow_js']!==false) {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type'], false, $column['extra']['allow_js']);
         } else {
