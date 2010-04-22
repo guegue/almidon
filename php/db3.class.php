@@ -221,7 +221,7 @@ class Table extends Data {
       - defualt
 	  - list_values
 	  - label_bool
-	  - filter
+	  - references_filter
 	  For FK (Foreign Key)
       - display
       - alias
