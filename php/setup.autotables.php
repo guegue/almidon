@@ -35,12 +35,10 @@
         if (empty($datum['fk'])) $datum['fk'] = 0;
         else $datum['fk'] = "'".$datum['fk']."'";
         $extra = array();
-        if (!empty($datum['idalm_role']))
-          $extra[] = "'role'=>'".$datum['idalm_role']."'";
-        if (!empty($datum['label_bool']))
-          $extra[] = "'label_bool'=>'".$datum['label_bool']."'";
-        if (!empty($datum['help']))
-          $extra[] = "'help'=>'".$datum['help']."'";
+        if (!empty($datum['idalm_role'])) $extra[] = "'role'=>'".$datum['idalm_role']."'";
+        if (!empty($datum['label_bool'])) $extra[] = "'label_bool'=>'".$datum['label_bool']."'";
+        if (!empty($datum['help'])) $extra[] = "'help'=>'".$datum['help']."'";
+        if (!empty($datum['display'])) $extra[] = "'display'=>\"".$datum['display'].'"';
         $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . addslashes($datum['alm_column']) . "'";
         if (!empty($extra)) {
           $output .= "," . 'array(' . implode(',',$extra) . ')';

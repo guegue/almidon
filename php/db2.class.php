@@ -197,11 +197,15 @@ class Table extends Data {
         $references[$column['references']]++;
         if ($references[$column['references']] == 1) {
           if (!empty($column['extra']['display'])) {
-            $this->all_fields .= "," . $column['extra']['display'] . ' AS ' . $column['references'];
+            $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
+            # FIXME: Is 'alias' useless?
+            #if(empty($column['extra']['alias']))  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
+            #else  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['extra']['alias'];
           } else {
             $this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'];
           }
         } else {
+          # FIXME: Second reference to same table does not enjoy display/alias (not yet)
           $tmptable = $column['references'] . $references[$column['references']];
           $tmpcolumn =  $global_dd[$column['references']]['descriptor'];
           $this->all_fields .= "," . $tmptable . "." . $tmpcolumn . " AS " . $tmptable;

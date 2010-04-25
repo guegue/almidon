@@ -192,19 +192,19 @@ class Table extends Data {
           else  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['extra']['alias'];
         } else {
           $pos = strpos($column['references'],'.');
- 	        if($pos!==false) {
+ 	  if($pos!==false) {
              $r_table = substr($column['references'],0,$pos);
   	         $pos_2 = strpos($column['references'],'[');
 	           if($pos_2 !== false) {
    	           $r_field = substr($column['references'],$pos+1,$pos_2-$pos-1);
    	           $r_alias = substr($column['references'],$pos_2+1,strlen($column['references'])-($pos_2+2));
 	           }else $r_field = substr($column['references'],$pos+1);
-          }else{
+          } else {
              $r_table = $r_field = $column['references'];
-	        }
- 	        $this->all_fields .= "," . (empty($r_alias)?$r_table:$r_alias) . "." . $r_table;
-	        if(!empty($r_alias)) $this->all_fields .= " AS $r_alias";
-	        #$this->all_fields .= "," . $column['references'] . "." . $column['name'];
+	  }
+ 	  $this->all_fields .= "," . (empty($r_alias)?$r_table:$r_alias) . "." . $r_table;
+	  if(!empty($r_alias)) $this->all_fields .= " AS $r_alias";
+	  #$this->all_fields .= "," . $column['references'] . "." . $column['name'];
         }
       }
       $n++;
