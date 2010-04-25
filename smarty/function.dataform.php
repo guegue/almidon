@@ -203,13 +203,13 @@ function smarty_function_dataform($params, &$smarty)
           break;
         case 'boolean':
         case 'bool':
-          if (preg_match("/:/", $dd[$_key]['extra'])) {
-            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']);
-            $_tchecked = ($_val == 't') ? "checked" : "";
-            $_fchecked = ($_val == 'f') ? "checked" : "";
-            $_tmp = $_si . '<input3 type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on" />' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="" />';
+          if (preg_match("/:/", $dd[$_key]['extra']['label_bool'])) {
+            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['label_bool']);
+            $_tchecked = ($_val == 't') ? 'checked' : '';
+            $_fchecked = ($_val == 'f') ? 'checked' : '';
+            $_tmp = $_si . '<input type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on" />' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="" />';
           } else {
-            $_checked = ($_val == 't') ? "checked" : "";
+            $_checked = ($_val == 't') ? 'checked' : '';
             $_tmp = '<input type="checkbox" name="' . $_key . '" ' . $_checked . ' />';
           }
           break;
@@ -290,9 +290,14 @@ function smarty_function_dataform($params, &$smarty)
         default:
           $_tmp = $_val;
       }
+        if (!empty($dd[$_key]['extra']['help'])) {
+          $_tmp .= '<sup title="' . $dd[$_key]['extra']['help'] . '">&nbsp;?&nbsp;</sup>';
+        }
       $_tmp = preg_replace("/_FCELL_/", qdollar($_tmp), FROW);
       $_tmp = preg_replace("/_LABEL_/", $labels[$_key], $_tmp);
-      if (!$hidden) $_html_rows .= $_tmp;
+      if (!$hidden) {
+        $_html_rows .= $_tmp;
+      }
       $hidden = false;
     }
   } else {
@@ -327,8 +332,8 @@ function smarty_function_dataform($params, &$smarty)
         case 'boolean':
           $_si = ALM_YES;
           $_no = ALM_NO;
-          if ($dd[$_key]['extra']) {
-            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']);
+          if ($dd[$_key]['extra']['label_bool']) {
+            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['label_bool']);
           }
           $_tmp = ($_val == 't') ? $_si : $_no;
           break;

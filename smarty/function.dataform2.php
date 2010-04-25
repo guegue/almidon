@@ -250,13 +250,13 @@ function smarty_function_dataform2($params, &$smarty)
           break;
         case 'boolean':
         case 'bool':
-          if (preg_match("/:/", $dd[$_key]['extra']['range'])) {
-            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['range']);
-            $_tchecked = ($_val == 't') ? "checked" : "";
-            $_fchecked = ($_val == 'f') ? "checked" : "";
+          if (preg_match("/:/", $dd[$_key]['extra']['label_bool'])) {
+            list($_si, $_no)  = preg_split('/:/',$dd[$_key]['extra']['label_bool']);
+            $_tchecked = ($_val == 't') ? 'checked' : '';
+            $_fchecked = ($_val == 'f') ? 'checked' : '';
             $_tmp = $_si . '<input type="radio" name="' . $_key . '" ' . $_tchecked . ' value="on" />' . $_no . '<input type="radio" name="' . $_key . '" ' . $_fchecked .' value="" />';
           } else {
-            $_checked = ($_val == 't') ? "checked" : "";
+            $_checked = ($_val == 't') ? 'checked' : '';
             $_tmp = '<input type="checkbox" name="' . $_key . '" ' . $_checked . ' />';
           }
           break;

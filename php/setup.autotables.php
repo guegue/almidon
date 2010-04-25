@@ -34,14 +34,16 @@
         if ($datum['pk'] == 'f') $datum['pk'] = 0;
         if (empty($datum['fk'])) $datum['fk'] = 0;
         else $datum['fk'] = "'".$datum['fk']."'";
-        if (!empty($datum['idalm_role'])) {
-          $extra = "array('role'=>'".$datum['idalm_role']."')";
-        }
+        $extra = array();
+        if (!empty($datum['idalm_role']))
+          $extra[] = "'role'=>'".$datum['idalm_role']."'";
+        if (!empty($datum['label_bool']))
+          $extra[] = "'label_bool'=>'".$datum['label_bool']."'";
+        if (!empty($datum['help']))
+          $extra[] = "'help'=>'".$datum['help']."'";
         $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . addslashes($datum['alm_column']) . "'";
         if (!empty($extra)) {
-          #$output .= "," . addslashes($datum['extra']);
-          $output .= "," . $extra;
-          unset($extra);
+          $output .= "," . 'array(' . implode(',',$extra) . ')';
         }
         $output .= ");\n";
       }
