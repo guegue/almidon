@@ -205,16 +205,19 @@ function fillOpt(&$object) {
   if ($object->dd)
   foreach ($object->dd as $key => $val)
     if ($object->dd[$key]['references']) {
-      # esta linea mantiene la compatibilidad con db2
+
+      #
+      # estas lineas mantienen la compatibilidad con db2 donde 'references' puede contenet "tabla.campo"
+      #
       if (!is_array($object->dd[$key]['extra']) && !empty($object->dd[$key]['extra'])) {
         $pos = strpos($object->dd[$key]['references'],'.');
         if($pos!==false) {
           $references = substr($object->dd[$key]['references'],0,$pos);
-        } else $references = $object->dd[$key]['references'];
-        # FIXME: $where dio notices, por que?
-        $options[$key] = $object->selectMenu($references, $where);
-        #$options[$key] = $object->selectMenu($references);
-      # esto sucede solo si extra esta manteniendo el formato ordenado de array de la version db3
+        } else {
+          $references = $object->dd[$key]['references'];
+        }
+        $options[$key] = $object->selectMenu($references);
+
       } elseif (!isset($object->dd[$key]['extra']['depend']) && !isset($object->dd[$key]['extra']['readonly'])) {
         $where = '';
         if(isset($object->dd[$key]['extra']['references_filter']))

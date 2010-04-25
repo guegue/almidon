@@ -55,6 +55,7 @@ class alm_tableTable extends Table {
     $this->addColumn('hidden','bool',0,0,0,'Hidden');
     $this->addColumn('parent','varchar',32,0,0,'Parent');
     $this->addColumn('child','varchar',32,0,0,'Child');
+    $this->addColumn('restrictby','varchar',50,0,0,'Restricted by');
   }
 }
 
