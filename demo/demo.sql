@@ -19,7 +19,7 @@ CREATE TABLE alm_user (idalm_user varchar(16) PRIMARY KEY, idalm_role varchar(8)
 ALTER TABLE public.alm_user OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_table CASCADE;
-CREATE TABLE alm_table (idalm_table varchar(48) PRIMARY KEY, alm_table varchar(100), pkey varchar(50), orden varchar (100), rank int, hidden bool, parent varchar(32), child varchar(32));
+CREATE TABLE alm_table (idalm_table varchar(48) PRIMARY KEY, alm_table varchar(100), pkey varchar(50), orden varchar (100), rank int, hidden bool, parent varchar(32), child varchar(32), restrictby varchar(50));
 ALTER TABLE public.alm_table OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_column CASCADE;
