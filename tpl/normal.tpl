@@ -31,7 +31,7 @@
 <tr valign="top">
 <td>
   {if $child.rows}
-    {datagrid parent=$child._fkey rows=$child.rows key=$child.key" title=$child.title dd=$child.dd maxcols=$child.maxcols|default:5 maxrows=$child.maxrows|default:15 paginate=true cmd=true name=$child.name object=$child.name options=$child._options is_child=true num_rows=$child.num_rows}
+    {datagrid parent=$child._fkey rows=$child.rows key=$child.key" title=$child.title dd=$child.dd maxcols=$child.maxcols|default:5 maxrows=$child.maxrows|default:15 paginate=false cmd=true name=$child.name object=$child.name options=$child._options is_child=true num_rows=$child.num_rows}
     <br /><a href="javascript:openwindow('{$child.name}.php?parent={$child._fkey}&{$child._fkey}={$child._fkey_value|escape}');">{$smarty.const.ALM_ADD_LB}</a>
   {else}
     {$smarty.const.ALM_NORDATA}. <a href="javascript:openwindow('{$child.name}.php?parent={$child._fkey}&{$child._fkey}={$child._fkey_value|escape}');">{$smarty.const.ALM_ADD_LB}</a>
