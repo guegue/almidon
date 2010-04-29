@@ -119,6 +119,7 @@ if(isset($$object->child)) {
     $ot = $obj.'Table';
     $$obj = new $ot;
     $$obj->readEnv();
+    if (!isset($_REQUEST['actiond'])) $_REQUEST['actiond'] = null;
     switch($_REQUEST['actiond']) {
       case 'delete':
         if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['credentials'][$object] == 'delete' || $_SESSION['idalm_user'] == 'admin') {
@@ -133,7 +134,7 @@ if(isset($$object->child)) {
         }
       break;
     }
-    if($row) {
+    if(isset($row)) {
       $filter = "$obj.".$$object->key." = '".$row[$$object->key]."'";
       $child[] = array (
 		'name' => $obj,
