@@ -23,7 +23,7 @@
       if (!empty($table_datum['parent'])) $output .= "    \$this->parent ='".$table_datum['parent']."';\n";
       if (!empty($table_datum['child'])) $output .= "    \$this->child ='".$table_datum['child']."';\n";
       if (!empty($table_datum['restrictby']))
-        $output .= "    if (\$_SESSION['idalm_role'] !== 'full') \$this->filter = \"" . $table_datum['restrictby'] . "='\".\$_SESSION['idalm_user'].\"'\";\n";
+        $output .= "    if (\$_SESSION['idalm_role'] !== 'full') \$this->filter = \"" . $table_datum['idalm_table'].'.'.$table_datum['restrictby'] . "='\".\$_SESSION['idalm_user'].\"'\";\n";
       $output .= "    \$this->title ='".$table_datum['alm_table']."';\n";
       if (!empty($table_datum['orden']))
         $output .= "    \$this->order ='".$table_datum['orden']."';\n";
