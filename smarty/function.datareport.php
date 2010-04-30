@@ -34,7 +34,7 @@ define('DR', '<form action="_SELF_" method="POST" name="_FORM_">
 <input type="hidden" name="maxcols" value="_MAXCOLS_">
 <input type="hidden" name="f" value="_FORM_">
 <input type="hidden" name="action" value="save">
-<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th> <th align="right"><div align="right">(_ROWS_ registros)</div></th></tr>
+<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th> <th align="right"><div align="right">(_ROWS_ '.ALM_REC_LB.')</div></th></tr>
 <tr><td colspan="2"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DRHEADER_</tr>
 _DRROW_
 <tr>_TOTAL_</tr>

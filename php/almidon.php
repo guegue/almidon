@@ -26,7 +26,9 @@ $smarty->cache_dir = ROOTDIR . '/cache/';
 
 # Carga archivos locales
 
+if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN === true && !isset($_SESSION['idalm_role'])) $_SESSION['idalm_role'] = null;
+if (ADMIN === true && !isset($_SESSION['idalm_user'])) $_SESSION['idalm_user'] = null;
 require(ROOTDIR . '/classes/tables.class.php');
 require(ROOTDIR . '/classes/extra.class.php');
 require_once($almidondir . '/php/alm.tables.class.php');

@@ -69,7 +69,7 @@ class alm_columnTable extends TableDoubleKey {
     $this->order = 'idalm_table,rank';
     $this->addColumn('idalm_table','varchar',48,0,'alm_table','Table');
     $this->addColumn('idalm_column','varchar',50,1,0,'Id');
-    $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('bool'=>'Boolean','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'integer','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
+    $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('auth_user'=>'Auth User','bool'=>'Boolean','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'integer','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
     $this->addColumn('size','int',0,0,0,'Size');
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('pk','bool',0,0,0,'Primary Key?');
