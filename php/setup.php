@@ -1,5 +1,10 @@
 <?php
-define ('ADMIN', true);
+# Check credentials once again (just in case rewrite is off)
+if ($_SESSION['idalm_user'] !== 'admin' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
+  error_log("No right permissions");
+  exit;
+}
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
 require_once('setup.gensql.php');
 require_once('setup.tests.php');

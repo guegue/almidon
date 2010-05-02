@@ -2,6 +2,8 @@
 define('ALM_LANG_DONE', true);
 define('ALM_YES','Yes');
 define('ALM_NO','No');
+define('ALM_EXPORT_LB','Export');
+define('ALM_IMPORT_LB','Import');
 define('ALM_REC_LB','records');
 define('ALM_DEL_LB','Delete');
 define('ALM_VIEW_LB','View');

@@ -2,6 +2,12 @@
 <table>
 <tr valign="top">
 <td>
+<a href="exchange.php?table={$object}&action=import">{$smarty.const.ALM_IMPORT_LB}</a>
+<a href="exchange.php?table={$object}&action=export">{$smarty.const.ALM_EXPORT_LB}</a>
+</td>
+</tr>
+<tr valign="top">
+<td>
 {if $smarty.const.DB3 === true}
   {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:8 paginate=true cmd=$cmd|default:true name=$object have_child=$have_child num_rows=$num_rows shortEdit=$shortEdit}
 {else}

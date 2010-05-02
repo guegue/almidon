@@ -536,7 +536,7 @@ class Table extends Data {
     return $this->getArray();
   }
 
-  function dumpData() {
+  function dumpData($format = 'php') {
     require('db.dumpdata.php');
   }
   
