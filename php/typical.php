@@ -227,9 +227,9 @@ function fillOpt(&$object) {
           $ot = $object->dd[$key]['references'] . 'Table';
           $robject = new $ot;
 	  if(!empty($where))
-            $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." WHERE $where");
+            $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." WHERE $where ORDER BY " . $object->dd[$key]['references']);
 	  else
-            $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']);
+            $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." ORDER BY " . $object->dd[$key]['references']);
         }else {
 	  $pos = strpos($object->dd[$key]['references'],'.');
           if($pos!==false) {
