@@ -1,5 +1,8 @@
 <?php
-    $rows = $this->readData();
+    if (is_array($session))
+      $rows = $session;
+    else
+      $rows = $this->readData();
     if (empty($rows)) return false;
     $hs = $rows[0];
     $results = '';
@@ -67,7 +70,7 @@
       unset($cols);
       foreach($rows as $row) {
         foreach($row as $column)
-          $cols[] = "\"$column\"";
+          $cols[] = strip_tags("\"$column\"");
         $results .= implode($cols, ",");
         unset($cols);
         $results .= "\n";

@@ -6,18 +6,26 @@ if ($_SESSION['idalm_user'] !== 'admin' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
-$object_name = $_REQUEST['table'] . 'Table';
-$object = new $object_name;
-$rows = $object->readData();
+if (isset($_REQUEST['session'])) {
+  $rows = $_SESSION[$_REQUEST['session']];
+} else {
+  $object_name = $_REQUEST['table'] . 'Table';
+  $object = new $object_name;
+  $rows = $object->readData();
+}
 if (!empty($rows) && isset($_REQUEST['format'])) {
   if ($_REQUEST['action'] === 'export') {
-    $object->dumpData($_REQUEST['format']);
+    if (isset($_REQUEST['session']))
+      table::dumpData($_REQUEST['format'], $rows);
+    else
+      $object->dumpData($_REQUEST['format']);
   }
 }
 if (!isset($_REQUEST['format'])) {
 ?>
   <form method="GET">
   <input name="table" type="hidden" value="<?=$_REQUEST['table']?>"/>
+  <input name="session" type="hidden" value="<?=$_REQUEST['session']?>"/>
   <input name="action" type="hidden" value="<?=$_REQUEST['action']?>"/>
   Choose format: <select name="format">
   <option value="php">PHP Dump</option>

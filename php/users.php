@@ -16,6 +16,10 @@
 # Check username and password
 function check_user($user, $pass) {
   global $emergency_password, $admin_dsn;
+  if (!isset($admin_dsn)) {
+    if (defined('DSN')) $admin_dsn = DSN;
+    else die('No DSN nor admin_dsn, check config.php');
+  }
   $pass = md5($pass);
   $alm_user = new alm_userTable();
   $alm_user->readEnv();

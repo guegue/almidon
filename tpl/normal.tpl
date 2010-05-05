@@ -1,11 +1,13 @@
 {include file="$header"}
 <table>
+{if $credentials eq 'full'}
 <tr valign="top">
 <td>
 <a href="exchange.php?table={$object}&action=import">{$smarty.const.ALM_IMPORT_LB}</a>
 <a href="exchange.php?table={$object}&action=export">{$smarty.const.ALM_EXPORT_LB}</a>
 </td>
 </tr>
+{/if}
 <tr valign="top">
 <td>
 {if $smarty.const.DB3 === true}
