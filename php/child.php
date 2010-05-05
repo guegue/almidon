@@ -8,7 +8,7 @@ $app_filename = substr($script_filename, 0, strrpos($script_filename,'/')) . $ap
 if (file_exists($app_filename)) require_once($app_filename);
 else require_once($_SERVER['DOCUMENT_ROOT'] . $app_base);
 
-
+if (!isset($_REQUEST['action'])) $_REQUEST['action'] = null;
 if ($_REQUEST['action'] == 'add')
   $smarty->assign('added',true);
 if ($_REQUEST['action'] == 'save')
@@ -32,7 +32,7 @@ if(defined('ALMIDONDIR')) {
   $smarty->assign('footer',ALMIDONDIR."/tpl/footer.tpl");
 }
 $$object->readEnv();
-if($_REQUEST['preset']) {
+if(isset($_REQUEST['preset'])) {
   $smarty->assign('preset',$_REQUEST['preset']);
 } else {
   $smarty->assign('preset',$_REQUEST['parent']."=".$_REQUEST[$_REQUEST['parent']]);

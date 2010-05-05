@@ -146,8 +146,8 @@ if(isset($$object->child)) {
 		'dd' => $$obj->dd,
 		'key' => $$obj->key,
 		'title' => $$obj->title,
-		'maxrows'=> $$obj->maxrows,
-		'maxcols'=> $$obj->maxcols,
+		#'maxrows'=> $$obj->maxrows,
+		#'maxcols'=> $$obj->maxcols,
                 'num_rows'=> $$obj->getVar("SELECT COUNT(*) FROM ".$$obj->name." WHERE ".$filter)
 	    );
     } 
