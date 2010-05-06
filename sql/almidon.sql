@@ -15,7 +15,7 @@ CREATE TABLE alm_table (idalm_table varchar(48) PRIMARY KEY, alm_table varchar(1
 ALTER TABLE public.alm_table OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_column CASCADE;
-CREATE TABLE alm_column (idalm_column varchar (50), idalm_table varchar (48) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(48), alm_column varchar(100), extra text, rank int, idalm_role int REFERENCES alm_role, list_values varchar(500), PRIMARY KEY (idalm_column, idalm_table));
+CREATE TABLE alm_column (idalm_column varchar (50), idalm_table varchar (48) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(48), alm_column varchar(100), extra text, rank int, idalm_role varchar(8) REFERENCES alm_role, list_values varchar(500), PRIMARY KEY (idalm_column, idalm_table));
 ALTER TABLE public.alm_column OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_access CASCADE;
