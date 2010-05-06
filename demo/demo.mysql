@@ -112,7 +112,7 @@ DROP TABLE IF EXISTS alm_column;
 CREATE TABLE alm_column (idalm_column varchar (32), idalm_table varchar (32) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(16), alm_column varchar(100), extra text, rank int, PRIMARY KEY (idalm_column, idalm_table));
 
 DROP TABLE IF EXISTS alm_role;
-CREATE TABLE alm_role (idalm_role varchar(8) PRIMARY KEY, alm_role varchar(100));
+CREATE TABLE alm_role (idalm_role varchar(8) PRIMARY KEY, alm_role varchar(8));
 
 DROP TABLE IF EXISTS alm_user;
 CREATE TABLE alm_user (idalm_user varchar(16) PRIMARY KEY, idalm_role varchar(8) REFERENCES alm_role, password varchar(200) NOT NULL, alm_user varchar(200) NOT NULL, email varchar(200));

@@ -11,7 +11,7 @@ ALTER DATABASE almidondemo OWNER TO almidondemo;
 -- *********************************
 
 DROP TABLE IF EXISTS alm_role CASCADE;
-CREATE TABLE alm_role (idalm_role varchar(8) PRIMARY KEY, alm_role varchar(100));
+CREATE TABLE alm_role (idalm_role varchar(8) PRIMARY KEY, alm_role varchar(8));
 ALTER TABLE public.alm_role OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_user CASCADE;
