@@ -19,11 +19,11 @@ CREATE TABLE alm_user (idalm_user varchar(16) PRIMARY KEY, idalm_role varchar(8)
 ALTER TABLE public.alm_user OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_table CASCADE;
-CREATE TABLE alm_table (idalm_table varchar(48) PRIMARY KEY, alm_table varchar(100), pkey varchar(50), orden varchar (100), rank int, hidden bool, parent varchar(32), child varchar(32), restrictby varchar(50), label_bool varchar(100), display varchar(200), help text);
+CREATE TABLE alm_table (idalm_table varchar(48) PRIMARY KEY, alm_table varchar(100), pkey varchar(50), orden varchar (100), rank int, hidden bool, parent varchar(32), child varchar(32), restrictby varchar(50));
 ALTER TABLE public.alm_table OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_column CASCADE;
-CREATE TABLE alm_column (idalm_column varchar (50), idalm_table varchar (48) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(48), alm_column varchar(100), extra text, rank int, idalm_role varchar(8) REFERENCES alm_role, list_values varchar(500), PRIMARY KEY (idalm_column, idalm_table));
+CREATE TABLE alm_column (idalm_column varchar (50), idalm_table varchar (48) REFERENCES alm_table, type varchar (16), size int, pk bool, fk varchar(48), alm_column varchar(100), extra text, rank int, idalm_role varchar(8) REFERENCES alm_role, label_bool varchar(100), display varchar(200), help text, list_values varchar(500), PRIMARY KEY (idalm_column, idalm_table));
 ALTER TABLE public.alm_column OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS alm_access CASCADE;
