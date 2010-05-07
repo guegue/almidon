@@ -4,28 +4,31 @@ function performTests() {
     $failed = false;
     $red = '<font color="red">FALL&Oacute;</font>';
     $green = '<font color="green">PAS&Oacute;</font>';
-    $test_output = "Probando conexion a base de datos (admin)... ";
 
     # Old versions don't use admin_dsn public_dsn but simply a DSN constant
     if (!isset($admin_dsn)) $admin_dsn = DSN;
     if (!isset($public_dsn)) $public_dsn = DSN;
 
-    $db = almdata::connect ($admin_dsn);
-    if (almdata::basicError($db, $admin_dsn) || !$alm_connect[$admin_dsn]) {
-      $error_msg = almdata::basicError($db, $admin_dsn);
-      $test_output .= "$red <i>$error_msg</i><br/>";
-      $failed = true;
-      $admin_db_failed = true;
-    } else {
-      $test_output .= "$green<br/>";
-    }
     $test_output .= "Probando conexion a base de datos (public)... ";
+    unset($alm_connect[$public_dsn]);
     $db = almdata::connect ($public_dsn);
     if (almdata::basicError($db, $public_dsn) || !$alm_connect[$public_dsn]) {
       $error_msg = almdata::basicError($db, $public_dsn);
       $test_output .= "$red <i>$error_msg</i><br/>";
       $failed = true;
       $public_db_failed = true;
+    } else {
+      $test_output .= "$green<br/>";
+    }
+    # Check admin connection last, so that we stay admin...
+    $test_output = "Probando conexion a base de datos (admin)... ";
+    unset($alm_connect[$admin_dsn]);
+    $db = almdata::connect ($admin_dsn);
+    if (almdata::basicError($db, $admin_dsn) || !$alm_connect[$admin_dsn]) {
+      $error_msg = almdata::basicError($db, $admin_dsn);
+      $test_output .= "$red <i>$error_msg</i><br/>";
+      $failed = true;
+      $admin_db_failed = true;
     } else {
       $test_output .= "$green<br/>";
     }
