@@ -1,6 +1,6 @@
 <?php
 # Check credentials once again (just in case rewrite is off)
-if ($_SESSION['idalm_user'] !== 'admin' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
+if ($_SESSION['idalm_role'] !== 'role' && $_SESSION['idalm_user'] !== 'admin' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
   error_log("No right permissions");
   exit;
 }
