@@ -1,12 +1,13 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+
 # Check credentials once again (just in case rewrite is off)
-if ($_SESSION['idalm_idrole'] !== 'full' && $_SESSION['idalm_user'] !== 'admin' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
+if ($_SESSION['idalm_role'] !== 'full' && $_SESSION['idalm_user'] !== 'admin' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
   error_log("No right permissions");
   exit;
 }
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
-if (isset($_REQUEST['session'])) {
+if (isset($_REQUEST['session']) && isset($_SESSION[$_REQUEST['session']])) {
   $rows = $_SESSION[$_REQUEST['session']];
 } else {
   $object_name = $_REQUEST['table'] . 'Table';
@@ -22,11 +23,14 @@ if (!empty($rows) && isset($_REQUEST['format'])) {
   }
 }
 if (!isset($_REQUEST['format'])) {
+$table = isset($_REQUEST['table']) ? $_REQUEST['table'] : '';
+$session = isset($_REQUEST['session']) ? $_REQUEST['session'] : '';
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 ?>
   <form method="GET">
-  <input name="table" type="hidden" value="<?=$_REQUEST['table']?>"/>
-  <input name="session" type="hidden" value="<?=$_REQUEST['session']?>"/>
-  <input name="action" type="hidden" value="<?=$_REQUEST['action']?>"/>
+  <input name="table" type="hidden" value="<?=$table?>"/>
+  <input name="session" type="hidden" value="<?=$session?>"/>
+  <input name="action" type="hidden" value="<?=$action?>"/>
   Choose format: <select name="format">
   <option value="php">PHP Dump</option>
   <option value="html">HTML</option>
