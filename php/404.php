@@ -38,7 +38,7 @@ if (strpos($object, '?')) {
 if(strrpos($object, '.')!==false) $object = substr($object, 0, strrpos($object, '.'));
 
 # If user = admin, then allow setup or exchange...
-if ($_SESSION['idalm_user'] === 'admin' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1') {
+if ($_SESSION['idalm_role'] == 'full' && $_SESSION['idalm_user'] === 'admin' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1') {
   switch ($object) {
   case 'setup':
     require(ALMIDONDIR.'/php/setup.php');

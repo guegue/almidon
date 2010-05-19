@@ -16,10 +16,11 @@ if (isset($_REQUEST['session']) && isset($_SESSION[$_REQUEST['session']])) {
 }
 if (!empty($rows) && isset($_REQUEST['format'])) {
   if ($_REQUEST['action'] === 'export') {
-    if (isset($_REQUEST['session']))
+    if (!empty($_REQUEST['session'])) {
       table::dumpData($_REQUEST['format'], $rows);
-    else
+    } else {
       $object->dumpData($_REQUEST['format']);
+    }
   }
 }
 if (!isset($_REQUEST['format'])) {

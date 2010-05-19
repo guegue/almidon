@@ -1,8 +1,11 @@
 <?php
-    if (is_array($session))
+    if (is_array($session)) {
       $rows = $session;
-    else
+      $filename = $_REQUEST['session'];
+    } else {
       $rows = $this->readData();
+      $filename = $this->name;
+    }
     if (empty($rows)) return false;
     $hs = $rows[0];
     $results = '';
@@ -64,6 +67,7 @@
       break;
     case 'csv':
       header('Content-type: text/csv');
+      header('Content-Disposition: attachment; filename="'.$filename.'.csv";'); 
       foreach($headers as $h)
         $cols[] = "\"$h\"";
       $results .= implode($cols, ",") . "\n";
