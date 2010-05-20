@@ -292,8 +292,7 @@ class Table extends Data {
           }
         case 'char':
           if ($this->request[$column['name']] == -1) {
-            $this->request[$column['name']] = 'NULL';
-            $values .= $this->request[$column['name']];
+            $values .= 'NULL';
           } else {
             $value = almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
@@ -301,8 +300,7 @@ class Table extends Data {
           break;
         case 'varchar':
           if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1) {
-            $this->request[$column['name']] = 'NULL';
-            $values .= $this->request[$column['name']];
+            $values .= 'NULL';
           } else {
             $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
@@ -313,7 +311,7 @@ class Table extends Data {
             $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {
-            $values .= "NULL";
+            $values .= 'NULL';
           } 
           break;
         case 'bool':
@@ -338,7 +336,7 @@ class Table extends Data {
             $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
             $values .= "'" . $value . "'";
           } else {
-            $values .= "NULL";
+            $values .= 'NULL';
           }
           break;
       }
