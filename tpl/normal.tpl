@@ -3,8 +3,8 @@
 {if $credentials eq 'full'}
 <tr valign="top">
 <td>
-<a href="exchange.php?table={$object}&action=import">{$smarty.const.ALM_IMPORT_LB}</a>
-<a href="exchange.php?table={$object}&action=export">{$smarty.const.ALM_EXPORT_LB}</a>
+<a href="javascript: void(0)" onclick="window.open('exchange.php?table={$object}&action=import', 'alm_export', 'width=400,height=200, directories=no, location=no, menubar=no, resizable=yes, scrollbars=1, status=no, toolbar=no'); return false;">{$smarty.const.ALM_IMPORT_LB}</a>
+<a href="javascript: void(0)" onclick="window.open('exchange.php?table={$object}&action=export', 'alm_export', 'width=400,height=200, directories=no, location=no, menubar=no, resizable=yes, scrollbars=1, status=no, toolbar=no'); return false;">{$smarty.const.ALM_EXPORT_LB}</a>
 </td>
 </tr>
 {/if}
