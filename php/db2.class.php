@@ -347,6 +347,7 @@ class Table extends Data {
   }
 
   function preUpdateRecord($maxcols = 0, $nofiles = 0) {
+    # FIXME: deberiamos reinicializar 'request', sino puede tomar valores anteriores
     $n = 0;
     $skipped_cols = 0;
     $values = "";
