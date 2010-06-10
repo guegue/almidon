@@ -4,7 +4,7 @@ if (!$object)
 $$object->readEnv();
 
 $action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : null;
-if (!isset($_SESSION['credentials'][$object])) $_SESSION['credentials'][$object] = 'unknown'; 
+if (!isset($_SESSION['credentials'][$object])) $_SESSION['credentials'][$object] = 'unknown';
 switch ($action) {
   case 'edit':
     $edit = true;

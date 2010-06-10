@@ -23,10 +23,7 @@ if(empty($object)) {
   $ot = $object . 'Table';
   $$object = new $ot;
 }
-//$disable['prensa'] = true;
 if(defined('ALMIDONDIR')) require(ALMIDONDIR."/php/typical.php");
-/*$tpl = ($$object->cols > 5) ? 'down' : 'normal';
-if ($$object->key2) $tpl .= '2';*/
 if(defined('ALMIDONDIR')) {
   $smarty->assign('header',ALMIDONDIR."/tpl/child_header.tpl");
   $smarty->assign('footer',ALMIDONDIR."/tpl/footer.tpl");

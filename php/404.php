@@ -97,7 +97,6 @@ if(isset($_SESSION['idalm_user'])) {
           # Decide which tpl we should use: child, down or normal
           $tpl = ((!empty($$object->parent)) ? 'child' : (($$object->cols > 5) ? 'down' : 'normal'));
 
-	  if (isset($$object->key2)) $tpl .= '2';
 	  $tpl = ALMIDONDIR . '/tpl/' . $tpl . '.tpl';
           if (!empty($$object->parent)) {
             $smarty->assign('header',ALMIDONDIR.'/tpl/child_header.tpl');
