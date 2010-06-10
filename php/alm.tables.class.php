@@ -74,7 +74,7 @@ class alm_columnTable extends TableDoubleKey {
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('pk','bool',0,0,0,'Primary Key?');
     $this->addColumn('fk','varchar',48,0,0,'Foreign Key Table');
-    $this->addColumn('alm_column','varchar',100,0,0,'Description');
+    $this->addColumn('alm_column','varchar',250,0,0,'Description');
     $this->addColumn('idalm_role','varchar',8,0,'alm_role','Allow only to',array('help'=>'This column will only be available to users under this role'));
     $this->addColumn('label_bool','varchar',100,0,0,'Boolean labels',array('help'=>'Enter both labels separated by :'));
     $this->addColumn('display','varchar',200,0,0,'Display as');

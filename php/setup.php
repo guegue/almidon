@@ -121,10 +121,10 @@ if (!empty($action)) {
       $alm_table->request['alm_table'] = $data->title;
       $alm_table->request['orden'] = $data->order;
       $alm_table->request['rank'] = $rank;
-      $alm_table->request['hidden'] = $data->hidden;
-      $alm_table->request['parent'] = $data->parent;
-      $alm_table->request['child'] = $data->child;
-      $alm_table->request['restrictby'] = $data->restrictby;
+      if (isset($data->hidden)) $alm_table->request['hidden'] = $data->hidden;
+      if (isset($data->parent)) $alm_table->request['parent'] = $data->parent;
+      if (isset($data->child)) $alm_table->request['child'] = $data->child;
+      if (isset($data->restrictby)) $alm_table->request['restrictby'] = $data->restrictby;
       $alm_table->addRecord();
       $rank++;
       $i = 1;
@@ -139,11 +139,11 @@ if (!empty($action)) {
           $alm_column->request['fk'] = $column['references'];
           $alm_column->request['alm_column'] = $column['label'];
           $alm_column->request['rank'] = $i;
-          $alm_column->request['idalm_role'] = $column['idalm_role'];
-          $alm_column->request['label_bool'] = $column['label_bool'];
-          $alm_column->request['display'] = $column['display'];
-          $alm_column->request['help'] = $column['help'];
-          $alm_column->request['list_values'] = $column['list_values'];
+          if (isset($column['idalm_role'])) $alm_column->request['idalm_role'] = $column['idalm_role'];
+          if (isset($column['label_bool'])) $alm_column->request['label_bool'] = $column['label_bool'];
+          if (isset($column['display'])) $alm_column->request['display'] = $column['display'];
+          if (isset($column['help'])) $alm_column->request['help'] = $column['help'];
+          if (isset($column['list_values'])) $alm_column->request['list_values'] = $column['list_values'];
           $alm_column->addRecord();
           ++$i;
         }

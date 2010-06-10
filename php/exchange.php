@@ -25,7 +25,7 @@ if ($action === 'import' && !empty($_FILES)) {
     foreach($fields as $k=>$f) {
       $fields[$k] = strtolower($fields[$k]);
       if (!isset($object->dd[$fields[$k]])) {
-        echo 'Wrong format, "' . $field_name . '" doesnot exist in "'.$object->name.'"';
+        echo 'Wrong format, "' . $fields[$k] . '" doesnot exist in "'.$object->name.'"';
         exit;
       }
       echo "$f, ";

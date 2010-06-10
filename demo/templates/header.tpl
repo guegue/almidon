@@ -9,7 +9,7 @@
 <a name="arriba"></a>
 <table border="0" cellpadding="0" cellspacing="0" width="800">
 <tr>
-<td><a href="/" title="demo.almidon.org"><img vspace="10" border="0" src="/img/almidon-atma.png" alt="adlmidon.org" width="253" height="78"></a></td>
+<td><a href="/" title="demo.almidon.org"><img vspace="10" border="0" src="/img/website-logo.png" alt="adlmidon.org" width="253" height="78"></a></td>
 </tr>
 <tr>
 <td>

@@ -291,7 +291,7 @@ class Table extends Data {
             $this->request[$column['name']] = $filename;
           }
         case 'char':
-          if ($this->request[$column['name']] == -1) {
+          if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1) {
             $values .= 'NULL';
           } else {
             $value = almdata::escape($this->request[$column['name']]);
