@@ -26,7 +26,7 @@ function genColumnSQL($column, $dbtype, $key = false) {
   } elseif ($dbtype == 'mysql') {
     if ($type == 'order' ||  $type == 'serial') $type = 'int AUTO_INCREMENT';
   }
-  $size = $column['size'];
+  $size = isset($size) ? $size : $column['size'];
   $size = preg_replace("/\./", ",", $size);
   $sql .= "  ".$column['name']." ".$type;
   if ($size) $sql .= " (".$size.")";

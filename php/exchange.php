@@ -81,6 +81,10 @@ if ($action === 'import' && empty($session)) {
   <option value="ftxt">Text (Formatted)</option>
   <option value="csv">CSV (Calc, Excel)</option>
   <option value="sql">SQL</option>
+  <option value="sqlschema">SQL (schema)</option>
+  <option value="tpl">Smarty (tpl)</option>
+  <option value="tpltable">Smarty (tpl + table)</option>
+  <option value="alm">Almidon (php)</option>
   </select>
   <input type="submit" value="Submit"/>
   </form>
