@@ -94,12 +94,12 @@ if(isset($_SESSION['idalm_user'])) {
 	  require(ALMIDONDIR . '/php/typical.php');
 	  $$object->destroy();
 
-          # Decide which tpl we should use: child, down or normal
-          $tpl = ((!empty($$object->parent)) ? 'child' : (($$object->cols > 5) ? 'down' : 'normal'));
+    # Decide which tpl we should use: child, down or normal
+    $tpl = ((!empty($$object->parent)) ? 'child' : (($$object->cols > 5) ? 'down' : 'normal'));
 
 	  $tpl = ALMIDONDIR . '/tpl/' . $tpl . '.tpl';
-          if (!empty($$object->parent)) {
-            $smarty->assign('header',ALMIDONDIR.'/tpl/child_header.tpl');
+    if (!empty($$object->parent)) {
+      $smarty->assign('header',ALMIDONDIR.'/tpl/child_header.tpl');
 	  } elseif (file_exists(ROOTDIR.'/templates/admin/header.tpl')) {
 	    $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
 	  } else {

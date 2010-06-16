@@ -74,49 +74,96 @@
     case 'alm':
       header('Content-type: text/plain');
       header('Content-Disposition: attachment; filename="'.$filename.'.php";');
-      $results = "<?php\n";
+      $results = "<?php\nrequire('../classes/app.class.php');\n";
+      $results .= '$data = new '.$this->name.'Table();'."\n";
+      $results .= '$data->readEnv();'."\n";
+      $results .= 'if (isset($data->request[\''.$this->key.'\'])) {'."\n";
+      $results .= '  $row = $data->readRecord();'."\n";
+      $results .= '  $smarty->assign(\'row\',$row);'."\n";
+      $results .= '  if (isset($data->child)) {'."\n";
+      $results .= '    $children = preg_split(\'/,/\',$data->child);'."\n";
+      $results .= '    foreach ($children as $child) {'."\n";
+      $results .= '      $namec = $child . \'Table\';'."\n";
+      $results .= '      $datac = new $namec;'."\n";
+      $results .= '      $datac->filter = $datac->name . \'.\' . $data->key . \'=\' . $row[$data->key];'."\n";
+      $results .= '      $$child = $datac->readData();'."\n";
+      $results .= '      $smarty->assign($child,$$child);'."\n";
+      $results .= '    }'."\n";
+      $results .= '  }'."\n";
+      $results .= '} else {'."\n";
+      $results .= '  $rows = $data->readData();'."\n";
+      $results .= '  $smarty->assign(\'rows\',$rows);'."\n";
+      $results .= '}'."\n";
+      $results .= '$smarty->display(\''.$this->name.'.tpl\');'."\n";
       break;
     case 'tpl':
-      header('Content-type: text/plain');
-      header('Content-Disposition: attachment; filename="'.$filename.'.tpl";');
-      $results = "<html><head><title>".$this->title."</title></head><body>\n";
-      $results .= '{section name=i loop=$rows}'."\n";
-      # prints headers...
-      $results .= '{if $smarty.i.first}'."\n";
-      foreach($this->dd as $d)
-        $results .= $d['label'] . "\t";
-      $results .= "<br/>{/if}\n";
-      # prints rows...
-      foreach($this->dd as $d)
-        $results .= '{$rows[i].' . $d['name'] . "}\t";
-      $results .= "<br/>\n{/section}\n";
-      # prints detail data
-      $results .= '{if $row}'."\n";
-      foreach($this->dd as $d)
-        $results .= $d['label'] . "\t" . '{$row.' . $d['name'] . "}<br/>\n";
-      $results .= "{/if}\n</body>\n</html>";
-      break;
     case 'tpltable':
+      global $global_dd;
+      if ($format === 'tpltable') {
+        $datini = '<table border="1">';
+        $datfin = '</table>';
+        $rowini = '<tr>';
+        $rowfin = '</tr>';
+        $colini = '<td>';
+        $colfin = '</td>';
+      } else {
+        $datini = '';
+        $datfin = '';
+        $rowini = '';
+        $rowfin = "<br/>";
+        $colini = '';
+        $colfin = "\t";
+      }
       header('Content-type: text/plain');
       header('Content-Disposition: attachment; filename="'.$filename.'.tpl";');
-      $results = "<html><head><title>".$this->title."</title></head><body>\n";
-      $results .= '{section name=i loop=$rows}'."\n";
+      $results = "<html><head><title>".$this->title."</title></head><body><h1>".$this->title."</h1>\n";
+      $results .= $datini.'{section name=i loop=$rows}'."\n";
       # prints headers...
-      $results .= '{if $smarty.i.first}'."\n".'<table border="1"><tr>'."\n";
-      foreach($this->dd as $d)
-        $results .= '<td>'.$d['label'].'</td>';
-      $results .= "</tr>\n{/if}\n";
+      $results .= '{if $smarty.section.i.first}'."$rowini\n";
+      $cols = 0;
+      foreach($this->dd as $d) {
+        $results .= $colini.$d['label'].$colfin;
+        $cols++;
+        if ($cols>5) break;
+      }
+      $results .= "$rowfin\n{/if}\n";
       # prints rows...
-      $results .= '<tr>';
-      foreach($this->dd as $d)
-        $results .= "<td>".'{$rows[i].' . $d['name'] .'}</td>';
-      $results .= "</tr>\n{/section}\n</table>\n";
+      $results .= $rowini;
+      $cols = 0;
+      foreach($this->dd as $d) {
+        if ($d['name'] === $this->key)
+          $results .= $colini.'<a href="?'.$d['name'].'={$rows[i].'.$d['name'].'}">{$rows[i].' . $d['name'] .'}</a>'.$colfin;
+        else
+          $results .= $colini.'{$rows[i].' . $d['name'] .'}'.$colfin;
+        $cols++;
+        if ($cols>5) break;
+      }
+      $results .= "$rowfin\n{/section}\n$datfin\n";
       # prints detail data
       $results .= '{if $row}'."\n";
-      $results .= '<table border="1">'."\n";
-      foreach($this->dd as $d)
-        $results .= '<tr><td>'.$d['label'].'</td><td>{$row.' . $d['name'] . "}</td></tr>\n";
-      $results .= "</table>\n{/if}\n</body>\n</html>";
+      $results .= "$datini\n";
+      foreach($this->dd as $d) {
+        $field = ($d['references'] !== 0) ? $d['references'] : $d['name'];
+        $results .= $rowini.$colini.$d['label'].$colfin.$colini.'{$row.' . $field . "}$colfin$rowfin\n";
+      }
+      $results .= "$datfin\n";
+      # prints children's tables
+      if (isset($this->child)) {
+        $children = preg_split('/,/',$this->child);
+        foreach ($children as $child) {
+          $namec = $child . 'Table';
+          $datac = new $namec;
+          $results .= '<h2>'.$datac->title.'</h2>';
+          $results .= $datini.'{section name='.$datac->name.' loop=$'.$datac->name.'}'."\n$rowini";
+          foreach($datac->dd as $dc) {
+            if ($dc['name'] == $this->key) continue;
+            $field = ($dc['references'] !== 0) ? $dc['references'] : $dc['name'];
+            $results .= $colini.'{$'.$datac->name.'['.$datac->name.'].' . $field .'}'.$colfin."\n";
+          }
+          $results .= "$rowfin\n{/section}$datfin\n";
+        }
+      }
+      $results .= "{/if}\n</body>\n</html>";
       break;
     case 'csv':
       header('Content-type: text/csv');
