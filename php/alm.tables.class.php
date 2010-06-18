@@ -53,8 +53,9 @@ class alm_tableTable extends Table {
     $this->addColumn('orden','varchar',100,0,0,'Order By');
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('hidden','bool',0,0,0,'Hidden');
+    $this->addColumn('search','bool',0,0,0,'Searchable');
     $this->addColumn('parent','varchar',32,0,0,'Parent');
-    $this->addColumn('child','varchar',32,0,0,'Child');
+    $this->addColumn('child','varchar',200,0,0,'Children',array('help'=>'Enter comma separated values'));
     $this->addColumn('restrictby','varchar',50,0,0,'Restricted by');
   }
 }
@@ -69,7 +70,7 @@ class alm_columnTable extends TableDoubleKey {
     $this->order = 'idalm_table,rank';
     $this->addColumn('idalm_table','varchar',48,0,'alm_table','Table');
     $this->addColumn('idalm_column','varchar',50,1,0,'Id');
-    $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('auth_user'=>'Auth User','bool'=>'Boolean','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'integer','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
+    $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('auth_user'=>'Auth User','bool'=>'Boolean','char'=>'Char','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'integer','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
     $this->addColumn('size','int',0,0,0,'Size');
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('pk','bool',0,0,0,'Primary Key?');

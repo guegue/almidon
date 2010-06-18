@@ -31,9 +31,8 @@ if(defined('ALMIDONDIR')) {
 $$object->readEnv();
 if(isset($_REQUEST['preset'])) {
   $smarty->assign('preset',$_REQUEST['preset']);
-} else {
+} elseif(isset($_REQUEST['parent'])) {
   $smarty->assign('preset',$_REQUEST['parent']."=".$_REQUEST[$_REQUEST['parent']]);
 }
 $$object->destroy();
 $smarty->display(ALMIDONDIR.'/tpl/child.tpl');
-?>

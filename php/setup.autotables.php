@@ -19,7 +19,9 @@
         $output .= "    \$this->key = '".$table_datum['pkey']."';\n";
       }
       $hidden = ($table_datum['hidden'] == 't') ? 'true' : 'false';
+      $search = ($table_datum['search'] == 't') ? 'true' : 'false';
       if ($hidden === 'true') $output .= "    \$this->hidden = ".$hidden.";\n";
+      if ($search === 'true') $output .= "    \$this->search = ".$search.";\n";
       if (!empty($table_datum['parent'])) $output .= "    \$this->parent ='".$table_datum['parent']."';\n";
       if (!empty($table_datum['child'])) $output .= "    \$this->child ='".$table_datum['child']."';\n";
       if (!empty($table_datum['restrictby']))

@@ -95,7 +95,8 @@ if(isset($_SESSION['idalm_user'])) {
 	  $$object->destroy();
 
     # Decide which tpl we should use: child, down or normal
-    $tpl = ((!empty($$object->parent)) ? 'child' : (($$object->cols > 5) ? 'down' : 'normal'));
+    if ($$object->cols > 5) $smarty->assign('down', true);
+    $tpl = !empty($$object->parent) ? 'child' : 'normal';
 
 	  $tpl = ALMIDONDIR . '/tpl/' . $tpl . '.tpl';
     if (!empty($$object->parent)) {

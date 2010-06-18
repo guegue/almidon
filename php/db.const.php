@@ -9,8 +9,8 @@ if (!defined('ALMIDONDIR')) {
   define ('ALMIDONDIR', $almidondir);
 }
 
-# Use Almidon's PEAR
-set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
+# Use Almidon's PHP and Almidon's PEAR
+set_include_path(ALMIDONDIR . '/php' . PATH_SEPARATOR . get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear');
 
 # Other constants...
 if (!defined('ALM_SQL_DEBUG')) define('ALM_SQL_DEBUG', true);

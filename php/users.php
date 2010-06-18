@@ -56,18 +56,8 @@ function get_credentials($idalm_user) {
         case '': // Si no hay role por defecto, revisar personalizacion
           $alm_access = new alm_accessTable();
           $credentials = $alm_access->readDataFilter("alm_access.idalm_user='".$idalm_user."' AND alm_access.idalm_table='".$table['idalm_table']."' AND alm_access.idalm_role!='deny'");
-        if(is_array($credentials)) {
-
-            # Why many credentials per table, one is enough!
-            #$i=0;
-            #foreach ($credentials as $key => $valor) {
-              #$credentialsql[$i] = $valor['idalm_role'];
-              #$i++;
-            #}
-            #$arrayCredentials[$table['idalm_table']] = $credentialsql;
-
+          if(is_array($credentials))
             $arrayCredentials[$table['idalm_table']] = $credentials[0]['idalm_role'];
-          }
           break;
         case 'full': // total
           $arrayCredentials[$table['idalm_table']] = 'full';

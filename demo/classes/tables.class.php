@@ -80,7 +80,7 @@ class pcountryTable extends TableDoubleKey {
     $this->key2 = 'idcountry';
     $this->title ='Person - Countries';
     $this->order ='pcountry.idperson,pcountry.idcountry';
-    $this->addColumn('idperson','int',0,1,'person','Person');
+    $this->addColumn('idperson','int',0,1,'person','Person',array('display'=>"familyname||', '||name"));
     $this->addColumn('idcountry','char',2,1,'country','Country of experience');
     $this->addColumn('comments','text',0,0,0,'Comments');
   }
@@ -204,6 +204,7 @@ class languageTable extends Table {
     $this->order ='language';
     $this->addColumn('idlanguage','serial',0,1,0,'Id');
     $this->addColumn('language','varchar',100,0,0,'Language');
+    $this->addColumn('selected','bool',0,0,0,'Selected');
   }
 }
 class origincvTable extends Table {
