@@ -53,7 +53,6 @@ class alm_tableTable extends Table {
     $this->addColumn('orden','varchar',100,0,0,'Order By');
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('hidden','bool',0,0,0,'Hidden');
-    $this->addColumn('search','bool',0,0,0,'Searchable');
     $this->addColumn('parent','varchar',32,0,0,'Parent');
     $this->addColumn('child','varchar',200,0,0,'Children',array('help'=>'Enter comma separated values'));
     $this->addColumn('restrictby','varchar',50,0,0,'Restricted by');
@@ -78,10 +77,11 @@ class alm_columnTable extends TableDoubleKey {
     $this->addColumn('alm_column','varchar',250,0,0,'Description');
     $this->addColumn('idalm_role','varchar',8,0,'alm_role','Allow only to',array('help'=>'This column will only be available to users under this role'));
     $this->addColumn('label_bool','varchar',100,0,0,'Boolean labels',array('help'=>'Enter both labels separated by :'));
-    $this->addColumn('display','varchar',200,0,0,'Display as');
     $this->addColumn('help','text',0,0,0,'Help');
+    $this->addColumn('search','bool',0,0,0,'Searchable');
+    $this->addColumn('display','varchar',200,0,0,'Display as');
+    $this->addColumn('list_values','varchar',500,0,0,'List values',array('help'=>'Enter array'));
     #$this->addColumn('sizes','varchar',100,0,0,'Image sizes');
     #$this->addColumn('range','varchar',100,0,0,'Image sizes');
-    #$this->addColumn('extra','text',0,0,0,'Extras');
   }
 }

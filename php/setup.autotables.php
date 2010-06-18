@@ -19,9 +19,7 @@
         $output .= "    \$this->key = '".$table_datum['pkey']."';\n";
       }
       $hidden = ($table_datum['hidden'] == 't') ? 'true' : 'false';
-      $search = ($table_datum['search'] == 't') ? 'true' : 'false';
       if ($hidden === 'true') $output .= "    \$this->hidden = ".$hidden.";\n";
-      if ($search === 'true') $output .= "    \$this->search = ".$search.";\n";
       if (!empty($table_datum['parent'])) $output .= "    \$this->parent ='".$table_datum['parent']."';\n";
       if (!empty($table_datum['child'])) $output .= "    \$this->child ='".$table_datum['child']."';\n";
       if (!empty($table_datum['restrictby']))
@@ -37,10 +35,13 @@
         if (empty($datum['fk'])) $datum['fk'] = 0;
         else $datum['fk'] = "'".$datum['fk']."'";
         $extra = array();
+      #$search = ($table_datum['search'] == 't') ? 'true' : 'false';
+      #if ($search === 'true') $output .= "    \$this->search = ".$search.";\n";
         if (!empty($datum['idalm_role'])) $extra[] = "'role'=>'".$datum['idalm_role']."'";
         if (!empty($datum['label_bool'])) $extra[] = "'label_bool'=>'".$datum['label_bool']."'";
         if (!empty($datum['help'])) $extra[] = "'help'=>'".$datum['help']."'";
         if (!empty($datum['display'])) $extra[] = "'display'=>\"".$datum['display'].'"';
+        if (!empty($datum['search'])) $extra[] = "'search'=>true";
         $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . addslashes($datum['alm_column']) . "'";
         if (!empty($extra)) {
           $output .= "," . 'array(' . implode(',',$extra) . ')';

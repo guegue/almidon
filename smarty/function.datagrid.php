@@ -29,39 +29,8 @@
  * @uses smarty_function_escape_special_chars()
  */
 
-include dirname(__FILE__) . '/shared.lang.php';
-
-define('DG', '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
-<input type="hidden" name="old__KEY_" value="{_ID_}" />
-<input type="hidden" name="_PARENT_" value="_PARENTID_" />
-<input type="hidden" name="_KEY_" value="{_ID_}" />
-<input type="hidden" name="_FORM_sort" value="_SORT_" />
-<input type="hidden" name="_FORM_pg" value="_PG_" />
-<input type="hidden" name="maxcols" value="_MAXCOLS_" />
-<input type="hidden" name="f" value="_FORM_" />
-<input type="hidden" name="action" value="save" />
-<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th> <th align="right"><div align="right">(_ROWS_ '.ALM_REC_LB.')</div></th></tr>
-<tr><td colspan="2"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DGHEADER__DGHEADERCMD_</tr>
-_DGROW_
-</table></td></tr><tr><td class="paginate">_PAGINATE_</td></tr></table></form>');
-define('DG2', '<form action="_SELF_" method="POST" name="_FORM_">
-<input type="hidden" name="old__KEY1_" value="_ID1_">
-<input type="hidden" name="old__KEY2_" value="_ID2_">
-<input type="hidden" name="_FORM_sort" value="_SORT_">
-<input type="hidden" name="_FORM_pg" value="_PG_">
-<input type="hidden" name="maxcols" value="_MAXCOLS_">
-<input type="hidden" name="f" value="_FORM_">
-<input type="hidden" name="action" value="save">
-<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th> <th align="right"><div align="right">(_ROWS_ '.ALM_REC_LB.')</div></th></tr>
-<tr><td colspan="2"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DGHEADER__DGHEADERCMD_</tr>
-_DGROW_
-</table></td></tr><tr><td class="paginate">_PAGINATE_</td></tr></table></form>');
-define('DGHEADERCMD', '<th>'.ALM_OPT_LB.'</th>');
-define('DGHEADERCELL', '<th><a class="dgheader_link" href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_FIELD__DESC_">_LABEL__SORTIMG_</a></th>');
-define('DGROW', '<tr class="dgrow">_DGCELL_</tr>'."\n");
-define('DGCELL', '<td class="dgcell">_VALUE_</td>');
-define('DGCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="20" maxlength="_SIZE_"/>');
-define('DGCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
+require(dirname(__FILE__) . '/shared.lang.php');
+require(dirname(__FILE__) . '/define.datagrid.php');
 define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"/></a></td>');
 define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;_KEY_={_ID_}&amp;_PARENT_=_PARENTID_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"/></a></td>');
 define('DGCMD2', '<td class="dgcmd"><a class="dgcmd_linksss" href="_SELF_?f=_FORM_&amp;action=record&amp;_KEY1_=_ID1_&amp;_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"/></a> <a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"/></a> <a href="_SELF_?f=_FORM_&amp;action=mod&amp;_KEY1_=_ID1_&amp;_KEY2_=_ID2_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"/></a></td>');
@@ -129,6 +98,7 @@ function smarty_function_datagrid($params, &$smarty)
         $$_key = (array)$_val;
         break;
       case 'paginate':
+      case 'search':
       case 'cmd':
       case 'truncate':
         $$_key = (bool)$_val;
@@ -294,21 +264,9 @@ function smarty_function_datagrid($params, &$smarty)
             break;
           case 'varchar':
           case 'char':
-            if (preg_match("/=/", $dd[$_key]['extra'])) {
-              $_list = preg_split('/:/', $dd[$_key]['extra']);
-              $_options = '';
-              foreach($_list as $_list_pair) {
-                list($_list_key, $_list_val) = preg_split('/=/', $_list_pair);
-                $_options[$_list_key] = $_list_val;
-              }
-              $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_val), $smarty);
-              $_tmp = preg_replace("/_REFERENCE_/", $_tmp, DGCELLMODREF);
-              $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
-            } else {
-              $_tmp = preg_replace("/_VALUE_/",  qdollar(htmlentities($_val,ENT_COMPAT,'UTF-8')), DGCELLMODSTR);
-              $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
-              $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
-            }
+            $_tmp = preg_replace("/_VALUE_/",  qdollar(htmlentities($_val,ENT_COMPAT,'UTF-8')), DGCELLMODSTR);
+            $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+            $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
             break;
           case 'int':
           case 'numeric':
@@ -502,8 +460,12 @@ function smarty_function_datagrid($params, &$smarty)
       break;
     }
   }
-  $_dg= ($key2) ? DG2 : DG;
+  $_dg = ($key2) ? DG2 : DG;
   $_html_result = preg_replace("/_DGHEADER_/", $_html_headers, $_dg);
+  if ($search === true)
+    $_html_result = preg_replace("/_DGSEARCH_/", DGSEARCH, $_html_result);
+  else
+    $_html_result = preg_replace("/_DGSEARCH_/", '', $_html_result);
   if ($cmd)
     $_html_result = preg_replace("/_DGHEADERCMD_/", DGHEADERCMD, $_html_result);
     $_html_result = preg_replace("/_DGHEADERCMD_/", '', $_html_result);

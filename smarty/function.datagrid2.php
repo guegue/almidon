@@ -30,44 +30,7 @@
  */
 
 include dirname(__FILE__) . '/shared.lang.php';
-
-# form to search
-define('DS','<form action="_SELF_" method="POST" name="_FORM_search" class="search"><input type="hidden" name="action" value="search" />_DSFIELDS_&nbsp;<input type="submit" value="'. ALM_SEARCH_LB .'" /><input type="reset" value="'. ALM_RESET_LB .'" /></form>');
-define('DSL','Resultados para <b>_DSQUERY_</b> [<a href="_SELF_?action=clear">' . ALM_SHOWALL . '</a>]');
-define('DSLABEL','<label for="_FIELD_">_LABEL_</label>');
-# end
-define('DG', '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
-<input type="hidden" name="old__KEY_" value="{_ID_}" />
-<input type="hidden" name="_PARENT_" value="_PARENTID_" />
-<input type="hidden" name="_KEY_" value="{_ID_}"/>
-<input type="hidden" name="_FORM_sort" value="_SORT_"/>
-<input type="hidden" name="_FORM_pg" value="_PG_"/>
-<input type="hidden" name="maxcols" value="_MAXCOLS_"/>
-<input type="hidden" name="f" value="_FORM_"/>
-<input type="hidden" name="action" value="save"/>
-<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th> <th align="right"><div align="right">(_ROWS_ '. ALM_REC_LB .')</div></th></tr>
-<tr><td colspan="2"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DGHEADER__DGHEADERCMD_</tr>
-_DGROW_
-</table></td></tr><tr><td class="paginate">_PAGINATE_</td></tr></table></form>');
-define('DG2', '<form action="_SELF_" method="POST" name="_FORM_">
-<input type="hidden" name="old__KEY1_" value="_ID1_">
-<input type="hidden" name="old__KEY2_" value="_ID2_">
-<input type="hidden" name="_FORM_sort" value="_SORT_">
-<input type="hidden" name="_FORM_pg" value="_PG_">
-<input type="hidden" name="maxcols" value="_MAXCOLS_">
-<input type="hidden" name="f" value="_FORM_">
-<input type="hidden" name="action" value="save">
-<table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_ _ROWS_ '. ALM_REC_LB .'</th></tr>
-<tr><td><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0"><tr>_DGHEADER__DGHEADERCMD_</tr>
-_DGROW_
-</table></td></tr><tr><td class="paginate">_PAGINATE_</td></tr></table></form>');
-define('DGHEADERCMD', '<th>'. ALM_OPT_LB .'</th>');
-define('DGHEADERCELL', '<th><a class="dgheader_link" href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_FIELD__DESC_">_LABEL__SORTIMG_</a></th>');
-define('DGROW', '<tr class="dgrow">_DGCELL_</tr>'."\n");
-define('DGCELL', '<td class="dgcell">_VALUE_</td>');
-define('DGCELLMODSTR', '<input type="text" name="_FIELD_" id="_FIELD_" value="_VALUE_" size="20" maxlength="_SIZE_"/>');
-define('DGCELLMODTXT', '<textarea name="_FIELD_" id="_FIELD_">_VALUE_</textarea><br /><a href="javascript:edittext(\'_FORM_\', \'_FIELD_\', document.getElementById(\'_FIELD_\').value);">'. MAX .'</a>');
-define('DGCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
+require(dirname(__FILE__) . '/define.datagrid.php');
 define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'. ALM_DEL_LB .'"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
 //para las tablas detalle
 define('DGCMD_det', '<td class="dgcmd"><a class="dgcmd_link" href="javascript:openwindow(\'./_FORM_.php?parent=_PARENT_=_PARENTID_&amp;f=_FORM_&amp;action=record&amp;_KEY_={_ID_}\');"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete_det(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a></td>');

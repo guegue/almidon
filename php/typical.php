@@ -76,27 +76,63 @@ switch ($action) {
     unset($limit);
     break;
   case 'search':
-    $cols = preg_split('/,/',$$object->search);
-    $s_ftr = '';
-    $q_ftr = '';
-    if($cols) {
-      foreach($cols as $col) {
-        if(!empty($_REQUEST[$col . 'search'])) {
-          if(!empty($q_ftr)) $q_ftr .= ' AND ';
-          $q_ftr .= "lower($col)" . ' LIKE lower(\'%' . $$object->database->escape($_REQUEST[$col . 'search']) . '%\')';
-          $s_ftr .= "$col => " . htmlspecialchars($_REQUEST[$col . 'search'],ENT_COMPAT,'UTF-8');
+    # quick search - javier
+    if (isset($_REQUEST['q'])) {
+      $q = $$object->escape($_REQUEST['q']);
+      foreach($$object->dd as $dd) {
+        if (isset($dd['extra']['search']) && $dd['extra']['search'] === true)
+          $cols[] = $dd['name'];
+      } 
+      if(isset($cols)) {
+        foreach($cols as $col)
+          $filter[] = $$object->name . ".$col LIKE '%" . $q . "%'";
+        $$object->filter = join(' AND ', $filter);
+        $$object->offset = 0;
+        $$object->limit = 0;
+      }
+    # FIXME: normal search - no longer works!
+    } elseif (isset($$object->search)) {
+      $cols = preg_split('/,/',$$object->search);
+      $s_ftr = '';
+      $q_ftr = '';
+      if(isset($cols)) {
+        foreach($cols as $col) {
+          if(!empty($_REQUEST[$col . 'search'])) {
+            if(!empty($q_ftr)) $q_ftr .= ' AND ';
+            $q_ftr .= "lower($col)" . ' LIKE lower(\'%' . $$object->database->escape($_REQUEST[$col . 'search']) . '%\')';
+            $s_ftr .= "$col => " . htmlspecialchars($_REQUEST[$col . 'search'],ENT_COMPAT,'UTF-8');
+          }
         }
+        $_SESSION[$object . 'ssearch'] = $s_ftr;
+        $_SESSION[$object . 'query'] = $q_ftr;
       }
     }
-    $_SESSION[$object . 'ssearch'] = $s_ftr;
-    $_SESSION[$object . 'query'] = $q_ftr;
     break;
+  #FIXME: do we need this?
   case 'clear':
     unset($_SESSION[$object . 'ssearch']);
     unset($_SESSION[$object . 'query']);
-    
     break;
 }
+# For Quick Search
+if (isset($_REQUEST['q'])) {
+  $q = $$object->escape($_REQUEST['q']);
+  foreach($$object->dd as $dd) {
+    if (isset($dd['extra']['search']) && $dd['extra']['search'] === true)
+      $cols[] = $dd['name'];
+  } 
+  if(isset($cols)) {
+    foreach($cols as $col)
+      $filter[] = $$object->name . ".$col LIKE '%" . $q . "%'";
+    $$object->filter = join(' AND ', $filter);
+    $$object->offset = 0;
+    $$object->limit = 0;
+  }
+}
+foreach($$object->dd as $dd)
+  if (isset($dd['extra']['search']) && $dd['extra']['search'] === true)
+    $smarty->assign('search', 'true');
+
 # Para la busqueda
 if(!empty($_SESSION[$object . 'query'])) {
   if(!empty($$object->filter)) $$object->filter .= ' AND ';
@@ -169,8 +205,10 @@ $smarty->assign('options', fillOpt($$object));
 # Limits/Paginando
   if(!isset($$object->maxrows)) $$object->maxrows = 8;
   else $$object->maxrows = (int) $$object->maxrows;
-  $$object->offset = (isset($$object->pg))?(((int)$$object->pg)-1)*$$object->maxrows:0;
-  $$object->limit = ($$object->maxrows)?$$object->maxrows:8;
+  if (!isset($$object->offset))
+    $$object->offset = (isset($$object->pg))?(((int)$$object->pg)-1)*$$object->maxrows:0;
+  if (!isset($$object->limit))
+    $$object->limit = ($$object->maxrows)?$$object->maxrows:8;
 # -- End Limits
 
 # To know who the first one and the last one is, this is useful when use order type of field

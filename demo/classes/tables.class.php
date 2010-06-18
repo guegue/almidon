@@ -193,7 +193,7 @@ class countryTable extends Table {
     $this->title ='Countries';
     $this->order ='country';
     $this->addColumn('idcountry','char',2,1,0,'Id');
-    $this->addColumn('country','varchar',200,0,0,'Country');
+    $this->addColumn('country','varchar',200,0,0,'Country',array('search'=>true));
   }
 }
 class languageTable extends Table {
@@ -203,7 +203,7 @@ class languageTable extends Table {
     $this->title ='Languages';
     $this->order ='language';
     $this->addColumn('idlanguage','serial',0,1,0,'Id');
-    $this->addColumn('language','varchar',100,0,0,'Language');
+    $this->addColumn('language','varchar',100,0,0,'Language',array('search'=>true));
     $this->addColumn('selected','bool',0,0,0,'Selected');
   }
 }
