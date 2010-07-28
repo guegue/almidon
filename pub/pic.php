@@ -36,7 +36,9 @@ $width = $getimagesizeinfo[0];
 $height = $getimagesizeinfo[1];
 
 # Sets new width and height
-if (preg_match('/(.+)x(.+)/', $size)) {
+if (preg_match('/(\d+)x(\d+)x(.+)/', $size)) {
+  list($newwidth,$newheight,$options) = preg_split('/x/', $size);
+} elseif (preg_match('/(\d+)x(\d+)/', $size)) {
   list($newwidth,$newheight) = preg_split('/x/', $size);
 } else {
   $newwidth = $size;
@@ -59,10 +61,30 @@ if ($cached) {
 
 # Resize...
 if (!$cached) {
-  $thumb = imagecreatetruecolor($newwidth, $newheight);
   $ImageCreateFromFunctionName = $ImageCreateFromFunction[$getimagesizeinfo[2]];
   $source = $ImageCreateFromFunctionName($fullpath);
-  imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+  # Crop if needed
+  if (isset($options) && $options === 'C') {
+    $ratio = $width/$height;
+    $newratio = $newwidth/$newheight;
+    if ($newratio > $ratio) {
+      $tmpheight = $newwidth/$ratio;
+      $tmpwidth = $newwidth;
+    } else {
+      $tmpwidth = $newheight*$ratio;
+      $tmpheight = $newheight;
+    }
+    $mid = array($tmpwidth/2, $tmpheight/2, $newwidth/2, $newheight/2);
+    $tmp = imagecreatetruecolor(round($tmpwidth), round($tmpheight));
+    $thumb = imagecreatetruecolor($newwidth, $newheight);
+    imagecopyresampled($tmp, $source, 0, 0, 0, 0, $tmpwidth, $tmpheight, $width, $height);
+    imagecopyresampled($thumb, $tmp, 0, 0, $mid[0]-$mid[2], $mid[1]-$mid[3], $newwidth, $newheight, $newwidth, $newheight);
+    imagedestroy($tmp);
+  # No cropping - distort if needed
+  } else {
+    $thumb = imagecreatetruecolor($newwidth, $newheight);
+    imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+  }
   imagejpeg($thumb, null, 100);
   imagejpeg($thumb, $cache_file, 100);
   imagedestroy($thumb);
