@@ -5,8 +5,8 @@ define('DSL','Resultados para <b>_DSQUERY_</b> [<a href="_SELF_?action=clear">' 
 define('DSLABEL','<label for="_FIELD_">_LABEL_</label>');
 # end
 define('DGSEARCH', '<form method="get"><input type="hidden" name="action" value="search" />
-<input type="text" name="q" value="" /><input type="submit" name="search" value="'.ALM_SEARCH_LB.'"/></form>');
-define('DG', '_DGSEARCH_<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
+<input type="text" name="q" value="{_Q_}" /><input type="submit" name="search" value="'.ALM_SEARCH_LB.'"/></form>');
+define('DG', '{_DGSEARCH_}<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
 <input type="hidden" name="old__KEY_" value="{_ID_}" />
 <input type="hidden" name="_PARENT_" value="_PARENTID_" />
 <input type="hidden" name="_KEY_" value="{_ID_}" />

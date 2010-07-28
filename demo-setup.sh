@@ -21,6 +21,7 @@ if [ "$1" == "mysql" ]; then
 else
   echo "Instalando sql para Postgresql" >> logs/install.log
   runuser -c "psql -f demo.sql" postgres >> logs/install.log 2>&1
+  runuser -c "psql -f country.sql" postgres >> logs/install.log 2>&1
   echo "!! No olvides configurar pg_hba.conf !!"
 fi
 

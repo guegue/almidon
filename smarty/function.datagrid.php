@@ -462,10 +462,12 @@ function smarty_function_datagrid($params, &$smarty)
   }
   $_dg = ($key2) ? DG2 : DG;
   $_html_result = preg_replace("/_DGHEADER_/", $_html_headers, $_dg);
-  if ($search === true)
-    $_html_result = preg_replace("/_DGSEARCH_/", DGSEARCH, $_html_result);
-  else
-    $_html_result = preg_replace("/_DGSEARCH_/", '', $_html_result);
+  if ($search === true) {
+    $_dgsearch = preg_replace("/{_Q_}/", htmlentities($_REQUEST['q']), DGSEARCH);
+    $_html_result = preg_replace("/{_DGSEARCH_}/", $_dgsearch, $_html_result);
+  } else {
+    $_html_result = preg_replace("/{_DGSEARCH_}/", '', $_html_result);
+  }
   if ($cmd)
     $_html_result = preg_replace("/_DGHEADERCMD_/", DGHEADERCMD, $_html_result);
     $_html_result = preg_replace("/_DGHEADERCMD_/", '', $_html_result);

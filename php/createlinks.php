@@ -18,7 +18,6 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
       if (!isset($table_object->hidden)) $table_object->hidden = false;
       if((isset($_SESSION['credentials'][$key]) || $_SESSION['idalm_user'] === 'admin') && !$table_object->hidden)
          $adminlinks[$key] = $table_object->title;
-
     }
     # Para agregar links adicionales, lo que nos de la gana
     if(isset($extralinks)) {

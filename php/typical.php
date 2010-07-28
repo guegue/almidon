@@ -86,7 +86,7 @@ switch ($action) {
       if(isset($cols)) {
         foreach($cols as $col)
           $filter[] = $$object->name . ".$col LIKE '%" . $q . "%'";
-        $$object->filter = join(' AND ', $filter);
+        $$object->filter = join(' OR ', $filter);
         $$object->offset = 0;
         $$object->limit = 0;
       }
