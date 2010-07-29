@@ -245,16 +245,13 @@ function fillOpt(&$object) {
   foreach ($object->dd as $key => $val)
     if ($object->dd[$key]['references']) {
       if (!isset($object->dd[$key]['extra']['depend']) && !isset($object->dd[$key]['extra']['readonly'])) {
-        $where = '';
         if(isset($object->dd[$key]['extra']['references_filter']))
           $where = $object->dd[$key]['extra']['references_filter'];
         if(isset($object->dd[$key]['extra']['display'])) {
           $ot = $object->dd[$key]['references'] . 'Table';
           $robject = new $ot;
-	  if(!empty($where))
-            $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." WHERE $where ORDER BY " . $object->dd[$key]['references']);
-	  else
-            $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." ORDER BY " . $object->dd[$key]['references']);
+	  $wwhere = (empty($where)) ? '' : "WHERE $where";
+          $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." $wwhere ORDER BY " . $object->dd[$key]['references']);
         } else {
 	  $pos = strpos($object->dd[$key]['references'],'.');
           if($pos!==false)

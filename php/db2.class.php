@@ -202,7 +202,9 @@ class Table extends Data {
             #if(empty($column['extra']['alias']))  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
             #else  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['extra']['alias'];
           } else {
-            $this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'];
+            # FIXME? Y si existe ya un campo llamado como la tabla foranea en la tabla actual?
+            $this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'] . " AS " . $column['references'];
+            #$this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'];
           }
         } else {
           # FIXME: Second reference to same table does not enjoy display/alias (not yet)
