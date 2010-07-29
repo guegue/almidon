@@ -39,7 +39,9 @@ foreach($classes as $key) {
   if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
     $table_object = new $key;
     $global_dd[$table_object->name]['key'] = $table_object->key;
-    if (preg_match('/(^|,)'.$table_object->name.'(,|$)/', $table_object->fields)) {
+    if(isset($table_object->descriptor)) {
+      $global_dd[$table_object->name]['descriptor'] = $table_object->descriptor;
+    } elseif (preg_match('/(^|,)'.$table_object->name.'(,|$)/', $table_object->fields)) {
       $global_dd[$table_object->name]['descriptor'] = $table_object->name;
     } else {
       $global_dd[$table_object->name]['descriptor'] = $table_object->key;
