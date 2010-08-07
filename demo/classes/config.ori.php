@@ -5,8 +5,14 @@
 #define ('ALMIDONDIR', '/usr/local/almidon/');
 define ('DEBUG', true);
 
+# Usar DB3 en vez de DB2 (FIXME: ambos deben unirse)
+#define ('DB3', true);
+
 # Idioma, por ahora solo "es" y "en"
 define ('ALM_LANG','en');
+
+# Time Zone
+date_default_timezone_set('America/Managua');
  
 # Constantes de conexion la base de datos
 $admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';
@@ -39,5 +45,4 @@ define ('MAXROWS', 5);
 define ('MAXCOLS', 6);
 
 # Constantes de valores (IDs) de las tablas
-
 define('IDPAGINA', 1);
