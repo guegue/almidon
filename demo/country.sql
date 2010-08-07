@@ -9,11 +9,6 @@ CREATE TABLE country (
     country character varying(200)
 );
 
-CREATE TABLE country (
-    idcountry character(2) PRIMARY KEY,
-    country character varying(200)
-);
-
 ALTER TABLE public.country OWNER TO almidondemo;
 
 INSERT INTO country (idcountry, country) VALUES ('AD', 'Andorra');
