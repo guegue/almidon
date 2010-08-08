@@ -1,3 +1,100 @@
+2010-08-08:
+  * Remplaza config.php con config.ori.php para evitar problemas al hacer
+    commit con configuraciones modificadas.
+  * Agregando .spec. Primer borrador de RPM funcionando para Fedora :)
+
+2010-07-28:
+  * Agregando soporte de crop para pic.php
+  * Soporte para 'descriptor' en tablas, asi no *tiene* que llamarse igual que
+    la tabla. Nota: 'display' tiene prioridad, sobre-escribe esto.
+
+2010-06-18:
+  * Soporte para 'char' en autotables.
+  * No mas 'down.tpl', ahora 'normal.tpl'
+  * Quick Search en DataGrid
+
+2010-06-16:
+  * Permitir exportar a PHP/TPL: creacion sencilla de un PHP/TPL para la
+    tabla.
+
+2010-06-10:
+  * Repara normal2 y down2, los elimina en favor de normal y down
+  * Mejoras export y almtables
+
+2010-05-20:
+  * Import from CSV (Calc/Excel)
+  * Reparando viejo y nefasto error de uso de 'NULL'
+
+2010-05-05:
+  * 'display' usa ORDER BY
+  * Soporte para exportar queries personalizados (e.g. datareport)
+
+2010-05-02:
+  * Opcion de exportar tablas a CSV (Excel/Calc), Text, Sql, HTML
+
+2010-04-30:
+  * Soporte para 'auth_user' en Alm_Tables
+  * Mejorando filtro de tablas por usuario
+
+2010-04-27:
+  * Reparando paginacion en datagrids hijos. Partial list_values support for db2.
+
+2010-04-25:
+  * Filtrar datos segun el usuario que los ingresa
+  * Soporte para ayuda ('help') en los campos y 'label_bool' en db2
+  * Soporte de 'display' para db2 (ahora si?)
+
+2010-04-23:
+  * Permisos de usuario por columna de tabla
+  * Renombrando: arr_values-->list_values, filteropt-->references_filter
+
+2010-04-22:
+  * Soporte para forms padre-hijo (mastro-detalle)
+  * Transalating Si/No
+  * Soporte de autotables para padre-hijo
+  * Hacer que auth_user funcione con SESSION o HTTP AUTH
+
+2010-04-21:
+  * Incorporando datareport2
+  * /setup mas tolerante. incorporando http_auth_user a db2
+  * Soporte para 'hidden' en db2.
+  * Mejora de idiomas, autotables y almidonzacion
+  * Reparando db.readrecord2 (doble llave)
+
+2010-04-20:
+  * Cambiando de nombre a logo del website
+  * Cosas del multi-lenguaje
+
+2010-02-10:
+  * Agregando campo shortEdit, para poder definir (cuando una tabla tenga menos de 4
+    campos) que no se habilite la edicion corta, ahora sale el view en vez de eso.
+
+2010-02-06:
+  * Componiendo almidonización y algunos detalles del acceso a paginas
+
+2010-02-05:
+  * Correcion de idiomas en el login, aparecian las constantes en vez de
+    los valores en el formulario.
+  * Eliminando Warning
+  * Anadiendo al sql de usuarios el campo hidden y ampliado la longitud de
+    nombre de las tablas y campos
+
+2010-01-24:
+  * Reparando problema con permisos personalizados
+
+2010-01-23:
+  * Mejora autotables para tablas de 2 llaves
+  * Reparando errores de autotables
+  * dumb typo in ALMIDONDIR
+
+2010-01-22:
+  * Reparando autotables, ahora funciona sin PEAR
+  * Soporte de 'display' para db2
+
+2010-01-16:
+  * Remplazando split por preg_split
+  * Quitando rteSafe
+
 2009-11-24:
   * Continuando con limpieza /new, no es necesario, copiar del demo
     /backup porque es mas hosting que desarrollo. /php/pear/HTML ya no se usa,
