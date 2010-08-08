@@ -1,4 +1,5 @@
 %define contentdir /var/www/
+%define logdir /var/log/
 
 Name: almidon
 Version: 0.6.1
@@ -28,7 +29,6 @@ echo "0 2 * * *	almidon	%{_sbindir}/tmpwatch -umc %{_datadir}/%{name}/cache/ > /
 
 %install
 rm -rf %{buildroot}
-echo "Instalando demo de almidon en `pwd` `date`" > demo/logs/install.log
 mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
 mkdir -p  %{buildroot}/%{contentdir}/%{name}
 mkdir -p  %{buildroot}/%{_sysconfdir}/cron.d
@@ -37,10 +37,6 @@ cp demo/demo.sql %{_tmppath}/
 cp demo/country.sql %{_tmppath}/
 cp demo/classes/config.ori.php  demo/classes/config.php
 cp -a config.sh demo php pub site-setup.sh smarty sql tpl %{buildroot}/%{contentdir}/%{name}/
-/sbin/runuser -c "psql -f %{_tmppath}/demo.sql" postgres >> demo/logs/install.log 2>&1
-/sbin/runuser -c "psql -f %{_tmppath}/country.sql" postgres >> demo/logs/install.log 2>&1
-# FIXME: keeps adding this line
-echo "local almidondemo all md5" >>  %{_sharedstatedir}/pgsql/data/pg_hba.conf
 cp -a doc/* %{buildroot}/%{_docdir}/%{name}-%{version}/
 cp -a almidon.cron  %{buildroot}/%{_sysconfdir}/cron.d/almidon
 cp -a demo/almidon.conf  %{buildroot}/%{_sysconfdir}/httpd/conf.d/
@@ -49,6 +45,11 @@ cp -a demo/almidon.conf  %{buildroot}/%{_sysconfdir}/httpd/conf.d/
 rm -rf %{buildroot}
 
 %pre
+echo "Instalando demo de almidon en `pwd` `date`" > %{logdir}/almidon.log
+/sbin/runuser -c "psql -f %{_tmppath}/demo.sql" postgres >> %{logdir}/almidon.log 2>&1
+/sbin/runuser -c "psql -f %{_tmppath}/country.sql" postgres >> %{logdir}/almidon.log 2>&1
+# FIXME: keeps adding this line
+echo "local almidondemo all md5" >>  %{_sharedstatedir}/pgsql/data/pg_hba.conf
 %{_sbindir}/useradd -d %{_datadir}/%{name} -r -s /sbin/nologin almidon 2> /dev/null || :
 
 %post
@@ -85,7 +86,7 @@ fi
 %config(noreplace) %{_sysconfdir}/cron.d/almidon
 %attr(0660,almidon,apache) %config(noreplace) %{contentdir}/%{name}/demo/classes/config.php
 %attr(0660,almidon,apache) %config(noreplace) %{contentdir}/%{name}/demo/classes/tables.class.php
-%attr(0660,almidon,apache) %config(noreplace) %{contentdir}/%{name}/demo/logs/install.log
+#%attr(0660,almidon,apache) %config(noreplace) %{contentdir}/%{name}/demo/logs/install.log
 %attr(0770,almidon,apache) %{contentdir}/%{name}/demo/cache
 %attr(0770,almidon,apache) %{contentdir}/%{name}/demo/logs
 %attr(0770,almidon,apache) %{contentdir}/%{name}/demo/files
