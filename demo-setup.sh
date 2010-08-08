@@ -12,12 +12,14 @@ echo "Configurando '$APACHE'" >> logs/install.log
 cp almidon.conf /etc/$APACHE/conf.d/
 /etc/init.d/$APACHE restart
 
+cp classes/config.ori.php classes/config.php
+
 # crea base de datos
 # echo "Creando base de datos segun demo.sql"
 if [ "$1" == "mysql" ]; then
   echo "Instalando sql para Mysql" >> logs/install.log
   mysql < demo.mysql >> logs/install.log 2>&1
-  sed 's/pgsql/mysql/' classes/config.ori.php > classes/config.php
+  sed 's/pgsql/mysql/' classes/config.php > classes/config.php
 else
   echo "Instalando sql para Postgresql" >> logs/install.log
   runuser -c "psql -f demo.sql" postgres >> logs/install.log 2>&1
