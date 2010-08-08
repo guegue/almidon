@@ -6,12 +6,12 @@ Release: 1%{?dist}
 Summary: Plataforma de desarrollo rapido php+postgresql
 
 Group: Development/Languages
-License: GPLv2
+License: GPLv3
 URL: http://almidon.org/
 Source0: http://almidon.org/downloads/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: php, php-pgsql, postgresql, postgresql-server, httpd
-Requires(pre): %{_sbindir}/useradd /sbin/runuser
+Requires(pre): %{_sbindir}/useradd, /sbin/runuser
 Requires(postun): /sbin/service 
 BuildArch: noarch
 
@@ -49,7 +49,7 @@ cp -a demo/almidon.conf  %{buildroot}/%{_sysconfdir}/httpd/conf.d/
 rm -rf %{buildroot}
 
 %pre
-%{_sbindir}/useradd -d %{_datadir}/%{name} -r -s /sbin/nologin almidon 2> /dev/null || :a
+%{_sbindir}/useradd -d %{_datadir}/%{name} -r -s /sbin/nologin almidon 2> /dev/null || :
 
 %post
 if [ $1 == 1 ]; then
