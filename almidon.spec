@@ -33,7 +33,7 @@ mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
 mkdir -p  %{buildroot}/%{contentdir}/%{name}
 mkdir -p  %{buildroot}/%{_sysconfdir}/cron.d
 mkdir -p  %{buildroot}/%{_sysconfdir}/httpd/conf.d
-cp demo/demo.sql %{_tmppath}/
+cat demo/create.sql sql/almidon.sql demo/demo.sql > %{_tmppath}/demo.sql
 cp demo/country.sql %{_tmppath}/
 cp demo/classes/config.ori.php  demo/classes/config.php
 cp -a config.sh demo php pub site-setup.sh smarty sql tpl %{buildroot}/%{contentdir}/%{name}/
