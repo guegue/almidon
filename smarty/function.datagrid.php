@@ -336,7 +336,8 @@ function smarty_function_datagrid($params, &$smarty)
         }
         switch ($dd[$_key]['type']) {
           case 'char':
-            if (preg_match("/=/", $dd[$_key]['extra'])) {
+            # FIXME: poder especificar values
+            /* if (preg_match("/=/", $dd[$_key]['extra'])) {
               $_list = preg_split('/:/', $dd[$_key]['extra']);
               $_options = '';
               foreach($_list as $_list_pair) {
@@ -348,7 +349,10 @@ function smarty_function_datagrid($params, &$smarty)
               $_tmp = smarty_modifier_truncate($_val, 50);
               $_tmp = smarty_modifier_url($_tmp);
               $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
-            }
+            }*/
+            $_tmp = smarty_modifier_truncate($_val, 50);
+            $_tmp = smarty_modifier_url($_tmp);
+            $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
             break;
           case 'bool':
           case 'boolean':

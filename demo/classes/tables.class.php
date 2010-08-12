@@ -3,7 +3,6 @@ class paginaTable extends Table {
   function paginaTable() {
     $this->Table('pagina');
     $this->key = 'idpagina';
-    $this->hidden = true;
     $this->title ='Paginas';
     $this->order ='pagina';
     $this->addColumn('idpagina','serial',0,1,0,'ID');
@@ -16,7 +15,6 @@ class docTable extends Table {
   function docTable() {
     $this->Table('doc');
     $this->key = 'iddoc';
-    $this->hidden = true;
     $this->title ='Documentos';
     $this->order ='doc';
     $this->addColumn('iddoc','serial',0,1,0,'ID');
@@ -30,7 +28,6 @@ class enlaceTable extends Table {
   function enlaceTable() {
     $this->Table('enlace');
     $this->key = 'idenlace';
-    $this->hidden = true;
     $this->title ='Enlaces';
     $this->order ='enlace';
     $this->addColumn('idenlace','serial',0,1,0,'ID');
@@ -94,9 +91,9 @@ class countryTable extends Table {
   function countryTable() {
     $this->Table('country');
     $this->key = 'idcountry';
-    $this->title ='Countries';
+    $this->title ='Paises';
     $this->order ='country';
-    $this->addColumn('idcountry','char',2,1,0,'Id');
-    $this->addColumn('country','varchar',200,0,0,'Country',array('search'=>true));
+    $this->addColumn('idcountry','char',2,1,0,'Id',array('help'=>'Please follow ISO'));
+    $this->addColumn('country','varchar',200,0,0,'Pais',array('search'=>true));
   }
 }

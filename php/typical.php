@@ -114,21 +114,6 @@ switch ($action) {
     unset($_SESSION[$object . 'query']);
     break;
 }
-# For Quick Search
-if (isset($_REQUEST['q'])) {
-  $q = $$object->escape($_REQUEST['q']);
-  foreach($$object->dd as $dd) {
-    if (isset($dd['extra']['search']) && $dd['extra']['search'] === true)
-      $cols[] = $dd['name'];
-  } 
-  if(isset($cols)) {
-    foreach($cols as $col)
-      $filter[] = $$object->name . ".$col LIKE '%" . $q . "%'";
-    $$object->filter = join(' AND ', $filter);
-    $$object->offset = 0;
-    $$object->limit = 0;
-  }
-}
 foreach($$object->dd as $dd)
   if (isset($dd['extra']['search']) && $dd['extra']['search'] === true)
     $smarty->assign('search', 'true');
