@@ -6,11 +6,13 @@
         $type = 'string';
         break;
       case 'numeric':
+        $tmpvar = number_format((float)str_replace(',','',$tmpvar),2,'.','');
         $type = 'float';
         break;
       case 'int':
       case 'smallint':
       case 'serial':
+        $tmpvar = (int)str_replace(',','',$tmpvar);
         $type = 'int';
         break;
       default:
