@@ -42,6 +42,7 @@
         if (!empty($datum['help'])) $extra[] = "'help'=>'".$datum['help']."'";
         if (!empty($datum['display'])) $extra[] = "'display'=>\"".$datum['display'].'"';
         if (!empty($datum['search']) && $datum['search'] != 'f') $extra[] = "'search'=>true";
+        if (!empty($datum['cdn']) && $datum['cdn'] != 'f') $extra[] = "'cdn'=>true";
         $output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . addslashes($datum['alm_column']) . "'";
         if (!empty($extra)) {
           $output .= "," . 'array(' . implode(',',$extra) . ')';

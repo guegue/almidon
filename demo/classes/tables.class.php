@@ -56,7 +56,7 @@ class fotoTable extends Table {
     $this->order ='foto';
     $this->addColumn('idfoto','serial',0,1,0,'ID');
     $this->addColumn('foto','varchar',500,0,0,'Titulo');
-    $this->addColumn('imagen','image',0,0,0,'Foto');
+    $this->addColumn('imagen','image',0,0,0,'Foto',array('cdn'=>true));
     $this->addColumn('idgaleria','int',0,0,'galeria','Galeria');
   }
 }
@@ -85,15 +85,5 @@ class noticiaTable extends Table {
     $this->addColumn('fecha','datenull',0,0,0,'Fecha');
     $this->addColumn('texto','text',0,0,0,'Texto');
     $this->addColumn('foto','image',0,0,0,'Foto');
-  }
-}
-class countryTable extends Table {
-  function countryTable() {
-    $this->Table('country');
-    $this->key = 'idcountry';
-    $this->title ='Paises';
-    $this->order ='country';
-    $this->addColumn('idcountry','char',2,1,0,'Id',array('help'=>'Please follow ISO'));
-    $this->addColumn('country','varchar',200,0,0,'Pais',array('search'=>true));
   }
 }

@@ -259,16 +259,31 @@ class Table extends Data {
         case 'image':
           $value = '';
           if (isset($this->files[$column['name']])) {
+            if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
+              $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
+              $auth->authenticate();
+              $conn = new CF_Connection($auth);
+              $cloudfiles = $conn->get_container(CDN_REPO);
+            }
             #$filename =  mktime() . "_" . $this->request[$column['name']];
             $timemark = mktime();
             $filename =  $timemark . "_" . $this->request[$column['name']];
-            if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
-            move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
+            if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
+              $afile = $cloudfiles->create_object($filename);
+              $afile->content_type = mime_content_type($this->files[$column['name']]);
+              $afile->load_from_filename($this->files[$column['name']]);
+            } else {
+              if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
+              move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
+            }
             $this->request[$column['name']] = $filename;
             if ($column['extra'] && defined('PIXDIR'))  $sizes = explode(',',$column['extra']['sizes']);
             if(isset($sizes)) {
               foreach($sizes as $size) {
-                $image = imagecreatefromstring(file_get_contents(ROOTDIR.'/files/'.$this->name.'/'.$filename));
+                if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
+                } else {
+                  $image = imagecreatefromstring(file_get_contents(ROOTDIR.'/files/'.$this->name.'/'.$filename));
+                }
                 list($ancho,$alto) = preg_split('/x/', $size);
                 $alto_original = imagesy($image);
                 $ancho_original = imagesx($image);
@@ -277,8 +292,11 @@ class Table extends Data {
                 imagecopyresampled($new_image, $image, 0, 0, 0, 0, $ancho, $alto, $ancho_original, $alto_original);
                 #imagejpeg($new_image,PIXDIR.'/'.$size.'_'.$filename,72);
                 #this code puts the year and month
-                if(file_exists(PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark)) || mkdir(PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark),0777,true))
-                  imagejpeg($new_image , PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark) . '/' . $ancho . ($alto?"x$alto":"") . '_' . $filename,72);
+                if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
+                } else {
+                  if(file_exists(PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark)) || mkdir(PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark),0777,true))
+                    imagejpeg($new_image , PIXDIR . '/' . date("Y",$timemark) . '/' . date("m",$timemark) . '/' . $ancho . ($alto?"x$alto":"") . '_' . $filename,72);
+                }
               }
             }
             $value = almdata::escape($this->request[$column['name']]);

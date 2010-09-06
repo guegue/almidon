@@ -87,7 +87,8 @@ if ( !class_exists('alm_columnTable') ) {
       $this->addColumn('idalm_role','varchar',8,0,'alm_role','Allow only to',array('help'=>'This column will only be available to users under this role'));
       $this->addColumn('label_bool','varchar',100,0,0,'Boolean labels',array('help'=>'Enter both labels separated by :'));
       $this->addColumn('help','text',0,0,0,'Help');
-      $this->addColumn('search','bool',0,0,0,'Searchable');
+      $this->addColumn('search','bool',0,0,0,'Searchable',array('help'=>'Include in quick search'));
+      $this->addColumn('cdn','bool',0,0,0,'CDN',array('help'=>'Content Delivery Network'));
       $this->addColumn('display','varchar',200,0,0,'Display as');
       $this->addColumn('list_values','varchar',500,0,0,'List values',array('help'=>'Enter array'));
       #$this->addColumn('sizes','varchar',100,0,0,'Image sizes');
