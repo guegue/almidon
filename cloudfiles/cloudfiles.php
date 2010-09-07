@@ -1439,7 +1439,8 @@ class CF_Container
         if ($status == 404) {
             $m = "Specified object '".$this->name."/".$obj_name;
             $m.= "' did not exist to delete.";
-            throw new NoSuchObjectException($m);
+            #throw new NoSuchObjectException($m);
+            return True; // Javier
         }
         if ($status != 204) {
             throw new InvalidResponseException(

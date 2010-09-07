@@ -1,16 +1,17 @@
 <?php
     if (!$id) $id = $this->request[$this->key];
     # Borra imagenes o archivos relacionados a este registro
-    if (!empty($this->getFiles())); {
+    $getfiles = $this->getFiles();
+    if (!empty($getfiles)); {
       $tmp = $this->readRecord($id);
-      foreach($remove_files as $val) {
+      foreach($getfiles as $val) {
         # CDN? Remove object
-        if (isset($this->definition[$val]['extra']['cdn']) && $this->definition[$val]['extra']['cdn'] === true) {
+        if (isset($this->dd[$val]['extra']['cdn']) && $this->dd[$val]['extra']['cdn'] === true) {
           $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
           $auth->authenticate();
           $conn = new CF_Connection($auth);
           $cloudfiles = $conn->get_container(CDN_REPO);
-          $images->delete_object($tmp[$val]);
+          $cloudfiles->delete_object($tmp[$val]);
         } else {
           unlink(ROOTDIR . '/files/' . $this->name . '/' . $tmp[$val]);
         }
