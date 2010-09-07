@@ -1,26 +1,34 @@
 <?php
+    # FIXME: deberiamos reinicializar 'request', sino puede tomar valores anteriores
     $n = 0;
-    $values ="";
+    $skipped_cols = 0;
+    $values = "";
     foreach($this->definition as $column) {
       if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
         $values .= ",";
       switch($column['type']) {
-        case 'auto':
       	case 'external':
+      	case 'auto':
+      	case 'order':
         case 'serial':
-        case 'order':
+          $skipped_cols++;
           $n--;
           break;
         case 'int':
-          if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1)
+          if (!isset($this->request[$column['name']]) || $this->request[$column['name']] === -1 || $this->request[$column['name']] === '')
             $this->request[$column['name']] = 'NULL';
         case 'smallint':
         case 'numeric':
-          $values .= $this->request[$column['name']];
+          $values .= $column['name'] . "=" . $this->request[$column['name']];
           break;
         case 'image':
-          $value = '';
-          if (isset($this->files[$column['name']])) {
+          if ($nofiles || isset($_REQUEST[$column['name'] . '_keep']) || !isset($this->files[$column['name']]) || empty($this->files[$column['name']]) ) {
+            if (!isset($_REQUEST[$column['name'] . '_keep']) && empty($this->files[$column['name']])) {
+              $values .= $column['name'] . "=''";
+            } else {
+              $values .= $column['name'] . "=" . $column['name'];
+            }
+          } elseif ($this->files[$column['name']]) {
             if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
               $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
               $auth->authenticate();
@@ -30,6 +38,7 @@
             $timemark = mktime();
             $filename =  $timemark . "_" . $this->request[$column['name']];
             $value = almdata::escape($filename);
+            $values .= $column['name'] . "=" ."'" . $value . "'";
             if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
               # upload to CDN
               $afile = $cloudfiles->create_object($filename);
@@ -69,78 +78,73 @@
               }
             }
           }
-          $values .= "'" . $value . "'";
           break;
         case 'file':
-          if ($this->files[$column['name']]) {
+          #if ($nofiles) break;
+          if ($nofiles || $_REQUEST[$column['name'] . '_keep'] || !$this->files[$column['name']]) {
+            if (!$_REQUEST[$column['name'] . '_keep'] && !$this->files[$column['name']])
+              $values .= $column['name'] . "=''";
+            else
+              $values .= $column['name'] . "=" . $column['name'];
+          } elseif ($this->files[$column['name']]) {
             $filename =  mktime() . "_" . $this->request[$column['name']];
-            $filepath = ROOTDIR . '/files/' . $this->name;
-            if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
-              $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
-              $auth->authenticate();
-              $conn = new CF_Connection($auth);
-              $cloudfiles = $conn->get_container(CDN_REPO);
-              # upload to CDN
-              $afile = $cloudfiles->create_object($filepath.'/'.$filename);
-              $afile->content_type = mime_content_type($this->files[$column['name']]);
-              $afile->load_from_filename($this->files[$column['name']]);
-            } else {
-              if (!file_exists($filepath)) mkdir($filepath);
-              move_uploaded_file($this->files[$column['name']], $filepath.'/'.$filename);
-            }
-            $this->request[$column['name']] = $filename;
+            if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
+            move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
+            $value = almdata::escape($filename);
+            $values .= $column['name'] . "=" ."'" . $value . "'";
           }
+          break;
         case 'char':
-          if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1) {
-            $values .= 'NULL';
+          if ($this->request[$column['name']] == -1) {
+            $this->request[$column['name']] = 'NULL';
+            $values .= $column['name'] . "=" . $this->request[$column['name']];
           } else {
             $value = almdata::escape($this->request[$column['name']]);
-            $values .= "'" . $value . "'";
+            $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;
         case 'varchar':
           if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1) {
-            $values .= 'NULL';
+            $this->request[$column['name']] = 'NULL';
+            $values .= $column['name'] . "=" . $this->request[$column['name']];
           } else {
             $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
-            $values .= "'" . $value . "'";
+            $values .= $column['name'] . "=" ."'" . $value . "'";
           }
           break;
         case 'text':
           if (isset($this->request[$column['name']])) {
             $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
-            $values .= "'" . $value . "'";
+            $values .= $column['name'] . "=" ."'" . $value . "'";
           } else {
-            $values .= 'NULL';
-          } 
+            $values .= $column['name'] . "=NULL";
+          }
           break;
         case 'bool':
         case 'boolean':
-          $value = (isset($this->request[$column['name']])) ? $this->request[$column['name']] : false;
-          $value = (!$value || $value == 'false' || $value == '0' || $value == 'f') ? '0' : '1';
-          $values .= "'" . $value . "'";
+          $value = (isset($this->request[$column['name']])) ? $this->request[$column['name']] : '0';
+          $value = (!$value || $value == 'false' || $value == '0') ? '0' : '1';
+          $values .= $column['name'] . "=" ."'" . $value . "'";
           break;
         case 'date':
-        case 'datetime':
         case 'datenull':
           $value = $this->request[$column['name']];
-          if (isset($value) && $value != '0-00-0' && !empty($value)) {
+          if (isset($value) && $value != '0-00-0') {
             $value = almdata::escape($this->request[$column['name']]);
-            $values .= "'" . $value . "'";
+            $values .= $column['name'] . "= '" . $value . "'";
           } else {
-            $values .= 'NULL';
+            $values .= $column['name'] . "=NULL";
           }
           break;
         default:
           if (isset($this->request[$column['name']])) {
             $value = ($this->escaped) ? $this->request[$column['name']] : almdata::escape($this->request[$column['name']]);
-            $values .= "'" . $value . "'";
+            $values .= $column['name'] . "=" ."'" . $value . "'";
           } else {
-            $values .= 'NULL';
+            $values .= $column['name'] . "=NULL";
           }
           break;
       }
       $n++;
+      if ($maxcols && (($n+$skipped_cols) >= $maxcols)) break;
     }
-    $sqlcmd = "INSERT INTO $this->name ($this->fields_noserial) VALUES ($values)";
-    $result = $this->query($sqlcmd);

@@ -36,7 +36,7 @@ CREATE TABLE foto (idfoto serial PRIMARY KEY, idgaleria integer REFERENCES galer
 ALTER TABLE public.foto OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS noticia CASCADE;
-CREATE TABLE noticia (idnoticia serial PRIMARY KEY, noticia varchar(500), fecha date, texto text, foto varchar(500));
+CREATE TABLE noticia (idnoticia serial PRIMARY KEY, noticia varchar(500), fecha date, texto text, foto varchar(500), fotocdn varchar(500));
 ALTER TABLE public.noticia OWNER TO almidondemo;
 
 DROP TABLE IF EXISTS pagina CASCADE;

@@ -56,7 +56,7 @@ class fotoTable extends Table {
     $this->order ='foto';
     $this->addColumn('idfoto','serial',0,1,0,'ID');
     $this->addColumn('foto','varchar',500,0,0,'Titulo');
-    $this->addColumn('imagen','image',0,0,0,'Foto',array('cdn'=>true));
+    $this->addColumn('imagen','image',0,0,0,'Foto');
     $this->addColumn('idgaleria','int',0,0,'galeria','Galeria');
   }
 }
@@ -80,6 +80,7 @@ class noticiaTable extends Table {
     $this->key = 'idnoticia';
     $this->title ='Noticias';
     $this->order ='fecha';
+    $this->addColumn('fotocdn','image',0,0,0,'Foto grande',array('help'=>'Foto a ser puesta en repositorio CDN','cdn'=>true));
     $this->addColumn('idnoticia','serial',0,1,0,'ID');
     $this->addColumn('noticia','varchar',500,0,0,'Titulo');
     $this->addColumn('fecha','datenull',0,0,0,'Fecha');
