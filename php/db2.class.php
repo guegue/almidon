@@ -237,6 +237,7 @@ class Table extends Data {
   }
 
   function addRecord() {
+    include('db.addrecord.php');
     $n = 0;
     $values ="";
     foreach($this->definition as $column) {

@@ -50,3 +50,4 @@ define('IDPAGINA', 1);
 define('CDN_USERNAME', 'demo');
 define('CDN_APIKEY', '00000000000000000000000000000000');
 define('CDN_REPO', 'demo.almidon.org');
+define('CDN_URL', 'http://00000000.cdn.example.com/');
