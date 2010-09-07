@@ -149,6 +149,15 @@ class Table extends Data {
       $this->query("SET search_path = $schema, public, pg_catalog");
   }
 
+  function getFiles() {
+    foreach($this->dd as $key=>$val) {
+      $type = $this->dd[$key]['type'];
+      if ($type == 'image' || $type == 'file' )
+        $remove_files[] = $key;
+    }
+    return($remove_files);
+  }
+
   # Aplica cambios necesarios a la BD desde tables.class.php
   function syncToDB() {
     require('db.synctodb.php');
