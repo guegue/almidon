@@ -77,24 +77,26 @@
       $results = "<?php\nrequire('../classes/app.class.php');\n";
       $results .= '$data = new '.$this->name.'Table();'."\n";
       $results .= '$data->readEnv();'."\n";
-      $results .= 'if (isset($data->request[\''.$this->key.'\'])) {'."\n";
+      $results .= 'if (isset($data->request[$data->key])) {'."\n";
       $results .= '  $row = $data->readRecord();'."\n";
       $results .= '  $smarty->assign(\'row\',$row);'."\n";
-      $results .= '  if (isset($data->child)) {'."\n";
-      $results .= '    $children = preg_split(\'/,/\',$data->child);'."\n";
-      $results .= '    foreach ($children as $child) {'."\n";
-      $results .= '      $namec = $child . \'Table\';'."\n";
-      $results .= '      $datac = new $namec;'."\n";
-      $results .= '      $datac->filter = $datac->name . \'.\' . $data->key . \'=\' . $row[$data->key];'."\n";
-      $results .= '      $$child = $datac->readData();'."\n";
-      $results .= '      $smarty->assign($child,$$child);'."\n";
-      $results .= '    }'."\n";
-      $results .= '  }'."\n";
+      if (isset($this->child)) {
+        $results .= '  if (isset($data->child)) {'."\n";
+        $results .= '    $children = preg_split(\'/,/\',$data->child);'."\n";
+        $results .= '    foreach ($children as $child) {'."\n";
+        $results .= '      $namec = $child . \'Table\';'."\n";
+        $results .= '      $datac = new $namec;'."\n";
+        $results .= '      $datac->filter = $datac->name . \'.\' . $data->key . \'=\' . $row[$data->key];'."\n";
+        $results .= '      $$child = $datac->readData();'."\n";
+        $results .= '      $smarty->assign($child,$$child);'."\n";
+        $results .= '    }'."\n";
+        $results .= '  }'."\n";
+      }
       $results .= '} else {'."\n";
       $results .= '  $rows = $data->readData();'."\n";
       $results .= '  $smarty->assign(\'rows\',$rows);'."\n";
       $results .= '}'."\n";
-      $results .= '$smarty->display(\''.$this->name.'.tpl\');'."\n";
+      $results .= '$smarty->display($data->name.\'.tpl\');'."\n";
       break;
     case 'tpl':
     case 'tpltable':
@@ -133,8 +135,15 @@
       foreach($this->dd as $d) {
         if ($d['name'] === $this->key)
           $results .= $colini.'<a href="?'.$d['name'].'={$rows[i].'.$d['name'].'}">{$rows[i].' . $d['name'] .'}</a>'.$colfin;
-        else
-          $results .= $colini.'{$rows[i].' . $d['name'] .'}'.$colfin;
+        else {
+          switch($d['type']) {
+          case 'image':
+            $results .= $colini.'<img src="/cms/pic/100/'.$this->name.'/{$rows[i].' . $d['name'] .'}"/>'.$colfin;
+            break;
+          default:
+            $results .= $colini.'{$rows[i].' . $d['name'] .'}'.$colfin;
+          }
+        }
         $cols++;
         if ($cols>5) break;
       }

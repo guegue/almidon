@@ -6,9 +6,9 @@
  *
  * DAL para almidon
  *
- * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
+ * @copyright &copy; 2005-2010 Guegue Comunicaciones - guegue.com
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
- * @version $Id: db2.class.php,v 2008101301 javier $
+ * @version $Id: db2.class.php,v 2010090901 javier $
  * @package almidon
  */
 
@@ -149,21 +149,46 @@ class Table extends Data {
       $this->query("SET search_path = $schema, public, pg_catalog");
   }
 
+  /**
+   * lee un registro o registros de una tabla
+   * usado tipicamente por php publicos, lee un registro si se envia un id, lee todos si no.
+   * no hay parametros, los toma de request, y no hay return, los asigna a smarty
+  */
+  function readRows() {
+   global $smarty;
+    $this->readEnv();
+    if (isset($this->request[$this->key])) {
+      $row = $this->readRecord();
+      $smarty->assign('row',$row);
+    } else {
+      $rows = $this->readData();
+      $smarty->assign('rows',$rows);
+    }
+  }
+
+  /**
+  * devuelve la lista de campos con archivos sean image, file, etc. en la tabla
+  * @return array lista de archivos
+  */
   function getFiles() {
     foreach($this->dd as $key=>$val) {
       $type = $this->dd[$key]['type'];
-      if ($type == 'image' || $type == 'file' )
+      if ($type == 'image' || $type == 'file')
         $remove_files[] = $key;
     }
     return($remove_files);
   }
 
-  # Aplica cambios necesarios a la BD desde tables.class.php
+  /**
+  * syncToDB, aplica cambios necesarios a la BD desde tables.class.php
+  */
   function syncToDB() {
     require('db.synctodb.php');
   }
 
-  # Aplica cambios necesario a tables.class.php
+  /**
+  * syncFromAlm, aplica cambios necesarios a tables.class.php (desde tablas alm_*)
+  */
   function syncFromAlm() {
     $autosave = true;
     require('setup.autotables.php');
