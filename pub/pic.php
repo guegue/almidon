@@ -24,6 +24,7 @@ $filename = $params[5];
 
 # Gets image info
 $fullpath = ROOTDIR . '/files/' . $subdir . '/' . urldecode($filename);
+if(!file_exists($fullpath)) $fullpath = ALMIDONDIR . '/pub/img/404.png';
 $getimagesizeinfo = getimagesize($fullpath);
 $mime = $getimagesizeinfo['mime'];
 $ImageCreateFromFunction = array(

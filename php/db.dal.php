@@ -111,6 +111,27 @@ class AlmData {
     return $db;
   }
 
+  /**
+   * se conecta al CDN (cloudfiles) en base a las constantes definidas en config.php
+   * @return CND repo
+  */
+  function cdn_connect() {
+    $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
+    $auth->authenticate();
+    $conn = new CF_Connection($auth);
+    $cloudfiles = $conn->get_container(CDN_REPO);
+    return($cloudfiles);
+  }
+  /**
+   * hace upload de un archivo al CDN (cloudfiles)
+   * @return CND repo
+  */
+  function cdn_upload($cloudfiles, $filename, $tmp_file) {
+    $afile = $cloudfiles->create_object($filename);
+    $afile->content_type = mime_content_type($tmp_file);
+    $afile->load_from_filename($tmp_file);
+  }
+
 # wrappers
   function basicError($data = null, $dsn) {
     list($dbtype,$dbname,$host,$username,$pass) = almdata::parseDSN($dsn);

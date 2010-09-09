@@ -81,10 +81,11 @@ class noticiaTable extends Table {
     $this->title ='Noticias';
     $this->order ='fecha';
     $this->addColumn('fotocdn','image',0,0,0,'Foto grande',array('help'=>'Foto a ser puesta en repositorio CDN','cdn'=>true));
+    $this->addColumn('archivo','file',0,0,0,'Archivo CDN',array('help'=>'Archivo a guardar en CDN','cdn'=>true));
     $this->addColumn('idnoticia','serial',0,1,0,'ID');
     $this->addColumn('noticia','varchar',500,0,0,'Titulo');
     $this->addColumn('fecha','datenull',0,0,0,'Fecha');
-    $this->addColumn('texto','text',0,0,0,'Texto');
     $this->addColumn('foto','image',0,0,0,'Foto');
+    $this->addColumn('texto','text',0,0,0,'Texto');
   }
 }

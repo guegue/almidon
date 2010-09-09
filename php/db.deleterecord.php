@@ -8,10 +8,7 @@
         if(!empty($tmp[$val])) {
           # CDN? Remove object
           if (isset($this->dd[$val]['extra']['cdn']) && $this->dd[$val]['extra']['cdn'] === true) {
-            $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
-            $auth->authenticate();
-            $conn = new CF_Connection($auth);
-            $cloudfiles = $conn->get_container(CDN_REPO);
+            $cloudfiles = almdata::cdn_connect();
             $cloudfiles->delete_object($tmp[$val]);
           } else {
             unlink(ROOTDIR . '/files/' . $this->name . '/' . $tmp[$val]);

@@ -21,20 +21,13 @@
         case 'image':
           $value = '';
           if (isset($this->files[$column['name']])) {
-            if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
-              $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
-              $auth->authenticate();
-              $conn = new CF_Connection($auth);
-              $cloudfiles = $conn->get_container(CDN_REPO);
-            }
+            if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true)
+              $cloudfiles = almdata::cdn_connect();
             $timemark = mktime();
             $filename =  $timemark . "_" . $this->request[$column['name']];
             $value = almdata::escape($filename);
             if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
-              # upload to CDN
-              $afile = $cloudfiles->create_object($filename);
-              $afile->content_type = mime_content_type($this->files[$column['name']]);
-              $afile->load_from_filename($this->files[$column['name']]);
+              almdata::cdn_upload($cloudfiles, $filename, $this->files[$column['name']]);
             } else {
               if (!file_exists(ROOTDIR . '/files/' . $this->name)) mkdir(ROOTDIR . '/files/' . $this->name);
               move_uploaded_file($this->files[$column['name']], ROOTDIR . '/files/' . $this->name . '/' . $filename);
@@ -60,10 +53,7 @@
                 if(file_exists($filepath) || mkdir($filepath, null, true))
                   imagejpeg($new_image, $filepath.'/'.$filename,72);
                 if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
-                   # upload to CDN, remove from local fs
-                   $afile = $cloudfiles->create_object($filepath.'/'.$filename);
-                   $afile->content_type = mime_content_type($this->files[$column['name']]);
-                   $afile->load_from_filename($this->files[$column['name']]);
+                   almdata::cdn_upload($cloudfiles, $filename, $filepath.'/'.$filename);
                    unlink($filepath.'/'.$filename);
                 }
               }
@@ -76,14 +66,8 @@
             $filename =  mktime() . "_" . $this->request[$column['name']];
             $filepath = ROOTDIR . '/files/' . $this->name;
             if (isset($column['extra']['cdn']) && $column['extra']['cdn'] === true) {
-              $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
-              $auth->authenticate();
-              $conn = new CF_Connection($auth);
-              $cloudfiles = $conn->get_container(CDN_REPO);
-              # upload to CDN
-              $afile = $cloudfiles->create_object($filepath.'/'.$filename);
-              $afile->content_type = mime_content_type($this->files[$column['name']]);
-              $afile->load_from_filename($this->files[$column['name']]);
+              $cloudfiles = almdata::cdn_connect();
+              almdata::cdn_upload($cloudfiles, $filename, $this->files[$column['name']]);
             } else {
               if (!file_exists($filepath)) mkdir($filepath);
               move_uploaded_file($this->files[$column['name']], $filepath.'/'.$filename);
