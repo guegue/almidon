@@ -29,7 +29,7 @@
  */
 require_once("cloudfiles_exceptions.php");
 
-define("PHP_CF_VERSION", "1.6.2");
+define("PHP_CF_VERSION", "1.7.4");
 define("USER_AGENT", sprintf("PHP-CloudFiles/%s", PHP_CF_VERSION));
 define("ACCOUNT_CONTAINER_COUNT", "X-Account-Container-Count");
 define("ACCOUNT_BYTES_USED", "X-Account-Bytes-Used");
@@ -133,6 +133,7 @@ class CF_Http
         $this->_user_write_progress_callback_func = NULL;
         $this->_write_callback_type = NULL;
         $this->_text_list = array();
+	$this->_return_list = NULL;
         $this->_account_container_count = 0;
         $this->_account_bytes_used = 0;
         $this->_container_object_count = 0;
@@ -155,7 +156,7 @@ class CF_Http
         # connect to SSL Websites. It is the first 3 letters of the PHP_OS
         # variable.
         $OS_CAFILE_NONUPDATED=array(
-            "win",
+            "win","dar"
         ); 
 
         if (in_array((strtolower (substr(PHP_OS, 0,3))), $OS_CAFILE_NONUPDATED))
@@ -195,9 +196,9 @@ class CF_Http
                 sprintf("%s: %s", AUTH_USER_HEADER, $user),
                 sprintf("%s: %s", AUTH_KEY_HEADER, $pass),
                 );
-            $path[] = "https://auth.api.rackspacecloud.com";
+	    $path[] = "https://auth.api.rackspacecloud.com";
         }
-        $path[] = "v1.0";
+	$path[] = "v1.0";
         $url = implode("/", $path);
 
         $curl_ch = curl_init();
@@ -246,6 +247,7 @@ class CF_Http
                 array());
         }
         if ($return_code == 200) {
+	    $this->create_array();
             return array($return_code,$this->response_reason,$this->_text_list);
         }
         $this->error_str = "Unexpected HTTP response: ".$this->response_reason;
@@ -417,6 +419,7 @@ class CF_Http
             return array($return_code,$this->error_str,array());
         }
         if ($return_code == 200) {
+	    $this->create_array();
             return array($return_code, $this->response_reason, $this->_text_list);
         }
         $this->error_str = "Unexpected HTTP response: ".$this->response_reason;
@@ -581,6 +584,7 @@ class CF_Http
             return array($return_code,$this->error_str,array());
         }
         if ($return_code == 200) {
+	    $this->create_array();	
             return array($return_code,$this->response_reason, $this->_text_list);
         }
         $this->error_str = "Unexpected HTTP response code: $return_code";
@@ -669,7 +673,7 @@ class CF_Http
         if ($return_code == 404) {
             return array($return_code,"Container not found.",0,0);
         }
-        if ($return_code == 204) {
+        if ($return_code == 204 or 200) {
             return array($return_code,$this->response_reason,
                 $this->_container_object_count, $this->_container_bytes_used);
         }
@@ -861,7 +865,7 @@ class CF_Http
             return array($return_code, $this->response_reason,
                 NULL, NULL, NULL, NULL, array());
         }
-        if ($return_code == 204) {
+        if ($return_code == 204 or 200) {
             return array($return_code,$this->response_reason,
                 $this->_obj_etag,
                 $this->_obj_last_modified,
@@ -1076,7 +1080,9 @@ class CF_Http
         $dlen = strlen($data);
         switch ($this->_write_callback_type) {
         case "TEXT_LIST":
-            $this->_text_list[] = rtrim($data, "\r\n\0\x0B"); # keep tab,space
+	     $this->_return_list = $this->_return_list . $data;
+	     //= explode("\n",$data); # keep tab,space
+	     //his->_text_list[] = rtrim($data,"\n\r\x0B"); # keep tab,space
             break;
         case "OBJECT_STREAM":
             fwrite($this->_obj_write_resource, $data, $dlen);
@@ -1168,7 +1174,7 @@ class CF_Http
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, True);
             curl_setopt($ch, CURLOPT_CAINFO, $this->cabundle_path);
         }
-
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, True);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 4);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -1181,6 +1187,7 @@ class CF_Http
         if ($conn_type == "PUT_OBJ") {
             curl_setopt($ch, CURLOPT_PUT, 1);
             curl_setopt($ch, CURLOPT_READFUNCTION, array(&$this, '_read_cb'));
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         }
         if ($conn_type == "HEAD") {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "HEAD");
@@ -1189,10 +1196,11 @@ class CF_Http
         if ($conn_type == "PUT_CONT") {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
             curl_setopt($ch, CURLOPT_INFILESIZE, 0);
+	    curl_setopt($ch, CURLOPT_NOBODY, 1);
         }
         if ($conn_type == "DEL_POST") {
-            curl_setopt($ch, CURLOPT_NOBODY, 1);
-        }
+        	curl_setopt($ch, CURLOPT_NOBODY, 1);
+	}
         $this->connections[$conn_type] = $ch;
         return;
     }
@@ -1200,6 +1208,7 @@ class CF_Http
     private function _reset_callback_vars()
     {
         $this->_text_list = array();
+	$this->_return_list = NULL;
         $this->_account_container_count = 0;
         $this->_account_bytes_used = 0;
         $this->_container_object_count = 0;
@@ -1291,7 +1300,7 @@ class CF_Http
         curl_setopt($this->connections[$conn_type],
             CURLOPT_URL, $url_path);
 
-        if (!curl_exec($this->connections[$conn_type])) {
+        if (!curl_exec($this->connections[$conn_type]) && curl_errno($this->connections[$conn_type]) !== 0) {
             $this->error_str = "(curl error: "
                 . curl_errno($this->connections[$conn_type]) . ") ";
             $this->error_str .= curl_error($this->connections[$conn_type]);
@@ -1308,6 +1317,11 @@ class CF_Http
                 $this->connections[$cnx] = NULL;
             }
         }
+    }
+    private function create_array()
+    {
+	$this->_text_list = explode("\n",rtrim($this->_return_list,"\n\x0B"));
+	return True;
     }
 
 }

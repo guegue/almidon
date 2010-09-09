@@ -125,11 +125,8 @@ class CF_Authentication
      * @param string $account <b>Deprecated</b> <i>Account name</i>
      * @param string $auth_host <b>Deprecated</b> <i>Authentication service URI</i>
      */
-    function __construct($username, $api_key, $account=NULL, $auth_host=NULL)
+    function __construct($username=NULL, $api_key=NULL, $account=NULL, $auth_host=NULL)
     {
-        if (!$username || !$api_key) {
-            throw new SyntaxException("Missing required constructor arguments.");
-        }
 
         $this->dbug = False;
         $this->username = $username;
@@ -216,6 +213,64 @@ class CF_Authentication
         $this->auth_token = $atoken;
         return True;
     }
+	/**
+	 * Use Cached Token and Storage URL's rather then grabbing from the Auth System
+         *
+         * Example:
+ 	 * <code>
+         * #Create an Auth instance
+         * $auth = new CF_Authentication();
+         * #Pass Cached URL's and Token as Args
+	 * $auth->load_cached_credentials("auth_token", "storage_url", "cdn_management_url");
+         * </code>
+	 * 
+	 * @param string $auth_token A Cloud Files Auth Token (Required)
+         * @param string $storage_url The Cloud Files Storage URL (Required)
+         * @param string $cdnm_url CDN Management URL (Required)
+         * @return boolean <kbd>True</kbd> if successful 
+	 * @throws SyntaxException If any of the Required Arguments are missing
+         */
+	function load_cached_credentials($auth_token, $storage_url, $cdnm_url)
+    {
+        if(!$storage_url || !$cdnm_url)
+        {
+                throw new SyntaxException("Missing Required Interface URL's!");
+                return False;
+        }
+        if(!$auth_token)
+        {
+                throw new SyntaxException("Missing Auth Token!");
+                return False;
+        }
+
+        $this->storage_url = $storage_url;
+        $this->cdnm_url    = $cdnm_url;
+        $this->auth_token  = $auth_token;
+        return True;
+    }
+	/**
+         * Grab Cloud Files info to be Cached for later use with the load_cached_credentials method.
+         *
+	 * Example:
+         * <code>
+         * #Create an Auth instance
+         * $auth = new CF_Authentication("UserName","API_Key");
+         * $auth->authenticate();
+         * $array = $auth->export_credentials();
+         * </code>
+         * 
+	 * @return array of url's and an auth token.
+         */
+    function export_credentials()
+    {
+        $arr = array();
+        $arr['storage_url'] = $this->storage_url;
+        $arr['cdnm_url']    = $this->cdnm_url;
+        $arr['auth_token']  = $this->auth_token;
+
+        return $arr;
+    }
+
 
     /**
      * Make sure the CF_Authentication instance has authenticated.
@@ -1439,8 +1494,7 @@ class CF_Container
         if ($status == 404) {
             $m = "Specified object '".$this->name."/".$obj_name;
             $m.= "' did not exist to delete.";
-            #throw new NoSuchObjectException($m);
-            return True; // Javier
+            throw new NoSuchObjectException($m);
         }
         if ($status != 204) {
             throw new InvalidResponseException(
