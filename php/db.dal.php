@@ -1,21 +1,18 @@
 <?php
-// vim:set expandtab tabstop=2 shiftwidth=2 fdm=marker:
-
 /**
- * db.dal.php
- *
  * Wrapper para DAL de almidon de: pgsql, mysql y sqlite3
- *
- * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
- * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
- * @version $Id: db.dal.php,v 2009112101 javier $
  * @package almidon
  */
 
+/**
+ * clase principal DAL, permite traducir los comandos a cada distinto servidor de base de datos
+ */
 
 class AlmData {
 
-  # Parses DSN
+  /**
+   * Obtiene info de conexion del DSN: dbtype, dbname, host, username, pass
+   */
   function parseDSN($dsn) {
     list($dbtype,$tmp) = preg_split('/:\/\//',$dsn);
     list($auth,$dbname) = preg_split('/\//',$tmp);
@@ -24,6 +21,9 @@ class AlmData {
     return array($dbtype,$dbname,$host,$username,$pass);
   }
 
+  /**
+   * Imprime un error en rojo, if DEBUG. error_log + trigger_error
+   */
   function printError($error_msg, $raise = true, $die = false) {
     error_log($error_msg);
     if (DEBUG === true) {
@@ -34,6 +34,9 @@ class AlmData {
     if ($die) die;
   }
 
+  /**
+   * Define las distintas funciones SQL segun cada db server: postgresql, sqlite, mysql
+   */
   function setFunctions($dbtype) {
     $this->dbtype = $dbtype;
     switch($dbtype) {
@@ -75,6 +78,10 @@ class AlmData {
     }
   }
 
+  /**
+   * Conexion a la base de datos
+   * @return resource de conexion
+   */
   function connect($dsn, $options = false) {
 
     global $alm_connect;
@@ -132,7 +139,10 @@ class AlmData {
     $afile->load_from_filename($tmp_file);
   }
 
-# wrappers
+  /**
+   * obtiene el ultimo error del db server, distintos comandos para cada db server
+   * @return cadena conteniendo el ultimo error (last_error)
+   */
   function basicError($data = null, $dsn) {
     list($dbtype,$dbname,$host,$username,$pass) = almdata::parseDSN($dsn);
     switch($dbtype) {
@@ -150,8 +160,13 @@ class AlmData {
     }
     return $error;
   }
+
   # FIXME: Como se llama isError? Como podemos reportar quien lo llamo,
   #        donde estaba el SQL que dio el error? Como usar $calling?
+  /**
+   * Reporta si ha habido un error en la db
+   * @return true si ya esta registrado el error, o lo registra y devuelve true si last_error
+   */
   function isError($sqlcmd = null, $calling = null) {
     if (is_string($sqlcmd)) {
       $hash = md5($sqlcmd);
@@ -170,10 +185,20 @@ class AlmData {
       return true;
     }
   }
+
+  /**
+   * Se desconecta de la db
+   * @return true si exito, false si falla
+   */
   function disconnect() {
     $db_disconnect = $this->db_disconnect;
     return @$db_disconnect();
   }
+
+  /**
+   * Obtiene el numero de registros afectados por el ultimo comando sql
+   * @return numero de registros afectados
+   */
   function rows($data = null) {
     $db_rows = $this->db_rows;
     if ($data == null)
@@ -181,15 +206,30 @@ class AlmData {
     else
       return $db_rows($data);
   }
+
+  /**
+   * escape string by native db's function
+   * @return escaped string
+   */
   function escape($var) {
     $db_escape = $this->db_escape;
     return $db_escape($var);
   }
+
+
+  /**
+   * enviar consulta al db
+   * @return recurso en caso de exito, false si falla
+   */
   function query($sqlcmd) {
     $db_query = $this->db_query;
- 
     return @$db_query($sqlcmd);
   }
+
+  /**
+   * obtiene un registro segun una consulta
+   * @return un registro
+   */
   function fetchRow($data = null, $assoc = true) {
     if ($assoc)
       $db_fetch_row = $this->db_fetch_row;

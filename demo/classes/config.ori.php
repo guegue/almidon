@@ -1,7 +1,10 @@
 <?php
-#
-# Nota: definir donde encontrar almidon?
-#
+/**
+ * config.php, configuracion especifica de almidon para cada sitio web
+ * @package almidon
+ */
+
+# Definir donde encontrar almidon?
 #define ('ALMIDONDIR', '/usr/local/almidon/');
 define ('DEBUG', true);
 
@@ -15,11 +18,11 @@ define ('ALM_LANG','en');
 date_default_timezone_set('America/Managua');
  
 # Constantes de conexion la base de datos
-$admin_dsn = 'pgsql://almidondemo:secreto1@/almidondemo';
-$public_dsn = 'pgsql://almidondemowww:secreto2@/almidondemo';
+$admin_dsn = 'pgsql://almidondemo:********@/almidondemo';
+$public_dsn = 'pgsql://almidondemowww:********@/almidondemo';
 
 # Permite conectarse a la BD sin "almidonizarla"
-$emergency_password = '21232f297a57a5a743894a0e4a801fc3';
+$emergency_password = '00000000000000000000000000000000';
 
 # Aplicar cambios automaticos a BD
 define('ALM_SYNC', true);
@@ -40,13 +43,14 @@ define ('HOMEDIR', ROOTDIR .'/public_html');
 define ('URL', 'http://' . DOMAIN);
 define ('EMAIL', 'info@' . DOMAIN);
 define ('PIXDIR', HOMEDIR.'/pix');
-
 define ('MAXROWS', 5);
 define ('MAXCOLS', 6);
+define ('ALM_CACHE', 60*5);
 
 # Constantes de valores (IDs) de las tablas
 define('IDPAGINA', 1);
 
+# Conexion al CDN
 define('CDN_USERNAME', 'demo');
 define('CDN_APIKEY', '00000000000000000000000000000000');
 define('CDN_REPO', 'demo.almidon.org');

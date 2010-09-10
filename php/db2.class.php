@@ -12,10 +12,16 @@
  * @package almidon
  */
 
+/**
+ * where's almidon? and other server-wide constants
+ */
 require('db.const.php');
 
 # Finally... the DAL...
 
+/**
+ * main DAL, multi-db support, cdn support
+ */
 require_once('db.dal.php');
 
 class Data {

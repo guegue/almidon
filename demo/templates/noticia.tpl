@@ -1,5 +1,4 @@
 {include file="header.tpl"}
-{debug}
 <h1>Noticias</h1>
 {if $row}
 <table border="1">
