@@ -46,10 +46,18 @@ class Data {
     require('db.error.php');
   }
  
+  /**
+   *  crea linea en bitacora de comando sql
+   */
   function sql_log($logtext) {
     require('db.logging.php');
   } 
 
+  /**
+   *  hace la consulta utilizando almdata
+   *  @sqlcmd comando SQL
+   *  @return recuerso tipo query
+   */
   function query($sqlcmd) {
     require('db.query.php');
     return $result;
@@ -65,7 +73,7 @@ class Data {
   #  return $exists;
   #}
 
-  function execSql($sqlcmd) {
+  function execSql($sqlcmd, $cache = null, $table = null) {
     $this->data = $this->query($sqlcmd);
     if (!almdata::isError($sqlcmd) && $this->data && (preg_match('/^SELECT/',$sqlcmd) || preg_match('/^SHOW/',$sqlcmd))) {
       $this->num = almdata::rows($this->data);
@@ -99,7 +107,7 @@ class Data {
       return $array_rows;
   }
 
-  function getArray() {
+  function getArray($cache = null) {
     require('db.getarray.php');
     return (isset($array_rows) ? $array_rows : null);
   }
@@ -341,9 +349,9 @@ class Table extends Data {
     return $prev;
   }
 
-  function readData() {
+  function readData($cache = null) {
     require('db.readdata.php');
-    return $this->getArray();
+    return $this->getArray($cache);
   }
 
   function readDataFilter($filter) {

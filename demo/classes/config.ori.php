@@ -45,7 +45,8 @@ define ('EMAIL', 'info@' . DOMAIN);
 define ('PIXDIR', HOMEDIR.'/pix');
 define ('MAXROWS', 5);
 define ('MAXCOLS', 6);
-define ('ALM_CACHE', 60*5);
+define ('ALM_CACHE_TIME', 60*5);
+define ('ALM_CACHE', true);
 
 # Constantes de valores (IDs) de las tablas
 define('IDPAGINA', 1);
