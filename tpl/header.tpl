@@ -39,7 +39,7 @@ tinyMCE.init({
 <link rel="stylesheet" href="/cms/js/autocomplete/jquery.autocomplete.css" />
 <!-- Default CSS -->
 <link rel="stylesheet" href="/cms/css/adm.css"/>
-<title>{$title} - {$smarty.session.alm_user} @ {$smarty.const.DOMAIN}</title>
+<title>{if $title}{$title}{else}{$smarty.const.ALM_TITLE_INDEX} - {/if}{$smarty.session.alm_user} @ {$smarty.const.DOMAIN}</title>
 {confirm_delete}
 </head>
 <body>

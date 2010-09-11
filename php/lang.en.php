@@ -36,6 +36,7 @@ define('ALM_ACCESS','Access');
 define('ALM_TABLES','Tables');
 define('ALM_FIELDS','Fields');
 define('ALM_DETAIL','Details');
+define('ALM_TITLE_INDEX','Dashboard');
 
 # Set locale, for dates
 setlocale(LC_TIME, 'en_US.UTF-8');

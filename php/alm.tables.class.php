@@ -1,4 +1,16 @@
 <?php
+class alm_roleTable extends Table {
+  function alm_roleTable() {
+    $this->Table('alm_role');
+    $this->key = 'idalm_role';
+    $this->title = ALM_ROLES;
+    $this->maxrows = 20;
+    $this->order = 'idalm_role';
+    $this->addColumn('idalm_role','varchar',8,1,0,'Id');
+    $this->addColumn('alm_role','varchar',100,0,0,'Description');
+  }
+}
+
 class alm_userTable extends Table {
   function alm_userTable() {
     $this->Table('alm_user');
@@ -11,18 +23,6 @@ class alm_userTable extends Table {
     $this->addColumn('alm_user','varchar',100,0,0,'Name');
     $this->addColumn('email','varchar',200,0,0,'E-Mail');
     $this->addColumn('idalm_role','varchar',8,0,'alm_role','Default Role');
-  }
-}
-
-class alm_roleTable extends Table {
-  function alm_roleTable() {
-    $this->Table('alm_role');
-    $this->key = 'idalm_role';
-    $this->title = ALM_ROLES;
-    $this->maxrows = 20;
-    $this->order = 'idalm_role';
-    $this->addColumn('idalm_role','varchar',8,1,0,'Id');
-    $this->addColumn('alm_role','varchar',100,0,0,'Description');
   }
 }
 
