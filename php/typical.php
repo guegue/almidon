@@ -261,6 +261,11 @@ function fillOpt(&$object) {
           case 'xhtml':
             $js_inc[$val['type']] = true;
             break;
+          case 'char':
+          case 'varchar':
+            if( !empty($col['extra']['autocomplete_tb']) )
+              $js_inc['autocomplete'] = true;
+            break;
         }
       }
   }

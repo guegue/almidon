@@ -41,12 +41,14 @@ tinyMCE.init({
 {/literal}</script>
 {/if}
 {confirm_delete}
+{if $js_inc.autocomplete===true}
 <!-- Autocomplete -->
-<script type="text/javascript" src="/cms/js/autocomplete/jquery.js"></script>
+<script type="text/javascript" src="/cms/js/jquery.js"></script>
 <script type="text/javascript" src="/cms/js/autocomplete/jquery.autocomplete.min.js"></script>
 <link rel="stylesheet" href="/cms/js/autocomplete/jquery.autocomplete.css" />
-<!-- Default CSS -->
 {/if}
+{/if}
+<!-- Default CSS -->
 <link rel="stylesheet" href="/cms/css/adm.css"/>
 </head>
 <body>
