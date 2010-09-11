@@ -5,6 +5,6 @@ if (file_exists($configfile)) {
 } else {
   die('No config: ' . $configfile);
 }
-$almidondir = defined('ALMIDONDIR') ? ALMIDONDIR : $_SERVER['DOCUMENT_ROOT'] . '/../../';
+$almidondir = defined('ALMIDONDIR') ? ALMIDONDIR : $_SERVER['DOCUMENT_ROOT'] . '/../../core';
 require_once($almidondir . '/cloudfiles/cloudfiles.php');
 require_once($almidondir . '/php/almidon.php');
