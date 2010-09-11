@@ -189,7 +189,10 @@ if (isset($row))
   $smarty->assign('row', $row);
 if (isset($$object->shortEdit))
   $smarty->assign('shortEdit',$$object->shortEdit);
+# To include only the js that this object require
+$js_inc = array();
 $smarty->assign('options', fillOpt($$object));
+$smarty->assign('js_inc',$js_inc);
 
 # Limits/Paginando
   if(!isset($$object->maxrows)) $$object->maxrows = 8;
@@ -230,28 +233,37 @@ if (isset($$object->maxcols))
   $smarty->assign('maxcols', $$object->maxcols);
 
 function fillOpt(&$object) {
-  if ($object->dd)
-  foreach ($object->dd as $key => $val)
-    if ($object->dd[$key]['references']) {
-      if (!isset($object->dd[$key]['extra']['depend']) && !isset($object->dd[$key]['extra']['readonly'])) {
-        if(isset($object->dd[$key]['extra']['references_filter']))
-          $where = $object->dd[$key]['extra']['references_filter'];
-        if(isset($object->dd[$key]['extra']['display'])) {
-          $ot = $object->dd[$key]['references'] . 'Table';
-          $robject = new $ot;
-	  $wwhere = (empty($where)) ? '' : "WHERE $where";
-          $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." $wwhere ORDER BY " . $object->dd[$key]['references']);
-        } else {
-	  $pos = strpos($object->dd[$key]['references'],'.');
-          if($pos!==false)
-            $references = substr($object->dd[$key]['references'],0,$pos);
-          else 
-            $references = $object->dd[$key]['references'];
-          $where = (isset($where) ? $where : null);
-          $options[$key] = $object->selectMenu($references, $where);
+  if ($object->dd) {
+    global $js_inc;
+    foreach ($object->dd as $key => $val)
+      if ($object->dd[$key]['references']) {
+        if (!isset($object->dd[$key]['extra']['depend']) && !isset($object->dd[$key]['extra']['readonly'])) {
+          if(isset($object->dd[$key]['extra']['references_filter']))
+            $where = $object->dd[$key]['extra']['references_filter'];
+          if(isset($object->dd[$key]['extra']['display'])) {
+            $ot = $object->dd[$key]['references'] . 'Table';
+            $robject = new $ot;
+	    $wwhere = (empty($where)) ? '' : "WHERE $where";
+            $options[$key] = $object->selectMenu("SELECT " . $robject->key . ", " . $object->dd[$key]['extra']['display'] . " AS " . $object->dd[$key]['references'] . " FROM " . $object->dd[$key]['references']." $wwhere ORDER BY " . $object->dd[$key]['references']);
+          } else {
+	    $pos = strpos($object->dd[$key]['references'],'.');
+            if($pos!==false)
+              $references = substr($object->dd[$key]['references'],0,$pos);
+            else 
+              $references = $object->dd[$key]['references'];
+            $where = (isset($where) ? $where : null);
+            $options[$key] = $object->selectMenu($references, $where);
+          }
+        }
+      } else {
+        switch ( $val['type'] ) {
+          case 'html':
+          case 'xhtml':
+            $js_inc[$val['type']] = true;
+            break;
         }
       }
-    }
+  }
   if (isset($options))
     return $options;
 }
