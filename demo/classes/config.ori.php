@@ -4,8 +4,7 @@
  * @package almidon
  */
 
-# Definir donde encontrar almidon?
-#define ('ALMIDONDIR', '/usr/local/almidon/');
+# Debugging defined constants
 define ('DEBUG', true);
 
 # Usar DB3 en vez de DB2 (FIXME: ambos deben unirse)
@@ -47,6 +46,9 @@ define ('MAXROWS', 5);
 define ('MAXCOLS', 6);
 define ('ALM_CACHE_TIME', 60*5);
 define ('ALM_CACHE', true);
+#define ('ALM_TINY_COMPRESSOR',true); # By default it is true, put it false if your server DOES HAVE zlib compression enabled in the file php.ini 
+# Definir donde encontrar almidon?
+#define ('ALMIDONDIR', '/usr/local/almidon/');
 
 # Constantes de valores (IDs) de las tablas
 define('IDPAGINA', 1);

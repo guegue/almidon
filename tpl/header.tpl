@@ -19,7 +19,22 @@
 {/if}
 {if $js_inc.xhtml===true}
 <!-- Editor XHTML TinyMCE -->
+{if $smarty.const.ALM_TINY_COMPRESSOR!==false}
+<script type="text/javascript" src="/cms/js/tiny_mce/tiny_mce_gzip.js"></script>
+<script language="javascript" type="text/javascript">{literal}
+tinyMCE_GZ.init({
+  	plugins : "paste,fullscreen",
+  	theme : {/literal}{if "TINYMCE_THEME"|defined}"{$smarty.const.TINYMCE_THEME}"{else}"advanced"{/if}{literal},
+     	skin : {/literal}{if "TINYMCE_SKIN"|defined}"{$smarty.const.TINYMCE_SKIN}"{else}"o2k7"{/if}{literal},
+  	skin_variant : {/literal}{if "TINYMCE_SKIN_VAR"|defined}"{$smarty.const.TINYMCE_SKIN_VAR}"{else}"black"{/if}{literal},
+        language: "{/literal}{if "ALM_TINY_LANG"|defined}{$smarty.const.ALM_TINY_LANG}{else}es{/if}{literal}",
+	disk_cache : true,
+	debug : false
+});
+{/literal}</script>
+{else}
 <script type="text/javascript" src="/cms/js/tiny_mce/tiny_mce.js"></script>
+{/if}
 <script language="javascript" type="text/javascript">{literal}
 tinyMCE.init({
   mode : "none",
