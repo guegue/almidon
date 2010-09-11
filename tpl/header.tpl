@@ -23,6 +23,7 @@
 <script language="javascript" type="text/javascript">{literal}
 tinyMCE.init({
   mode : "none",
+  language: "{/literal}{if "ALM_TINY_LANG"|defined}{$smarty.const.ALM_TINY_LANG}{else}es{/if}{literal}",
   theme : {/literal}{if "TINYMCE_THEME"|defined}"{$smarty.const.TINYMCE_THEME}"{else}"advanced"{/if}{literal},
   skin : {/literal}{if "TINYMCE_SKIN"|defined}"{$smarty.const.TINYMCE_SKIN}"{else}"o2k7"{/if}{literal},
   skin_variant : {/literal}{if "TINYMCE_SKIN_VAR"|defined}"{$smarty.const.TINYMCE_SKIN_VAR}"{else}"black"{/if}{literal},
