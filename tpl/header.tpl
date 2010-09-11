@@ -3,6 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">  
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-language" content="{$smarty.const.ALM_CONTENT_LANG}" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="generator" content="almidon v 20100910" />
+<meta name="author" content="Guegue Comunicaciones - guegue.com" />
+<meta name="copyright" content="Guegue Comunicaciones &copy; 2005-2010" />
+<title>{if $title}{$title}{else}{$smarty.const.ALM_TITLE_INDEX}{/if} - {$smarty.session.alm_user} @ {$smarty.const.DOMAIN}</title>
+{if $index!==true}
 <script language="JavaScript1.2" type="text/javascript" src="/cms/js/common.js"></script>
 <script language="JavaScript1.2" type="text/javascript" src="/cms/js/tools.js"></script>
 <!-- Editor HTML WYSSYG -->
@@ -38,9 +46,9 @@ tinyMCE.init({
 <script type="text/javascript" src="/cms/js/autocomplete/jquery.autocomplete.min.js"></script>
 <link rel="stylesheet" href="/cms/js/autocomplete/jquery.autocomplete.css" />
 <!-- Default CSS -->
-<link rel="stylesheet" href="/cms/css/adm.css"/>
-<title>{if $title}{$title}{else}{$smarty.const.ALM_TITLE_INDEX} - {/if}{$smarty.session.alm_user} @ {$smarty.const.DOMAIN}</title>
 {confirm_delete}
+{/if}
+<link rel="stylesheet" href="/cms/css/adm.css"/>
 </head>
 <body>
 {strip}
@@ -53,8 +61,8 @@ tinyMCE.init({
   <hr size="1" noshade="noshade" />
   {/if}
 {elseif $adminlinks}
-  {foreach key=key item=item from=$adminlinks name=i}<a href="{$key}"{if ($cur_page==$key)||($object==$key)} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}
-  {if $smarty.session.alm_user} [ {$smarty.session.alm_user} ]{/if}
+  {foreach key=key item=item from=$adminlinks name=i}<a href="{$key}"{if ($cur_page==$key)||($object==$key)} class="stay"{/if}>{$item}</a>{if !$smarty.foreach.i.last} | {/if}{/foreach}
+  {if $smarty.session.alm_user} &nbsp; [ {$smarty.session.alm_user} ]{/if}
   <hr size="1" noshade="noshade" />
 {/if}
 {/strip}

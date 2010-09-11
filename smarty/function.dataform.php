@@ -425,7 +425,7 @@ function smarty_function_dataform($params, &$smarty)
       $_paginate .= NEXT;
   }
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/almidon/404.php')
+  if ($_SERVER['PHP_SELF'] == '/almidon/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);

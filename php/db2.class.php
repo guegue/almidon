@@ -228,11 +228,11 @@ class Table extends Data {
       }
       if ($this->schema != 'public')
         $this->all_fields .= $this->schema . ".";
-      if ($ns > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
+      if ($ns > 0 && $column['type'] != 'external' && ($column['type'] != 'auto' || !empty($column['extra']['default'])) && $column['type'] != 'order' && $column['type'] != 'serial')
         $this->fields_noserial .= ",";
-      if ($column['type'] == 'serial' || $column['type'] == 'external' || $column['type'] == 'auto' || $column['type'] == 'order' && $column['type'] == 'serial')
+      if ($column['type'] == 'serial' || $column['type'] == 'external' || ($column['type'] == 'auto' && empty($column['extra']['default'])) || $column['type'] == 'order')
         $ns--;
-      else
+      else 
         $this->fields_noserial .= $column['name'];
       $this->fields .= $column['name'];
       $this->table_fields .= $this->name . '.' . $column['name'];
@@ -241,8 +241,12 @@ class Table extends Data {
       else
         $this->all_fields .= $this->name . "." . $column['name'];
       if ($column['references'] && isset($global_dd[$column['references']]['descriptor'])) {
-        if (!isset($references[$column['references']])) $references[$column['references']] = 0;
-        $references[$column['references']]++;
+        if (!isset($references[$column['references']]))
+          $references[$column['references']] = 0;
+        if ($column['references'] == $this->name && !$references[$column['references']])
+          $references[$column['references']]+=2;
+        else
+          $references[$column['references']]++;
         if ($references[$column['references']] == 1) {
           if (!empty($column['extra']['display'])) {
             $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
@@ -306,9 +310,12 @@ class Table extends Data {
     $join = "";
     $references = array();
     foreach ($this->definition as $column)
-      if ($column['references'] !== 0 && $column['references'] !== false) {
+      if ($column['references'] !== 0 && $column['references'] !== false && !empty($column['references'])) {
         if (!isset($references[$column['references']])) $references[$column['references']] = 0;
-        $references[$column['references']]++;
+        if ($column['references'] == $this->name && !$references[$column['references']]) {
+          $references[$column['references']]+=2;
+        } else
+          $references[$column['references']]++;
         if ($references[$column['references']] == 1) {
           $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $global_dd[$column['references']]['key'];
         } else {

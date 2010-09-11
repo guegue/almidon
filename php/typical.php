@@ -56,23 +56,27 @@ switch ($action) {
     break;
   case 'move':
     $limit = $$object->limit;
+    $order = $$object->order;
     $$object->limit = 1;
     if($_REQUEST['sense']=='up') {
-      list($curr) = $$object->readDataFilter($$object->key . " = " . $$object->request[$$object->key]);
-      list($prev) = $$object->readDataFilter($$object->order . " < " . $curr[$$object->order]);
+      list($curr) = $$object->readDataFilter("$object." . $$object->key . " = " . $$object->request[$$object->key]);
+      $$object->order .= ' DESC';
+      list($prev) = $$object->readDataFilter("$object." . $order . " < " . $curr[$order]);
       if($prev) {
-        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $prev[$$object->order] . "' WHERE " . $$object->key ." = '" . $$object->request[$$object->key] . "'");               
-        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $curr[$$object->order] . "' WHERE " . $$object->key ." = '" . $prev[$$object->key] . "'");
+        $$object->query("UPDATE $object SET " . $order . " = '" . $prev[$order] . "' WHERE $object." . $$object->key ." = '" . $$object->request[$$object->key] . "'");
+        $$object->query("UPDATE $object SET " . $order . " = '" . $curr[$order] . "' WHERE $object." . $$object->key ." = '" . $prev[$$object->key] . "'");
       }
     } elseif($_REQUEST['sense']=='down') {
-      list($curr) = $$object->readDataFilter($$object->key . " = " . $$object->request[$$object->key]);
-      list($next) = $$object->readDataFilter($$object->order . " > " . $curr[$$object->order]);
+      list($curr) = $$object->readDataFilter("$object." . $$object->key . " = " . $$object->request[$$object->key]);
+      list($next) = $$object->readDataFilter("$object." . $$object->order . " > " . $curr[$$object->order]);
       if($next) {
-        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $next[$$object->order] . "' WHERE " . $$object->key ." = '" . $$object->request[$$object->key] . "'"); 
-        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $curr[$$object->order] . "' WHERE " . $$object->key ." = '" . $next[$$object->key] . "'"); 
+        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $next[$$object->order] . "' WHERE $object." . $$object->key ." = '" . $$object->request[$$object->key] . "'");
+        $$object->query("UPDATE $object SET " . $$object->order . " = '" . $curr[$$object->order] . "' WHERE $object." . $$object->key ." = '" . $next[$$object->key] . "'");
       }
     }
     $$object->limit = $limit;
+    $$object->order = $order;
+    unset($order);
     unset($limit);
     break;
   case 'search':

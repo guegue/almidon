@@ -160,8 +160,12 @@ function smarty_function_datagrid($params, &$smarty)
 
       # Para permitir referencias multiples a la misma tabla
       if ($dd[$_key]['references']) {
-        $references[$dd[$_key]['references']] = 0;
-        $references[$dd[$_key]['references']]++;
+        if(!isset($references[$dd[$_key]['references']]))
+          $references[$dd[$_key]['references']] = 0;
+        if ($dd[$_key]['references'] == $name && !$references[$dd[$_key]['references']])
+          $references[$dd[$_key]['references']]+=2;
+        else
+          $references[$dd[$_key]['references']]++;
         $n = ($references[$dd[$_key]['references']] == 1) ? '' : $references[$dd[$_key]['references']];
         $_field = $dd[$_key]['references'] . $n;
       } else {
@@ -222,8 +226,12 @@ function smarty_function_datagrid($params, &$smarty)
           $dd[$_key]['type'] = 'hidden';
         } elseif ($dd[$_key]['references']) {
           $_selected = $_val;
-          if (!isset($references[$dd[$_key]['references']])) $references[$dd[$_key]['references']] = 0;
-          $references[$dd[$_key]['references']]++;
+          if(!isset($references[$dd[$_key]['references']]))
+            $references[$dd[$_key]['references']] = 0;
+          if ($dd[$_key]['references'] == $name && !$references[$dd[$_key]['references']])
+            $references[$dd[$_key]['references']]+=2;
+          else
+            $references[$dd[$_key]['references']]++;
           $n = ($references[$dd[$_key]['references']] == 1) ? '' : $references[$dd[$_key]['references']];
           $_val = $row[$dd[$_key]['references'] . $n];
           $dd[$_key]['type'] = 'references';
@@ -329,10 +337,14 @@ function smarty_function_datagrid($params, &$smarty)
           continue;
         }
         if ($dd[$_key]['references']) {
-          if (!isset($references[$dd[$_key]['references']])) $references[$dd[$_key]['references']] = 0;
-          $references[$dd[$_key]['references']]++;
+          if(!isset($references[$dd[$_key]['references']]))
+            $references[$dd[$_key]['references']] = 0;
+          if ($dd[$_key]['references'] == $name && !$references[$dd[$_key]['references']])
+            $references[$dd[$_key]['references']]+=2;
+          else
+            $references[$dd[$_key]['references']]++;
           $n = ($references[$dd[$_key]['references']] == 1) ? '' : $references[$dd[$_key]['references']];
-          $_val = $row[$dd[$_key]['references'] . $n];
+          $_val = empty($_val)?'--':$row[$dd[$_key]['references'] . $n];
         }
         switch ($dd[$_key]['type']) {
           case 'char':
@@ -390,7 +402,13 @@ function smarty_function_datagrid($params, &$smarty)
             } 
             break;
           case 'order':
-            $_tmp = '<a href="' . $_SERVER['PHP_SELF'] . '?move=up&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/up.gif" border="0"/></a> <a href="' . $_SERVER['PHP_SELF'] . '?move=down&key=' . $_key . '&val=' . $_val . '"><img src="/cms/img/down.gif" border="0"/></a>';
+            $_tmp = '';
+            if ($_SESSION[$name . 'first'] != $row[$key]) $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=up&key=' . $_key . '"><img src="/cms/img/up.gif" border="0"/></a>';
+            if ($_SESSION[$name . 'last'] != $row[$key]) {
+              if(!empty($_tmp)) $tmp = ' ';
+              $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=down&key=' . $_key . '"><img src="/cms/img/down.gif" border="0"/></a>';
+            }
+            if(empty($_tmp)) $_tmp = '--';
             break;
           case 'hidden':
             $hidden = true;
@@ -500,7 +518,7 @@ function smarty_function_datagrid($params, &$smarty)
   $_html_result = preg_replace("/_PARENT_/", $parent, $_html_result);
   $_html_result = preg_replace("/_PARENTID_/", $parentid, $_html_result);
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/almidon/404.php')
+  if ($_SERVER['PHP_SELF'] == '/almidon/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);

@@ -37,6 +37,7 @@ define('ALM_TABLES','Tablas');
 define('ALM_FIELDS','Campos');
 define('ALM_DETAIL','Detalle');
 define('ALM_TITLE_INDEX','Tablero');
+define('ALM_CONTENT_LANG','es');
 
 # Set locale, for dates
 setlocale(LC_TIME, 'es_ES.UTF-8');
