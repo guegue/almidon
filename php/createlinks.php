@@ -16,7 +16,7 @@ if (!isset($sectionlinks)&&!isset($adminlinks)) {
 
       # Solo agrega link si el usuario tiene acceso a esa tabla o si es admin
       if (!isset($table_object->hidden)) $table_object->hidden = false;
-      if((isset($_SESSION['credentials'][$key]) || $_SESSION['idalm_user'] === 'admin') && !$table_object->hidden)
+      if((isset($_SESSION['credentials'][$key]) || $_SESSION['idalm_user'] === 'admin') && !$table_object->hidden && $table_object->is_detail!==true )
          $adminlinks[$key] = $table_object->title;
     }
     # Para agregar links adicionales, lo que nos de la gana
