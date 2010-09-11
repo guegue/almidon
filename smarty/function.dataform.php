@@ -242,7 +242,10 @@ function smarty_function_dataform($params, &$smarty)
         case 'html':
           $_tmp = '<textarea rows="5" cols="40" id="' . $_key . '" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edithtml(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">'.ALM_MAX.'</a>';
           $_tmp .= "<script language=\"JavaScript\">\ngenerate_wysiwyg('" . $_key . "');\n</script>\n";
-          #$_tmp = '<textarea rows="5" cols="40" name="' . $_key . '">' . $_val . '</textarea> <a href="javascript:edithtml(\'' . $name . '\', \'' . $_key . '\', document.forms[\'' . $name . '\'].' . $_key . '.value);">maximizar</a>';
+          break;
+        case 'xhtml':
+          $_tmp = '<textarea rows="5" cols="40" class="adm" id="' . $_key . '" name="' . $_key . '"'.(($dd[$_key]['extra']['style'])?' style="'.$dd[$_key]['extra']['style'].'"':'').'>' . $_val . '</textarea>';
+          $_tmp .= "<script language=\"JavaScript\">\ntinyMCE.execCommand(\"mceAddControl\", true,\"$_key\");\n</script>\n";
           break;
         case 'varchar':
         case 'char':
