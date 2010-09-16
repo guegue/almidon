@@ -26,14 +26,14 @@ function setFocus() {
       <div><input id="alm_user" name="alm_user" type="text" class="inputbox" size="15" /></div>
       <b>{$smarty.const.ALM_PASSWORD}</b>
       <div><input id="password" name="password" type="password" class="inputbox" size="15" /></div>
-      {if $smarty.session.tries > 3}
+      {if !$whitelist}
       <b>CAPTCHA</b> <img src="captcha.png" width="55" height="20" alt="CAPTCHA"/>
       <div><input name="txtcaptcha" class="inputbox" type="text" size="8"/></div>
       {/if}
       <div align="center"><input type="submit" name="submit" class="button" value="{$smarty.const.LOGIN}" /></div>
     </div><!--#form-block-->
     </form>
-    {if $bError}<div class="error">{$smarty.const.ALM_PASS_ERROR}</div>{/if}
+    {if $bError}<div class="error">{$smarty.const.ALM_AUTH_ERROR}</div>{/if}
     {if $sError}<div class="error">{$smarty.const.ALM_NO_COOKIE}</div>{/if}
   </div><!--.login-->
 </div>

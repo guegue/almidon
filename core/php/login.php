@@ -13,7 +13,6 @@
 if (!isset($_SESSION)) {
   session_start();
 }
-if (!isset($_SESSION['tries'])) $_SESSION['tries'] = 0;
 if ($_POST && !isset($_SESSION)) {
   error_log("ALM: No hay soporte para sesiones.");
   $smarty->assign('sError', true);
@@ -24,37 +23,40 @@ if ($_POST && !isset($_SESSION)) {
 $_SESSION['session'] = 1;
 require_once(ALMIDONDIR . '/php/lang.php');
 require_once(ALMIDONDIR . '/php/users.php');
+
+# Loading the whitelist address
+if ( !defined('ALM_WHITELIST') ) define('ALM_WHITELIST','127.0.0.1');
+$whitelist_ips = explode(',',ALM_WHITELIST);
+# Verifying if the address if whitelisting
+$ip = explode(',', (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])&&$_SERVER['REMOTE_ADDR']=='127.0.0.1'?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR']));
+$ip = trim($ip[count($ip) - 1]);
+$whitelist = in_array($ip,$whitelist_ips);
+$smarty->assign('whitelist',$whitelist);
+
 if(!empty($_POST)) {
+  # Aqui tomo en cuenta que el servidor puede estar usando varnish
   //Cargo credenciales y voy a 404
-  if( $_SESSION['tries'] > 3 ) {
-    $txtcaptcha = preg_replace('/[^A-Za-z0-9]/', '', $_POST['txtcaptcha']);
-    if ((md5($txtcaptcha) === $_SESSION['key']) && check_user($_POST['alm_user'],$_POST['password'])) {
-      #error_log("ALM CAPTCHA: Good $txtcaptcha " . md5($txtcaptcha) . "!== " . $_SESSION['key']);
-      unset($_SESSION['tries']);
-      if(empty($_REQUEST['redirect_to']))
-        header('location: ./');
-      else header('location: ' . $_REQUEST['redirect_to']);
-    } else {
-      if (md5($txtcaptcha) !== $_SESSION['key'])
-        error_log("ALM CAPTCHA: Wrong $txtcaptcha " . md5($txtcaptcha) . "!== " . $_SESSION['key']);
-      $tpl = 'login';
-      $smarty->assign('bError', true);
-      $smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');	
-    }
+  $txtcaptcha = preg_replace('/[^A-Za-z0-9]/', '', $_POST['txtcaptcha']);
+  if (!$whitelist && (md5($txtcaptcha) === $_SESSION['key']) && check_user($_POST['alm_user'],$_POST['password'])) {
+    #error_log("ALM CAPTCHA: Good $txtcaptcha " . md5($txtcaptcha) . "!== " . $_SESSION['key']);
+    if(empty($_REQUEST['redirect_to']))
+      header('location: ./');
+    else header('location: ' . $_REQUEST['redirect_to']);
+    exit;
+  } elseif ($whitelist && check_user($_POST['alm_user'],$_POST['password'])) {
+    if(empty($_REQUEST['redirect_to']))
+      header('location: ./');
+    else header('location: ' . $_REQUEST['redirect_to']);
+    exit;
   } else {
-    if (check_user($_POST['alm_user'],$_POST['password'])) {
-      unset($_SESSION['tries']);
-      if(empty($_REQUEST['redirect_to']))
-        header('location: ./');
-      else header('location: ' . $_REQUEST['redirect_to']);
-    } else {
-      $_SESSION['tries']++;
-      $tpl = 'login';
-      $smarty->assign('bError', true);
-      $smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');
-    }
+    if (!$whitelist && md5($txtcaptcha) !== $_SESSION['key'])
+      error_log("ALM CAPTCHA: Wrong $txtcaptcha " . md5($txtcaptcha) . "!== " . $_SESSION['key']);
+    else 
+      error_log("ALM AUTH: Wrong auth data for user " . $_POST['alm_user']);
+    $tpl = 'login';
+    $smarty->assign('bError', true);
+    $smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');	
   }
-  die();
 } else {
   $tpl = 'login';
   $smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');

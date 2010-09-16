@@ -25,7 +25,7 @@ define('ALM_NORDATA','No hay datos relacionados');
 define('ALM_SHOWALL','Mostrar todo');
 define('ALM_USERNAME','Usuario');
 define('ALM_PASSWORD','Contrase&ntilde;a');
-define('ALM_PASS_ERROR','Usuario y/o contrase&ntilde;a incorrectos');
+define('ALM_AUTH_ERROR','Datos de acceso incorrectos');
 define('ALM_NO_COOKIE','No hay soporte para sesisiones. Debe habilitar soporte para cookies antes de continuar.');
 define('ALM_LOGIN','Entrar');
 define('ALM_LOGOUT','Salir');
