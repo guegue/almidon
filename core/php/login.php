@@ -25,8 +25,11 @@ require_once(ALMIDONDIR . '/php/lang.php');
 require_once(ALMIDONDIR . '/php/users.php');
 
 # Loading the whitelist address
-if ( !defined('ALM_WHITELIST') ) define('ALM_WHITELIST','127.0.0.1');
+if ( !defined('ALM_WHITELIST') ) define('ALM_WHITELIST','127.0.0.1,::1'); # IPv4,IPv6
 $whitelist_ips = explode(',',ALM_WHITELIST);
+# Verifyin localhost is in the list
+if ( !in_array('127.0.0.1',$whitelist_ips) ) $whitelist_ips[] = '127.0.0.1';
+if ( !in_array('::1',$whitelist_ips) ) $whitelist_ips[] = '::1';
 # Verifying if the address if whitelisting
 $ip = explode(',', (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])&&$_SERVER['REMOTE_ADDR']=='127.0.0.1'?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR']));
 $ip = trim($ip[count($ip) - 1]);
