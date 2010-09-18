@@ -15,9 +15,9 @@
 # Use Almidon's PEAR
 if (defined('ALMIDONDIR')) {
   if(defined('KEEP_INCPATH')&&KEEP_INCPATH===false)
-    set_include_path(ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
+    set_include_path(ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/include.d');
   else
-    set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/ext-libs');
+    set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/include.d');
 }
 
 require('db.const.php');
