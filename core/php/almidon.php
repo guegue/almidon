@@ -14,7 +14,7 @@
 
 require_once($almidondir . '/php/db2.class.php');
 require_once($almidondir . '/php/lang.php');
-require_once($almidondir . '/php/Smarty/Smarty.class.php');
+require_once('Smarty/Smarty.class.php');
 
 # Configura smarty (puede re-configurarse localmente)
 
@@ -23,6 +23,7 @@ $smarty->template_dir = ROOTDIR . '/templates/';
 $smarty->compile_dir = ROOTDIR . '/templates_c/';
 $smarty->config_dir = ROOTDIR . '/configs/';
 $smarty->cache_dir = ROOTDIR . '/cache/';
+$smarty->plugins_dir = array('plugins', $almidondir.'/smarty/',$almidondir.'/smarty/validate/');
 
 # Carga archivos locales
 
