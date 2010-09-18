@@ -14,7 +14,7 @@ if (!defined('ALMIDONDIR')) {
 }
 
 # Use Almidon's PHP and Almidon's PEAR
-set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php' . PATH_SEPARATOR . ALMIDONDIR . '/php/pear' . PATH_SEPARATOR . ALMIDONDIR . '/php/include.d');
+set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php' . PATH_SEPARATOR . ALMIDONDIR . '/php/pear' . PATH_SEPARATOR . ALMIDONDIR . '/include.d');
 
 # Other constants...
 #FIXME Por que no en config.php ? Si estan en db.con son server-wide, si estan en config.php site-wide
