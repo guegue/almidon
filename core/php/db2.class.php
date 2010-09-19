@@ -225,6 +225,17 @@ class Table extends Data {
   }
 
   /**
+   * borra todo cache generado para esta tabla
+   * OJO: puede ser pesado para tablas con muchos datos
+  */
+  function clearCache() {
+    $cachefiles = ROOTDIR.'/cache/*.'.$this->name.'.*dat';
+    foreach (glob($cachefiles) as $filename) {
+     unlink($filename);
+    }
+  }
+
+  /**
    * lee un registro o registros de una tabla
    * usado tipicamente por php publicos, lee un registro si se envia un id, lee todos si no.
    * no hay parametros, los toma de request, y no hay return, los asigna a smarty

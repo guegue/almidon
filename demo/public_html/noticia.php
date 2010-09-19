@@ -8,6 +8,9 @@ $data = new noticiaTable();
 /* testing cache with readDataSQL... */
 $rows = $data->readDataSQL('SELECT * FROM noticia');
 
+# uncomment to test...
+#$data->clearCache();
+
 $smarty->assign('rows',$rows);
 
 #$data->readRows();
