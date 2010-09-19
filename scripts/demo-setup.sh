@@ -3,13 +3,13 @@
 # demo-setup.sh configura el demo de almidon
 #
 source config.sh
-cd demo
+cd ../demo
 
 echo "Instalando demo de almidon en `pwd` `date`" > logs/install.log
 
 # config apache
 echo "Configurando '$APACHE'" >> logs/install.log
-cp almidon.conf /etc/$APACHE/conf.d/
+cp demo.almidon.conf /etc/$APACHE/conf.d/
 /etc/init.d/$APACHE restart
 
 cp classes/config.ori.php classes/config.php
