@@ -240,6 +240,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodcheck_error">Data::check_error()</a> in db2.class.php</div>
+							<div class="index-item-description">Revisa si comando sql ha dado error, guarda mensajes en bitacora y pantalla (private)</div>
 					</dd>
 			<dt class="field">
 						<span class="include-title">config.ori.php</span>
@@ -252,7 +253,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/AlmData.html#methodconnect">AlmData::connect()</a> in db.dal.php</div>
-							<div class="index-item-description">Conexion a la base de datos</div>
+							<div class="index-item-description">Conexion a la base de datos, si no se ha hecho ya</div>
 					</dd>
 		</dl>
 	<a name="d"></a>
@@ -291,6 +292,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodData">Data::Data()</a> in db2.class.php</div>
+							<div class="index-item-description">construye Data, crea conexion a BD si aun no se hace</div>
 					</dd>
 			<dt class="field">
 						Data
@@ -322,6 +324,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methoddestroy">Data::destroy()</a> in db2.class.php</div>
+							<div class="index-item-description">se desconecta de la base de datos</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">disconnect</span>
@@ -395,7 +398,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/AlmData.html#methodescape">AlmData::escape()</a> in db.dal.php</div>
-							<div class="index-item-description">escape string by native db's function</div>
+							<div class="index-item-description">&quot;escapea&quot; una cadena para poder usarla de manera segura en comando sql</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">escape</span>
@@ -409,6 +412,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodexecSql">Data::execSql()</a> in db2.class.php</div>
+							<div class="index-item-description">wrapper para el ejecutor de queries en base de datos</div>
 					</dd>
 		</dl>
 	<a name="f"></a>
@@ -468,6 +472,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodgetArray">Data::getArray()</a> in db2.class.php</div>
+							<div class="index-item-description">obtiene registros del recurso actual de datos (private)  usado generalmente por queries que devuelven varios registros: readData, etc.</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">getFiles</span>
@@ -487,18 +492,21 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodgetList">Data::getList()</a> in db2.class.php</div>
+							<div class="index-item-description">Lee un statement sql y devuelve una lista de una sola columna (la primera)</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">getNumbering</span>
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodgetNumbering">Data::getNumbering()</a> in db2.class.php</div>
+							<div class="index-item-description">Pagina los datos del query actual segun $num y $max (private?)</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">getVar</span>
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodgetVar">Data::getVar()</a> in db2.class.php</div>
+							<div class="index-item-description">obtiene un valor específico de una tabla</div>
 					</dd>
 		</dl>
 	<a name="h"></a>
@@ -526,6 +534,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodhttp_auth_user">Data::http_auth_user()</a> in db2.class.php</div>
+							<div class="index-item-description">obtiene el nombre de usuario autenticado via http</div>
 					</dd>
 		</dl>
 	<a name="i"></a>
@@ -703,7 +712,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/AlmData.html#methodparseDSN">AlmData::parseDSN()</a> in db.dal.php</div>
-							<div class="index-item-description">Obtiene info de conexion del DSN: dbtype, dbname, host, username, pass</div>
+							<div class="index-item-description">Obtiene info de conexion del DSN</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">parsevar</span>
@@ -751,7 +760,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodquery">Data::query()</a> in db2.class.php</div>
-							<div class="index-item-description">hace la consulta utilizando almdata</div>
+							<div class="index-item-description">hace la consulta utilizando almdata (private, generalmente)</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">query</span>
@@ -818,6 +827,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodreadList">Data::readList()</a> in db2.class.php</div>
+							<div class="index-item-description">construye Data, crea conexion a BD si aun no se hace</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">readRecord</span>
@@ -875,23 +885,18 @@
 	</div>
 	<dl>
 			<dt class="field">
-						<span class="method-title">selectList</span>
-					</dt>
-		<dd class="index-item-body">
-			<div class="index-item-details"><a href="almidon/Data.html#methodselectList">Data::selectList()</a> in db2.class.php</div>
-					</dd>
-			<dt class="field">
 						<span class="method-title">selectMenu</span>
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodselectMenu">Data::selectMenu()</a> in db2.class.php</div>
+							<div class="index-item-description">obtiene arreglo de una tabla para ser usado en combo box</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">setFunctions</span>
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/AlmData.html#methodsetFunctions">AlmData::setFunctions()</a> in db.dal.php</div>
-							<div class="index-item-description">Define las distintas funciones SQL segun cada db server: postgresql, sqlite, mysql</div>
+							<div class="index-item-description">Define las distintas funciones SQL segun cada db server</div>
 					</dd>
 			<dt class="field">
 						<span class="const-title">SQLLOG</span>
@@ -905,7 +910,7 @@
 					</dt>
 		<dd class="index-item-body">
 			<div class="index-item-details"><a href="almidon/Data.html#methodsql_log">Data::sql_log()</a> in db2.class.php</div>
-							<div class="index-item-description">crea linea en bitacora de comando sql</div>
+							<div class="index-item-description">crea linea en bitacora de comando sql (private)</div>
 					</dd>
 			<dt class="field">
 						<span class="method-title">syncFromAlm</span>

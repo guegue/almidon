@@ -1,5 +1,6 @@
 <?php
     global $DSN;
+    // FIXME: hay una variable DSN? o esto es para algun backward-compatibility?
     if ($DSN)
       $this->database = almdata::connect ($DSN);
     else

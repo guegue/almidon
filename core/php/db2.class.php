@@ -29,8 +29,9 @@ require_once('db.dal.php');
 */
 
 class Data {
-  var $data;
+  #static var $database;
   var $database;
+  var $data;
   var $num;
   var $max;
   var $limit;
@@ -42,23 +43,33 @@ class Data {
   var $html;
   var $cols;
 
+  /**
+   * construye Data, crea conexion a BD si aun no se hace
+   */
   function Data () {
     require('db.data.php');
   }
 
+  /**
+   * Revisa si comando sql ha dado error, guarda mensajes en bitacora y pantalla (private)
+   * @param string $sqlcmd comando sql a revisar
+   * @param string $extra texto adicional a reportar
+   * @param bool $die muere después de revisar?
+   */
   function check_error($sqlcmd, $extra = '', $die = false) {
     require('db.error.php');
   }
  
   /**
-   *  crea linea en bitacora de comando sql
+   * crea linea en bitacora de comando sql (private)
+   * @param string $logtext texto a agregar en la bitacora sql
    */
   function sql_log($logtext) {
     require('db.logging.php');
   } 
 
   /**
-   *  hace la consulta utilizando almdata
+   *  hace la consulta utilizando almdata (private, generalmente)
    *  @param string $sqlcmd comando SQL
    *  @return resource recuerso tipo query
    */
@@ -67,6 +78,109 @@ class Data {
     return $result;
   }
   
+  /**
+   * wrapper para el ejecutor de queries en base de datos
+   * @param string $sqlcmd comando sql a ejectuar
+   * @param bool $cache usar cache?
+   * @param string $table tabla a usar (usada por limpiador de cache luego)
+   */
+  function execSql($sqlcmd, $cache = null, $table = null) {
+    $this->data = $this->query($sqlcmd);
+    if (!almdata::isError($sqlcmd) && $this->data && (preg_match('/^SELECT/',$sqlcmd) || preg_match('/^SHOW/',$sqlcmd))) {
+      $this->num = almdata::rows($this->data);
+    }
+  }
+
+  /**
+   * obtiene el nombre de usuario autenticado via http
+   * usa PHP_AUTH_DIGEST o PHP_AUTH_USER
+   * @return string con el username
+   */
+  function http_auth_user() {
+    require('db.http_auth_user.php');
+    return $auth_user;
+  }
+
+  /**
+   * construye Data, crea conexion a BD si aun no se hace
+   * FIXME: Mejor usar readDataSQL, funcion repetida. Alguien aun la usa?
+   */
+  function readList($sqlcmd) {
+    $this->execSql($sqlcmd);
+    return $this->getArray();
+  }
+
+  /**
+   * obtiene un valor específico de una tabla
+   * @param string $sqlcmd comando SQL para obtener valor: SELECT foo FROM bar WHERE pk=999;
+   * @return mixed valor obtenido del tipo que sea
+   */
+  function getVar($sqlcmd) {
+    $this->execSql($sqlcmd);
+    if ($this->data)
+      $row = almdata::fetchRow($this->data, false);
+    if (isset($row[0]))
+      return $row[0];
+  }
+
+  /**
+   * Lee un statement sql y devuelve una lista de una sola columna (la primera)
+   * @param string $sqlcmd comando SQL para obtener lista: SELECT foo FROM bar;
+   * @return array arreglo con lista de valores
+   */
+  function getList($sqlcmd) {
+    require('db.getlist.php');
+    if (isset($array_rows))
+      return $array_rows;
+  }
+
+  /**
+   * obtiene registros del recurso actual de datos (private)
+   * usado generalmente por queries que devuelven varios registros: readData, etc.
+   * @param bool $cache usar cache?
+   * @return array arreglo con arreglos de registros
+   */
+  function getArray($cache = null) {
+    require('db.getarray.php');
+    return (isset($array_rows) ? $array_rows : null);
+  }
+
+  # FIXME: selectMenu abaraca esta opcion. deprecated!
+  #function selectList($sqlcmd) {
+  #  require('db.selectlist.php');
+  #  return $menu;
+  #}
+
+  /**
+   * obtiene arreglo de una tabla para ser usado en combo box
+   * @param string $sqlcmd comando SQL para obtener par key=>val, puede ser tambien nombre de la tabla
+   * @param string $filter filtro para el query, reduce el menu a foo criterio
+   * @return array arreglo con pares asociados key=>val
+   */
+  function selectMenu($sqlcmd = null, $filter = null) {
+    require('db.selectmenu.php');
+    return $menu;
+  }
+  
+  /**
+   * Pagina los datos del query actual segun $num y $max (private?)
+   * @return array lista de páginas a enumerar
+   */
+  function getNumbering() {
+    unset($this->pg);
+    $numpg = ceil($this->num / $this->max);
+    for ($n = 1; $n <= $numpg; $n++)
+      $this->pg[] = $n;
+    return $this->pg;
+  }
+
+  /**
+   * se desconecta de la base de datos
+   */
+  function destroy() {
+    almdata::disconnect();
+  }
+
   #function tablesColumnExists($column_name) {
   #  $exists = preg_match("/(,|^)$column_name(,|$)/",$this->fields);
   #  return $exists;
@@ -77,67 +191,6 @@ class Data {
   #  return $exists;
   #}
 
-  function execSql($sqlcmd, $cache = null, $table = null) {
-    $this->data = $this->query($sqlcmd);
-    if (!almdata::isError($sqlcmd) && $this->data && (preg_match('/^SELECT/',$sqlcmd) || preg_match('/^SHOW/',$sqlcmd))) {
-      $this->num = almdata::rows($this->data);
-    }
-  }
-
-  function http_auth_user() {
-    require('db.http_auth_user.php');
-    return $auth_user;
-  }
-
-  //Mejor usar readDataSQL, funcion repetida
-  function readList($sqlcmd) {
-    $this->execSql($sqlcmd);
-    return $this->getArray();
-  }
-
-  function getVar($sqlcmd) {
-    $this->execSql($sqlcmd);
-    #if (!PEAR::isError($this->data))
-    if ($this->data)
-      $row = almdata::fetchRow($this->data, false);
-    if (isset($row[0]))
-      return $row[0];
-  }
-
-  //Lee un statement sql y devuelve una lista de una sola columna (la primera)
-  function getList($sqlcmd) {
-    require('db.getlist.php');
-    if (isset($array_rows))
-      return $array_rows;
-  }
-
-  function getArray($cache = null) {
-    require('db.getarray.php');
-    return (isset($array_rows) ? $array_rows : null);
-  }
-
-  function selectList($sqlcmd) {
-    require('db.selectlist.php');
-    return $menu;
-  }
-
-  function selectMenu($sqlcmd = '', $filter = '') {
-    require('db.selectmenu.php');
-    return $menu;
-  }
-  
-  //Pagina los datos del query actual segun $num y $max
-  function getNumbering() {
-    unset($this->pg);
-    $numpg = ceil($this->num / $this->max);
-    for ($n = 1; $n <= $numpg; $n++)
-      $this->pg[] = $n;
-    return $this->pg;
-  }
-
-  function destroy() {
-    almdata::disconnect();
-  }
 }
 
 /**

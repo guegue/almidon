@@ -11,8 +11,12 @@
 
 class AlmData {
 
+  #public static $dbtype;
+
   /**
-   * Obtiene info de conexion del DSN: dbtype, dbname, host, username, pass
+   * Obtiene info de conexion del DSN
+   * @param string $dsn type://username:password@hostname/database
+   * @return array con datos de conexion: dbtype, dbname, host, username, pass
    */
   function parseDSN($dsn) {
     list($dbtype,$tmp) = preg_split('/:\/\//',$dsn);
@@ -24,6 +28,9 @@ class AlmData {
 
   /**
    * Imprime un error en rojo, if DEBUG. error_log + trigger_error
+   * @param string $error_msg error a imprimir
+   * @param bool $rais imprimir en pantalla. FIXME: se usa?
+   * @param bool $die die después del reportar el error
    */
   function printError($error_msg, $raise = true, $die = false) {
     error_log($error_msg);
@@ -36,7 +43,8 @@ class AlmData {
   }
 
   /**
-   * Define las distintas funciones SQL segun cada db server: postgresql, sqlite, mysql
+   * Define las distintas funciones SQL segun cada db server
+   * @param string $dbtype base de datos: psql, mysql, sqlite
    */
   function setFunctions($dbtype) {
     $this->dbtype = $dbtype;
@@ -80,7 +88,9 @@ class AlmData {
   }
 
   /**
-   * Conexion a la base de datos
+   * Conexion a la base de datos, si no se ha hecho ya
+   * @param string $dsn dsn de conexion a la base de datos
+   * @param bool $options FIXME: se usa?
    * @return resource de conexion
    */
   function connect($dsn, $options = false) {
@@ -141,7 +151,10 @@ class AlmData {
 
   /**
    * obtiene el ultimo error del db server, distintos comandos para cada db server
+   * @param string $data FIXME: que es esto?
+   * @param string $dsn dsn de conexion a db server
    * @return string conteniendo el ultimo error (last_error)
+   * FIXME: por que hacer switch(dbtype) aqui?
    */
   function basicError($data = null, $dsn) {
     list($dbtype,$dbname,$host,$username,$pass) = almdata::parseDSN($dsn);
@@ -161,11 +174,11 @@ class AlmData {
     return $error;
   }
 
-  # FIXME: Como se llama isError? Como podemos reportar quien lo llamo,
-  #        donde estaba el SQL que dio el error? Como usar $calling?
   /**
    * Reporta si ha habido un error en la db
    * @return bool true si ya esta registrado el error, o lo registra y devuelve true si last_error
+   * FIXME: Como se llama isError? Como podemos reportar quien lo llamo,
+   *        donde estaba el SQL que dio el error? Como usar $calling?
    */
   function isError($sqlcmd = null, $calling = null) {
     if (is_string($sqlcmd)) {
@@ -197,6 +210,7 @@ class AlmData {
 
   /**
    * Obtiene el numero de registros afectados por el ultimo comando sql
+   * @param resource $data recurso de query, si no se especifica se usa el de tabla actual
    * @return int numero de registros afectados
    */
   function rows($data = null) {
@@ -208,17 +222,18 @@ class AlmData {
   }
 
   /**
-   * escape string by native db's function
-   * @return string escaped
+  * "escapea" una cadena para poder usarla de manera segura en comando sql
+  * @param string $var cadena a "escapear"
+  * @return string escaped string, lista para usar en sql
    */
   function escape($var) {
     $db_escape = $this->db_escape;
     return $db_escape($var);
   }
 
-
   /**
    * enviar consulta al db
+   * @param strign $sqlcmd comando sql a ejecutar
    * @return resource en caso de exito, false si falla
    */
   function query($sqlcmd) {

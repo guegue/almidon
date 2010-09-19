@@ -48,7 +48,7 @@
 												<div class="method-definition">
 											<span class="method-result">string</span>
 										<a href="#basicError" title="details" class="method-name">basicError</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>], <span class="var-type"></span>&nbsp;<span class="var-name">$dsn</span>)
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$dsn</span>)
 									</div>
 																<div class="method-definition">
 											<span class="method-result">object CND</span>
@@ -63,7 +63,7 @@
 																<div class="method-definition">
 											<span class="method-result">resource</span>
 										<a href="#connect" title="details" class="method-name">connect</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$dsn</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">false</span>])
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$dsn</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">false</span>])
 									</div>
 																<div class="method-definition">
 											<span class="method-result">bool</span>
@@ -73,7 +73,7 @@
 																<div class="method-definition">
 											<span class="method-result">string</span>
 										<a href="#escape" title="details" class="method-name">escape</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$var</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$var</span>)
 									</div>
 																<div class="method-definition">
 											<span class="method-result">array</span>
@@ -86,29 +86,29 @@
 											([<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$calling</span> = <span class="var-default">null</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">void</span>
+											<span class="method-result">array</span>
 										<a href="#parseDSN" title="details" class="method-name">parseDSN</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$dsn</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$dsn</span>)
 									</div>
 																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#printError" title="details" class="method-name">printError</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$error_msg</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$raise</span> = <span class="var-default">true</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$die</span> = <span class="var-default">false</span>])
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$error_msg</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$raise</span> = <span class="var-default">true</span>], [<span class="var-type">bool</span>&nbsp;<span class="var-name">$die</span> = <span class="var-default">false</span>], <span class="var-type">bool</span>&nbsp;<span class="var-name">$rais</span>)
 									</div>
 																<div class="method-definition">
 											<span class="method-result">resource</span>
 										<a href="#query" title="details" class="method-name">query</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>)
+											(<span class="var-type">strign</span>&nbsp;<span class="var-name">$sqlcmd</span>)
 									</div>
 																<div class="method-definition">
 											<span class="method-result">int</span>
 										<a href="#rows" title="details" class="method-name">rows</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>])
+											([<span class="var-type">resource</span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>])
 									</div>
 																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#setFunctions" title="details" class="method-name">setFunctions</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$dbtype</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$dbtype</span>)
 									</div>
 								</div>
 		</div>
@@ -130,13 +130,13 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">basicError</span> (line <span class="line-number">146</span>)
+		<span class="method-title">basicError</span> (line <span class="line-number">159</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">obtiene el ultimo error del db server, distintos comandos para cada db server</p>
 	<ul class="tags">
-				<li><span class="field">return:</span> conteniendo el ultimo error (last_error)</li>
+				<li><span class="field">return:</span> conteniendo el ultimo error (last_error)  FIXME: por que hacer switch(dbtype) aqui?</li>
 			</ul>
 	
 	<div class="method-signature">
@@ -144,16 +144,16 @@
 		<span class="method-name">
 			basicError
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>], <span class="var-type"></span>&nbsp;<span class="var-name">$dsn</span>)
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$dsn</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$data</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$data</span><span class="var-description">: FIXME: que es esto?</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$dsn</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$dsn</span><span class="var-description">: dsn de conexion a db server</span>			</li>
 				</ul>
 		
 			
@@ -162,7 +162,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">cdn_connect</span> (line <span class="line-number">126</span>)
+		<span class="method-title">cdn_connect</span> (line <span class="line-number">136</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -186,7 +186,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">cdn_upload</span> (line <span class="line-number">136</span>)
+		<span class="method-title">cdn_upload</span> (line <span class="line-number">146</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -218,11 +218,11 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">connect</span> (line <span class="line-number">86</span>)
+		<span class="method-title">connect</span> (line <span class="line-number">96</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Conexion a la base de datos</p>
+<p class="short-description">Conexion a la base de datos, si no se ha hecho ya</p>
 	<ul class="tags">
 				<li><span class="field">return:</span> de conexion</li>
 			</ul>
@@ -232,16 +232,16 @@
 		<span class="method-name">
 			connect
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$dsn</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">false</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$dsn</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">false</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$dsn</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$dsn</span><span class="var-description">: dsn de conexion a la base de datos</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$options</span>			</li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$options</span><span class="var-description">: FIXME: se usa?</span>			</li>
 				</ul>
 		
 			
@@ -250,7 +250,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">disconnect</span> (line <span class="line-number">193</span>)
+		<span class="method-title">disconnect</span> (line <span class="line-number">206</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -274,13 +274,13 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">escape</span> (line <span class="line-number">214</span>)
+		<span class="method-title">escape</span> (line <span class="line-number">229</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">escape string by native db's function</p>
+<p class="short-description">&quot;escapea&quot; una cadena para poder usarla de manera segura en comando sql</p>
 	<ul class="tags">
-				<li><span class="field">return:</span> escaped</li>
+				<li><span class="field">return:</span> escaped string, lista para usar en sql</li>
 			</ul>
 	
 	<div class="method-signature">
@@ -288,13 +288,13 @@
 		<span class="method-name">
 			escape
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$var</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$var</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$var</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$var</span><span class="var-description">: cadena a &quot;escapear&quot;</span>			</li>
 				</ul>
 		
 			
@@ -303,7 +303,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">fetchRow</span> (line <span class="line-number">233</span>)
+		<span class="method-title">fetchRow</span> (line <span class="line-number">248</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -335,13 +335,13 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">isError</span> (line <span class="line-number">170</span>)
+		<span class="method-title">isError</span> (line <span class="line-number">183</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Reporta si ha habido un error en la db</p>
 	<ul class="tags">
-				<li><span class="field">return:</span> true si ya esta registrado el error, o lo registra y devuelve true si last_error</li>
+				<li><span class="field">return:</span> true si ya esta registrado el error, o lo registra y devuelve true si last_error  FIXME: Como se llama isError? Como podemos reportar quien lo llamo,         donde estaba el SQL que dio el error? Como usar $calling?</li>
 			</ul>
 	
 	<div class="method-signature">
@@ -367,24 +367,27 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">parseDSN</span> (line <span class="line-number">17</span>)
+		<span class="method-title">parseDSN</span> (line <span class="line-number">21</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Obtiene info de conexion del DSN: dbtype, dbname, host, username, pass</p>
+<p class="short-description">Obtiene info de conexion del DSN</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> con datos de conexion: dbtype, dbname, host, username, pass</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			parseDSN
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$dsn</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$dsn</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$dsn</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$dsn</span><span class="var-description">: type://username:password@hostname/database</span>			</li>
 				</ul>
 		
 			
@@ -393,7 +396,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">printError</span> (line <span class="line-number">28</span>)
+		<span class="method-title">printError</span> (line <span class="line-number">35</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -404,19 +407,22 @@
 		<span class="method-name">
 			printError
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$error_msg</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$raise</span> = <span class="var-default">true</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$die</span> = <span class="var-default">false</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$error_msg</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$raise</span> = <span class="var-default">true</span>], [<span class="var-type">bool</span>&nbsp;<span class="var-name">$die</span> = <span class="var-default">false</span>], <span class="var-type">bool</span>&nbsp;<span class="var-name">$rais</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$error_msg</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$error_msg</span><span class="var-description">: error a imprimir</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$rais</span><span class="var-description">: imprimir en pantalla. FIXME: se usa?</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$die</span><span class="var-description">: die después del reportar el error</span>			</li>
 					<li>
 				<span class="var-type"></span>
 				<span class="var-name">$raise</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$die</span>			</li>
 				</ul>
 		
 			
@@ -425,7 +431,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">query</span> (line <span class="line-number">224</span>)
+		<span class="method-title">query</span> (line <span class="line-number">239</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -439,13 +445,13 @@
 		<span class="method-name">
 			query
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>)
+					(<span class="var-type">strign</span>&nbsp;<span class="var-name">$sqlcmd</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$sqlcmd</span>			</li>
+				<span class="var-type">strign</span>
+				<span class="var-name">$sqlcmd</span><span class="var-description">: comando sql a ejecutar</span>			</li>
 				</ul>
 		
 			
@@ -454,7 +460,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">rows</span> (line <span class="line-number">202</span>)
+		<span class="method-title">rows</span> (line <span class="line-number">216</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -468,13 +474,13 @@
 		<span class="method-name">
 			rows
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>])
+					([<span class="var-type">resource</span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$data</span>			</li>
+				<span class="var-type">resource</span>
+				<span class="var-name">$data</span><span class="var-description">: recurso de query, si no se especifica se usa el de tabla actual</span>			</li>
 				</ul>
 		
 			
@@ -483,24 +489,24 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">setFunctions</span> (line <span class="line-number">41</span>)
+		<span class="method-title">setFunctions</span> (line <span class="line-number">49</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Define las distintas funciones SQL segun cada db server: postgresql, sqlite, mysql</p>
+<p class="short-description">Define las distintas funciones SQL segun cada db server</p>
 	
 	<div class="method-signature">
 		<span class="method-result">void</span>
 		<span class="method-name">
 			setFunctions
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$dbtype</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$dbtype</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$dbtype</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$dbtype</span><span class="var-description">: base de datos: psql, mysql, sqlite</span>			</li>
 				</ul>
 		
 			
@@ -511,7 +517,7 @@
 
 
 	<p class="notes" id="credit">
-		Documentation generated on Sun, 19 Sep 2010 07:46:51 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Sun, 19 Sep 2010 11:52:58 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>

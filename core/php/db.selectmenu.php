@@ -7,6 +7,7 @@
       }
     }
 
+   /* $sqlcmd no contiene comando sql sino nombre de la tabla !?! */
     global $global_dd;
     if (!preg_match("/^SELECT/", $sqlcmd)) {
       $table = $sqlcmd;
@@ -25,6 +26,5 @@
     $menu = array();
     for ($i=0; $i < $num; $i++) {
       $r = almdata::fetchRow($result, false);
-      $new = array($r[0] => $r[1]);
-      $menu = $menu + $new;
+      $menu[$r[0]] = $r[1];
     }
