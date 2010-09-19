@@ -8,7 +8,10 @@
 -- * Parte esencial de almidon     *
 -- *********************************
 
-\i ../sql/almidon.sql
+\i ../core/sql/alm.tables.sql
+GRANT SELECT ON alm_access,alm_column,alm_role,alm_table,alm_user TO almidondemowww;
+GRANT ALL ON alm_access,alm_column,alm_role,alm_table,alm_user TO almidondemo;
+
 
 -- *********************************
 -- * Parte del demo                *
