@@ -4,7 +4,7 @@
 /**
  * db2.class.php
  *
- * DAL para almidon
+ * DAL para almidon, clases y funciones ppales para manejo de datos
  *
  * @copyright &copy; 2005-2010 Guegue Comunicaciones - guegue.com
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
@@ -23,6 +23,10 @@ require('db.const.php');
  * main DAL, multi-db support, cdn support
  */
 require_once('db.dal.php');
+
+/**
+ * @package almidon
+*/
 
 class Data {
   var $data;
@@ -55,7 +59,7 @@ class Data {
 
   /**
    *  hace la consulta utilizando almdata
-   *  @sqlcmd comando SQL
+   *  @name $sqlcmd comando SQL
    *  @return recuerso tipo query
    */
   function query($sqlcmd) {
@@ -135,6 +139,10 @@ class Data {
     almdata::disconnect();
   }
 }
+
+/**
+ * @package almidon
+*/
 
 class Table extends Data {
   var $name;
@@ -380,6 +388,10 @@ class Table extends Data {
   }
 
 }
+
+/**
+ * @package almidon
+*/
 
 class TableDoubleKey extends Table {
   var $key1;

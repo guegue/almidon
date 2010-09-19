@@ -6,7 +6,8 @@
 
 /**
  * clase principal DAL, permite traducir los comandos a cada distinto servidor de base de datos
- */
+ * @package almidon
+*/
 
 class AlmData {
 

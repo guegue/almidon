@@ -12,12 +12,21 @@
  * @package almidon
  */
 
+if(!isset($almidondir))
+  $almidondir = defined('ALMIDONDIR') ? ALMIDONDIR : $_SERVER['DOCUMENT_ROOT'] . '/../../core';
+/**
+ * DAL para almidon, clases y funciones ppales para manejo de datos
+*/
 require_once($almidondir . '/php/db2.class.php');
+/**
+ * Constantes de distintos lenguages definidas
+*/
 require_once($almidondir . '/php/lang.php');
+/**
+ * Good old Smarty: see http://www.smarty.net/
+*/
 require_once('Smarty/Smarty.class.php');
-
 # Configura smarty (puede re-configurarse localmente)
-
 $smarty = new Smarty;
 $smarty->template_dir = ROOTDIR . '/templates/';
 $smarty->compile_dir = ROOTDIR . '/templates_c/';
@@ -25,13 +34,23 @@ $smarty->config_dir = ROOTDIR . '/configs/';
 $smarty->cache_dir = ROOTDIR . '/cache/';
 $smarty->plugins_dir = array('plugins', $almidondir.'/smarty/',$almidondir.'/smarty/validate/');
 
-# Carga archivos locales
-
+/**
+* @ignore - ADMIN: Estamos en modo administrador?
+*/
 if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN === true && !isset($_SESSION['idalm_role'])) $_SESSION['idalm_role'] = null;
 if (ADMIN === true && !isset($_SESSION['idalm_user'])) $_SESSION['idalm_user'] = null;
+/**
+* Carga definición local de tablas
+*/
 require(ROOTDIR . '/classes/tables.class.php');
+/**
+* Tablas extras no modificables automáticamente
+*/
 require(ROOTDIR . '/classes/extra.class.php');
+/**
+* Carga definición global de tablas (alm_*)
+*/
 require_once($almidondir . '/php/alm.tables.class.php');
 
 $classes = get_declared_classes();
@@ -50,7 +69,9 @@ foreach($classes as $key) {
   }
 }
 
-# qdollar se usa para "escape" cadenas en pgreg_replace que usan "$" como signo de dolar, y no backreference
+/**
+* qdollar se usa para "escape" cadenas en pgreg_replace que usan "$" como signo de dolar, y no backreference
+*/
 function qdollar($value) {
   return str_replace('$', '\$', $value);
 }
