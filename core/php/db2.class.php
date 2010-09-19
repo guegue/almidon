@@ -335,7 +335,12 @@ class Table extends Data {
     return $join;
   }
 
-  function readRecord($id = 0) {
+  /**
+  * Lee un registro de la tabla
+  * @name $id indica el id del registro, si no se especifica, agarra el último
+  * @return contiene array con el registro (devuelto por *_fetch_row)
+  */
+  function readRecord($id = 0, $cache = null) {
     require('db.readrecord.php');
     if (isset($row))
       return $row;
@@ -353,7 +358,7 @@ class Table extends Data {
     /* checks cache options */
     if (is_null($cache))
       $cache = (ALM_CACHE && !ADMIN);
-    $this->filecache = ROOTDIR.'/cache/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'dat';
+    $this->filecache = ROOTDIR.'/cache/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'.dat';
     if (!($cache === true && file_exists($this->filecache) && (time()-filemtime($this->filecache)<=ALM_CACHE_TIME)))
       $this->execSql($sqlcmd);
     return $this->getArray($cache); 
