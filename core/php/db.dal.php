@@ -121,7 +121,7 @@ class AlmData {
 
   /**
    * se conecta al CDN (cloudfiles) en base a las constantes definidas en config.php
-   * @return CND repo
+   * @return object CND repo
   */
   function cdn_connect() {
     $auth = new CF_Authentication(CDN_USERNAME, CDN_APIKEY);
@@ -132,7 +132,6 @@ class AlmData {
   }
   /**
    * hace upload de un archivo al CDN (cloudfiles)
-   * @return CND repo
   */
   function cdn_upload($cloudfiles, $filename, $tmp_file) {
     $afile = $cloudfiles->create_object($filename);
@@ -142,7 +141,7 @@ class AlmData {
 
   /**
    * obtiene el ultimo error del db server, distintos comandos para cada db server
-   * @return cadena conteniendo el ultimo error (last_error)
+   * @return string conteniendo el ultimo error (last_error)
    */
   function basicError($data = null, $dsn) {
     list($dbtype,$dbname,$host,$username,$pass) = almdata::parseDSN($dsn);
@@ -166,7 +165,7 @@ class AlmData {
   #        donde estaba el SQL que dio el error? Como usar $calling?
   /**
    * Reporta si ha habido un error en la db
-   * @return true si ya esta registrado el error, o lo registra y devuelve true si last_error
+   * @return bool true si ya esta registrado el error, o lo registra y devuelve true si last_error
    */
   function isError($sqlcmd = null, $calling = null) {
     if (is_string($sqlcmd)) {
@@ -189,7 +188,7 @@ class AlmData {
 
   /**
    * Se desconecta de la db
-   * @return true si exito, false si falla
+   * @return bool true si exito, false si falla
    */
   function disconnect() {
     $db_disconnect = $this->db_disconnect;
@@ -198,7 +197,7 @@ class AlmData {
 
   /**
    * Obtiene el numero de registros afectados por el ultimo comando sql
-   * @return numero de registros afectados
+   * @return int numero de registros afectados
    */
   function rows($data = null) {
     $db_rows = $this->db_rows;
@@ -210,7 +209,7 @@ class AlmData {
 
   /**
    * escape string by native db's function
-   * @return escaped string
+   * @return string escaped
    */
   function escape($var) {
     $db_escape = $this->db_escape;
@@ -220,7 +219,7 @@ class AlmData {
 
   /**
    * enviar consulta al db
-   * @return recurso en caso de exito, false si falla
+   * @return resource en caso de exito, false si falla
    */
   function query($sqlcmd) {
     $db_query = $this->db_query;
@@ -229,7 +228,7 @@ class AlmData {
 
   /**
    * obtiene un registro segun una consulta
-   * @return un registro
+   * @return array con un registro
    */
   function fetchRow($data = null, $assoc = true) {
     if ($assoc)

@@ -180,12 +180,12 @@
 																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#dumpData" title="details" class="method-name">dumpData</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$format</span> = <span class="var-default">'php'</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$session</span> = <span class="var-default">null</span>])
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$format</span> = <span class="var-default">'php'</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$session</span> = <span class="var-default">null</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">void</span>
+											<span class="method-result">string</span>
 										<a href="#escape" title="details" class="method-name">escape</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$var</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$var</span>)
 									</div>
 																<div class="method-definition">
 											<span class="method-result">void</span>
@@ -223,19 +223,19 @@
 										()
 									</div>
 																<div class="method-definition">
-											<span class="method-result">void</span>
+											<span class="method-result">array</span>
 										<a href="#readData" title="details" class="method-name">readData</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
+											([<span class="var-type">bool</span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">void</span>
+											<span class="method-result">array</span>
 										<a href="#readDataFilter" title="details" class="method-name">readDataFilter</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$filter</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$filter</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">void</span>
+											<span class="method-result">array</span>
 										<a href="#readDataSQL" title="details" class="method-name">readDataSQL</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
 									</div>
 																<div class="method-definition">
 											<span class="method-result">void</span>
@@ -243,14 +243,14 @@
 											([<span class="var-type"></span>&nbsp;<span class="var-name">$friendly</span> = <span class="var-default">false</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">void</span>
+											<span class="method-result">array</span>
 										<a href="#readRecord" title="details" class="method-name">readRecord</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">0</span>])
+											([<span class="var-type">mixed</span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">0</span>], [<span class="var-type">bool</span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">void</span>
+											<span class="method-result">array</span>
 										<a href="#readRecordSQL" title="details" class="method-name">readRecordSQL</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$sqlcmd</span>)
 									</div>
 																<div class="method-definition">
 											<span class="method-result">void</span>
@@ -770,25 +770,26 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">dumpData</span> (line <span class="line-number">382</span>)
+		<span class="method-title">dumpData</span> (line <span class="line-number">413</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Exporta (o hace un dump) de datos de la tabla actual</p>
 	
 	<div class="method-signature">
 		<span class="method-result">void</span>
 		<span class="method-name">
 			dumpData
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$format</span> = <span class="var-default">'php'</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$session</span> = <span class="var-default">null</span>])
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$format</span> = <span class="var-default">'php'</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$session</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$format</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$format</span><span class="var-description">: formato a usar para exportar</span>			</li>
 					<li>
-				<span class="var-type"></span>
+				<span class="var-type">string</span>
 				<span class="var-name">$session</span>			</li>
 				</ul>
 		
@@ -798,23 +799,27 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">escape</span> (line <span class="line-number">386</span>)
+		<span class="method-title">escape</span> (line <span class="line-number">422</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">&quot;escapea&quot; una cadena para poder usarla de manera segura en comando sql</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> escaped string, lista para usar en sql</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">string</span>
 		<span class="method-name">
 			escape
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$var</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$var</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$var</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$var</span><span class="var-description">: cadena a &quot;escapear&quot;</span>			</li>
 				</ul>
 		
 			
@@ -823,7 +828,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">fetchNext</span> (line <span class="line-number">362</span>)
+		<span class="method-title">fetchNext</span> (line <span class="line-number">377</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -848,7 +853,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">fetchPrev</span> (line <span class="line-number">367</span>)
+		<span class="method-title">fetchPrev</span> (line <span class="line-number">382</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -999,23 +1004,27 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">readData</span> (line <span class="line-number">372</span>)
+		<span class="method-title">readData</span> (line <span class="line-number">392</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Lee un conjunto de registros de la tabla actual</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> con array de registros</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			readData
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
+					([<span class="var-type">bool</span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$cache</span>			</li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$cache</span><span class="var-description">: indica si utilizar cache o no</span>			</li>
 				</ul>
 		
 			
@@ -1024,26 +1033,30 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">readDataFilter</span> (line <span class="line-number">377</span>)
+		<span class="method-title">readDataFilter</span> (line <span class="line-number">403</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Lee un conjunto de registros de la tabla actual limitados por un filtro (WHERE)</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> con array de registros</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			readDataFilter
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$filter</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$filter</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$filter</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$filter</span><span class="var-description">: filtro WHERE para query</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$cache</span>			</li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$cache</span><span class="var-description">: indica si utilizar cache o no</span>			</li>
 				</ul>
 		
 			
@@ -1052,26 +1065,30 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">readDataSQL</span> (line <span class="line-number">352</span>)
+		<span class="method-title">readDataSQL</span> (line <span class="line-number">367</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Lee un conjunto de registros usando comando sql</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> con array de registros</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			readDataSQL
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$sqlcmd</span>			</li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$cache</span><span class="var-description">: indica si utilizar cache o no</span>			</li>
 					<li>
 				<span class="var-type"></span>
-				<span class="var-name">$cache</span>			</li>
+				<span class="var-name">$sqlcmd</span>			</li>
 				</ul>
 		
 			
@@ -1112,23 +1129,30 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">readRecord</span> (line <span class="line-number">338</span>)
+		<span class="method-title">readRecord</span> (line <span class="line-number">344</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Lee un registro de la tabla</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> con el registro (devuelto por *_fetch_row)</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			readRecord
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">0</span>])
+					([<span class="var-type">mixed</span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">0</span>], [<span class="var-type">bool</span>&nbsp;<span class="var-name">$cache</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$id</span>			</li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$id</span><span class="var-description">: indica el id del registro, si no se especifica, agarra el último</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$cache</span><span class="var-description">: indica si utilizar cache o no</span>			</li>
 				</ul>
 		
 			
@@ -1144,23 +1168,27 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">readRecordSQL</span> (line <span class="line-number">344</span>)
+		<span class="method-title">readRecordSQL</span> (line <span class="line-number">355</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Lee un registro de la tabla usando un comando SQL</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> con el registro (devuelto por *_fetch_row)</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			readRecordSQL
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$sqlcmd</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$sqlcmd</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$sqlcmd</span><span class="var-description">: comando SQL a usar</span>			</li>
 				</ul>
 		
 			
@@ -1313,7 +1341,7 @@
 
 
 	<p class="notes" id="credit">
-		Documentation generated on Sun, 19 Sep 2010 03:16:02 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Sun, 19 Sep 2010 07:46:51 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>

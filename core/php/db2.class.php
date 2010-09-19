@@ -59,8 +59,8 @@ class Data {
 
   /**
    *  hace la consulta utilizando almdata
-   *  @name $sqlcmd comando SQL
-   *  @return recuerso tipo query
+   *  @param string $sqlcmd comando SQL
+   *  @return resource recuerso tipo query
    */
   function query($sqlcmd) {
     require('db.query.php');
@@ -337,8 +337,9 @@ class Table extends Data {
 
   /**
   * Lee un registro de la tabla
-  * @name $id indica el id del registro, si no se especifica, agarra el último
-  * @return contiene array con el registro (devuelto por *_fetch_row)
+  * @param mixed $id indica el id del registro, si no se especifica, agarra el último
+  * @param bool $cache indica si utilizar cache o no
+  * @return array con el registro (devuelto por *_fetch_row)
   */
   function readRecord($id = 0, $cache = null) {
     require('db.readrecord.php');
@@ -346,6 +347,11 @@ class Table extends Data {
       return $row;
   }
 
+  /**
+  * Lee un registro de la tabla usando un comando SQL
+  * @param string $sqlcmd comando SQL a usar
+  * @return array con el registro (devuelto por *_fetch_row)
+  */
   function readRecordSQL($sqlcmd) {
     $this->execSql($sqlcmd);
     $row = almdata::fetchRow($this->data);
@@ -353,7 +359,11 @@ class Table extends Data {
     return $row;
   }
 
-  //remplaza a readList
+  /**
+  * Lee un conjunto de registros usando comando sql
+  * @param bool $cache indica si utilizar cache o no
+  * @return array con array de registros
+  */
   function readDataSQL($sqlcmd, $cache = null) {
     /* checks cache options */
     if (is_null($cache))
@@ -374,20 +384,41 @@ class Table extends Data {
     return $prev;
   }
 
+  /**
+  * Lee un conjunto de registros de la tabla actual
+  * @param bool $cache indica si utilizar cache o no
+  * @return array con array de registros
+  */
   function readData($cache = null) {
     require('db.readdata.php');
     return $this->getArray($cache);
   }
 
+  /**
+  * Lee un conjunto de registros de la tabla actual limitados por un filtro (WHERE)
+  * @param string $filter filtro WHERE para query
+  * @param bool $cache indica si utilizar cache o no
+  * @return array con array de registros
+  */
   function readDataFilter($filter, $cache = null) {
     require('db.readdatafilter.php');
     return $this->getArray($cache);
   }
 
+  /**
+  * Exporta (o hace un dump) de datos de la tabla actual
+  * @param string $format formato a usar para exportar
+  * @param string $session
+  */
   function dumpData($format = 'php', $session = null) {
     require('db.dumpdata.php');
   }
   
+  /**
+  * "escapea" una cadena para poder usarla de manera segura en comando sql
+  * @param string $var cadena a "escapear"
+  * @return string escaped string, lista para usar en sql
+  */
   function escape($var) {
   	  return almdata::escape($var);
   }

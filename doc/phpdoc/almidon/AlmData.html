@@ -46,17 +46,17 @@
 			<div class="method-summary">
 																																																																																																												
 												<div class="method-definition">
-											<span class="method-result">cadena</span>
+											<span class="method-result">string</span>
 										<a href="#basicError" title="details" class="method-name">basicError</a>
 											([<span class="var-type"></span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>], <span class="var-type"></span>&nbsp;<span class="var-name">$dsn</span>)
 									</div>
 																<div class="method-definition">
-											<span class="method-result">CND</span>
+											<span class="method-result">object CND</span>
 										<a href="#cdn_connect" title="details" class="method-name">cdn_connect</a>
 										()
 									</div>
 																<div class="method-definition">
-											<span class="method-result">CND</span>
+											<span class="method-result">void</span>
 										<a href="#cdn_upload" title="details" class="method-name">cdn_upload</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$cloudfiles</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$filename</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$tmp_file</span>)
 									</div>
@@ -66,22 +66,22 @@
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$dsn</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">false</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">true</span>
+											<span class="method-result">bool</span>
 										<a href="#disconnect" title="details" class="method-name">disconnect</a>
 										()
 									</div>
 																<div class="method-definition">
-											<span class="method-result">escaped</span>
+											<span class="method-result">string</span>
 										<a href="#escape" title="details" class="method-name">escape</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$var</span>)
 									</div>
 																<div class="method-definition">
-											<span class="method-result">un</span>
+											<span class="method-result">array</span>
 										<a href="#fetchRow" title="details" class="method-name">fetchRow</a>
 											([<span class="var-type"></span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$assoc</span> = <span class="var-default">true</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">true</span>
+											<span class="method-result">bool</span>
 										<a href="#isError" title="details" class="method-name">isError</a>
 											([<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$calling</span> = <span class="var-default">null</span>])
 									</div>
@@ -96,12 +96,12 @@
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$error_msg</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$raise</span> = <span class="var-default">true</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$die</span> = <span class="var-default">false</span>])
 									</div>
 																<div class="method-definition">
-											<span class="method-result">recurso</span>
+											<span class="method-result">resource</span>
 										<a href="#query" title="details" class="method-name">query</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$sqlcmd</span>)
 									</div>
 																<div class="method-definition">
-											<span class="method-result">numero</span>
+											<span class="method-result">int</span>
 										<a href="#rows" title="details" class="method-name">rows</a>
 											([<span class="var-type"></span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>])
 									</div>
@@ -130,7 +130,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">basicError</span> (line <span class="line-number">147</span>)
+		<span class="method-title">basicError</span> (line <span class="line-number">146</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -140,7 +140,7 @@
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">cadena</span>
+		<span class="method-result">string</span>
 		<span class="method-name">
 			basicError
 		</span>
@@ -172,7 +172,7 @@
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">CND</span>
+		<span class="method-result">object CND</span>
 		<span class="method-name">
 			cdn_connect
 		</span>
@@ -186,17 +186,14 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">cdn_upload</span> (line <span class="line-number">137</span>)
+		<span class="method-title">cdn_upload</span> (line <span class="line-number">136</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">hace upload de un archivo al CDN (cloudfiles)</p>
-	<ul class="tags">
-				<li><span class="field">return:</span> repo</li>
-			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">CND</span>
+		<span class="method-result">void</span>
 		<span class="method-name">
 			cdn_upload
 		</span>
@@ -253,17 +250,17 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">disconnect</span> (line <span class="line-number">194</span>)
+		<span class="method-title">disconnect</span> (line <span class="line-number">193</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Se desconecta de la db</p>
 	<ul class="tags">
-				<li><span class="field">return:</span> si exito, false si falla</li>
+				<li><span class="field">return:</span> true si exito, false si falla</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">true</span>
+		<span class="method-result">bool</span>
 		<span class="method-name">
 			disconnect
 		</span>
@@ -277,17 +274,17 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">escape</span> (line <span class="line-number">215</span>)
+		<span class="method-title">escape</span> (line <span class="line-number">214</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">escape string by native db's function</p>
 	<ul class="tags">
-				<li><span class="field">return:</span> string</li>
+				<li><span class="field">return:</span> escaped</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">escaped</span>
+		<span class="method-result">string</span>
 		<span class="method-name">
 			escape
 		</span>
@@ -306,17 +303,17 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">fetchRow</span> (line <span class="line-number">234</span>)
+		<span class="method-title">fetchRow</span> (line <span class="line-number">233</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">obtiene un registro segun una consulta</p>
 	<ul class="tags">
-				<li><span class="field">return:</span> registro</li>
+				<li><span class="field">return:</span> con un registro</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">un</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			fetchRow
 		</span>
@@ -338,17 +335,17 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">isError</span> (line <span class="line-number">171</span>)
+		<span class="method-title">isError</span> (line <span class="line-number">170</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Reporta si ha habido un error en la db</p>
 	<ul class="tags">
-				<li><span class="field">return:</span> si ya esta registrado el error, o lo registra y devuelve true si last_error</li>
+				<li><span class="field">return:</span> true si ya esta registrado el error, o lo registra y devuelve true si last_error</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">true</span>
+		<span class="method-result">bool</span>
 		<span class="method-name">
 			isError
 		</span>
@@ -428,7 +425,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<span class="method-title">query</span> (line <span class="line-number">225</span>)
+		<span class="method-title">query</span> (line <span class="line-number">224</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -438,7 +435,7 @@
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">recurso</span>
+		<span class="method-result">resource</span>
 		<span class="method-name">
 			query
 		</span>
@@ -457,17 +454,17 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<span class="method-title">rows</span> (line <span class="line-number">203</span>)
+		<span class="method-title">rows</span> (line <span class="line-number">202</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Obtiene el numero de registros afectados por el ultimo comando sql</p>
 	<ul class="tags">
-				<li><span class="field">return:</span> de registros afectados</li>
+				<li><span class="field">return:</span> numero de registros afectados</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">numero</span>
+		<span class="method-result">int</span>
 		<span class="method-name">
 			rows
 		</span>
@@ -514,7 +511,7 @@
 
 
 	<p class="notes" id="credit">
-		Documentation generated on Sun, 19 Sep 2010 03:16:02 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Sun, 19 Sep 2010 07:46:51 -0600 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
