@@ -17,3 +17,6 @@ $ git push origin master
 Luego basta con:
 
 $ git push
+
+Para actualizar copia local
+git pull origin master
