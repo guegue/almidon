@@ -1,0 +1,8 @@
+cd /var/www/x/
+rm -fr almidon
+git clone git@git.almidon.org:almidon
+cd almidon
+vi doc/README.git
+git add doc/README.git
+git commit -m "added README.git"
+git push origin master
