@@ -18,5 +18,6 @@ Luego basta con:
 
 $ git push
 
-Para actualizar copia local
-git pull origin master
+Para actualizar copia local:
+
+$ git pull origin master
