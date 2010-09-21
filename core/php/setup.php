@@ -84,7 +84,7 @@ if (!empty($action)) {
   }
   switch ($action) {
   case 'alm_tables':
-    $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/almidon.sql');
+    $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/alm.tables.sql');
 
     # Remove OWNER TO, since only postgres can do so
     $alm_sqlcmd = preg_replace('/^(.*)OWNER TO(.*);$/m','',$alm_sqlcmd);
