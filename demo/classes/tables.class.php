@@ -45,6 +45,7 @@ class galeriaTable extends Table {
     $this->order ='galeria';
     $this->addColumn('idgaleria','serial',0,1,0,'ID');
     $this->addColumn('galeria','varchar',500,0,0,'Titulo');
+    $this->addColumn('numeroip','automatic',0,0,0,'Numero IP',array('automatic'=>'ip'));
     $this->addColumn('fecha','date',0,0,0,'Fecha');
   }
 }
@@ -80,12 +81,20 @@ class noticiaTable extends Table {
     $this->key = 'idnoticia';
     $this->title ='Noticias';
     $this->order ='fecha';
-    $this->addColumn('fotocdn','image',0,0,0,'Foto grande',array('help'=>'Foto a ser puesta en repositorio CDN','cdn'=>true));
-    $this->addColumn('archivo','file',0,0,0,'Archivo CDN',array('help'=>'Archivo a guardar en CDN','cdn'=>true));
     $this->addColumn('idnoticia','serial',0,1,0,'ID');
-    $this->addColumn('noticia','varchar',500,0,0,'Titulo',array('search'=>true));
+    $this->addColumn('noticia','varchar',500,0,0,'Titulo');
     $this->addColumn('fecha','datenull',0,0,0,'Fecha');
-    $this->addColumn('foto','image',0,0,0,'Foto');
     $this->addColumn('texto','text',0,0,0,'Texto');
+    $this->addColumn('foto','image',0,0,0,'Foto');
+  }
+}
+class countryTable extends Table {
+  function countryTable() {
+    $this->Table('country');
+    $this->key = 'idcountry';
+    $this->title ='Country';
+    $this->order ='country';
+    $this->addColumn('idcountry','char',2,1,0,'Pais');
+    $this->addColumn('country','varchar',200,0,0,'Pais',array('search'=>true));
   }
 }

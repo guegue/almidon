@@ -1,17 +1,28 @@
 <?php
     $n = 0;
-    $values ="";
+    $values = '';
     foreach($this->definition as $column) {
-      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
+      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'serial')
         $values .= ",";
       switch($column['type']) {
-        case 'auto':
       	case 'external':
-        case 'serial':
+      	case 'auto':
+      	case 'serial':
+        #FIXME: usamos order???
         case 'order':
           $n--;
           break;
+        case 'automatic':
+          switch($column['extra']['automatic']) {
+            case 'ip':
+            case 'now':
+            default:
+              $values .= "'" . $this->request[$column['name']] . "'";
+              break;
+          }
+          break;
         case 'int':
+        case 'integer':
           if (!isset($this->request[$column['name']]) || $this->request[$column['name']] == -1)
             $this->request[$column['name']] = 'NULL';
         case 'smallint':

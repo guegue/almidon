@@ -284,64 +284,22 @@ class Table extends Data {
       echo "tables.class.php actualizado!<br/>\n";
   }
 
+  /**
+  * Refresca colección de campos al agregar una nueva columna (campo) con addColumn
+  */
   function refreshFields() {
-    global $global_dd;
-    $n = 0;
-    $ns = 0;
-    $this->fields_noserial = '';
-    $this->all_fields = '';
-    $this->fields = '';
-    $this->table_fields = '';
-    foreach($this->definition as $column) {
-      if ($n > 0) {
-        $this->fields .= ",";
-        $this->table_fields .= ",";
-        $this->all_fields .= ",";
-      }
-      if ($this->schema != 'public')
-        $this->all_fields .= $this->schema . ".";
-      if ($ns > 0 && $column['type'] != 'external' && ($column['type'] != 'auto' || !empty($column['extra']['default'])) && $column['type'] != 'order' && $column['type'] != 'serial')
-        $this->fields_noserial .= ",";
-      if ($column['type'] == 'serial' || $column['type'] == 'external' || ($column['type'] == 'auto' && empty($column['extra']['default'])) || $column['type'] == 'order')
-        $ns--;
-      else 
-        $this->fields_noserial .= $column['name'];
-      $this->fields .= $column['name'];
-      $this->table_fields .= $this->name . '.' . $column['name'];
-      if ($column['type'] == 'external')
-        $this->all_fields .= $column['name'];
-      else
-        $this->all_fields .= $this->name . "." . $column['name'];
-      if ($column['references'] && isset($global_dd[$column['references']]['descriptor'])) {
-        if (!isset($references[$column['references']]))
-          $references[$column['references']] = 0;
-        if ($column['references'] == $this->name && !$references[$column['references']])
-          $references[$column['references']]+=2;
-        else
-          $references[$column['references']]++;
-        if ($references[$column['references']] == 1) {
-          if (!empty($column['extra']['display'])) {
-            $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
-            # FIXME: Is 'alias' useless?
-            #if(empty($column['extra']['alias']))  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
-            #else  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['extra']['alias'];
-          } else {
-            # FIXME? Y si existe ya un campo llamado como la tabla foranea en la tabla actual?
-            $this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'] . " AS " . $column['references'];
-            #$this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'];
-          }
-        } else {
-          # FIXME: Second reference to same table does not enjoy display/alias (not yet)
-          $tmptable = $column['references'] . $references[$column['references']];
-          $tmpcolumn =  $global_dd[$column['references']]['descriptor'];
-          $this->all_fields .= "," . $tmptable . "." . $tmpcolumn . " AS " . $tmptable;
-        }
-      }
-      $n++;
-      $ns++;
-    }
+    require('db.refreshfields.php');
   }
 
+  /**
+  * Agregar una nueva columna (campo)
+   * @param string $name nombre del campo
+   * @param string $type tipo de dato: integer, varchar, image, etc
+   * @param integer $size tamaño del campo
+   * @param string $references tabla foranea (si es FK)
+   * @param string $label etiqueta descriptiva
+   * @param array $extra propiedades adicionales del campo
+  */
   function addColumn($name, $type, $size = 100, $pk = 0, $references = 0, $label = '', $extra = '') {
     require('db.addcolumn.php');
   }
@@ -510,8 +468,8 @@ class TableDoubleKey extends Table {
     return $row;
   }
 
-  function readEnv() {
-    require('db.readenv2.php');
+  function readEnv($friendly = false) {
+    require('db.readenv.php');
   }
 }
 

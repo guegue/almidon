@@ -3,7 +3,17 @@ function genColumnSQL($column, $dbtype, $key = false) {
   $sql = '';
   $type = $column['type'];
   if ($type == 'external') return;
-  if ($type == 'file' || $type == 'image' || $type == 'autoimage') {
+  if ($type == 'automatic') {
+    switch($column['extra']['automatic']) {
+    case 'now':
+      $type = 'timestamp';
+      $size = null;
+      break;
+    default:
+      $type = 'varchar';
+      $size = '32';
+    }
+  } elseif ($type == 'file' || $type == 'image' || $type == 'autoimage') {
     $type = 'varchar';
     $size = '500';
   } elseif ($type == 'html' || $type == 'xhtml') {

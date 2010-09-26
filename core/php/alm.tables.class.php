@@ -69,7 +69,7 @@ class alm_columnTable extends TableDoubleKey {
     $this->order = 'idalm_table,rank';
     $this->addColumn('idalm_table','varchar',48,0,'alm_table','Table');
     $this->addColumn('idalm_column','varchar',50,1,0,'Id');
-    $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('auth_user'=>'Auth User','bool'=>'Boolean','char'=>'Char','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'integer','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
+    $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('auto'=>'DB Automatic','automatic'=>'PHP Automatic','bool'=>'Boolean','char'=>'Char','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'Integer','ip'=>'IP address','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
     $this->addColumn('size','int',0,0,0,'Size');
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('pk','bool',0,0,0,'Primary Key?');
@@ -81,7 +81,8 @@ class alm_columnTable extends TableDoubleKey {
     $this->addColumn('search','bool',0,0,0,'Searchable',array('help'=>'Include in quick search'));
     $this->addColumn('cdn','bool',0,0,0,'CDN',array('help'=>'Content Delivery Network'));
     $this->addColumn('display','varchar',200,0,0,'Display as');
-    $this->addColumn('list_values','varchar',500,0,0,'List values',array('help'=>'Enter array'));
+    $this->addColumn('list_values','varchar',500,0,0,'List values',array('help'=>'Enter list of values to be used as combo box: key1=>\'val1\', key2=>\'val2\''));
+    $this->addColumn('automatic','varchar',16,0,0,'Automatic',array('list_values'=>array('auth_user'=>'Auth User','ip'=>'IP address','now'=>'Now','srandom'=>'Random string','nrandom'=>'Randome number')));
     #$this->addColumn('sizes','varchar',100,0,0,'Image sizes');
     #$this->addColumn('range','varchar',100,0,0,'Image sizes');
   }
