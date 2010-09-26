@@ -45,10 +45,7 @@ switch ($action) {
     if ($_SESSION['credentials'][$object] == 'full' || $_SESSION['credentials'][$object] == 'edit' || $_SESSION['idalm_user'] == 'admin') {
       $maxcols = ($_REQUEST['maxcols']) ? $_REQUEST['maxcols'] : MAXCOLS;
       # Por que nofiles? Tambien debe poder cambiar, nofiles es la tercera opcion de updateRecord
-      if (isset($$object->key2))
-        $$object->updateRecord(0, 0, $maxcols, 0);
-      else
-        $$object->updateRecord(0, $maxcols, 0);
+      $$object->updateRecord(null, $maxcols, 0);
       if($object === 'alm_column' || $object === 'alm_table') $$object->syncFromAlm();
     } else {
       die("SEGURIDAD: Credenciales no tienen sentido!");

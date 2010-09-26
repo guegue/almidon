@@ -67,7 +67,7 @@ class alm_columnTable extends Table {
     $this->title = ALM_FIELDS;
     $this->maxrows = 20;
     $this->order = 'idalm_table,rank';
-    $this->addColumn('idalm_table','varchar',48,0,'alm_table','Table');
+    $this->addColumn('idalm_table','varchar',48,1,'alm_table','Table');
     $this->addColumn('idalm_column','varchar',50,1,0,'Id');
     $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('auto'=>'DB Automatic','automatic'=>'PHP Automatic','bool'=>'Boolean','char'=>'Char','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'Integer','ip'=>'IP address','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
     $this->addColumn('size','int',0,0,0,'Size');
