@@ -25,7 +25,15 @@ require_once($almidondir . '/php/lang.php');
 /**
  * Good old Smarty: see http://www.smarty.net/
 */
-require_once('Smarty/Smarty.class.php');
+
+#FIXME: Buscar Smarty|smarty en el include_path, pues file_exists _no_ lo hace.
+if (file_exists('/usr/share/php/smarty/Smarty.class.php'))
+  # En Ubuntu/Debian
+  require_once('smarty/Smarty.class.php');
+else
+  # En Fedora
+  require_once('/usr/share/php/Smarty/Smarty.class.php');
+
 # Configura smarty (puede re-configurarse localmente)
 $smarty = new Smarty;
 $smarty->template_dir = ROOTDIR . '/templates/';
