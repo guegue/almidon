@@ -22,9 +22,6 @@ function genColumnSQL($column, $dbtype, $key = false) {
   } elseif ($type == 'datetime') {
     $type = 'timestamp';
     $size = null;
-  } elseif ($type == 'auth_user') {
-    $type = 'varchar';
-    $size = '32';
   } elseif ($type == 'datenull') {
     $type = 'date';
     $size = null;

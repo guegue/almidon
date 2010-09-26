@@ -40,6 +40,8 @@
         if (!empty($datum['idalm_role'])) $extra[] = "'role'=>'".$datum['idalm_role']."'";
         if (!empty($datum['label_bool'])) $extra[] = "'label_bool'=>'".$datum['label_bool']."'";
         if (!empty($datum['automatic'])) $extra[] = "'automatic'=>'".$datum['automatic']."'";
+        if (!empty($datum['range'])) $extra[] = "'range'=>'".$datum['range']."'";
+        if (!empty($datum['sizes'])) $extra[] = "'sizes'=>'".$datum['sizes']."'";
         # FIXME: Mejor usar 1:Hola;2:Chao para list_values
         if (!empty($datum['list_values'])) $extra[] = "'list_values'=>array(".$datum['list_values'].")";
         if (!empty($datum['help'])) $extra[] = "'help'=>'".$datum['help']."'";

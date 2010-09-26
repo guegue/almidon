@@ -43,10 +43,10 @@ class galeriaTable extends Table {
     $this->key = 'idgaleria';
     $this->title ='Galerias';
     $this->order ='galeria';
+    $this->addColumn('fecha','date',0,0,0,'Fecha',array('range'=>'-5:+10'));
     $this->addColumn('idgaleria','serial',0,1,0,'ID');
     $this->addColumn('galeria','varchar',500,0,0,'Titulo');
-    $this->addColumn('numeroip','automatic',0,0,0,'Numero IP',array('automatic'=>'ip'));
-    $this->addColumn('fecha','date',0,0,0,'Fecha');
+    $this->addColumn('numeroip','automatic',0,0,0,'Numero IP',array('automatic'=>'srandom'));
   }
 }
 class fotoTable extends Table {

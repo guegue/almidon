@@ -51,8 +51,14 @@
             $this->request[$column['name']] = $_SERVER['REMOTE_ADDR'];
             break;
           case 'now':
+            $this->request[$column['name']] = time();
+            break;
           case 'srandom':
+            $this->request[$column['name']] = md5(uniqid(rand()));
+            break;
           case 'nrandom':
+            $this->request[$column['name']] = rand();
+            break;
           default:
           }
         }

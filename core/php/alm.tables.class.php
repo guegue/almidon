@@ -83,7 +83,7 @@ class alm_columnTable extends TableDoubleKey {
     $this->addColumn('display','varchar',200,0,0,'Display as');
     $this->addColumn('list_values','varchar',500,0,0,'List values',array('help'=>'Enter list of values to be used as combo box: key1=>\'val1\', key2=>\'val2\''));
     $this->addColumn('automatic','varchar',16,0,0,'Automatic',array('list_values'=>array('auth_user'=>'Auth User','ip'=>'IP address','now'=>'Now','srandom'=>'Random string','nrandom'=>'Randome number')));
-    #$this->addColumn('sizes','varchar',100,0,0,'Image sizes');
-    #$this->addColumn('range','varchar',100,0,0,'Image sizes');
+    $this->addColumn('sizes','varchar',100,0,0,'Image sizes',array('help'=>'Enter list of thumbnail sizes: 000x000,111x111,222,333'));
+    $this->addColumn('range','varchar',100,0,0,'Range',array('help'=>'Enter range separated by : e.g. -20:+20'));
   }
 }

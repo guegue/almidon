@@ -214,23 +214,29 @@ function smarty_function_dataform($params, &$smarty)
           }
           break;
         case 'datenull':
-          if (preg_match("/:/", $dd[$_key]['extra']))
-            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']);
+          if (preg_match("/:/", $dd[$_key]['extra']['range']))
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']['range']);
           if (!isset($_val) || empty($_val)) $_val = '--';;
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
           break;
         case 'date':
-          if (preg_match("/:/", $dd[$_key]['extra']))
-            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']);
+          if (preg_match("/:/", $dd[$_key]['extra']['range']))
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']['range']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year), $smarty);
           break;
         case 'time':
           $_tmp = smarty_function_html_select_time(array('prefix'=>$_key . '_', 'time'=>$_val, 'display_seconds'=>false), $smarty);
           break;
         case 'datetime':
-          if (preg_match("/:/", $dd[$_key]['extra']))
-            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']);
+          if (preg_match("/:/", $dd[$_key]['extra']['range']))
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']['range']);
           $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year), $smarty);
+          $_tmp .= smarty_function_html_select_time(array('prefix'=>$_key . '_', 'time'=>$_val, 'display_seconds'=>false), $smarty);
+          break;
+        case 'datetimenull':
+          if (preg_match("/:/", $dd[$_key]['extra']['range']))
+            list($_start_year, $_end_year)  = preg_split('/:/',$dd[$_key]['extra']['range']);
+          $_tmp = smarty_function_html_select_date(array('prefix'=>$_key . '_', 'time'=>$_val, 'start_year'=>$_start_year, 'end_year'=>$_end_year, 'day_empty'=>'--', 'month_empty'=>'--', 'year_empty'=>'--'), $smarty);
           $_tmp .= smarty_function_html_select_time(array('prefix'=>$_key . '_', 'time'=>$_val, 'display_seconds'=>false), $smarty);
           break;
         case 'password':
