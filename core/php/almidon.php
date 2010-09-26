@@ -31,8 +31,8 @@ if (file_exists('/usr/share/php/smarty/Smarty.class.php'))
   # En Ubuntu/Debian
   require_once('smarty/Smarty.class.php');
 else
-  # En Fedora
-  require_once('/usr/share/php/Smarty/Smarty.class.php');
+  # En Fedora/RedHat
+  require_once('Smarty/Smarty.class.php');
 
 # Configura smarty (puede re-configurarse localmente)
 $smarty = new Smarty;
