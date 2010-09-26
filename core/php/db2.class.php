@@ -208,6 +208,9 @@ class Table extends Data {
   var $table_fields; // comma-separated list: person.name, person.age, person.sex
   var $fields_noserial;
   var $key;
+  var $key1;
+  var $key2;
+  var $keys;
   var $order;
   var $join;
   var $all_fields;
@@ -215,13 +218,9 @@ class Table extends Data {
   var $id;
   var $action;
 
-  function Table($name, $schema = 'public') {
+  function Table($name) {
     $this->Data();
     $this->name = $name;
-    # FIXME: schemas solo los soporta postgresql? estamos usando esto?
-    $this->schema = $schema;
-    if ($schema && $schema != 'public')
-      $this->query("SET search_path = $schema, public, pg_catalog");
   }
 
   /**
@@ -257,6 +256,7 @@ class Table extends Data {
   * @return array lista de archivos
   */
   function getFiles() {
+    $remove_files = null;
     foreach($this->dd as $key=>$val) {
       $type = $this->dd[$key]['type'];
       if ($type == 'image' || $type == 'file')
@@ -327,11 +327,11 @@ class Table extends Data {
     return $values;
   }
   
-  function updateRecord($id = 0, $maxcols = 0, $nofiles = 0) {
+  function updateRecord($id = null, $maxcols = 0, $nofiles = 0) {
     require('db.updaterecord.php');
   }
 
-  function deleteRecord($id = 0) {
+  function deleteRecord($id = null) {
     require('db.deleterecord.php');
   }
 
@@ -363,7 +363,7 @@ class Table extends Data {
   * @param bool $cache indica si utilizar cache o no
   * @return array con el registro (devuelto por *_fetch_row)
   */
-  function readRecord($id = 0, $cache = null) {
+  function readRecord($id = null, $cache = null) {
     require('db.readrecord.php');
     if (isset($row))
       return $row;
@@ -446,30 +446,3 @@ class Table extends Data {
   }
 
 }
-
-/**
- * @package almidon
-*/
-
-class TableDoubleKey extends Table {
-  var $key1;
-  var $key2;
-
-  function deleteRecord($id1 = 0, $id2 = 0) {
-    require('db.deleterecord2.php');
-  }
-
-  function updateRecord($id1 = 0, $id2 = 0, $maxcols = 0, $nofiles = 0) {
-    require('db.updaterecord2.php');
-  }
-
-  function readRecord($id1 = 0, $id2 = 0) {
-    require('db.readrecord2.php');
-    return $row;
-  }
-
-  function readEnv($friendly = false) {
-    require('db.readenv.php');
-  }
-}
-

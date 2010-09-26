@@ -1,12 +1,20 @@
 <?php
-    if (!$id && isset($this->request[$this->key])) $id = $this->request[$this->key];
-    # Nos devuelve el ultimo registro de la tabla, si es qe no se proporciona un id
-    if (!$id) $id = $this->getVar("SELECT MAX(" . $this->key . ") FROM " . $this->name);
-    if ($this->join) {
-      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin() . " WHERE $this->name.$this->key = '$id'";
-    } else {
-      $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $this->name.$this->key = '$id'";
+
+    # No matter how many keys...
+    if (isset($id) && !is_array($id)) $id = array($id); //old-fashioned way readRecord(int);
+    if (!isset($id)) foreach($this->keys as $key=>$val) $id[] = null;
+    foreach($id as $key=>$val) {
+      if(empty($val)) $val = $this->request[$this->keys[$key]];
+      # Nos devuelve el ultimo registro de la tabla, si es qe no se proporciona un id
+      #if (empty($val)) $val = array($this->getVar("SELECT MAX(" . $this->key . ") FROM " . $this->name));
+      $keyfilter[] = $this->name . "." . $this->keys[$key] . " = '$val'";
     }
+    $filter = join(' AND ', $keyfilter);
+
+    if ($this->join)
+      $sqlcmd = "SELECT $this->all_fields FROM $this->name " . $this->getJoin() . " WHERE $filter";
+    else
+      $sqlcmd = "SELECT $this->fields FROM $this->name WHERE $filter";
 
     /* checks cache options */
     if (is_null($cache))

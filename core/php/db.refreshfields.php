@@ -12,8 +12,6 @@
         $this->table_fields .= ",";
         $this->all_fields .= ",";
       }
-      if ($this->schema != 'public')
-        $this->all_fields .= $this->schema . ".";
       if ($ns > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'serial')
         $this->fields_noserial .= ",";
       if ($column['type'] == 'external' || $column['type'] == 'auto' || $column['type'] == 'serial')

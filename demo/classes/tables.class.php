@@ -46,7 +46,6 @@ class galeriaTable extends Table {
     $this->addColumn('fecha','date',0,0,0,'Fecha',array('range'=>'-5:+10'));
     $this->addColumn('idgaleria','serial',0,1,0,'ID');
     $this->addColumn('galeria','varchar',500,0,0,'Titulo');
-    $this->addColumn('numeroip','automatic',0,0,0,'Numero IP',array('automatic'=>'srandom'));
   }
 }
 class fotoTable extends Table {
@@ -83,9 +82,9 @@ class noticiaTable extends Table {
     $this->order ='fecha';
     $this->addColumn('idnoticia','serial',0,1,0,'ID');
     $this->addColumn('noticia','varchar',500,0,0,'Titulo');
+    $this->addColumn('foto','image',0,0,0,'Foto');
     $this->addColumn('fecha','datenull',0,0,0,'Fecha');
     $this->addColumn('texto','text',0,0,0,'Texto');
-    $this->addColumn('foto','image',0,0,0,'Foto');
   }
 }
 class countryTable extends Table {

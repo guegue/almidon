@@ -1,8 +1,17 @@
 <?php
-    if (!$id) $id = $this->request[$this->key];
+
+    # No matter how many keys...
+    if (isset($id) && !is_array($id)) $id = array($id); //old-fashioned way readRecord(int);
+    if (!isset($id)) foreach($this->keys as $key=>$val) $id[] = null;
+    foreach($id as $key=>$val) {
+      if(empty($val)) $val = $this->request[$this->keys[$key]];
+      $keyfilter[] = $this->keys[$key] . " = '$val'";
+    }
+    $filter = join(' AND ', $keyfilter);
+
     # Borra imagenes o archivos relacionados a este registro
     $getfiles = $this->getFiles();
-    if (!empty($getfiles)); {
+    if (!empty($getfiles)) {
       $tmp = $this->readRecord($id);
       foreach($getfiles as $val) {
         if(!empty($tmp[$val])) {
@@ -16,6 +25,7 @@
         }
       }
     }
+
     # Borra registro en base de datos
-    $sqlcmd = "DELETE FROM $this->name WHERE $this->key = '$id'";
+    $sqlcmd = "DELETE FROM $this->name WHERE $filter";
     $result = $this->query($sqlcmd);

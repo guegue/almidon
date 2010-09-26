@@ -59,7 +59,7 @@ class alm_tableTable extends Table {
   }
 }
 
-class alm_columnTable extends TableDoubleKey {
+class alm_columnTable extends Table {
   function alm_columnTable() {
     $this->Table('alm_column');
     $this->key1 = 'idalm_column';
