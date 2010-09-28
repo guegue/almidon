@@ -1,5 +1,5 @@
 <?php
-function genColumnSQL($column, $dbtype, $key = false) {
+function genColumnSQL($column, $dbtype) {
   $sql = '';
   $type = $column['type'];
   if ($type == 'external') return;
@@ -37,7 +37,6 @@ function genColumnSQL($column, $dbtype, $key = false) {
   $size = preg_replace("/\./", ",", $size);
   $sql .= "  ".$column['name']." ".$type;
   if ($size) $sql .= " (".$size.")";
-  if ($key) $sql .= " PRIMARY KEY NOT NULL";
   if ($column['references']) $sql .= " REFERENCES ".$column['references'];
   return $sql;
 }
@@ -53,12 +52,10 @@ function genSQL($object) {
     unset($size);
     if (isset($type) && $type == 'external') next($data->definition);
     if ($i) $sql .= " ,\n";
-    $sql .= genColumnSQL($column, $dbtype, $column['name'] == $data->key );
+    $sql .= genColumnSQL($column, $dbtype);
     ++$i;
   }
-  if (isset($data->key2)) {
-    $sql .= ", PRIMARY KEY ( $data->key1 , $data->key2 ) ";
-  }
+  $sql .= ', PRIMARY KEY ( '. join(',',$data->keys) .' ) ';
   $sql .= "\n);\n\n";
   return($sql);
 }

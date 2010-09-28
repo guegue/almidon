@@ -202,27 +202,22 @@ $smarty->assign('js_inc',$js_inc);
 
 # To know who the first one and the last one is, this is useful when use order type of field
 # FIXME: Are we even using this?
+/*
   $order_is_valid = preg_split('/ /',trim($$object->order));
   if(count($order_is_valid) > 1) $order_is_valid = false;
   else $order_is_valid = true;
-  if (isset($$object->order) && $order_is_valid && !isset($$object->key2)) {  // Temporalmente desabilitando para TableDoubleKey
-    $_SESSION[$object . 'first'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " LIMIT 1");
-    $_SESSION[$object . 'last'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " DESC LIMIT 1");
-  }
+  $_SESSION[$object . 'first'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " LIMIT 1");
+  $_SESSION[$object . 'last'] = $$object->getVar("SELECT " . $$object->key . " FROM " . $$object->name . " ORDER BY " . $$object->order . " DESC LIMIT 1");
+*/
 # -- end order
 
 $smarty->assign('rows', $$object->readData());
-$count_key = $$object->key ? $$object->key : $$object->key1;
 $smarty->assign('num_rows', $$object->getVar("SELECT COUNT(*) FROM ".$$object->name.(!empty($$object->filter)?" WHERE ".$$object->filter:"")));
 $smarty->assign('dd', $$object->dd);
-$smarty->assign('key', $$object->key);
+$smarty->assign('keys', $$object->keys);
 if (isset($$object->search))
   $smarty->assign('search', $$object->search);
 $smarty->assign('add', isset($$object->add)?$$object->add:true);
-if (isset($$object->key1))
-  $smarty->assign('key1', $$object->key1);
-if (isset($$object->key2))
-  $smarty->assign('key2', $$object->key2);
 $smarty->assign('title', $$object->title);
 if (isset($$object->maxrows))
   $smarty->assign('maxrows', $$object->maxrows);

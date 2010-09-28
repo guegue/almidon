@@ -125,10 +125,7 @@
         }
       }
     }
-    if (isset($this->key1) && isset($this->key2) && isset($_REQUEST['old_' . $this->key1]) && isset($_REQUEST['old_' . $this->key2])) {
-      $this->request['old_' . $this->key1] = $_REQUEST['old_' . $this->key1];
-      $this->request['old_' . $this->key2] = $_REQUEST['old_' . $this->key2];
-    } elseif (isset($_REQUEST['old_' . $this->key])) {
-      $this->request['old_' . $this->key] = $_REQUEST['old_' . $this->key];
-    }
+    foreach($this->keys as $val)
+      if(isset($_REQUEST['alm_old_' . $val]))
+        $this->request['alm_old_'.$val] = $_REQUEST['alm_old_' . $val];
     $this->escaped = true;

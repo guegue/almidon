@@ -64,9 +64,9 @@ require_once($almidondir . '/php/alm.tables.class.php');
 $classes = get_declared_classes();
 global $global_dd;
 foreach($classes as $key) {
-  if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
+  if (stristr($key, 'table') && $key != 'table' && $key != 'Table') {
     $table_object = new $key;
-    $global_dd[$table_object->name]['key'] = $table_object->key;
+    $global_dd[$table_object->name]['keys'] = $table_object->keys;
     if(isset($table_object->descriptor)) {
       $global_dd[$table_object->name]['descriptor'] = $table_object->descriptor;
     } elseif (preg_match('/(^|,)'.$table_object->name.'(,|$)/', $table_object->fields)) {

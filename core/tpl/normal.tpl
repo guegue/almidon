@@ -11,16 +11,12 @@
 <tr valign="top">
 <td>
 {if $smarty.const.DB3 === true}
-  {datagrid2 rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:10 paginate=true cmd=$cmd|default:true name=$object have_child=$have_child num_rows=$num_rows search=$search}
+  {datagrid2 rows=$rows keys=$keys title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:10 paginate=true cmd=$cmd|default:true name=$object have_child=$have_child num_rows=$num_rows search=$search}
 {else}
   {if $rows}
-  {if $key1 and $key2}
-    {datagrid rows=$rows key1=$key1 key2=$key2 title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object num_rows=$num_rows search=$search}
+    {datagrid rows=$rows keys=$keys title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object num_rows=$num_rows search=$search}
   {else}
-    {datagrid rows=$rows key=$key title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object num_rows=$num_rows search=$search}
-  {/if}
-  {else}
-  {$smarty.const.ALM_NODATA}
+    {$smarty.const.ALM_NODATA}
   {/if}
 {/if}
 </td>
@@ -31,13 +27,9 @@
 <td>
 {if $smarty.session.idalm_user eq 'admin' || $credentials eq 'full' || ($credentials eq 'read' && $smarty.session.accion == 'leer') || $credentials eq 'edit'}
   {if $add===true || $row}{if $smarty.const.DB3 === true}
-    {dataform2 dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}
+    {dataform2 dd=$dd keys=$keys title=$title row=$row name="new" object=$object edit=$edit options=$options}
   {else}
-    {if $key1 and $key2}
-      {dataform dd=$dd key1=$key1 key2=$key2 title=$title row=$row name="new" object=$object edit=$edit options=$options}
-    {else}
-      {dataform dd=$dd key=$key title=$title row=$row name="new" object=$object edit=$edit options=$options}
-    {/if}
+    {dataform dd=$dd keys=$keys title=$title row=$row name="new" object=$object edit=$edit options=$options}
   {/if}
   {else}&nbsp;<!--No esta permito agregar solo modificar-->{/if}
 {/if}

@@ -2,7 +2,6 @@
 class paginaTable extends Table {
   function paginaTable() {
     $this->Table('pagina');
-    $this->key = 'idpagina';
     $this->title ='Paginas';
     $this->order ='pagina';
     $this->addColumn('idpagina','serial',0,1,0,'ID');
@@ -14,7 +13,6 @@ class paginaTable extends Table {
 class docTable extends Table {
   function docTable() {
     $this->Table('doc');
-    $this->key = 'iddoc';
     $this->title ='Documentos';
     $this->order ='doc';
     $this->addColumn('iddoc','serial',0,1,0,'ID');
@@ -27,7 +25,6 @@ class docTable extends Table {
 class enlaceTable extends Table {
   function enlaceTable() {
     $this->Table('enlace');
-    $this->key = 'idenlace';
     $this->title ='Enlaces';
     $this->order ='enlace';
     $this->addColumn('idenlace','serial',0,1,0,'ID');
@@ -40,7 +37,6 @@ class enlaceTable extends Table {
 class galeriaTable extends Table {
   function galeriaTable() {
     $this->Table('galeria');
-    $this->key = 'idgaleria';
     $this->title ='Galerias';
     $this->order ='galeria';
     $this->addColumn('fecha','date',0,0,0,'Fecha',array('range'=>'-5:+10'));
@@ -51,7 +47,6 @@ class galeriaTable extends Table {
 class fotoTable extends Table {
   function fotoTable() {
     $this->Table('foto');
-    $this->key = 'idfoto';
     $this->title ='Fotos';
     $this->order ='foto';
     $this->addColumn('idfoto','serial',0,1,0,'ID');
@@ -63,7 +58,6 @@ class fotoTable extends Table {
 class agendaTable extends Table {
   function agendaTable() {
     $this->Table('agenda');
-    $this->key = 'idagenda';
     $this->title ='Agenda';
     $this->order ='agenda';
     $this->addColumn('idagenda','serial',0,1,0,'ID');
@@ -77,7 +71,6 @@ class agendaTable extends Table {
 class noticiaTable extends Table {
   function noticiaTable() {
     $this->Table('noticia');
-    $this->key = 'idnoticia';
     $this->title ='Noticias';
     $this->order ='fecha';
     $this->addColumn('idnoticia','serial',0,1,0,'ID');
@@ -90,7 +83,6 @@ class noticiaTable extends Table {
 class countryTable extends Table {
   function countryTable() {
     $this->Table('country');
-    $this->key = 'idcountry';
     $this->title ='Country';
     $this->order ='country';
     $this->addColumn('idcountry','char',2,1,0,'Pais');

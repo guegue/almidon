@@ -10,9 +10,7 @@
  *       - name       data form name- string
  *       - row        data readDataRecord - associative array
  *       - dd         dd definition - array of associative array
- *       - key        (required primary key) - string
- *       - key1       (required primary key) - string
- *       - key2       (required primary key) - string
+ *       - keys        (required primary key) - array
  *       - title      - string
  *       - options    data for select menus - associative array
  *       - edit       allow editing of data - bool
@@ -80,9 +78,7 @@ function smarty_function_dataform($params, &$smarty)
   $row = array();
   $dd = array();
   $options = array();
-  $key = null;
-  $key1 = null;
-  $key2 = null;
+  $keys = array();
   $type = 0;
   $name = 'dfform';
   $object = null;
@@ -96,15 +92,13 @@ function smarty_function_dataform($params, &$smarty)
       case 'name':
       case 'object':
       case 'title':
-      case 'key':
-      case 'key1':
-      case 'key2':
       case 'preset':
         $$_key = (string)$_val;
         break;
       case 'options':
       case 'row':
       case 'dd':
+      case 'keys':
         $$_key = (array)$_val;
         break;
       case 'paginate':

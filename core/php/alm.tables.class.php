@@ -2,7 +2,6 @@
 class alm_roleTable extends Table {
   function alm_roleTable() {
     $this->Table('alm_role');
-    $this->key = 'idalm_role';
     $this->title = ALM_ROLES;
     $this->maxrows = 20;
     $this->order = 'idalm_role';
@@ -14,7 +13,6 @@ class alm_roleTable extends Table {
 class alm_userTable extends Table {
   function alm_userTable() {
     $this->Table('alm_user');
-    $this->key = 'idalm_user';
     $this->title = ALM_USERS;
     $this->maxrows = 20;
     $this->order = 'idalm_user';
@@ -29,7 +27,6 @@ class alm_userTable extends Table {
 class alm_accessTable extends Table {
   function alm_accessTable() {
     $this->Table('alm_access');
-    $this->key = 'idalm_access';
     $this->title = ALM_ACCESS;
     $this->maxrows = 20;
     $this->order = 'idalm_access';
@@ -43,13 +40,11 @@ class alm_accessTable extends Table {
 class alm_tableTable extends Table {
   function alm_tableTable() {
     $this->Table('alm_table');
-    $this->key = 'idalm_table';
     $this->title = ALM_TABLES;
     $this->maxrows = 20;
     $this->order = 'rank';
     $this->addColumn('idalm_table','varchar',48,1,0,'Id');
     $this->addColumn('alm_table','varchar',100,0,0,'Description');
-    $this->addColumn('pkey','varchar',50,0,0,'Primary Key');
     $this->addColumn('orden','varchar',100,0,0,'Order By');
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('hidden','bool',0,0,0,'Hidden');
@@ -62,8 +57,6 @@ class alm_tableTable extends Table {
 class alm_columnTable extends Table {
   function alm_columnTable() {
     $this->Table('alm_column');
-    $this->key1 = 'idalm_column';
-    $this->key2 = 'idalm_table';
     $this->title = ALM_FIELDS;
     $this->maxrows = 20;
     $this->order = 'idalm_table,rank';

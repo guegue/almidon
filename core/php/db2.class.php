@@ -208,8 +208,6 @@ class Table extends Data {
   var $table_fields; // comma-separated list: person.name, person.age, person.sex
   var $fields_noserial;
   var $key;
-  var $key1;
-  var $key2;
   var $keys;
   var $order;
   var $join;
@@ -346,12 +344,12 @@ class Table extends Data {
           $references[$column['references']]+=2;
         } else
           $references[$column['references']]++;
+        $foreign_key = $global_dd[$column['references']]['keys'][0];
         if ($references[$column['references']] == 1) {
-          $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $global_dd[$column['references']]['key'];
+          $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $foreign_key;
         } else {
           $tmptable = $column['references'] . $references[$column['references']];
-          $tmpcolumn =  $global_dd[$column['references']]['key'];
-          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $tmpcolumn;
+          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $forenign_key;
         }
       }
     return $join;
