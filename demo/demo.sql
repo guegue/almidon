@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS email CASCADE;
 CREATE TABLE email (domain varchar(256), login varchar(32), ctld varchar(8), observaciones text, PRIMARY KEY (domain,login,ctld));
 ALTER TABLE email OWNER TO almidondemo;
 
-GRANT SELECT ON agenda,doc,enlace,galeria,foto,noticia,pagina TO almidondemowww;
+GRANT SELECT ON agenda,doc,enlace,galeria,foto,noticia,pagina,email TO almidondemowww;
 
 INSERT INTO agenda (agenda, fecha, lugar, texto, organiza) VALUES ('Quijote de la Mancha', '2007-10-13', 'En un lugar de la Mancha', 'Es, pues, de saber, que este sobredicho hidalgo, los ratos que estaba ocioso (que eran los más del año) se daba a leer libros de caballerías con tanta afición y gusto, que olvidó casi de todo punto el ejercicio de la caza.', 'UCA IAS');
 INSERT INTO agenda (agenda, fecha, lugar, texto, organiza) VALUES ('Que trata de la primera salida', '2007-10-13', 'Puerto Lapice', 'Estos pensamientos le hicieron titubear en su propósito; mas pudiendo más su locura que otra razón alguna, propuso de hacerse armar caballero del primero que topase, a imitación de otros muchos que así lo hicieron, según él había leído en los libros que tal le tenían. En lo de las armas blancas pensaba limpiarlas de manera, en teniendo lugar, que lo fuesen más que un armiño: y con esto se quietó y prosiguió su camino, sin llevar otro que el que su caballo quería, creyendo que en aquello consistía la fuerza de las aventuras. Yendo, pues, caminando nuestro flamante aventurero, iba hablando consigo mismo, y diciendo.', 'Wkipedia');
