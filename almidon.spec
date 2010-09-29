@@ -2,7 +2,7 @@
 %define logdir /var/log/
 
 Name: almidon
-Version: 0.6.1
+Version: 0.9.1
 Release: 1%{?dist}
 Summary: Plataforma de desarrollo rapido php+postgresql
 
@@ -12,8 +12,6 @@ URL: http://almidon.org/
 Source0: http://almidon.org/downloads/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: php, php-pgsql, postgresql, postgresql-server, httpd
-Requires(pre): %{_sbindir}/useradd, /sbin/runuser
-Requires(postun): /sbin/service 
 BuildArch: noarch
 
 %description
@@ -22,24 +20,48 @@ sitio web, una administración sencilla, rápida, y un sitio web con
 buen desempeño. Actualmente en su mayoría escrito para Linux usando
 PHP, Apache y Postgresql, pero probado y usado en otras plataformas.
 
-%prep
-%setup -q
-
-echo "0 2 * * *	almidon	%{_sbindir}/tmpwatch -umc %{_datadir}/%{name}/cache/ > /dev/null 2>&1" >almidon.cron
-
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/%{_docdir}/%{name}-%{version}
 mkdir -p  %{buildroot}/%{contentdir}/%{name}
 mkdir -p  %{buildroot}/%{_sysconfdir}/cron.d
 mkdir -p  %{buildroot}/%{_sysconfdir}/httpd/conf.d
-cat demo/create.sql sql/almidon.sql demo/demo.sql > %{_tmppath}/demo.sql
+cat demo/create.sql core/sql/alm.tables.sql demo/demo.sql > %{_tmppath}/demo.sql
 cp demo/country.sql %{_tmppath}/
 cp demo/classes/config.ori.php  demo/classes/config.php
-cp -a config.sh demo php pub site-setup.sh smarty sql tpl %{buildroot}/%{contentdir}/%{name}/
+cp -a scripts demo core %{buildroot}/%{contentdir}/%{name}/
 cp -a doc/* %{buildroot}/%{_docdir}/%{name}-%{version}/
 cp -a almidon.cron  %{buildroot}/%{_sysconfdir}/cron.d/almidon
-cp -a demo/almidon.conf  %{buildroot}/%{_sysconfdir}/httpd/conf.d/
+cp -a demo/demo.almidon.conf  %{buildroot}/%{_sysconfdir}/httpd/conf.d/
+
+%files
+%defattr(-,root,root,-)
+%{contentdir}/%{name}/core
+%{contentdir}/%{name}/scripts
+
+%changelog
+
+* Wed Sep 29 2010 Javier Wilson <javier@guegue.net> - 0.9.1
+- Adding subpackages.
+* Fri Aug 6 2010 Javier Wilson <javier@guegue.net> - 0.6.1
+- Initial package.
+
+%package demo
+
+Summary: Demo para Almidon: Plataforma de desarrollo rapido
+Group: Development/Languages
+Requires(pre): %{_sbindir}/useradd, /sbin/runuser
+Requires(postun): /sbin/service 
+
+%description demo
+El demo de Almidón incluye un ejemplo sencillo del uso de esta
+plataforma de desarrollo rápido. Está elaborado usando PHP,
+Apache y Postgresql.
+
+%prep
+%setup -q
+
+echo "0 2 * * *	almidon	%{_sbindir}/tmpwatch -umc %{_datadir}/%{name}/demo/cache/ > /dev/null 2>&1" >almidon.cron
 
 %clean
 rm -rf %{buildroot}
@@ -62,27 +84,19 @@ fi
 /sbin/service httpd condrestart > /dev/null 2>&1 || :
 /sbin/service postgresql condrestart > /dev/null 2>&1 || :
 
-%files
+%files demo
 %defattr(-,root,root,-)
-%{contentdir}/%{name}/pub
-%{contentdir}/%{name}/php
-%{contentdir}/%{name}/smarty
-%{contentdir}/%{name}/tpl
-%{contentdir}/%{name}/sql
-%{contentdir}/%{name}/config.sh
-%{contentdir}/%{name}/site-setup.sh
 %{contentdir}/%{name}/demo/public_html
 %{contentdir}/%{name}/demo/misc
 %{contentdir}/%{name}/demo/templates
 %{contentdir}/%{name}/demo/.htpasswd
-%{contentdir}/%{name}/demo/almidon.conf
+%{contentdir}/%{name}/demo/demo.almidon.conf
 %{contentdir}/%{name}/demo/*sql
 %{contentdir}/%{name}/demo/secure
 %{contentdir}/%{name}/demo/classes/app.class.php
 %{contentdir}/%{name}/demo/classes/extra.class.php
 %{contentdir}/%{name}/demo/classes/config.ori.php
-%doc doc/*
-%config(noreplace) %{_sysconfdir}/httpd/conf.d/almidon.conf
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/demo.almidon.conf
 %config(noreplace) %{_sysconfdir}/cron.d/almidon
 %attr(0660,almidon,apache) %config(noreplace) %{contentdir}/%{name}/demo/classes/config.php
 %attr(0660,almidon,apache) %config(noreplace) %{contentdir}/%{name}/demo/classes/tables.class.php
@@ -92,7 +106,13 @@ fi
 %attr(0770,almidon,apache) %{contentdir}/%{name}/demo/files
 %attr(0770,almidon,apache) %{contentdir}/%{name}/demo/templates_c
 
-%changelog
+%package doc
 
-* Fri Aug 6 2010 Javier Wilson <javier@guegue.net> - 0.6.1
-- Initial package.
+Summary: Doc para Almidon: Plataforma de desarrollo rapido.
+Group: Development/Languages
+
+%description doc
+Documentación de Almidón (plataforma de desarrollo rápido) incluye documentación phpdoc.
+
+%files doc
+%doc %{_docdir}/*
