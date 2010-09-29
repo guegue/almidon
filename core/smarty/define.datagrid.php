@@ -20,7 +20,7 @@ define('DG', '{_DGSEARCH_}<form action="_SELF_" method="post" name="_FORM_" enct
 _DGROW_
 </table></td></tr><tr><td class="paginate">_PAGINATE_</td></tr></table></form>');
 define('DGHEADERCMD', '<th>'. ALM_OPT_LB .'</th>');
-define('DGHEADERCELL', '<th><a class="dgheader_link" href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_FIELD__DESC_">_LABEL__SORTIMG_</a></th>');
+define('DGHEADERCELL', '<th><a class="dgheader_link" href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_FIELD__DESC_">_LABEL_ _SORTIMG_</a></th>');
 define('DGROW', '<tr class="dgrow">_DGCELL_</tr>'."\n");
 define('DGCELL', '<td class="dgcell">_VALUE_</td>');
 define('DGCELLMODSTR', '<input type="text" name="_FIELD_" id="_FIELD_" value="_VALUE_" size="20" maxlength="_SIZE_"/>');

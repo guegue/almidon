@@ -30,7 +30,9 @@
  */
 
 include dirname(__FILE__) . '/shared.lang.php';
+require(dirname(__FILE__) . '/define.dataform.php');
 
+/*
 define('F', 
   '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
   <input type="hidden" name="old__KEY_" value="{_ID_}"/>
@@ -43,18 +45,6 @@ define('F',
   <table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr class="adm"><th class="adm">_TITLE_</th></tr>
   <tr class="adm"><td class="adm"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0">
   _FROW_</table></td></tr><tr class="adm"><td class="adm">_PAGINATE_</td></tr></table></form>');
-define('F2', 
-  '<form action="_SELF_" method="post" name="_FORM_">
-  <input type="hidden" name="old__KEY1_" value="_ID1_"/>
-  <input type="hidden" name="old__KEY2_" value="_ID2_"/>
-  <input type="hidden" name="f" value="_FORM_"/>
-  <input type="hidden" name="o" value="_OBJECT_"/>
-  <input type="hidden" name="action" value="_ACTION_"/>
-  _PRESET_
-  <table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr class="adm"><th class="adm">_TITLE_</th></tr>
-  <tr class="adm"><td class="adm"><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0">
-  _FROW_</table></td></tr><tr class="adm"><td class="adm">_PAGINATE_</td></tr></table></form>');
-define('FHEADERCMD', '<th class="adm">'. ALM_OPT_LB .'</th>');
 define('FHEADERCELL', '<th class="adm"><a class="dgheader_link" href="_SELF_?f=_FORM_&amp;sort=_FIELD_">_LABEL_</a></th>'."\n");
 define('FROW', '<tr valign="top" class="dgrow"><td class="dgcell">_LABEL_</td> <td class="dgcell">_FCELL_</td></tr>'."\n");
 define('FCELLMODSTR', '<input type="text" name="_FIELD_" id="_FIELD_" value="_VALUE_" size="30" maxlength="_SIZE_"/>');
@@ -72,6 +62,7 @@ define('NEXT','| <a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGNEXT_">'. AL
 define('NPG','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_NPG_"> _NPG_ </a>');
 define('CURRENTPG','<strong>_NPG_</strong>');
 define('PAGINATE','<table><tr class="adm"><td nowrap><br>_PGS_<br></td></tr></table>');
+*/
 
 function smarty_function_dataform2($params, &$smarty)
 {

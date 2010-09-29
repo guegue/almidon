@@ -27,47 +27,9 @@
  */
 
 include dirname(__FILE__) . '/shared.lang.php';
+require(dirname(__FILE__) . '/define.dataform.php');
 
-define('F', 
-  '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
-  <input type="hidden" name="old__KEY_" value="{_ID_}"/>
-  <input type="hidden" name="_KEY_" value="{_ID_}"/>
-  <input type="hidden" name="f" value="_FORM_"/>
-  <input type="hidden" name="o" value="_OBJECT_"/>
-  <input type="hidden" name="action" value="_ACTION_"/>
-  <input type="hidden" name="_OBJECT_pg" value="_PG_"/>
-  <table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th></tr>
-  <tr><td><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0">
-  _FROW_</table></td></tr><tr><td>_PAGINATE_</td></tr></table></form>');
-define('F2', 
-  '<form action="_SELF_" method="post" name="_FORM_">
-  <input type="hidden" name="old__KEY1_" value="_ID1_"/>
-  <input type="hidden" name="old__KEY2_" value="_ID2_"/>
-  <input type="hidden" name="f" value="_FORM_"/>
-  <input type="hidden" name="o" value="_OBJECT_"/>
-  <input type="hidden" name="action" value="_ACTION_"/>
-  <table class="dgtable" border="0" cellspacing="0" cellpadding="2"><tr><th>_TITLE_</th></tr>
-  <tr><td><table class="dgsubtable" border="0" cellspacing="0" cellpadding="0">
-  _FROW_</table></td></tr><tr><td>_PAGINATE_</td></tr></table></form>');
-define('FHEADERCMD', '<th>'. ALM_OPT_LB .'</th>');
-define('FHEADERCELL', '<th><a class="dgheader_link" href="_SELF_?f=_FORM_&amp;sort=_FIELD_">_LABEL_</a></th>'."\n");
-define('FROW', '<tr valign="top" class="dgrow"><td class="dgcell">_LABEL_</td> <td class="dgcell">_FCELL_</td></tr>'."\n");
-define('FCELLMODSTR', '<input type="text" name="_FIELD_" value="_VALUE_" size="30" maxlength="_SIZE_"/>');
-define('FCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
-define('FCMD',
-  '<tr><td class="dgcmd"><input type="submit" value="'. ALM_EDIT_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. ALM_CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
-define('FCMDMOD',
-  '<tr><td class="dgcmd"><input type="submit" value="'. ALM_SAVE_LB .'" /></td> <td class="dgcmd"><input type="button" value="'. ALM_CAN_LB .'" onclick="location.href=\'_REFERER_\'" /></td></tr>');
-
-define('FCMDADD', '<tr><td class="dgcmd"><input type="submit" value="'. ALM_ADD_LB .'" /></td></tr>');
-define('PREV','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGPREV_">&lt; '. ALM_PREV_LB .'</a> |');
-define('NEXT','| <a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_PGNEXT_">'. ALM_NEXT_LB .' &gt;</a>&nbsp;');
-define('NPG','<a href="_SELF_?f=_FORM_&amp;sort=_SORT_&amp;pg=_NPG_"> _NPG_ </a>');
-define('CURRENTPG','<strong>_NPG_</strong>');
-define('PAGINATE','<table><tr><td nowrap><br>_PGS_<br></td></tr></table>');
-
-function smarty_function_dataform($params, &$smarty)
-{
+function smarty_function_dataform($params, &$smarty) {
   require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
   require_once $smarty->_get_plugin_filepath('function','html_options');
   require_once $smarty->_get_plugin_filepath('function','html_select_date');
@@ -407,7 +369,11 @@ function smarty_function_dataform($params, &$smarty)
     $_need_paginate = true;
     break;
   }
-  $_f = ($key2) ? F2 : F;
+  $_f = F;
+  $oldkeys = null;
+  foreach($keys as $val) 
+    $oldkeys.= '<input type="hidden" name="alm_old_'.$val.'" value="'.$row[$val].'" />';
+  $_f = preg_replace("/{_OLDKEYS_}/", $oldkeys, $_f);
   $_f = preg_replace('/_PRESET_/',$_pre,$_f);
   $_html_result = preg_replace("/_FHEADER_/", $_html_labels, $_f);
   if ($cmd)
@@ -453,7 +419,7 @@ function smarty_function_dataform($params, &$smarty)
   $_html_result = preg_replace("/_FORM_/", $name, $_html_result);
   $_html_result = preg_replace("/_OBJECT_/", $object, $_html_result);
   $_html_result = preg_replace("/_ACTION_/", $action, $_html_result);
-  if ($type == 0) $_html_result = preg_replace('/old_/', '', $_html_result);
+  if ($type == 0) $_html_result = preg_replace('/alm_old_/', '', $_html_result);
   
 
   if(strpos($_html_rows,'value="Agregar"') != '') {
