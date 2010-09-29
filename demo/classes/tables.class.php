@@ -39,9 +39,9 @@ class galeriaTable extends Table {
     $this->Table('galeria');
     $this->title ='Galerias';
     $this->order ='galeria';
-    $this->addColumn('fecha','date',0,0,0,'Fecha',array('range'=>'-5:+10'));
     $this->addColumn('idgaleria','serial',0,1,0,'ID');
     $this->addColumn('galeria','varchar',500,0,0,'Titulo');
+    $this->addColumn('fecha','date',0,0,0,'Fecha');
   }
 }
 class fotoTable extends Table {
@@ -75,9 +75,20 @@ class noticiaTable extends Table {
     $this->order ='fecha';
     $this->addColumn('idnoticia','serial',0,1,0,'ID');
     $this->addColumn('noticia','varchar',500,0,0,'Titulo');
-    $this->addColumn('foto','image',0,0,0,'Foto');
     $this->addColumn('fecha','datenull',0,0,0,'Fecha');
     $this->addColumn('texto','text',0,0,0,'Texto');
+    $this->addColumn('foto','image',0,0,0,'Foto');
+  }
+}
+class emailTable extends Table {
+  function emailTable() {
+    $this->Table('email');
+    $this->title ='Email';
+    $this->order ='login,domain,ctld';
+    $this->addColumn('login','varchar',32,1,0,'Login',array('search'=>true));
+    $this->addColumn('domain','varchar',128,1,0,'Domain',array('search'=>true));
+    $this->addColumn('ctld','varchar',8,1,0,'cTLD');
+    $this->addColumn('observaciones','text',0,0,0,'cTLD');
   }
 }
 class countryTable extends Table {
