@@ -52,6 +52,8 @@ Summary: Demo para Almidon: Plataforma de desarrollo rapido
 Group: Development/Languages
 Requires(pre): %{_sbindir}/useradd, /sbin/runuser
 Requires(postun): /sbin/service 
+Requires: almidon
+BuildArch: noarch
 
 %description demo
 El demo de Almidón incluye un ejemplo sencillo del uso de esta
@@ -110,6 +112,7 @@ fi
 
 Summary: Doc para Almidon: Plataforma de desarrollo rapido.
 Group: Development/Languages
+BuildArch: noarch
 
 %description doc
 Documentación de Almidón (plataforma de desarrollo rápido) incluye documentación phpdoc.
