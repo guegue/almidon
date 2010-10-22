@@ -442,5 +442,4 @@ class Table extends Data {
   function escape($var) {
   	  return almdata::escape($var);
   }
-
 }
