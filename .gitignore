@@ -1,2 +1,3 @@
-!core/include.d/README
+# From general to specific
 core/include.d/*
+!core/include.d/README
