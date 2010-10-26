@@ -4,8 +4,8 @@
     } else {
       $sqlcmd = "SELECT $this->fields FROM $this->name";
     }
-    if (isset($this->filter) || isset($filter))
-      $sqlcmd .= " WHERE ".((isset($this->filter))?$this->filter." AND ":"")."$filter";
+    if (!empty($this->filter) || !empty($filter))
+      $sqlcmd .= " WHERE ".((!empty($this->filter))?$this->filter." AND ":"")."$filter";
     if ($this->order)
     	$sqlcmd .= " ORDER BY $this->order";
     if ($this->limit)
