@@ -2,7 +2,7 @@
 <h1>{$title} {if $title && $row.$obj}:{/if} {$row.$obj}</h1>
 {if $row}
   {if $row.imagen && !$imagen.imagen}
-    <img src="/cms/pic/250/{$obj}/{$row.imagen}" align="left" class="imagen" />
+    <img src="/almidon/pic/250/{$obj}/{$row.imagen}" align="left" class="imagen" />
   {/if}
   {if $row.direccion}
     <b>Direcci&oacute;n:</b> {$row.direccion}
@@ -26,12 +26,12 @@
   <table align="center" border="0">
   <tr><td align="center">
   {if $imagen.imagen}
-    <br/><img src="/cms/pic/400/{$foto}/{$imagen.imagen}" alt="imagen" class="imagen"/><br/><br/>
+    <br/><img src="/almidon/pic/400/{$foto}/{$imagen.imagen}" alt="imagen" class="imagen"/><br/><br/>
   {/if}
   </td></tr>
   <tr><td align="center">
   {section name=j loop=$fotos}
-    <a href="/{$foto}/{$fotos[j].$idfoto}"><img src="/cms/pic/75/{$foto}/{$fotos[j].imagen}" align="left" class="imagen" /></a>
+    <a href="/{$foto}/{$fotos[j].$idfoto}"><img src="/almidon/pic/75/{$foto}/{$fotos[j].imagen}" align="left" class="imagen" /></a>
   {/section}
   </td></tr>
   </table>
@@ -57,7 +57,7 @@
     <br/><a href="/{$obj}/{$rows[i].$key}" class="h2">{$rows[i].$obj}</a><br/>
   {/if}
   {if $rows[i].imagen}
-    <img src="/cms/pic/75/{$obj}/{$rows[i].imagen}" alt="imagen" align="left" class="imagen"/>
+    <img src="/almidon/pic/75/{$obj}/{$rows[i].imagen}" alt="imagen" align="left" class="imagen"/>
   {/if}
   {if $rows[i].texto}
     {$rows[i].texto|truncate:500}

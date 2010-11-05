@@ -19,7 +19,7 @@
     </tr>
     {section name=i loop=$rows}
     <tr class="dgrow">
-      <td class="dgcell">{$rows[i].usuario}</td><td class="dgcell">{$rows[i].passwd}</td><td class="dgcmd"><a href="javascript:confirm_delete('','usuario','{$rows[i].usuario}','{$rows[i].usuario}');"><img src="/cms/img/delete.png" border="0" alt="Borrar"></a><a href="{$smarty.const.SELF}?action=mod&usuario={$rows[i].usuario}"><img src="/cms/img/edit.png" border="0" alt="Editar"></a></td></tr>
+      <td class="dgcell">{$rows[i].usuario}</td><td class="dgcell">{$rows[i].passwd}</td><td class="dgcmd"><a href="javascript:confirm_delete('','usuario','{$rows[i].usuario}','{$rows[i].usuario}');"><img src="/almidon/img/delete.png" border="0" alt="Borrar"></a><a href="{$smarty.const.SELF}?action=mod&usuario={$rows[i].usuario}"><img src="/almidon/img/edit.png" border="0" alt="Editar"></a></td></tr>
     {/section}
     </table>
     </td>

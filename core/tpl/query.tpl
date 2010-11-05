@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
 <html>
 <head>
-<script language="JavaScript1.2" type="text/javascript" src="/cms/js/common.js"></script>
-<script language="JavaScript" type="text/javascript" src="/cms/html/wysiwyg.js"></script>
-<link rel="stylesheet" href="/cms/css/adm.css">
+<script language="JavaScript1.2" type="text/javascript" src="/almidon/js/common.js"></script>
+<script language="JavaScript" type="text/javascript" src="/almidon/html/wysiwyg.js"></script>
+<link rel="stylesheet" href="/almidon/css/adm.css">
 <title>{$title}</title>
 {if $closed}
 <script>

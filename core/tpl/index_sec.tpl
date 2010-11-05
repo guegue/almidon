@@ -5,7 +5,7 @@
 HTML Coder: Christian Torres <christian@guegue.net>
 -->
   <title>{lang_const name="ALM_ADMIN_TITLE"} | {if 'TITLE'|defined===true}{$smarty.const.TITLE}{else}{$smarty.const.DOMAIN}{/if}</title>
-  <link href="/cms/css/adm2.css" rel="stylesheet" type="text/css" />
+  <link href="/almidon/css/adm2.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <img src="{$smarty.const.URL}/imgs/adminsite_small.png" alt="{$smarty.const.DOMAIN}" title="{$smarty.const.DOMAIN}" class="logo" />
