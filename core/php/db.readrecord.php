@@ -19,7 +19,7 @@
     /* checks cache options */
     if (is_null($cache))
       $cache = (ALM_CACHE && !ADMIN);
-    $this->filecache = ROOTDIR.'/cache/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'.dat';
+    $this->filecache = ROOTDIR.'/cache/sql/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'.dat';
     if ($cache === true && file_exists($this->filecache) && (time()-filemtime($this->filecache)<=ALM_CACHE_TIME)) {
       $row = unserialize(file_get_contents($this->filecache));
     } else {

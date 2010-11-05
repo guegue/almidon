@@ -2,3 +2,7 @@
 core/include.d/*
 !core/include.d/README
 demo/classes/config.php
+demo/cache/*.dat
+demo/cache/[a-z]*
+!demo/cahce/smarty/
+!demo/cache/sql/

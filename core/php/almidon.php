@@ -43,7 +43,7 @@ $smarty = new Smarty;
 $smarty->template_dir = ROOTDIR . '/templates/';
 $smarty->compile_dir = ROOTDIR . '/templates_c/';
 $smarty->config_dir = ROOTDIR . '/configs/';
-$smarty->cache_dir = ROOTDIR . '/cache/';
+$smarty->cache_dir = ROOTDIR . '/cache/smarty/';
 $smarty->plugins_dir = array('plugins', $almidondir.'/smarty/',$almidondir.'/smarty/validate/');
 /*
  * @ignore - ADMIN, Am I in admin mode?

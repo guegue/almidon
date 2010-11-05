@@ -226,7 +226,7 @@ class Table extends Data {
    * OJO: puede ser pesado para tablas con muchos datos
   */
   function clearCache() {
-    $cachefiles = ROOTDIR.'/cache/*.'.$this->name.'.*dat';
+    $cachefiles = ROOTDIR.'/cache/sql/*.'.$this->name.'.*dat';
     foreach (glob($cachefiles) as $filename) {
      unlink($filename);
     }
@@ -388,7 +388,7 @@ class Table extends Data {
     /* checks cache options */
     if (is_null($cache))
       $cache = (ALM_CACHE && !ADMIN);
-    $this->filecache = ROOTDIR.'/cache/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'.dat';
+    $this->filecache = ROOTDIR.'/cache/sql/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'.dat';
     if (!($cache === true && file_exists($this->filecache) && (time()-filemtime($this->filecache)<=ALM_CACHE_TIME)))
       $this->execSql($sqlcmd);
     return $this->getArray($cache); 
