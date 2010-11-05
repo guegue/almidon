@@ -48,7 +48,7 @@ if (preg_match('/(\d+)x(\d+)x(.+)/', $size)) {
 }
 
 # Sets cache vars
-$cache_dir = ROOTDIR . '/cache/' . $subdir;
+$cache_dir = ROOTDIR . '/cache/thumb/' . $subdir;
 $cache_file = $cache_dir . '/' . $size . '_' . $filename;
 if (!file_exists($cache_dir))
   mkdir  ($cache_dir, 0777, true);

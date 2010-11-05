@@ -6,3 +6,4 @@ demo/cache/*.dat
 demo/cache/[a-z]*
 !demo/cahce/smarty/
 !demo/cache/sql/
+!demo/cache/thumb/
