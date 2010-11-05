@@ -1,3 +1,4 @@
 # From general to specific
 core/include.d/*
 !core/include.d/README
+demo/classes/config.php
