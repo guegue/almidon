@@ -14,46 +14,56 @@
 
 if(!isset($almidondir))
   $almidondir = defined('ALMIDONDIR') ? ALMIDONDIR : $_SERVER['DOCUMENT_ROOT'] . '/../../core';
-/**
- * DAL para almidon, clases y funciones ppales para manejo de datos
-*/
+/*
+ * DAL for almidon, classes y main functions to manage data
+ */
 require_once($almidondir . '/php/db2.class.php');
-/**
- * Constantes de distintos lenguages definidas
-*/
-require_once($almidondir . '/php/lang.php');
-/**
+/*
+ * Is ADMIN defined?
+ */
+if (!defined('ADMIN')) define('ADMIN', false);
+/*
+ * Language constants, only if it is admon
+ */
+if ( ADMIN === true ) {
+  require_once($almidondir . '/php/lang.php');
+}
+/*
+ * Loading some functions
+ */
+require_once($almidondir . '/php/functs.inc.php');
+/*
  * Good old Smarty: see http://www.smarty.net/
-*/
+ */
 # Put it in core/include.d
-require_once('Smarty/Smarty.class.php');
+alm_require('Smarty/Smarty.class.php');
 
-# Configura smarty (puede re-configurarse localmente)
+# Set smarty (it can be re-config locally)
 $smarty = new Smarty;
 $smarty->template_dir = ROOTDIR . '/templates/';
 $smarty->compile_dir = ROOTDIR . '/templates_c/';
 $smarty->config_dir = ROOTDIR . '/configs/';
 $smarty->cache_dir = ROOTDIR . '/cache/';
 $smarty->plugins_dir = array('plugins', $almidondir.'/smarty/',$almidondir.'/smarty/validate/');
-
-/**
-* @ignore - ADMIN: Estamos en modo administrador?
-*/
-if (!defined('ADMIN')) define('ADMIN', false);
+/*
+ * @ignore - ADMIN, Am I in admin mode?
+ */
 if (ADMIN === true && !isset($_SESSION['idalm_role'])) $_SESSION['idalm_role'] = null;
 if (ADMIN === true && !isset($_SESSION['idalm_user'])) $_SESSION['idalm_user'] = null;
-/**
-* Carga definición local de tablas
-*/
-require(ROOTDIR . '/classes/tables.class.php');
-/**
-* Tablas extras no modificables automáticamente
-*/
-require(ROOTDIR . '/classes/extra.class.php');
-/**
-* Carga definición global de tablas (alm_*)
-*/
-require_once($almidondir . '/php/alm.tables.class.php');
+/*
+ * Loading local table definitions
+ */
+alm_require(ROOTDIR . '/classes/tables.class.php');
+/*
+ * Extra tables, they are not automatically modified
+ */
+alm_require(ROOTDIR . '/classes/extra.class.php');
+/*
+ * Loading global table definitions, (alm_*)
+ */
+if ( ADMIN === true ) {
+  alm_require($almidondir . '/php/alm.tables.class.php');
+}
 
 $classes = get_declared_classes();
 global $global_dd;
@@ -71,9 +81,9 @@ foreach($classes as $key) {
   }
 }
 
-/**
-* qdollar se usa para "escape" cadenas en pgreg_replace que usan "$" como signo de dolar, y no backreference
-*/
+/*
+ * qdollar is used to escape strings, because in pgreg_replace uses "$" as a dollar sign, and no backreference
+ */
 function qdollar($value) {
   return str_replace('$', '\$', $value);
 }

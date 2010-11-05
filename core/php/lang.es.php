@@ -1,4 +1,5 @@
 <?php
+define('ALM_NOT_FOUND','Lo sentimos, pero el archivo no existe');
 define('ALM_LANG_DONE', true);
 define('ALM_YES','S&iacute;');
 define('ALM_NO','No');
