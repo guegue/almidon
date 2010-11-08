@@ -1,4 +1,8 @@
 <?php
+# URL almidon
+if ( !defined('ALM_URI') )
+  define('ALM_URI','almidon');
+
 # FIXME: are we using this? form to search
 define('DS','<form action="_SELF_" method="POST" name="_FORM_search" class="search"><input type="hidden" name="action" value="search" />_DSFIELDS_&nbsp;<input type="submit" value="'. ALM_SEARCH_LB .'" /><input type="reset" value="'. ALM_RESET_LB .'" /></form>');
 define('DSL','Resultados para <b>_DSQUERY_</b> [<a href="_SELF_?action=clear">' . ALM_SHOWALL . '</a>]');
@@ -26,9 +30,9 @@ define('DGCELL', '<td class="dgcell">_VALUE_</td>');
 define('DGCELLMODSTR', '<input type="text" name="_FIELD_" id="_FIELD_" value="_VALUE_" size="20" maxlength="_SIZE_"/>');
 define('DGCELLMODTXT', '<textarea name="_FIELD_" id="_FIELD_">_VALUE_</textarea><br /><a href="javascript:edittext(\'_FORM_\', \'_FIELD_\', document.getElementById(\'_FIELD_\').value);">'. MAX .'</a>');
 define('DGCELLMODREF', '<select name="_FIELD_"><option value="-1">--</option>_REFERENCE_</select>');
-define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_"><img src="/almidon/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/almidon/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'. ALM_DEL_LB .'"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/almidon/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
-define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/almidon/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;{_KEY=ID_}&amp;_PARENT_=_PARENTID_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/almidon/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
-define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_&amp;_PARENT_=_PARENTID_"><img src="/almidon/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'.ALM_CAN_LB.'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/almidon/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'.ALM_SAVE_LB.'"></a></td>');
+define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_"><img src="/' . ALM_URI . '/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/' . ALM_URI . '/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'. ALM_DEL_LB .'"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/' . ALM_URI . '/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
+define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/' . ALM_URI . '/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;{_KEY=ID_}&amp;_PARENT_=_PARENTID_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/' . ALM_URI . '/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
+define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_&amp;_PARENT_=_PARENTID_"><img src="/' . ALM_URI . '/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'.ALM_CAN_LB.'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/' . ALM_URI . '/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'.ALM_SAVE_LB.'"></a></td>');
 
 #
 # Paginacion
@@ -42,10 +46,10 @@ define('PAGINATE','<table><tr><td nowrap><br>_PGS_<br></td></tr></table>');
 #
 # Definicion para distintos roles
 #
-define('DGCMDEDIT', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_"><img src="/almidon/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"/></a><a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/almidon/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"/></a></td>');
-define('DGCMDVER', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_"><img src="/almidon/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"/></a></td>');
-define('DGCMDDEL', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_"><img src="/almidon/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/almidon/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"/></a></td>');
+define('DGCMDEDIT', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_"><img src="/' . ALM_URI . '/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"/></a><a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/' . ALM_URI . '/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"/></a></td>');
+define('DGCMDVER', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_"><img src="/' . ALM_URI . '/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"/></a></td>');
+define('DGCMDDEL', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;{_KEY=ID_}&amp;_FORM_pg=_PG_"><img src="/' . ALM_URI . '/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'.ALM_VIEW_LB.'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/' . ALM_URI . '/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"/></a></td>');
 define('DGCMDRVER', '<td class="dgcmd"></td>');
-define('DGCMDRDEL', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/almidon/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"/></a></td>');
-define('DGCMDREDIT', '<td class="dgcmd"><a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;{_KEY=ID_}&amp;_PARENT_=_PARENTID_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/almidon/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"/></a></td>');
+define('DGCMDRDEL', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/' . ALM_URI . '/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="'.ALM_DEL_LB.'"/></a></td>');
+define('DGCMDREDIT', '<td class="dgcmd"><a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;{_KEY=ID_}&amp;_PARENT_=_PARENTID_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/' . ALM_URI . '/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'.ALM_EDIT_LB.'"/></a></td>');
 

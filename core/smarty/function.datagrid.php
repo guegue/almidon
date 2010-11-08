@@ -346,24 +346,16 @@ function smarty_function_datagrid($params, &$smarty)
           $_val = empty($_val)?'--':$row[$dd[$_key]['references'] . $n];
         }
         switch ($dd[$_key]['type']) {
+          case 'varchar':
           case 'char':
-            # FIXME: poder especificar values
-            /* if (preg_match("/=/", $dd[$_key]['extra'])) {
-              $_list = preg_split('/:/', $dd[$_key]['extra']);
-              $_options = '';
-              foreach($_list as $_list_pair) {
-                list($_list_key, $_list_val) = preg_split('/=/', $_list_pair);
-                $_options[$_list_key] = $_list_val;
-              }
-              $_tmp = $_options[$_val];
+            if ($dd[$_key]['extra']['list_values']) {
+              $_options = $dd[$_key]['extra']['list_values'];
+              $_tmp = $_options[trim($_val)];
             } else {
               $_tmp = smarty_modifier_truncate($_val, 50);
               $_tmp = smarty_modifier_url($_tmp);
               $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
-            }*/
-            $_tmp = smarty_modifier_truncate($_val, 50);
-            $_tmp = smarty_modifier_url($_tmp);
-            $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
+            }
             break;
           case 'bool':
           case 'boolean':
@@ -419,6 +411,7 @@ function smarty_function_datagrid($params, &$smarty)
             # strip_tags quita los tags [x]html, preg_replace reemplaza los &nbsp; por espacio en blanco, el otro preg_replace quita mas de un espacio en blanco conjunto y lo reemplaza por un solo espacio y trim quita los espacios en blanco al final e inicio de la cadena.
             $_val = trim(preg_replace('/\s\s+/',' ',preg_replace('/&nbsp;/',' ',strip_tags($_val))));
           default:
+            $_val = $_val===''?"&nbsp;":$_val;
             if ($truncate)
               $_tmp = smarty_modifier_truncate($_val, 50);
             else
