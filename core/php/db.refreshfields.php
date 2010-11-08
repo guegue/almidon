@@ -9,7 +9,6 @@
     foreach($this->definition as $column) {
       if ($n > 0) {
         $this->fields .= ",";
-        $this->table_fields .= ",";
         $this->all_fields .= ",";
       }
       if ($ns > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'serial')
@@ -19,11 +18,13 @@
       else 
         $this->fields_noserial .= $column['name'];
       $this->fields .= $column['name'];
-      $this->table_fields .= $this->name . '.' . $column['name'];
       if ($column['type'] == 'external')
         $this->all_fields .= $column['name'];
-      else
+      else {
         $this->all_fields .= $this->name . "." . $column['name'];
+        if ( !empty($this->table_fields) ) $this->table_fields .= ",";
+        $this->table_fields .= $this->name . '.' . $column['name'];
+      }
       if ($column['references'] && isset($global_dd[$column['references']]['descriptor'])) {
         if (!isset($references[$column['references']]))
           $references[$column['references']] = 0;

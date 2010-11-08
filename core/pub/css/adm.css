@@ -32,7 +32,7 @@ table.dgtable		{ border: solid #000 1px; margin-top: 10px; margin-bottom: 10px; 
 table.dgtable th	{ font-size: 10pt; font-weight: normal; text-align: left; color: #000; background-color: #ccc; border-right: none; border-bottom: solid #888 1px; white-space: nowrap; }
 table.dgsubtable	{ border: none; margin: 0; }
 table.dgsubtable tr th	{ border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; }
-table.dgsubtable tr td	{ padding-left: 5px; padding-right: 5px; border-right: solid #888 1px; }
+table.dgsubtable tr td	{ padding:2px; padding-left: 5px; padding-right: 5px; border-right: solid #888 1px; }
 .dgrow			{ background-color: #ddd; border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; white-space: nowrap;}
 .dgrow2			{ background-color: #eee; border-right: solid #888 1px; padding-left: 5px; padding-right: 5px; white-space: nowrap;}
 a.stay 			{color:#0a57a0; font-weight:bold;}
