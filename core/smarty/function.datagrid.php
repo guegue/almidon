@@ -257,15 +257,29 @@ function smarty_function_datagrid($params, &$smarty)
 	    break;
           case 'varchar':
           case 'char':
-            $_tmp = preg_replace("/_VALUE_/",  qdollar(htmlentities($_val,ENT_COMPAT,'UTF-8')), DGCELLMODSTR);
-            $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
-            $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
+            if ($dd[$_key]['extra']['list_values']) {
+              $_options = $dd[$_key]['extra']['list_values'];
+              $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>trim($_val)), $smarty);
+              $_tmp = preg_replace("/_REFERENCE_/", qdollar($_tmp), DGCELLMODREF);
+              $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+            } else {
+              $_tmp = preg_replace("/_VALUE_/",  qdollar(htmlentities($_val,ENT_COMPAT,'UTF-8')), DGCELLMODSTR);
+              $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+              $_tmp = preg_replace("/_SIZE_/", $dd[$_key]['size'], $_tmp);
+            }
             break;
           case 'int':
           case 'numeric':
-            $_tmp = preg_replace("/_VALUE_/", $_val, DGCELLMODSTR);
-            $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
-            $_tmp = preg_replace("/_SIZE_/", 10, $_tmp);
+            if ($dd[$_key]['extra']['list_values']) {
+              $_options = $dd[$_key]['extra']['list_values'];
+              $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>trim($_val)), $smarty);
+              $_tmp = preg_replace("/_REFERENCE_/", qdollar($_tmp), DGCELLMODREF);
+              $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+            } else {
+              $_tmp = preg_replace("/_VALUE_/", $_val, DGCELLMODSTR);
+              $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
+              $_tmp = preg_replace("/_SIZE_/", 10, $_tmp);
+            }
             break;
           case 'references':
             $_options = $options[$_key];
