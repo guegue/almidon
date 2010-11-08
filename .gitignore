@@ -1,4 +1,9 @@
 # From general to specific
+# automatic backup files
+*.swp
+*~
+
+# From project
 core/include.d/*
 !core/include.d/README
 demo/classes/config.php
