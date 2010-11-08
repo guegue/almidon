@@ -58,10 +58,14 @@ alm_require(ROOTDIR . '/classes/tables.class.php');
  * Extra tables, they are not automatically modified
  */
 alm_require(ROOTDIR . '/classes/extra.class.php');
-/*
- * Loading global table definitions, (alm_*)
- */
 if ( ADMIN === true ) {
+  /*
+   * Defining the ADMIN THEME
+   */
+  if ( !defined('ALM_ADMIN_THEME') ) define('ALM_ADMIN_THEME','wax');
+  /*
+   * Loading global table definitions, (alm_*)
+   */
   alm_require($almidondir . '/php/alm.tables.class.php');
 }
 
@@ -86,4 +90,7 @@ foreach($classes as $key) {
  */
 function qdollar($value) {
   return str_replace('$', '\$', $value);
+}
+
+if ( ADMIN===true ) {
 }

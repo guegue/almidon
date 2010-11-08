@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+{strip}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">  
 <head>
@@ -65,7 +66,7 @@ tinyMCE.init({
 {/if}
 {/if}
 <!-- Default CSS -->
-<link rel="stylesheet" href="/almidon/css/adm.css"/>
+<link rel="stylesheet" href="/almidon/themes/{$smarty.const.ALM_ADMIN_THEME}/css/adm.css"/>
 </head>
 <body>
 {strip}
@@ -85,3 +86,4 @@ tinyMCE.init({
 {/if}
 {/strip}
 <h1>{$title|default:""}</h1>
+{/strip}

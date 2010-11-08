@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>almidon @ {$smarty.const.DOMAIN}</title>
-<link rel="stylesheet" href="{$smarty.const.URL}/almidon/css/admin_login.css" />
+<link rel="stylesheet" href="{$smarty.const.URL}/almidon/themes/{$smarty.const.ALM_ADMIN_THEME}/css/admin_login.css" />
 <script language="javascript" type="text/javascript">
 {literal}
 function setFocus() {
