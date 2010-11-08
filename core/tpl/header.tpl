@@ -69,6 +69,7 @@ tinyMCE.init({
 </head>
 <body>
 {strip}
+<a href="./"{if ($cur_section=='inicio' || $cur_section|trim == '') && !$object} class="stay"{/if}>Inicio</a> |&nbsp;
 {if $sectionlinks}
   {if $sectionlinks|@count >= 1}
     <a href="{$smarty.const.SSL_URL}/"{if $cur_section=='inicio' || $cur_section|trim == ''} class="stay"{/if}>Inicio</a> | &nbsp;{foreach key=key item=item from=$sectionlinks name=i}<a href="{$smarty.const.SSL_URL}/{$key}/{$item.index}"{if $cur_section==$key} class="stay"{/if}>{$item.label}</a>{if !$smarty.foreach.i.last} | &nbsp;{/if}{/foreach}<hr size="1 noshade="noshade" />
