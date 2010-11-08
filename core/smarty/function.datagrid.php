@@ -51,6 +51,8 @@ function smarty_function_datagrid($params, &$smarty)
   $table = null;
   $parent = null;
   $truncate = true;
+  $is_child = null;
+  $have_child = null;
 
   $extra = '';
   foreach($params as $_key => $_val) {
@@ -70,6 +72,8 @@ function smarty_function_datagrid($params, &$smarty)
       case 'search':
       case 'cmd':
       case 'truncate':
+      case 'have_child':
+      case 'is_child':
         $$_key = (bool)$_val;
         break;
       case 'selected':
@@ -105,7 +109,8 @@ function smarty_function_datagrid($params, &$smarty)
       $headers[$_key] = $_val['label'];
   }
   if (!$table) $table = $name;
-  
+ 
+  $_html_search = ''; 
   $_html_headers = '';
   $_html_rows = '';
   $_html_result = '';
@@ -217,7 +222,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'image':
           case 'img':
             $_tmp = '';
-            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="'.URL.'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> ' . ALM_KEEP_FILE . ' (' . $_val . ')<br /><img src="'.URL.'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
             $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
             break;
           case 'time':
@@ -246,6 +251,10 @@ function smarty_function_datagrid($params, &$smarty)
             $_tmp = preg_replace("/_VALUE_/",  qdollar(htmlentities($_val,ENT_COMPAT,'UTF-8')), DGCELLMODSTR);
             $_tmp = preg_replace("/_FIELD_/", $_key, $_tmp);
             break;
+          case 'xhtml':
+            $_tmp = '<textarea rows="5" cols="40" class="adm" id="grid' . $_key . '" name="' . $_key . '"'.(($dd[$_key]['extra']['style'])?' style="'.$dd[$_key]['extra']['style'].'"':'').'>' . $_val . '</textarea>';
+            $_tmp .= "<script language=\"JavaScript\">\ntinyMCE.execCommand(\"mceAddControl\", true,\"grid$_key\");\n</script>\n";
+	    break;
           case 'varchar':
           case 'char':
             $_tmp = preg_replace("/_VALUE_/",  qdollar(htmlentities($_val,ENT_COMPAT,'UTF-8')), DGCELLMODSTR);
