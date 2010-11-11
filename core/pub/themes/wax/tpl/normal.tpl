@@ -57,4 +57,4 @@
 {/section}
 {include file="$footer"}
 {/capture}
-{$smarty.capture.alm_output|strip}
+{$smarty.capture.alm_output}

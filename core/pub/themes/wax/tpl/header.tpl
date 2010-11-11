@@ -2,10 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">  
 <head>
-{include file=$smarty.const.ALMIDONDIR|cat:"/tpl/meta.tpl"}
+{almtemplate file="meta.tpl"}
 <title>{if $title}{$title}{else}{$smarty.const.ALM_TITLE_INDEX}{/if} - {$smarty.session.alm_user} @ {$smarty.const.DOMAIN}</title>
-{include file=$smarty.const.ALMIDONDIR|cat:"/tpl/js.tpl"}
-{include file=$smarty.const.ALMIDONDIR|cat:"/tpl/css.tpl"}
+{almtemplate file="js.tpl"}
+{almtemplate file="css.tpl"}
 </head>
 <body>
 <a href="./"{if ($cur_section=='inicio' || $cur_section|trim == '') && !$object} class="stay"{/if}>{$smarty.const.ALM_HOME}</a> |&nbsp;
