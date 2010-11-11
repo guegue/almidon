@@ -10,8 +10,7 @@
 
 include dirname(__FILE__) . '/shared.lang.php';
 
-define('SCRIPT', "
-
+define('ALM_DELETE_SCRIPT', "
 <script type=\"text/javascript\" language=\"javascript\">
   function confirm_delete(o, key_ids, desc) {
     keys_url = '';
@@ -34,7 +33,8 @@ define('SCRIPT', "
 </script>
 ");
 
-function smarty_function_confirm_delete($params, &$smarty)
-{
-  return SCRIPT;
+function smarty_function_confirm_delete($params, &$smarty) {
+  require_once $smarty->_get_plugin_filepath('modifier','strip');
+
+  return smarty_modifier_strip(ALM_DELETE_SCRIPT);
 }

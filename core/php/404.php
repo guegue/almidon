@@ -98,40 +98,40 @@ if(isset($_SESSION['idalm_user'])) {
     if ($$object->cols > 5) $smarty->assign('down', true);
     $tpl = !empty($$object->parent) ? 'child' : 'normal';
 
-	  $tpl = ALMIDONDIR . '/tpl/' . $tpl . '.tpl';
+	  $tpl = ALMIDONDIR . '/pub/themes/' . ALM_ADMIN_THEME . '/tpl/' . $tpl . '.tpl';
     if (!empty($$object->parent)) {
-      $smarty->assign('header',ALMIDONDIR.'/tpl/child_header.tpl');
+      $smarty->assign('header',ALMIDONDIR.'/pub/themes/' . ALM_ADMIN_THEME . '/tpl/child_header.tpl');
 	  } elseif (file_exists(ROOTDIR.'/templates/admin/header.tpl')) {
 	    $smarty->assign('header',ROOTDIR."/templates/admin/header.tpl");
 	  } else {
-	    $smarty->assign('header',ALMIDONDIR.'/tpl/header.tpl');
+	    $smarty->assign('header',ALMIDONDIR.'/pub/themes/' . ALM_ADMIN_THEME . '/tpl/header.tpl');
 	  }
 	  if (file_exists(ROOTDIR.'/templates/admin/footer.tpl')) {
 	    $smarty->assign('footer',ROOTDIR."/templates/admin/footer.tpl");
 	  } else {
-	    $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
+	    $smarty->assign('footer', ALMIDONDIR . '/pub/themes/' . ALM_ADMIN_THEME . '/tpl/footer.tpl');
 	  }
 	} else {
-	  if (file_exists(ROOTDIR.'/templates/admin/index.tpl')) {  
+	  if (file_exists(ROOTDIR.'/templates/admin/index.tpl')) {
 	    if(file_exists(ROOTDIR.'/templates/admin/header.tpl'))
 	      $smarty->assign('header',ROOTDIR.'/templates/admin/header.tpl');
 	    else 
-	      $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
+	      $smarty->assign('header', ALMIDONDIR . '/pub/themes/' . ALM_ADMIN_THEME . '/tpl/header.tpl');
 	    if(file_exists(ROOTDIR.'/templates/admin/footer.tpl'))
 	      $smarty->assign('header',ROOTDIR.'/templates/admin/footer.tpl');
 	    else 
-	      $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
+	      $smarty->assign('footer', ALMIDONDIR . '/pub/themes/' . ALM_ADMIN_THEME . '/tpl/footer.tpl');
 	    $tpl = ROOTDIR . "/templates/admin/index.tpl";
 	  } else {
 	    if(file_exists(ROOTDIR.'/templates/admin/header.tpl'))
 	      $smarty->assign('header',ROOTDIR.'/templates/admin/header.tpl');
 	    else
-	      $smarty->assign('header', ALMIDONDIR . '/tpl/header.tpl');
+	      $smarty->assign('header', ALMIDONDIR . '/pub/themes/' . ALM_ADMIN_THEME . '/tpl/header.tpl');
 	    if(file_exists(ROOTDIR.'/templates/admin/footer.tpl'))
 	      $smarty->assign('header',ROOTDIR.'/templates/admin/footer.tpl');
 	    else
-	      $smarty->assign('footer', ALMIDONDIR . '/tpl/footer.tpl');
-	    $tpl = ALMIDONDIR . '/tpl/index.tpl';
+	      $smarty->assign('footer', ALMIDONDIR . '/pub/themes/' . ALM_ADMIN_THEME . '/tpl/footer.tpl');
+	    $tpl = ALMIDONDIR . '/pub/themes/' . ALM_ADMIN_THEME . '/tpl/index.tpl';
 	  }
 	}
   if (isset($_SESSION['credentials'][$object]))

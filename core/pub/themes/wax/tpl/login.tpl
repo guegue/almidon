@@ -1,17 +1,13 @@
+{capture name=alm_output}
 <?xml version="1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">  
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{include file=$smarty.const.ALMIDONDIR|cat:"/tpl/meta.tpl"}
 <title>almidon @ {$smarty.const.DOMAIN}</title>
-<link rel="stylesheet" href="{$smarty.const.URL}/almidon/themes/{$smarty.const.ALM_ADMIN_THEME}/css/admin_login.css" />
+{include file=$smarty.const.ALMIDONDIR|cat:"/tpl/css.tpl" login=true}
 <script language="javascript" type="text/javascript">
-{literal}
-function setFocus() {
-  document.loginForm.alm_user.select();
-  document.loginForm.alm_user.focus();
-}
-{/literal}
+{literal} function setFocus() {  document.loginForm.alm_user.select(); document.loginForm.alm_user.focus(); } {/literal}
 </script>
 </head>
 <body onload="setFocus();">
@@ -39,3 +35,6 @@ function setFocus() {
 </div>
 </body>
 </html>
+{/capture}
+{* Optimize the output *}
+{$smarty.capture.alm_output|strip}

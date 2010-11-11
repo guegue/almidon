@@ -1,3 +1,4 @@
+{capture name=alm_output}
 {include file="$header"}
 <table>
 {if $credentials eq 'full'}
@@ -55,3 +56,5 @@
 {/if}
 {/section}
 {include file="$footer"}
+{/capture}
+{$smarty.capture.alm_output|strip}
