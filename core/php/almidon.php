@@ -64,6 +64,11 @@ if ( ADMIN === true ) {
    */
   if ( !defined('ALM_ADMIN_THEME') ) define('ALM_ADMIN_THEME','wax');
   /*
+   * Defining the ADMIN COMPRESS OPTION
+   */
+  if ( !defined('ALM_ADMIN_COMPRESS') ) define('ALM_ADMIN_COMPRESS',true);
+  /*
+  /*
    * Loading global table definitions, (alm_*)
    */
   alm_require($almidondir . '/php/alm.tables.class.php');
@@ -90,7 +95,4 @@ foreach($classes as $key) {
  */
 function qdollar($value) {
   return str_replace('$', '\$', $value);
-}
-
-if ( ADMIN===true ) {
 }

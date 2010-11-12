@@ -1,4 +1,8 @@
 <?php
+# URL almidon
+if ( !defined('ALM_URI') )
+  define('ALM_URI','almidon');
+
 define('F', 
   '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
   {_OLDKEYS_}

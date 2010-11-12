@@ -145,7 +145,7 @@ function smarty_function_dataform($params, &$smarty) {
             if (preg_match('/pdf/i',$ext)) $_icon = 'pdf.png';
             if (preg_match('/xls/i',$ext)) $_icon = 'excel.png';
             if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
-            $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /><br />';
+            $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' . $_icon . '" alt="' . $_val  . '" border="0" /><br />';
           }
           $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
@@ -153,8 +153,8 @@ function smarty_function_dataform($params, &$smarty) {
         case 'img':
           $_tmp = '';
           $_icon = 'image.png';
-          $_tmp = '<img src="/cms/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
-          if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+          $_tmp = '<img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
+          if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
           $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
         case 'boolean':
@@ -312,7 +312,7 @@ function smarty_function_dataform($params, &$smarty) {
             if ($_p[$_pc - 1] == 'doc') $_icon = 'doc.png';
             if ($_p[$_pc - 1] == 'pdf') $_icon = 'pdf.png';
             if ($_p[$_pc - 1] == 'xls') $_icon = 'xls.png';
-            $_tmp = '<a title="' . $_val . '" href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
+            $_tmp = '<a title="' . $_val . '" href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
           } else {
             $_tmp = '--';
           }
@@ -320,9 +320,9 @@ function smarty_function_dataform($params, &$smarty) {
         case 'image':
           if ($_val) {
             if (THUMBNAILING)
-              $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+              $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
             else
-              $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL . '/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val . '" width="50" border="0" /></a>';
+              $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL . '/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val . '" width="50" border="0" /></a>';
           } else {
             $_tmp = '--';
           } 
@@ -394,7 +394,7 @@ function smarty_function_dataform($params, &$smarty) {
       $_paginate .= NEXT;
   }
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/almidon/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php')
+  if ($_SERVER['PHP_SELF'] == '/' . ALM_URI . '/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
