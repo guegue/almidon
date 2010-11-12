@@ -66,7 +66,7 @@ if ( ADMIN === true ) {
   /*
    * Defining the ADMIN COMPRESS OPTION
    */
-  if ( !defined('ALM_ADMIN_COMPRESS') ) define('ALM_ADMIN_COMPRESS',true);
+  if ( !defined('ALM_ADMIN_COMPRESS') ) define('ALM_ADMIN_COMPRESS',false);
   /*
   /*
    * Loading global table definitions, (alm_*)
