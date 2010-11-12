@@ -1,14 +1,14 @@
 {if $index!==true}
-<script language="JavaScript1.2" type="text/javascript" src="/almidon/js/common.js"></script>
-<script language="JavaScript1.2" type="text/javascript" src="/almidon/js/tools.js"></script>
+<script language="JavaScript1.2" type="text/javascript" src="{$smarty.const.URL}/{$smarty.const.ALM_URI}/js/common.js"></script>
+<script language="JavaScript1.2" type="text/javascript" src="{$smarty.const.URL}/{$smarty.const.ALM_URI}/js/tools.js"></script>
 {if $js_inc.html===true}
 <!-- Editor HTML WYSSYG -->
-<script language="JavaScript" type="text/javascript" src="/almidon/js/html/wysiwyg.js"></script>
+<script language="JavaScript" type="text/javascript" src="{$smarty.const.URL}/{$smarty.const.ALM_URI}/js/html/wysiwyg.js"></script>
 {/if}
 {if $js_inc.xhtml===true}
 <!-- Editor XHTML TinyMCE -->
 {if $smarty.const.ALM_TINY_COMPRESSOR!==false}
-<script type="text/javascript" src="/almidon/js/tiny_mce/tiny_mce_gzip.js"></script>
+<script type="text/javascript" src="{$smarty.const.URL}/{$smarty.const.ALM_URI}/js/tiny_mce/tiny_mce_gzip.js"></script>
 <script language="javascript" type="text/javascript">{literal}
 tinyMCE_GZ.init({
   	plugins : "paste,fullscreen",
@@ -21,7 +21,7 @@ tinyMCE_GZ.init({
 });
 {/literal}</script>
 {else}
-<script type="text/javascript" src="/almidon/js/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="{$smarty.const.URL}/{$smarty.const.ALM_URI}/js/tiny_mce/tiny_mce.js"></script>
 {/if}
 <script language="javascript" type="text/javascript">{literal}
 tinyMCE.init({
@@ -47,8 +47,8 @@ tinyMCE.init({
 {confirm_delete}
 {if $js_inc.autocomplete===true}
 <!-- Autocomplete -->
-<script type="text/javascript" src="/almidon/js/jquery.js"></script>
-<script type="text/javascript" src="/almidon/js/autocomplete/jquery.autocomplete.min.js"></script>
-<link rel="stylesheet" href="/almidon/js/autocomplete/jquery.autocomplete.css" />
+<script type="text/javascript" src="{$smarty.const.URL}/{$smarty.const.ALM_URI}/js/jquery.js"></script>
+<script type="text/javascript" src="{$smarty.const.URL}/{$smarty.const.ALM_URI}/js/autocomplete/jquery.autocomplete.min.js"></script>
+<link rel="stylesheet" href="{$smarty.const.URL}/{$smarty.const.ALM_URI}/js/autocomplete/jquery.autocomplete.css" />
 {/if}
 {/if}
