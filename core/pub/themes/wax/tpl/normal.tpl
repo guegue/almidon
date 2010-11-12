@@ -15,7 +15,7 @@
   {datagrid2 rows=$rows keys=$keys title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:10 paginate=true cmd=$cmd|default:true name=$object have_child=$have_child num_rows=$num_rows search=$search}
 {else}
   {if $rows}
-    {datagrid rows=$rows keys=$keys title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object num_rows=$num_rows search=$search}
+    {datagrid rows=$rows keys=$keys title=$title dd=$dd options=$options maxcols=$maxcols|default:5 maxrows=$maxrows|default:$smarty.const.MAXROWS paginate=true cmd=$cmd|default:true name=$object have_child=$have_child num_rows=$num_rows search=$search}
   {else}
     {$smarty.const.ALM_NODATA}
   {/if}

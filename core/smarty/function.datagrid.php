@@ -426,7 +426,11 @@ function smarty_function_datagrid($params, &$smarty)
       }
       if($_cols <= 3 || $parent) {
         if($_SESSION['credentials'][$table] == 'full' || $_SESSION['idalm_user'] === 'admin'){
-          $_dgcmd =  DGCMDR;
+          if ( $have_child ) {
+            $_dgcmd = DGCMDR;
+          } else {
+            $_dgcmd = DGCMDR;
+          }
         }elseif($_SESSION['credentials'][$table] == 'edit'){
           $_dgcmd =  DGCMDREDIT;
         }elseif($_SESSION['credentials'][$table] == 'delete'){
