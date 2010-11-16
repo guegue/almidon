@@ -60,6 +60,10 @@ alm_require(ROOTDIR . '/classes/tables.class.php');
 alm_require(ROOTDIR . '/classes/extra.class.php');
 if ( ADMIN === true ) {
   /*
+   * Defining the ALM URI By default whether it is defined in config.php
+   */
+  if (!defined('ALM_URI')) define('ALM_URI','almidon');
+  /*
    * Defining the ADMIN THEME
    */
   if ( !defined('ALM_ADMIN_THEME') ) define('ALM_ADMIN_THEME','wax');

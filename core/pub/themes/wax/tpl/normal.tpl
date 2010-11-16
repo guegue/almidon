@@ -1,6 +1,5 @@
 {capture name=alm_output}
 {include file="$header"}
-{debug}
 <table>
 {if $credentials eq 'full'}
 <tr valign="top">
