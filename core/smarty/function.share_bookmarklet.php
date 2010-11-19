@@ -44,13 +44,14 @@ function smarty_function_share_bookmarklet($params, &$smarty) {
   $networks = smarty_function_social_network_codes();
   $i = 0; $total = count($networks);
   foreach($networks as $key => $network) {
-   $i++;
-   $url = str_replace('[site]',rawurlencode($domain),$network['url']);
-   $url = str_replace('[siteurl]',rawurlencode($siteURL),$url);
-   $url = str_replace('[title]',rawurlencode($params['title']),$url);
-   $url = str_replace('[desc]',rawurlencode($params['desc']),$url);
-   $url = str_replace('[url]',rawurlencode($pageURL),$url);
-   $str .= '<li' . (($i==1&&$i<$total)?" class=\"first\"":(($i==$total&&$total!=1)?" class=\"last\"":"")) . '><a href="' . $url . '"'.($params['outside']!==false?" target=\"_blank\"":"").(!empty($network['js_events'])?" ".$network['js_events']:"").'><img src="' . (empty($params['path'])?"/" . ALM_URI . "/themes/" . ALM_ADMIN_THEME . "/img/networks/":$params['path']) . $network['image'] . '" alt="' . htmlentities($network['label'],ENT_COMPAT,"UTF-8") . '" title="' . htmlentities($network['label'],ENT_COMPAT,"UTF-8") . '" border="0" /></a></li>';
+    if ( $params[$key] === false ) { $total--; continue; }
+    $i++;
+    $url = str_replace('[site]',rawurlencode($domain),$network['url']);
+    $url = str_replace('[siteurl]',rawurlencode($siteURL),$url);
+    $url = str_replace('[title]',rawurlencode($params['title']),$url);
+    $url = str_replace('[desc]',rawurlencode($params['desc']),$url);
+    $url = str_replace('[url]',rawurlencode($pageURL),$url);
+    $str .= '<li' . (($i==1&&$i<$total)?" class=\"first\"":(($i==$total&&$total!=1)?" class=\"last\"":"")) . '><a href="' . $url . '"'.($params['outside']!==false?" target=\"_blank\"":"").(!empty($network['js_events'])?" ".$network['js_events']:"").'><img src="' . (empty($params['path'])?"/" . ALM_URI . "/themes/" . ALM_ADMIN_THEME . "/img/networks/":$params['path']) . $network['image'] . '" alt="' . htmlentities($network['label'],ENT_COMPAT,"UTF-8") . '" title="' . htmlentities($network['label'],ENT_COMPAT,"UTF-8") . '" border="0" /></a></li>';
   }
   $str .= "</ul>";
   return $str;
