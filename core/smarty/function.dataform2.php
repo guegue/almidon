@@ -227,7 +227,7 @@ function smarty_function_dataform2($params, &$smarty)
             if (preg_match('/pdf/i',$ext)) $_icon = 'pdf.png';
             if (preg_match('/xls/i',$ext)) $_icon = 'excel.png';
             if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
-            $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /><br />';
+            $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' . $_icon . '" alt="' . $_val  . '" border="0" /><br />';
           }
           $_tmp .= '[' . $max_size . ']<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
@@ -235,8 +235,8 @@ function smarty_function_dataform2($params, &$smarty)
         case 'img':
           $_tmp = '';
           $_icon = 'image.png';
-          $_tmp = '[' . $max_size . ']<input name="old_'.$_key.'" type="hidden" value="'.$_val.'" /><img src="/cms/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
-          if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+          $_tmp = '[' . $max_size . ']<input name="old_'.$_key.'" type="hidden" value="'.$_val.'" /><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
+          if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
           $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
         case 'boolean':
@@ -313,7 +313,7 @@ function smarty_function_dataform2($params, &$smarty)
             }
             if($dd[$_key]['extra']['autocomplete']) {
               $_tmp .= '<script type="text/javascript">
-                          $(\'#' . $_key . '\').autocomplete({ serviceUrl:' . ($dd[$_key]['extra']['autocomplete_sr']?$dd[$_key]['extra']['autocomplete_sr']:'\'/cms/js/autocomplete/autocomplete.php\'') . ', delimiter: /(,|;)\s*/, params: { table:\'' . ($dd[$_key]['extra']['autocomplete_tb']?$dd[$_key]['extra']['autocomplete_tb']:$table) . '\', field:\'' . ($dd[$_key]['extra']['autocomplete_fd']?$dd[$_key]['extra']['autocomplete_fd']:($dd[$_key]['extra']['autocomplete_tb']?$dd[$_key]['extra']['autocomplete_tb']:$_key)) . '\' } });
+                          $(\'#' . $_key . '\').autocomplete({ serviceUrl:' . ($dd[$_key]['extra']['autocomplete_sr']?$dd[$_key]['extra']['autocomplete_sr']:'\'' . URL . '/' . ALM_URI . '/js/autocomplete/autocomplete.php\'') . ', delimiter: /(,|;)\s*/, params: { table:\'' . ($dd[$_key]['extra']['autocomplete_tb']?$dd[$_key]['extra']['autocomplete_tb']:$table) . '\', field:\'' . ($dd[$_key]['extra']['autocomplete_fd']?$dd[$_key]['extra']['autocomplete_fd']:($dd[$_key]['extra']['autocomplete_tb']?$dd[$_key]['extra']['autocomplete_tb']:$_key)) . '\' } });
                         </script>';
             }
           }
@@ -352,7 +352,7 @@ function smarty_function_dataform2($params, &$smarty)
                 $_tmp = preg_replace("/_CHANGE_/", "updateCombo('$_key', '".$dd[$_key]['extra']['son']."', null)", $_tmp);
               else
                 $_tmp = preg_replace("/_CHANGE_/", "", $_tmp);
-              if($dd[$_key]['extra']['open_popup']) $_tmp .= '&nbsp;<a href="javascript:openPopUp(\'/cms/query.php?f='.$dd[$_key]['references'].'&action=record&'.$_key.'=\'+document.forms[\'new\'].'.$_key.'.value,'.$dd[$_key]['extra']['height'].','.$dd[$_key]['extra']['width'].');">consultar</a>';
+              if($dd[$_key]['extra']['open_popup']) $_tmp .= '&nbsp;<a href="javascript:openPopUp(\'' . URL . '/' . ALM_URI . '/query.php?f='.$dd[$_key]['references'].'&action=record&'.$_key.'=\'+document.forms[\'new\'].'.$_key.'.value,'.$dd[$_key]['extra']['height'].','.$dd[$_key]['extra']['width'].');">consultar</a>';
               if($dd[$_key]['extra']['depend'])
                 $_tmp .= "<script>updateCombo('".$dd[$_key]['extra']['depend']."', '$_key', '$_selected')</script>";
             }
@@ -427,7 +427,7 @@ function smarty_function_dataform2($params, &$smarty)
               $vs = $unserializer->getUnserializedData();
 	    }
 	    //	-----
-	    $_tmp = '<a href="javascript:openwindow(\''. URL .'/cms/video.php?src='.$vs['src'].'&type='.$vs['tipo'].'\',400,333)"><img src="/cms/img/'.$vs['tipo'].'.png" alt="'.$a_vs[$vs['tipo']].'" title="'.$a_vs[$vs['tipo']].'" border="0" /></a>';
+	    $_tmp = '<a href="javascript:openwindow(\''. URL .'/' . ALM_URI . '/video.php?src='.$vs['src'].'&type='.$vs['tipo'].'\',400,333)"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/'.$vs['tipo'].'.png" alt="'.$a_vs[$vs['tipo']].'" title="'.$a_vs[$vs['tipo']].'" border="0" /></a>';
 	  } else
 	    $_tmp = '--';
 	  break;
@@ -441,7 +441,7 @@ function smarty_function_dataform2($params, &$smarty)
             if ($_p[$_pc - 1] == 'doc') $_icon = 'doc.png';
             if ($_p[$_pc - 1] == 'pdf') $_icon = 'pdf.png';
             if ($_p[$_pc - 1] == 'xls') $_icon = 'xls.png';
-            $_tmp = '<a title="' . $_val . '" href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
+            $_tmp = '<a title="' . $_val . '" href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
           } else {
             $_tmp = '--';
           }
@@ -449,9 +449,9 @@ function smarty_function_dataform2($params, &$smarty)
         case 'image':
           if ($_val) {
             if (THUMBNAILING)
-              $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="' . URL . '/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+              $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="' . URL . '/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
             else
-              $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val . '" width="50" border="0" /></a>';
+              $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val . '" width="50" border="0" /></a>';
           } else {
             $_tmp = '--';
           } 
@@ -532,7 +532,7 @@ function smarty_function_dataform2($params, &$smarty)
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
 
   $_referer = preg_replace("/\//", "\/", $_SERVER['PHP_SELF']);
-  if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']) || $is_child || $_SERVER['PHP_SELF'] == '/cms/query.php') {
+  if ( preg_match("/$_referer/", $_SERVER['HTTP_REFERER']) || $is_child || $_SERVER['PHP_SELF'] == '/cms/query.php' || $_SERVER['PHP_SELF'] == '/' . ALM_URI . '/query.php') {
     $_referer = $_SERVER['PHP_SELF'];
   } else {
     if(defined('SELF'))  $_referer = SELF;
@@ -540,7 +540,7 @@ function smarty_function_dataform2($params, &$smarty)
   }
   if($is_child)  $_referer .= '?action=close';
   // Si es el popup de consulta
-  if($_SERVER['PHP_SELF'] == '/cms/query.php') {  $_referer .= '?action=close'; }
+  if( $_SERVER['PHP_SELF'] == '/cms/query.php' || $_SERVER['PHP_SELF'] == '/' . ALM_URI . '/query.php' ) {  $_referer .= '?action=close'; }
   
   $_html_result = preg_replace("/_REFERER_/", $_referer, $_html_result);
   $_html_result = preg_replace("/_KEY_/", $key, $_html_result);

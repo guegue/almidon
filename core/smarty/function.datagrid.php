@@ -146,14 +146,14 @@ function smarty_function_datagrid($params, &$smarty)
         $_field = $_key;
       }
       if ($_SESSION[$name . 'sort'] == $_field) {
-        $_img = '<img src="/cms/img/up.gif" border="0" />';
+        $_img = '<img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/up.gif" border="0" />';
         $_html_header = preg_replace("/_DESC_/", ' desc', $_html_header);
         $_html_header = preg_replace("/_SORTIMG_/", $_img, $_html_header);
       } else {
         $_html_header = preg_replace("/_DESC_/", '', $_html_header);
       }
       if ($_SESSION[$name . 'sort'] == $_field . ' desc') {
-        $_img = '<img src="/cms/img/down.gif" border="0" />';
+        $_img = '<img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/down.gif" border="0" />';
         $_html_header = preg_replace("/_SORTIMG_/", $_img, $_html_header);
       } else {
         $_html_header = preg_replace("/_SORTIMG_/", '', $_html_header);
@@ -222,7 +222,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'image':
           case 'img':
             $_tmp = '';
-            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> ' . ALM_KEEP_FILE . ' (' . $_val . ')<br /><img src="'.URL.'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+            if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> ' . ALM_KEEP_FILE . ' (' . $_val . ')<br /><img src="'.URL.'/' . ALM_URI . '/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
             $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
             break;
           case 'time':
@@ -377,7 +377,7 @@ function smarty_function_datagrid($params, &$smarty)
               if (preg_match('/pdf/i',$ext)) $_icon = 'pdf.png';
               if (preg_match('/xls/i',$ext)) $_icon = 'excel.png';
               if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
-              $_tmp = '<a href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
+              $_tmp = '<a href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
             } else {
               $_tmp = '--';
             }
@@ -385,7 +385,7 @@ function smarty_function_datagrid($params, &$smarty)
           case 'image':
             if ($_val) {
               if (THUMBNAILING)
-                $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+                $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
               else
                 $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="/_' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" height="20" border="0" /></a>';
             } else {
@@ -394,10 +394,10 @@ function smarty_function_datagrid($params, &$smarty)
             break;
           case 'order':
             $_tmp = '';
-            if ($_SESSION[$name . 'first'] != $row[$key]) $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=up&key=' . $_key . '"><img src="/cms/img/up.gif" border="0"/></a>';
+            if ($_SESSION[$name . 'first'] != $row[$key]) $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=up&key=' . $_key . '"><img src="' . URI . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/up.gif" border="0"/></a>';
             if ($_SESSION[$name . 'last'] != $row[$key]) {
               if(!empty($_tmp)) $tmp = ' ';
-              $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=down&key=' . $_key . '"><img src="/cms/img/down.gif" border="0"/></a>';
+              $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=down&key=' . $_key . '"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/down.gif" border="0"/></a>';
             }
             if(empty($_tmp)) $_tmp = '--';
             break;
@@ -514,7 +514,7 @@ function smarty_function_datagrid($params, &$smarty)
   $_html_result = preg_replace("/_PARENT_/", $parent, $_html_result);
   $_html_result = preg_replace("/_PARENTID_/", $parentid, $_html_result);
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/almidon/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php')
+  if ($_SERVER['PHP_SELF'] == '/' . ALM_URI . '/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
