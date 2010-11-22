@@ -28,6 +28,10 @@ function checking_include($file) {
 }
 
 function alm_require($file) {
+  # Reloading any global var, except predefined ones
+  foreach($GLOBALS as $key => $val) {
+    if(!in_array($key,array('GLOBALS','_POST','_GET','_COOKIE','_FILES','_SERVER','_SESSION','_ENV'))) { global $$key; }
+  }
   if ( ADMIN !== true ) {
     require_once $file;
   } elseif ( checking_include($file) ) {
