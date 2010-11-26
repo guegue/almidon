@@ -134,8 +134,13 @@ function smarty_function_dataform($params, &$smarty) {
       $_end_year = "+10";
       switch ($dd[$_key]['type']) {
         case 'auto':
-          if($dd[$_key]['extra']['default']) $_tmp = '<span class="auto">' . $dd[$_key]['extra']['default'] . '</span>';
-          else $_tmp = !empty($_val)?$_val:'';
+          if($dd[$_key]['extra']['default']) {
+            if ( !empty($options[$_key]) )
+              $_val = $options[$_key][trim($dd[$_key]['extra']['default'])];
+            else
+              $_val = $dd[$_key]['extra']['default'];
+            $_tmp = '<span class="auto">' . $_val . '</span>';
+          } else $_tmp = !empty($_val)?$_val:'';
           break;
         case 'file':
           $_tmp = '';
