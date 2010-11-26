@@ -34,7 +34,5 @@ define('ALM_DELETE_SCRIPT', "
 ");
 
 function smarty_function_confirm_delete($params, &$smarty) {
-  require_once $smarty->_get_plugin_filepath('modifier','strip');
-
-  return smarty_modifier_strip(ALM_DELETE_SCRIPT);
+  return ALM_DELETE_SCRIPT;
 }

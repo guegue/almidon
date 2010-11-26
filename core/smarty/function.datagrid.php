@@ -426,8 +426,8 @@ function smarty_function_datagrid($params, &$smarty)
       }
       if($_cols <= 3 || $parent) {
         if($_SESSION['credentials'][$table] == 'full' || $_SESSION['idalm_user'] === 'admin'){
-          if ( $have_child ) {
-            $_dgcmd = DGCMDR;
+          if ( $is_child ) {
+            $_dgcmd = DGCMD_det;
           } else {
             $_dgcmd = DGCMDR;
           }
@@ -456,6 +456,10 @@ function smarty_function_datagrid($params, &$smarty)
         $key_id_url[] = $val .'='. $row[$val];
         $key_id_js[] = "'$val':'".$row[$val]."'";
         $ids[] = "'".$row[$val]."'";
+      }
+      /* If it has a child, set parent keys */
+      if ( !empty($parent) ) {
+        $key_id_js[] = "'$parent':'".$row[$parent]."'";
       }
       $_html_cmd = preg_replace("/{_KEY=ID_}/", join('&amp;',$key_id_url), $_dgcmd);
       $_html_cmd = preg_replace("/{_KEY:ID_}/", '{' . join(',',$key_id_js) .'}', $_html_cmd);

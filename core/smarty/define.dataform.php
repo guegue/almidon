@@ -6,6 +6,7 @@ if ( !defined('ALM_URI') )
 define('F', 
   '<form action="_SELF_" method="post" name="_FORM_" enctype="multipart/form-data">
   {_OLDKEYS_}
+  {_PRESET_}
   <input type="hidden" name="f" value="_FORM_"/>
   <input type="hidden" name="o" value="_OBJECT_"/>
   <input type="hidden" name="action" value="_ACTION_"/>

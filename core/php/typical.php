@@ -166,7 +166,7 @@ if(isset($$object->child)) {
 		'_options' => fillOpt($$obj),
 		'rows' => $$obj->readDataFilter($filter),
 		'dd' => $$obj->dd,
-		'key' => $$obj->key,
+		'keys' => $$obj->keys,
 		'title' => $$obj->title,
 		#'maxrows'=> $$obj->maxrows,
 		#'maxcols'=> $$obj->maxcols,

@@ -9,7 +9,7 @@ define('DSL','Resultados para <b>_DSQUERY_</b> [<a href="_SELF_?action=clear">' 
 define('DSLABEL','<label for="_FIELD_">_LABEL_</label>');
 # end
 # para las tablas detalle
-define('DGCMD_det', '<td class="dgcmd"><a class="dgcmd_link" href="javascript:openwindow(\'./_FORM_.php?parent=_PARENT_=_PARENTID_&amp;f=_FORM_&amp;action=record&amp;_KEY_={_ID_}\');"><img src="/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete_det(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a></td>');
+define('DGCMD_det', '<td class="dgcmd"><a class="dgcmd_link" href="javascript:openwindow(\'./_FORM_.php?parent=_PARENT_&_PARENT_=_PARENTID_&amp;f=_FORM_&amp;action=record&amp;{_KEY=ID_}\');"><img src="/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete_det(\'_FORM_\',{_KEY:ID_},{_IDS_});"><img src="/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a></td>');
 
 define('DGSEARCH', '<form method="get"><input type="hidden" name="action" value="search" />
 <input type="text" name="q" value="{_Q_}" /><input type="submit" name="search" value="'.ALM_SEARCH_LB.'"/></form>');

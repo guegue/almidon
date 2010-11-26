@@ -47,6 +47,7 @@ function smarty_function_dataform($params, &$smarty) {
   $edit = false;
   $table = null;
   $preset = null;
+  $is_child = false;
   
   $extra = '';
   foreach($params as $_key => $_val) {
@@ -64,6 +65,7 @@ function smarty_function_dataform($params, &$smarty) {
         $$_key = (array)$_val;
         break;
       case 'paginate':
+      case 'is_child':
       case 'edit':
         $$_key = (bool)$_val;
         break;
@@ -248,7 +250,10 @@ function smarty_function_dataform($params, &$smarty) {
         case 'references':
           if ($_preset[$_key]) {
             $_tmp = '<input type="hidden" name="' . $_key . '" value="' . $_selected . '" />';
-            $_tmp .= $_selected;
+            if ($options[$_key])
+              $_tmp .= $options[$_key][$_selected];
+            else
+              $_tmp .= $_selected;
           } else {
             $_options = $options[$_key];
             $_tmp = smarty_function_html_options(array('options'=>$_options, 'selected'=>$_selected), $smarty);
@@ -347,7 +352,7 @@ function smarty_function_dataform($params, &$smarty) {
             $_val = $_options[trim($_val)];
           }
           if($_preset[$_key]) {
-            $_tmp = '';
+            $_tmp = $_val;
             if(!empty($_pre))   $_pre .= ',';
             $_pre .= $_key .'='.$_preset[$_key];
           } else {
@@ -361,6 +366,7 @@ function smarty_function_dataform($params, &$smarty) {
       $hidden = false;
     }
     $_html_cmd = preg_replace("/{_ID_}/", $row[$key], FCMD);
+    if(!empty($_pre)) $_pre = '<input type="hidden" name="preset" value="' .$_pre . '" />';
   }
   if ($type == 2) { $_html_cmd = FCMDADD; $action = "add"; }
   if ($type == 1) { $_html_cmd = FCMDMOD; $action = "save"; }
@@ -383,7 +389,7 @@ function smarty_function_dataform($params, &$smarty) {
   foreach($keys as $val) 
     $oldkeys.= '<input type="hidden" name="alm_old_'.$val.'" value="'.$row[$val].'" />';
   $_f = preg_replace("/{_OLDKEYS_}/", $oldkeys, $_f);
-  $_f = preg_replace('/_PRESET_/',$_pre,$_f);
+  $_f = preg_replace('/{_PRESET_}/',$_pre,$_f);
   $_html_result = preg_replace("/_FHEADER_/", $_html_labels, $_f);
   if ($cmd)
     $_html_result = preg_replace("/_FHEADERCMD_/", FHEADERCMD, $_html_result);
@@ -403,16 +409,22 @@ function smarty_function_dataform($params, &$smarty) {
       $_paginate .= NEXT;
   }
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/' . ALM_URI . '/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php')
+  if ($_SERVER['PHP_SELF'] == '/' . ALM_URI . '/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php') {
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
-  else
+  } else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
+
   $_referer = preg_replace("/\//", "\/", $_SERVER['PHP_SELF']);
   
-  if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']))
+  if (preg_match("/$_referer/", $_SERVER['HTTP_REFERER']) || $is_child)
     $_referer = $_SERVER['PHP_SELF'];
   else
-    $_referer = $_SERVER['HTTP_REFERER'];
+    if ( defined('SELF') )
+      $_referer = SELF;
+    else
+      $_referer = $_SERVER['HTTP_REFERER'];
+
+  if($is_child)  $_referer .= '?action=close';
   
   $_html_result = preg_replace("/_REFERER_/", $_referer, $_html_result);
   $_html_result = preg_replace("/_KEY_/", $key, $_html_result);
@@ -437,8 +449,5 @@ function smarty_function_dataform($params, &$smarty) {
   	  unset($_SESSION['accion']);
   } 
   
-  
-  
   return $_html_result;
-
 }

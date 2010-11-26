@@ -84,8 +84,11 @@ if(isset($_SESSION['idalm_user'])) {
 	  $ot = $object . 'Table';
 	  $$object = new $ot;
 
+    if (isset($_SESSION['credentials'][$object]))
+      $smarty->assign('credentials',$_SESSION['credentials'][$object]);
+
 	  #If I'm a child (not the master table)
-	  if(!empty($$object->parent)) {
+	  if($$object->is_detail) {
 	    require(ALMIDONDIR . '/php/child.php');
 	    exit();
 	  }
@@ -134,8 +137,6 @@ if(isset($_SESSION['idalm_user'])) {
 	    $tpl = ALMIDONDIR . '/pub/themes/' . ALM_ADMIN_THEME . '/tpl/index.tpl';
 	  }
 	}
-  if (isset($_SESSION['credentials'][$object]))
-    $smarty->assign('credentials',$_SESSION['credentials'][$object]);
 	require (ALMIDONDIR . '/php/createlinks.php');
 
 	# Display object's forms (or index)
