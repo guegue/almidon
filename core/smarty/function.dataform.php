@@ -118,7 +118,7 @@ function smarty_function_dataform($params, &$smarty) {
       if (isset($dd[$_key]['extra']['role']) && $dd[$_key]['extra']['role'] !== $_SESSION['idalm_role']) {
         $dd[$_key]['type'] = 'hidden';
       }
-      if ($dd[$_key]['references'] && $dd[$_key]['type'] != 'hidden') {
+      if ($dd[$_key]['references'] && !in_array($dd[$_key]['type'],array('hidden','auto')) ) {
         if ($_preset[$_key]) {
           $_selected = $_preset[$_key];
         } else {
@@ -133,6 +133,10 @@ function smarty_function_dataform($params, &$smarty) {
       $_start_year = "-10";
       $_end_year = "+10";
       switch ($dd[$_key]['type']) {
+        case 'auto':
+          if($dd[$_key]['extra']['default']) $_tmp = '<span class="auto">' . $dd[$_key]['extra']['default'] . '</span>';
+          else $_tmp = !empty($_val)?$_val:'';
+          break;
         case 'file':
           $_tmp = '';
           if ($_val) {

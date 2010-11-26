@@ -4,7 +4,7 @@
     $skipped_cols = 0;
     $values = "";
     foreach($this->definition as $column) {
-      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'serial')
+      if ($n > 0 && !in_array($column['type'],array('external','auto','serial','order')) )
         $values .= ",";
       switch($column['type']) {
       	case 'external':

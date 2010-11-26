@@ -2,11 +2,15 @@
     $n = 0;
     $values = '';
     foreach($this->definition as $column) {
-      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'serial')
+      if ($n > 0 && !in_array($column['type'],array('external','serial','order')) && !($column['type']=='auto'&&empty($column['extra']['default'])))
         $values .= ",";
       switch($column['type']) {
-      	case 'external':
       	case 'auto':
+          if(!empty($column['extra']['default'])) {
+            $values .= "'".$column['extra']['default']."'";
+            break;
+          }
+      	case 'external':
       	case 'serial':
         #FIXME: usamos order???
         case 'order':
