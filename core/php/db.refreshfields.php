@@ -13,7 +13,7 @@
       }
       if ($ns > 0 && !in_array($column['type'],array('external','serial','order')) && !($column['type']=='auto'&&empty($column['extra']['default'])) )
         $this->fields_noserial .= ",";
-      if (in_array($column['type'],array('external','order','serial')) && ($column['type']=='auto'&&empty($column['extra']['default'])))
+      if (in_array($column['type'],array('external','order','serial')) || ($column['type']=='auto'&&empty($column['extra']['default'])))
         $ns--;
       else 
         $this->fields_noserial .= $column['name'];
