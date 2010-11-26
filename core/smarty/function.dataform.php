@@ -170,13 +170,13 @@ function smarty_function_dataform($params, &$smarty) {
             if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
             $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' . $_icon . '" alt="' . $_val  . '" border="0" /><br />';
           }
-          $_tmp .= '[' . $max_size . '] <input type="file" name="' . $_key . '" value="' .$_val . '" />';
+          $_tmp .= '[' . ALM_MAXIMUM . ' ' . $max_size . '] <input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;
         case 'image':
         case 'img':
           $_tmp = '';
           $_icon = 'image.png';
-          $_tmp = '[' . $max_size . '] <img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
+          $_tmp = '[' . ALM_MAXIMUM . ' ' . $max_size . '] <img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' .$_icon . '" border="0" alt="Imagen" title="Imagen" />';
           if ($_val) $_tmp .= '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL . '/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
           $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
           break;

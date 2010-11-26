@@ -14,6 +14,7 @@ define('ALM_NEXT_LB','Pr&oacute;ximo');
 define('ALM_PREV_LB','Previo');
 define('ALM_OPT_LB','Opciones');
 define('ALM_MAX','maximizar');
+define('ALM_MAXIMUM','max.');
 define('ALM_ADD_LB','Agregar');
 define('ALM_REC_LB','registros');
 define('ALM_DEL_LB','Borrar');
