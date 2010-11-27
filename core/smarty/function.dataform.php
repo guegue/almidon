@@ -421,9 +421,12 @@ function smarty_function_dataform($params, &$smarty) {
       $_paginate .= NEXT;
   }
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/' . ALM_URI . '/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php') {
+
+  $params = preg_split('/\//',$_SERVER['PHP_SELF']);
+  $page = $params[count($params) - 1];
+  if ($page == '404.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
-  } else
+  else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
 
   $_referer = preg_replace("/\//", "\/", $_SERVER['PHP_SELF']);
