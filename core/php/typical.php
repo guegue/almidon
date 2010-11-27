@@ -136,6 +136,7 @@ $child = array();
 if(isset($$object->child)) {
   $smarty->assign('have_child', true);
   $classes = preg_split('/,/',$$object->child);
+  $fkey = $$object->key?$$object->key:$$object->keys[0];
   foreach ($classes as $class) {
     $obj = trim($class);
     $ot = $obj.'Table';
@@ -149,7 +150,7 @@ if(isset($$object->child)) {
             $tmp = $$obj->readRecord();
             $$obj->deleteRecord();
             //$smarty->clear_all_cache();
-            header('Location: ./'.$object.'.php?f='.$object.'&action=record&'.$$object->key.'='.$tmp[$$object->key]);
+            header('Location: ./'.$object.'.php?f='.$object.'&action=record&'.$fkey.'='.$tmp[$fkey]);
           }
         } else {
           die("SEGURIDAD: Credenciales no tienen sentido!");
@@ -157,12 +158,12 @@ if(isset($$object->child)) {
       break;
     }
     if(isset($row)) {
-      $filter = "$obj.".$$object->key." = '".$row[$$object->key]."'";
+      $filter = "$obj.".$fkey." = '".$row[$fkey]."'";
       $child[] = array (
 		'name' => $obj,
 		'_ftable' => $object,
-		'_fkey' => $$object->key,
-		'_fkey_value' => $$object->request[$$object->key],
+		'_fkey' => $fkey,
+		'_fkey_value' => $$object->request[$fkey],
 		'_options' => fillOpt($$obj),
 		'rows' => $$obj->readDataFilter($filter),
 		'dd' => $$obj->dd,
