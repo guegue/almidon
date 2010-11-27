@@ -518,10 +518,14 @@ function smarty_function_datagrid($params, &$smarty)
   $_html_result = preg_replace("/_PARENT_/", $parent, $_html_result);
   $_html_result = preg_replace("/_PARENTID_/", $parentid, $_html_result);
   $_html_result = preg_replace("/_PAGINATE_/", $_paginate, $_html_result);
-  if ($_SERVER['PHP_SELF'] == '/' . ALM_URI . '/404.php' || $_SERVER['PHP_SELF'] == '/cms/404.php')
+
+  $params = preg_split('/\//',$_SERVER['PHP_SELF']);
+  $page = $params[count($params) - 1];
+  if ($page == '404.php' || $page == '404c.php')
     $_html_result = preg_replace("/_SELF_/", SELF, $_html_result);
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
+
   $akeys = null;
   foreach($keys as $val)
     $akeys[] = "'".$val."'";
