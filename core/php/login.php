@@ -17,7 +17,7 @@ if ($_POST && !isset($_SESSION)) {
   error_log("ALM: No hay soporte para sesiones.");
   $smarty->assign('sError', true);
   $tpl = 'login';
-  $smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');	
+  $smarty->display(ALMIDONDIR.'/pub/themes/' . ALM_ADMIN_THEME . '/tpl/' . $tpl . '.tpl');	
   exit;
 }
 $_SESSION['session'] = 1;
@@ -59,9 +59,9 @@ if(!empty($_POST)) {
       error_log("ALM AUTH: Wrong auth data for user " . $_POST['alm_user']);
     $tpl = 'login';
     $smarty->assign('bError', true);
-    $smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');	
+    $smarty->display(ALMIDONDIR.'/pub/themes/' . ALM_ADMIN_THEME . '/tpl/' . $tpl . '.tpl');	
   }
 } else {
   $tpl = 'login';
-  $smarty->display(ALMIDONDIR.'/tpl/' . $tpl . '.tpl');
+  $smarty->display(ALMIDONDIR.'/pub/themes/' . ALM_ADMIN_THEME . '/tpl/' . $tpl . '.tpl');
 }

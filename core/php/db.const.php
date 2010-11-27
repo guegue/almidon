@@ -16,8 +16,11 @@ if (!defined('ALMIDONDIR')) {
   define ('ALMIDONDIR', $almidondir);
 }
 
-# Use Almidon's PHP and Almidon's PEAR
-set_include_path(get_include_path() . PATH_SEPARATOR . ALMIDONDIR . '/php' . PATH_SEPARATOR . ALMIDONDIR . '/php/pear' . PATH_SEPARATOR . ALMIDONDIR . '/include.d');
+# Use Almidon's PHP and Almidon's PEAR, If you want to Erase the current include path, set this const FALSE, by default it is true
+if( defined('ALM_KEEP_INCPATH') && ALM_KEEP_INCPATH===false )
+  set_include_path(ALMIDONDIR . '/php/pear:'.ALMIDONDIR.'/php:'.ALMIDONDIR.'/include.d');
+else # First this almidon instalation include path, later the include path user had
+  set_include_path(ALMIDONDIR . '/php' . PATH_SEPARATOR . ALMIDONDIR.'/php/pear' . PATH_SEPARATOR . ALMIDONDIR.'/include.d' . PATH_SEPARATOR . get_include_path());
 
 # Other constants... define if not defined
 /**

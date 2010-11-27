@@ -2,7 +2,6 @@
 class paginaTable extends Table {
   function paginaTable() {
     $this->Table('pagina');
-    $this->key = 'idpagina';
     $this->title ='Paginas';
     $this->order ='pagina';
     $this->addColumn('idpagina','serial',0,1,0,'ID');
@@ -14,7 +13,6 @@ class paginaTable extends Table {
 class docTable extends Table {
   function docTable() {
     $this->Table('doc');
-    $this->key = 'iddoc';
     $this->title ='Documentos';
     $this->order ='doc';
     $this->addColumn('iddoc','serial',0,1,0,'ID');
@@ -27,7 +25,6 @@ class docTable extends Table {
 class enlaceTable extends Table {
   function enlaceTable() {
     $this->Table('enlace');
-    $this->key = 'idenlace';
     $this->title ='Enlaces';
     $this->order ='enlace';
     $this->addColumn('idenlace','serial',0,1,0,'ID');
@@ -40,7 +37,6 @@ class enlaceTable extends Table {
 class galeriaTable extends Table {
   function galeriaTable() {
     $this->Table('galeria');
-    $this->key = 'idgaleria';
     $this->title ='Galerias';
     $this->order ='galeria';
     $this->addColumn('idgaleria','serial',0,1,0,'ID');
@@ -51,7 +47,6 @@ class galeriaTable extends Table {
 class fotoTable extends Table {
   function fotoTable() {
     $this->Table('foto');
-    $this->key = 'idfoto';
     $this->title ='Fotos';
     $this->order ='foto';
     $this->addColumn('idfoto','serial',0,1,0,'ID');
@@ -63,7 +58,6 @@ class fotoTable extends Table {
 class agendaTable extends Table {
   function agendaTable() {
     $this->Table('agenda');
-    $this->key = 'idagenda';
     $this->title ='Agenda';
     $this->order ='agenda';
     $this->addColumn('idagenda','serial',0,1,0,'ID');
@@ -77,15 +71,32 @@ class agendaTable extends Table {
 class noticiaTable extends Table {
   function noticiaTable() {
     $this->Table('noticia');
-    $this->key = 'idnoticia';
     $this->title ='Noticias';
     $this->order ='fecha';
-    $this->addColumn('fotocdn','image',0,0,0,'Foto grande',array('help'=>'Foto a ser puesta en repositorio CDN','cdn'=>true));
-    $this->addColumn('archivo','file',0,0,0,'Archivo CDN',array('help'=>'Archivo a guardar en CDN','cdn'=>true));
     $this->addColumn('idnoticia','serial',0,1,0,'ID');
-    $this->addColumn('noticia','varchar',500,0,0,'Titulo',array('search'=>true));
+    $this->addColumn('noticia','varchar',500,0,0,'Titulo');
     $this->addColumn('fecha','datenull',0,0,0,'Fecha');
-    $this->addColumn('foto','image',0,0,0,'Foto');
     $this->addColumn('texto','text',0,0,0,'Texto');
+    $this->addColumn('foto','image',0,0,0,'Foto');
+  }
+}
+class emailTable extends Table {
+  function emailTable() {
+    $this->Table('email');
+    $this->title ='Email';
+    $this->order ='login,domain,ctld';
+    $this->addColumn('login','varchar',32,1,0,'Login',array('search'=>true));
+    $this->addColumn('domain','varchar',128,1,0,'Domain',array('search'=>true));
+    $this->addColumn('ctld','varchar',8,1,0,'cTLD');
+    $this->addColumn('observaciones','text',0,0,0,'cTLD');
+  }
+}
+class countryTable extends Table {
+  function countryTable() {
+    $this->Table('country');
+    $this->title ='Country';
+    $this->order ='country';
+    $this->addColumn('idcountry','char',2,1,0,'Pais');
+    $this->addColumn('country','varchar',200,0,0,'Pais',array('search'=>true));
   }
 }

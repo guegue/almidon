@@ -31,16 +31,11 @@
 
 include dirname(__FILE__) . '/shared.lang.php';
 require(dirname(__FILE__) . '/define.datagrid.php');
-define('DGCMD', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'. ALM_DEL_LB .'"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
 //para las tablas detalle
-define('DGCMD_det', '<td class="dgcmd"><a class="dgcmd_link" href="javascript:openwindow(\'./_FORM_.php?parent=_PARENT_=_PARENTID_&amp;f=_FORM_&amp;action=record&amp;_KEY_={_ID_}\');"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete_det(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a></td>');
-define('DGCMDR', '<td class="dgcmd"><a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a> <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;action=mod&amp;_KEY_={_ID_}&amp;_PARENT_=_PARENTID_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
-define('DGCMD_NOSHORT_EDIT', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="/cms/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'. ALM_DEL_LB .'"/></a></td>');
+define('DGCMD_det', '<td class="dgcmd"><a class="dgcmd_link" href="javascript:openwindow(\'./_FORM_.php?parent=_PARENT_=_PARENTID_&amp;f=_FORM_&amp;action=record&amp;_KEY_={_ID_}\');"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete_det(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a></td>');
+define('DGCMD_NOSHORT_EDIT', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete(\'_FORM_\',\'_KEY_\',\'{_ID_}\',\'{_ID_}\');"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/delete.png" height="16" width="16" border="0" title="'. ALM_DEL_LB .'" alt="'. ALM_DEL_LB .'"/></a></td>');
 //para las tablas detalle
-define('DGCMD2', '<td class="dgcmd"><a class="dgcmd_link" href="_SELF_?f=_FORM_&amp;action=record&amp;_KEY1_=_ID1_&amp;_KEY2_=_ID2_"><img src="/cms/img/view.png" border="0" title="'. ALM_VIEW_LB .'" alt="'. ALM_VIEW_LB .'"/></a> <a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a> <a href="_SELF_?f=_FORM_&amp;action=mod&amp;_KEY1_=_ID1_&amp;_KEY2_=_ID2_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
-define('DGCMD2R', '<td class="dgcmd"><a href="javascript:confirm_delete2(\'_FORM_\',\'_KEY1_\',\'_KEY2_\',\'_ID1_\',\'_ID2_\',\'_ID1_ / _ID2_ \');"><img src="/cms/img/delete.png" border="0" title="'. ALM_DEL_LB .'" alt="' . ALM_DEL_LB . '"/></a> <a href="_SELF_?f=_FORM_&amp;action=mod&amp;_KEY1_=_ID1_&amp;_KEY2_=_ID2_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/edit.png" border="0" title="'. ALM_EDIT_LB .'" alt="'. ALM_EDIT_LB .'"/></a></td>');
-define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_&amp;_PARENT_=_PARENTID_"><img src="/cms/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'. ALM_CAN_LB .'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'. ALM_SAVE_LB .'"></a></td>');
-define('DGCMD2MOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&amp;_KEY1_=_ID1_&amp;_KEY2_=_ID2_&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_"><img src="/cms/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'. ALM_CAN_LB .'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="/cms/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'. ALM_SAVE_LB .'"></a></td>');
+define('DGCMDMOD', '<td class="dgcmd"><a href="_SELF_?f=_FORM_&amp;_KEY_={_ID_}&amp;_FORM_pg=_PG_&amp;_FORM_sort=_SORT_&amp;_PARENT_=_PARENTID_"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/cancel.png" border="0" title="'. ALM_CAN_LB .'" alt="'. ALM_CAN_LB .'"></a> <a href="javascript:postBack(document._FORM_, \'dgsave\');"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/save.png" border="0" title="'. ALM_SAVE_LB .'" alt="'. ALM_SAVE_LB .'"></a></td>');
 define('PREV','<a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_SORT_&amp;_FORM_pg=_PGPREV_">&lt; '. ALM_PREV_LB .'</a> |');
 define('NEXT','| <a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_SORT_&amp;_FORM_pg=_PGNEXT_">'. ALM_NEXT_LB .' &gt;</a>&nbsp;');
 define('NPG','<a href="_SELF_?q=_Q_&amp;f=_FORM_&amp;_FORM_sort=_SORT_&amp;_FORM_pg=_NPG_"> _NPG_ </a>');
@@ -157,7 +152,7 @@ function smarty_function_datagrid2($params, &$smarty)
             $_tmp = preg_replace("/_SIZE_/", $dd[$field]['size'], $_tmp);
             if($dd[$field]['extra']['autocomplete']) {
               $_tmp .= '<script type="text/javascript">
-                          $(\'#' . $field . 'search\').autocomplete({ serviceUrl:' . ($dd[$field]['extra']['autocomplete_sr']?$dd[$field]['extra']['autocomplete_sr']:'\'/cms/js/autocomplete/autocomplete.php\'') . ', delimiter: /(,|;)\s*/, params: { table:\'' . ($dd[$field]['extra']['autocomplete_tb']?$dd[$field]['extra']['autocomplete_tb']:$table) . '\', field:\'' . ($dd[$field]['extra']['autocomplete_fd']?$dd[$field]['extra']['autocomplete_fd']:($dd[$field]['extra']['autocomplete_tb']?$dd[$field]['extra']['autocomplete_tb']:$field)) . '\' } });
+                          $(\'#' . $field . 'search\').autocomplete({ serviceUrl:' . ($dd[$field]['extra']['autocomplete_sr']?$dd[$field]['extra']['autocomplete_sr']:'\'' . URL . '/' . ALM_URI . '/js/autocomplete/autocomplete.php\'') . ', delimiter: /(,|;)\s*/, params: { table:\'' . ($dd[$field]['extra']['autocomplete_tb']?$dd[$field]['extra']['autocomplete_tb']:$table) . '\', field:\'' . ($dd[$field]['extra']['autocomplete_fd']?$dd[$field]['extra']['autocomplete_fd']:($dd[$field]['extra']['autocomplete_tb']?$dd[$field]['extra']['autocomplete_tb']:$field)) . '\' } });
                         </script>';
             }
             break;
@@ -179,14 +174,14 @@ function smarty_function_datagrid2($params, &$smarty)
         $_html_header = DGHEADERCELL;
         $_field =  ($dd[$_key]['references']) ?  ($dd[$_key]['references']) : $_key;
         if ($_SESSION[$name . 'sort'] == $_field) {
-          $_img = '<img src="/cms/img/up.gif" border="0" />';
+          $_img = '<img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/up.gif" border="0" />';
           $_html_header = preg_replace("/_DESC_/", ' desc', $_html_header);
           $_html_header = preg_replace("/_SORTIMG_/", $_img, $_html_header);
         } else {
           $_html_header = preg_replace("/_DESC_/", '', $_html_header);
         }
         if ($_SESSION[$name . 'sort'] == $_field . ' desc') {
-          $_img = '<img src="/cms/img/down.gif" border="0" />';
+          $_img = '<img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/down.gif" border="0" />';
           $_html_header = preg_replace("/_SORTIMG_/", $_img, $_html_header);
         } else {
           $_html_header = preg_replace("/_SORTIMG_/", '', $_html_header);
@@ -236,7 +231,7 @@ function smarty_function_datagrid2($params, &$smarty)
             case 'image':
             case 'img':
               $_tmp = '';
-              if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL .'/cms/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
+              if ($_val) $_tmp = '<input type="checkbox" checked name="' . $_key . '_keep" /> Conservar archivo actual (' . $_val . ')<br /><img src="' . URL .'/' . ALM_URI . '/pic/50/'. $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /><br />';
               $_tmp .= '<input type="file" name="' . $_key . '" value="' .$_val . '" />';
               break;
             case 'time':
@@ -371,7 +366,7 @@ function smarty_function_datagrid2($params, &$smarty)
                 }else{ 
                   $vs = $unserializer->getUnserializedData();
                 }
-                $_tmp = '<a href="javascript:openwindow(\'' . URL . '/cms/video.php?src='.$vs['src'].'&type='.$vs['tipo'].'\',400,333)"><img src="/cms/img/'.$vs['tipo'].'.png" alt="'.$a_vs[$vs['tipo']].'" title="'.$a_vs[$vs['tipo']].'" border="0" /></a>';
+                $_tmp = '<a href="javascript:openwindow(\'' . URL . '/' . ALM_URI . '/video.php?src='.$vs['src'].'&type='.$vs['tipo'].'\',400,333)"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/'.$vs['tipo'].'.png" alt="'.$a_vs[$vs['tipo']].'" title="'.$a_vs[$vs['tipo']].'" border="0" /></a>';
 	      } else
 	        $_tmp = '--';
 	      break;
@@ -386,7 +381,7 @@ function smarty_function_datagrid2($params, &$smarty)
                 if (preg_match('/pdf/i',$ext)) $_icon = 'pdf.png';
                 if (preg_match('/xls/i',$ext)) $_icon = 'excel.png';
                 if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
-                $_tmp = '<a href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="/cms/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
+                $_tmp = '<a href="' . URL . '/files/' . $table. '/' . $_val . '" target="_new"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/' . $_icon . '" alt="' . $_val  . '" border="0" /></a>';
               } else {
                 $_tmp = '--';
               }
@@ -394,19 +389,19 @@ function smarty_function_datagrid2($params, &$smarty)
             case 'image':
               if ($_val) {
                 if (THUMBNAILING)
-                  $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/cms/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
+                  $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="'. URL .'/' . ALM_URI . '/pic/50/' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" border="0" /></a>';
                 else
-                  $_tmp = '<a href="javascript:openimage(\'/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="/_' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" height="20" border="0" /></a>';
+                  $_tmp = '<a href="javascript:openimage(\'' . URL . '/files/' . $table . '/' . $_val . '\',\'Imagen: ' . $_val . '\')"><img src="/_' . $table . '/' . $_val . '" alt="' . $_val  . '" width="50" height="20" border="0" /></a>';
               } else {
                 $_tmp = '--';
               } 
               break;
             case 'order':
               $_tmp = '';
-              if ($_SESSION[$name . 'first'] != $row[$key]) $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=up&key=' . $_key . '"><img src="/cms/img/up.gif" border="0"/></a>';
+              if ($_SESSION[$name . 'first'] != $row[$key]) $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=up&key=' . $_key . '"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/up.gif" border="0"/></a>';
               if ($_SESSION[$name . 'last'] != $row[$key]) {
                 if(!empty($_tmp)) $tmp = ' ';
-                $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=down&key=' . $_key . '"><img src="/cms/img/down.gif" border="0"/></a>';
+                $_tmp .= '<a href="_SELF_?action=move&'.$key.'='.$row[$key].'&sense=down&key=' . $_key . '"><img src="' . URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/down.gif" border="0"/></a>';
               }
               if(empty($_tmp)) $_tmp = '--';
               break;

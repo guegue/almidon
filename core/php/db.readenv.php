@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 2005-2009 Guegue Comunicaciones - guegue.com
  * @license http://opensource.org/licenses/gpl-3.0.html GNU Public License
- * @version $Id: db.readenv.php,v 2009032201 javier $
+ * @version $Id: db.readenv.php,v 2010092601 javier $
  * @package almidon
  */
     unset ($this->request);
@@ -36,7 +36,35 @@
         $tmpcolumn = $column['name'];
       }
 
-      if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$tmpcolumn]) || $column['type'] == 'auth_user' || isset($_FILES[$column['name']]))) {
+
+        # Estable datos para tipo automatic (auto) 
+        if ($column['type'] === 'automatic') {
+          switch($column['extra']['automatic']) {
+          case 'auth_user':
+            # is this HTTP auth or ALM auth?
+            if (!empty($_SERVER['PHP_AUTH_USER']) || !empty($_SERVER['PHP_AUTH_DIGEST']))
+              $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
+            else
+              $this->request[$column['name']] = $_SESSION['idalm_user'];
+            break;
+          case 'ip':
+            $this->request[$column['name']] = $_SERVER['REMOTE_ADDR'];
+            break;
+          case 'now':
+            $this->request[$column['name']] = time();
+            break;
+          case 'srandom':
+            $this->request[$column['name']] = md5(uniqid(rand()));
+            break;
+          case 'nrandom':
+            $this->request[$column['name']] = rand();
+            break;
+          default:
+          }
+        }
+
+      if (($column['type'] != 'external' || $column['type'] != 'auto') && (isset($_REQUEST[$tmpcolumn]) || isset($_FILES[$column['name']]))) {
+
         # Recepcion de una imagen
         if ($column['type'] == 'file' || $column['type'] == 'image') {
           if(!empty($_FILES[$column['name']]['name'])) {
@@ -90,12 +118,6 @@
         } elseif($column['type'] == 'video') {
           $strXml = '<?xml version="1.0" encoding="UTF-8"?><video><tipo>'.$_REQUEST[$column['name'].'_type'].'</tipo><src>'.htmlentities($_REQUEST[$column['name'].'_src']).'</src></video>';
           $this->request[$column['name']] = $this->parsevar($strXml, 'string', true);
-        } elseif ($column['type'] == 'auth_user') {
-          # is this HTTP auth or ALM auth?
-          if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_DIGEST']))
-            $this->request[$column['name']] = $this->parsevar($this->http_auth_user(), 'string');
-          else
-            $this->request[$column['name']] = $_SESSION['idalm_user'];
         } elseif(isset($column['extra']['allow_js']) && $column['extra']['allow_js']!==false) {
           $this->request[$column['name']] = $this->parsevar($_REQUEST[$column['name']], $column['type'], false, $column['extra']['allow_js']);
         } else {
@@ -103,6 +125,7 @@
         }
       }
     }
-    if (isset($_REQUEST['old_' . $this->key]))
-      $this->request['old_' . $this->key] = $_REQUEST['old_' . $this->key];
+    foreach($this->keys as $val)
+      if(isset($_REQUEST['alm_old_' . $val]))
+        $this->request['alm_old_'.$val] = $_REQUEST['alm_old_' . $val];
     $this->escaped = true;

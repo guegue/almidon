@@ -1,4 +1,7 @@
 <?php
+define('ALM_NOT_FOUND','Lo sentimos, pero el archivo no existe');
+define('ALM_KEEP_FILE','Conservar archivo actual');
+define('ALM_HOME','Inicio');
 define('ALM_LANG_DONE', true);
 define('ALM_YES','S&iacute;');
 define('ALM_NO','No');
@@ -11,6 +14,7 @@ define('ALM_NEXT_LB','Pr&oacute;ximo');
 define('ALM_PREV_LB','Previo');
 define('ALM_OPT_LB','Opciones');
 define('ALM_MAX','maximizar');
+define('ALM_MAXIMUM','max.');
 define('ALM_ADD_LB','Agregar');
 define('ALM_REC_LB','registros');
 define('ALM_DEL_LB','Borrar');

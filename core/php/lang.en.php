@@ -1,4 +1,7 @@
 <?php
+define('ALM_NOT_FOUND','We are sorry, but file does not exist');
+define('ALM_KEEP_FILE','Keep current file');
+define('ALM_HOME','Home');
 define('ALM_LANG_DONE', true);
 define('ALM_YES','Yes');
 define('ALM_NO','No');
@@ -14,6 +17,7 @@ define('ALM_NEXT_LB','Next');
 define('ALM_PREV_LB','Previous');
 define('ALM_OPT_LB','Options');
 define('ALM_MAX','maximize');
+define('ALM_MAXIMUM','max.');
 define('ALM_ADD_LB','Add');
 define('ALM_AL_MSG_DEL','Are you sure to want to delete this record?');
 define('ALM_ADMIN_TITLE','Management');
