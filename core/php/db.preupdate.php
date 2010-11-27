@@ -1,10 +1,10 @@
 <?php
-    # FIXME: deberiamos reinicializar 'request', sino puede tomar valores anteriores ???
+    # FIXME: deberiamos reinicializar 'request', sino puede tomar valores anteriores
     $n = 0;
     $skipped_cols = 0;
     $values = "";
     foreach($this->definition as $column) {
-      if ($n > 0 && !in_array($column['type'],array('external','auto','serial','order')) )
+      if ($n > 0 && $column['type'] != 'external' && $column['type'] != 'auto' && $column['type'] != 'order' && $column['type'] != 'serial')
         $values .= ",";
       switch($column['type']) {
       	case 'external':
@@ -14,17 +14,7 @@
           $skipped_cols++;
           $n--;
           break;
-        case 'automatic':
-          switch($column['extra']['automatic']) {
-            case 'ip':
-            case 'now':
-            default:
-              $values .= $column['name'] . "='" . $this->request[$column['name']] . "'";
-              break;
-          }
-          break;
         case 'int':
-        case 'integer':
           if (!isset($this->request[$column['name']]) || $this->request[$column['name']] === -1 || $this->request[$column['name']] === '')
             $this->request[$column['name']] = 'NULL';
         case 'smallint':

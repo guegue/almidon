@@ -84,7 +84,7 @@ if (!empty($action)) {
   }
   switch ($action) {
   case 'alm_tables':
-    $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/alm.tables.sql');
+    $alm_sqlcmd = file_get_contents(ALMIDONDIR . '/sql/almidon.sql');
 
     # Remove OWNER TO, since only postgres can do so
     $alm_sqlcmd = preg_replace('/^(.*)OWNER TO(.*);$/m','',$alm_sqlcmd);
@@ -209,6 +209,9 @@ if (!empty($action)) {
         }
         $cols = $new_cols;
       }
+      $key = null;
+      $key1 = null;
+      $key2 = null;
       foreach ($cols as $datum) {
         if ($datum['size'] <= 0) $datum['size'] = 0;
         if ($datum['type'] == 'int4') $datum['type'] = 'int';
@@ -216,13 +219,24 @@ if (!empty($action)) {
         $datum['pk'] = 0;
         if ($datum['key'] == 'p') {
           $datum['pk'] = 1;
-          $keys[] = $datum['idalm_column'];
+          if (!empty($key)) {
+            $key1 = $key;
+            $key2 = $datum['idalm_column'];
+            $key = null;
+          } else {
+            $key = $datum['idalm_column'];
+          }
         }
         if (empty($datum['fk'])) $datum['fk'] = 0;
         else $datum['fk'] = "'" .$datum['fk']."'";
         $table_output .= "    \$this->addColumn('". $datum['idalm_column'] . "','" . $datum['type'] . "'," . $datum['size'] . "," . $datum['pk'] . "," .$datum['fk'] . ",'" . $datum['idalm_column'] . "','');\n";
       }
-      #$table_output = preg_replace("/key = '".$table_datum['idalm_table']."';/","key = '".$key."';",$table_output);
+      if (isset($key2)) {
+            $table_output = preg_replace("/key = '".$table_datum['idalm_table']."';/","key1 = '".$key1."';\n    \$this->key2 = '".$key2."';",$table_output);
+            $table_output = preg_replace("/extends Table/", "extends TableDoubleKey", $table_output);
+      } else {
+            $table_output = preg_replace("/key = '".$table_datum['idalm_table']."';/","key = '".$key."';",$table_output);
+      }
       $table_output .= "  }\n}\n";
       $output .= $table_output;
     }

@@ -34,7 +34,7 @@ function smarty_modifier_ficon($file, $table = '', $absolute_path = true)
   if (preg_match('/xls/i',$ext)) $_icon = 'excel.png';
   if (preg_match('/jpg|gif|png/i',$ext)) $_icon = 'image.png';
   if($absolute_path)
-    return URL . '/' . ALM_URI . '/themes/' . ALM_ADMIN_THEME . '/img/'.$_icon;
+    return '/cms/img/'.$_icon;
   else return $_icon;
 } //~ end function
 ?>

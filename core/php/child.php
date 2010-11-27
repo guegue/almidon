@@ -35,5 +35,4 @@ if(isset($_REQUEST['preset'])) {
   $smarty->assign('preset',$_REQUEST['parent']."=".$_REQUEST[$_REQUEST['parent']]);
 }
 $$object->destroy();
-$smarty->assign('is_child',true);
 $smarty->display(ALMIDONDIR.'/tpl/child.tpl');

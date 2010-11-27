@@ -2,6 +2,7 @@
 class alm_roleTable extends Table {
   function alm_roleTable() {
     $this->Table('alm_role');
+    $this->key = 'idalm_role';
     $this->title = ALM_ROLES;
     $this->maxrows = 20;
     $this->order = 'idalm_role';
@@ -13,6 +14,7 @@ class alm_roleTable extends Table {
 class alm_userTable extends Table {
   function alm_userTable() {
     $this->Table('alm_user');
+    $this->key = 'idalm_user';
     $this->title = ALM_USERS;
     $this->maxrows = 20;
     $this->order = 'idalm_user';
@@ -27,6 +29,7 @@ class alm_userTable extends Table {
 class alm_accessTable extends Table {
   function alm_accessTable() {
     $this->Table('alm_access');
+    $this->key = 'idalm_access';
     $this->title = ALM_ACCESS;
     $this->maxrows = 20;
     $this->order = 'idalm_access';
@@ -40,11 +43,13 @@ class alm_accessTable extends Table {
 class alm_tableTable extends Table {
   function alm_tableTable() {
     $this->Table('alm_table');
+    $this->key = 'idalm_table';
     $this->title = ALM_TABLES;
     $this->maxrows = 20;
     $this->order = 'rank';
     $this->addColumn('idalm_table','varchar',48,1,0,'Id');
     $this->addColumn('alm_table','varchar',100,0,0,'Description');
+    $this->addColumn('pkey','varchar',50,0,0,'Primary Key');
     $this->addColumn('orden','varchar',100,0,0,'Order By');
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('hidden','bool',0,0,0,'Hidden');
@@ -54,15 +59,17 @@ class alm_tableTable extends Table {
   }
 }
 
-class alm_columnTable extends Table {
+class alm_columnTable extends TableDoubleKey {
   function alm_columnTable() {
     $this->Table('alm_column');
+    $this->key1 = 'idalm_column';
+    $this->key2 = 'idalm_table';
     $this->title = ALM_FIELDS;
     $this->maxrows = 20;
     $this->order = 'idalm_table,rank';
-    $this->addColumn('idalm_table','varchar',48,1,'alm_table','Table');
+    $this->addColumn('idalm_table','varchar',48,0,'alm_table','Table');
     $this->addColumn('idalm_column','varchar',50,1,0,'Id');
-    $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('auto'=>'DB Automatic','automatic'=>'PHP Automatic','bool'=>'Boolean','char'=>'Char','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'Integer','ip'=>'IP address','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
+    $this->addColumn('type','varchar',16,0,0,'Type',array('list_values'=>array('auth_user'=>'Auth User','bool'=>'Boolean','char'=>'Char','date'=>'Date','datetime'=>'Date and Time','file'=>'File','image'=>'Image','int'=>'integer','numeric'=>'Numeric','password'=>'Password','serial'=>'Serial (Autonumber)','text'=>'Long Text','time'=>'Time','varchar'=>'Varchar (Text)','video'=>'Video')));
     $this->addColumn('size','int',0,0,0,'Size');
     $this->addColumn('rank','int',0,0,0,'Order');
     $this->addColumn('pk','bool',0,0,0,'Primary Key?');
@@ -74,9 +81,8 @@ class alm_columnTable extends Table {
     $this->addColumn('search','bool',0,0,0,'Searchable',array('help'=>'Include in quick search'));
     $this->addColumn('cdn','bool',0,0,0,'CDN',array('help'=>'Content Delivery Network'));
     $this->addColumn('display','varchar',200,0,0,'Display as');
-    $this->addColumn('list_values','varchar',500,0,0,'List values',array('help'=>'Enter list of values to be used as combo box: key1=>\'val1\', key2=>\'val2\''));
-    $this->addColumn('automatic','varchar',16,0,0,'Automatic',array('list_values'=>array('auth_user'=>'Auth User','ip'=>'IP address','now'=>'Now','srandom'=>'Random string','nrandom'=>'Randome number')));
-    $this->addColumn('sizes','varchar',100,0,0,'Image sizes',array('help'=>'Enter list of thumbnail sizes: 000x000,111x111,222,333'));
-    $this->addColumn('range','varchar',100,0,0,'Range',array('help'=>'Enter range separated by : e.g. -20:+20'));
+    $this->addColumn('list_values','varchar',500,0,0,'List values',array('help'=>'Enter array'));
+    #$this->addColumn('sizes','varchar',100,0,0,'Image sizes');
+    #$this->addColumn('range','varchar',100,0,0,'Image sizes');
   }
 }

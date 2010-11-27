@@ -208,7 +208,6 @@ class Table extends Data {
   var $table_fields; // comma-separated list: person.name, person.age, person.sex
   var $fields_noserial;
   var $key;
-  var $keys;
   var $order;
   var $join;
   var $all_fields;
@@ -216,9 +215,13 @@ class Table extends Data {
   var $id;
   var $action;
 
-  function Table($name) {
+  function Table($name, $schema = 'public') {
     $this->Data();
     $this->name = $name;
+    # FIXME: schemas solo los soporta postgresql? estamos usando esto?
+    $this->schema = $schema;
+    if ($schema && $schema != 'public')
+      $this->query("SET search_path = $schema, public, pg_catalog");
   }
 
   /**
@@ -226,7 +229,7 @@ class Table extends Data {
    * OJO: puede ser pesado para tablas con muchos datos
   */
   function clearCache() {
-    $cachefiles = ROOTDIR.'/cache/sql/*.'.$this->name.'.*dat';
+    $cachefiles = ROOTDIR.'/cache/*.'.$this->name.'.*dat';
     foreach (glob($cachefiles) as $filename) {
      unlink($filename);
     }
@@ -254,7 +257,6 @@ class Table extends Data {
   * @return array lista de archivos
   */
   function getFiles() {
-    $remove_files = null;
     foreach($this->dd as $key=>$val) {
       $type = $this->dd[$key]['type'];
       if ($type == 'image' || $type == 'file')
@@ -282,22 +284,64 @@ class Table extends Data {
       echo "tables.class.php actualizado!<br/>\n";
   }
 
-  /**
-  * Refresca colección de campos al agregar una nueva columna (campo) con addColumn
-  */
   function refreshFields() {
-    require('db.refreshfields.php');
+    global $global_dd;
+    $n = 0;
+    $ns = 0;
+    $this->fields_noserial = '';
+    $this->all_fields = '';
+    $this->fields = '';
+    $this->table_fields = '';
+    foreach($this->definition as $column) {
+      if ($n > 0) {
+        $this->fields .= ",";
+        $this->table_fields .= ",";
+        $this->all_fields .= ",";
+      }
+      if ($this->schema != 'public')
+        $this->all_fields .= $this->schema . ".";
+      if ($ns > 0 && $column['type'] != 'external' && ($column['type'] != 'auto' || !empty($column['extra']['default'])) && $column['type'] != 'order' && $column['type'] != 'serial')
+        $this->fields_noserial .= ",";
+      if ($column['type'] == 'serial' || $column['type'] == 'external' || ($column['type'] == 'auto' && empty($column['extra']['default'])) || $column['type'] == 'order')
+        $ns--;
+      else 
+        $this->fields_noserial .= $column['name'];
+      $this->fields .= $column['name'];
+      $this->table_fields .= $this->name . '.' . $column['name'];
+      if ($column['type'] == 'external')
+        $this->all_fields .= $column['name'];
+      else
+        $this->all_fields .= $this->name . "." . $column['name'];
+      if ($column['references'] && isset($global_dd[$column['references']]['descriptor'])) {
+        if (!isset($references[$column['references']]))
+          $references[$column['references']] = 0;
+        if ($column['references'] == $this->name && !$references[$column['references']])
+          $references[$column['references']]+=2;
+        else
+          $references[$column['references']]++;
+        if ($references[$column['references']] == 1) {
+          if (!empty($column['extra']['display'])) {
+            $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
+            # FIXME: Is 'alias' useless?
+            #if(empty($column['extra']['alias']))  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['references'];
+            #else  $this->all_fields .= ",(" . $column['extra']['display'] . ") AS " . $column['extra']['alias'];
+          } else {
+            # FIXME? Y si existe ya un campo llamado como la tabla foranea en la tabla actual?
+            $this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'] . " AS " . $column['references'];
+            #$this->all_fields .= "," . $column['references'] . "." . $global_dd[$column['references']]['descriptor'];
+          }
+        } else {
+          # FIXME: Second reference to same table does not enjoy display/alias (not yet)
+          $tmptable = $column['references'] . $references[$column['references']];
+          $tmpcolumn =  $global_dd[$column['references']]['descriptor'];
+          $this->all_fields .= "," . $tmptable . "." . $tmpcolumn . " AS " . $tmptable;
+        }
+      }
+      $n++;
+      $ns++;
+    }
   }
 
-  /**
-  * Agregar una nueva columna (campo)
-   * @param string $name nombre del campo
-   * @param string $type tipo de dato: integer, varchar, image, etc
-   * @param integer $size tamaño del campo
-   * @param string $references tabla foranea (si es FK)
-   * @param string $label etiqueta descriptiva
-   * @param array $extra propiedades adicionales del campo
-  */
   function addColumn($name, $type, $size = 100, $pk = 0, $references = 0, $label = '', $extra = '') {
     require('db.addcolumn.php');
   }
@@ -325,11 +369,11 @@ class Table extends Data {
     return $values;
   }
   
-  function updateRecord($id = null, $maxcols = 0, $nofiles = 0) {
+  function updateRecord($id = 0, $maxcols = 0, $nofiles = 0) {
     require('db.updaterecord.php');
   }
 
-  function deleteRecord($id = null) {
+  function deleteRecord($id = 0) {
     require('db.deleterecord.php');
   }
 
@@ -344,12 +388,12 @@ class Table extends Data {
           $references[$column['references']]+=2;
         } else
           $references[$column['references']]++;
-        $foreign_key = $global_dd[$column['references']]['keys'][0];
         if ($references[$column['references']] == 1) {
-          $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $foreign_key;
+          $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $global_dd[$column['references']]['key'];
         } else {
           $tmptable = $column['references'] . $references[$column['references']];
-          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $forenign_key;
+          $tmpcolumn =  $global_dd[$column['references']]['key'];
+          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $tmpcolumn;
         }
       }
     return $join;
@@ -361,7 +405,7 @@ class Table extends Data {
   * @param bool $cache indica si utilizar cache o no
   * @return array con el registro (devuelto por *_fetch_row)
   */
-  function readRecord($id = null, $cache = null) {
+  function readRecord($id = 0, $cache = null) {
     require('db.readrecord.php');
     if (isset($row))
       return $row;
@@ -388,7 +432,7 @@ class Table extends Data {
     /* checks cache options */
     if (is_null($cache))
       $cache = (ALM_CACHE && !ADMIN);
-    $this->filecache = ROOTDIR.'/cache/sql/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'.dat';
+    $this->filecache = ROOTDIR.'/cache/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'.dat';
     if (!($cache === true && file_exists($this->filecache) && (time()-filemtime($this->filecache)<=ALM_CACHE_TIME)))
       $this->execSql($sqlcmd);
     return $this->getArray($cache); 
@@ -442,4 +486,32 @@ class Table extends Data {
   function escape($var) {
   	  return almdata::escape($var);
   }
+
 }
+
+/**
+ * @package almidon
+*/
+
+class TableDoubleKey extends Table {
+  var $key1;
+  var $key2;
+
+  function deleteRecord($id1 = 0, $id2 = 0) {
+    require('db.deleterecord2.php');
+  }
+
+  function updateRecord($id1 = 0, $id2 = 0, $maxcols = 0, $nofiles = 0) {
+    require('db.updaterecord2.php');
+  }
+
+  function readRecord($id1 = 0, $id2 = 0) {
+    require('db.readrecord2.php');
+    return $row;
+  }
+
+  function readEnv() {
+    require('db.readenv2.php');
+  }
+}
+

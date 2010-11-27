@@ -5,34 +5,34 @@
  * File:   function.confirm_delete.php
  * Type:   function
  * Name:   confirm_delete
- * Date:   2010-09-28
+ * Date:   23.abr.2009
  */
 
 include dirname(__FILE__) . '/shared.lang.php';
 
-define('ALM_DELETE_SCRIPT', "
+define('SCRIPT', "
 <script type=\"text/javascript\" language=\"javascript\">
-  function confirm_delete(o, key_ids, desc) {
-    keys_url = '';
+  function confirm_delete(o, idfield, id, desc) {
     if (window.confirm('\"'+desc+'\": ". ALM_AL_MSG_DEL ."')) {
-      for (i in key_ids) { 
-        keys_url += i + '=' + key_ids[i] + '&';
-      }
-      location.href = '?o='+o+'&action=delete&'+keys_url;
+        location.href = '?o='+o+'&action=delete&'+idfield+'='+id;
     }
   }
-  function confirm_delete_det(od, key_ids, desc) {
-    keys_url = '';
+
+  function confirm_delete_det(od, idfield, id, desc) {
     if (window.confirm('\"'+desc+'\": ". ALM_AL_MSG_DEL ."')) {
-      for (i in key_ids) { 
-        keys_url += i + '=' + key_ids[i] + '&';
-      }
-      location.href = '?od='+od+'&actiond=delete&'+keys_url;
+        location.href = '?od='+od+'&actiond=delete&'+idfield+'='+id;
+    }
+  }
+
+  function confirm_delete2(o, idfield1, idfield2, id1, id2, desc) {
+    if (window.confirm('\"'+desc+'\": ". ALM_AL_MSG_DEL ."')) {
+        location.href = '?o='+o+'&action=delete&'+idfield1+'='+id1+'&'+idfield2+'='+id2;
     }
   }
 </script>
 ");
 
-function smarty_function_confirm_delete($params, &$smarty) {
-  return ALM_DELETE_SCRIPT;
+function smarty_function_confirm_delete($params, &$smarty)
+{
+  return SCRIPT;
 }

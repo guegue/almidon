@@ -1,17 +1,17 @@
 <?php
 
 if ($_POST['action']='upload') {
-  $username = 'javierwilson';
-  $api_key = 'cd32b68b56e0dcedca71482843447839';
-  $container = 'rlp.com.ni';
+  $username = 'bobsmith';
+  $api_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+  $container = 'example.com';
 
   $auth = new CF_Authentication($username, $api_key);
   $auth->authenticate();
   $conn = new CF_Connection($auth);
   $files = $conn->create_container(container);
 
-  $filename = 'test.mp3';
-  $localname = '/www/rlp.com.ni/files/test.mp3'
+  $filename = 'example.mp3';
+  $localname = '/var/www/example.com/files/test.mp3'
 
   $afile = $files->create_object($filename);
   $size = (float) sprintf("%u", filesize($localname));

@@ -11,7 +11,7 @@ CREATE TABLE country (
 
 ALTER TABLE public.country OWNER TO almidondemo;
 
-INSERT INTO alm_table (idalm_table, alm_table, orden, rank) VALUES ('country', 'Country', 'country', 8);
+INSERT INTO alm_table (idalm_table, alm_table, pkey, orden, rank) VALUES ('country', 'Country', 'idcountry', 'country', 8);
 INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank) VALUES ('idcountry', 'country', 'char', 2, true, '', 'Pais', NULL, NULL);
 INSERT INTO alm_column (idalm_column, idalm_table, type, size, pk, fk, alm_column, extra, rank, search) VALUES ('country', 'country', 'varchar', 200, false, '', 'Pais', NULL, NULL, true);
 

@@ -14,76 +14,51 @@
 
 if(!isset($almidondir))
   $almidondir = defined('ALMIDONDIR') ? ALMIDONDIR : $_SERVER['DOCUMENT_ROOT'] . '/../../core';
-/*
- * DAL for almidon, classes y main functions to manage data
- */
+/**
+ * DAL para almidon, clases y funciones ppales para manejo de datos
+*/
 require_once($almidondir . '/php/db2.class.php');
-/*
- * Is ADMIN defined?
- */
-if (!defined('ADMIN')) define('ADMIN', false);
-/*
- * Language constants, only if it is admon
- */
-if ( ADMIN === true ) {
-  require_once($almidondir . '/php/lang.php');
-}
-/*
- * Loading some functions
- */
-require_once($almidondir . '/php/functs.inc.php');
-/*
+/**
+ * Constantes de distintos lenguages definidas
+*/
+require_once($almidondir . '/php/lang.php');
+/**
  * Good old Smarty: see http://www.smarty.net/
- */
-# Put it in core/include.d
-alm_require('Smarty/Smarty.class.php');
-
-# Set smarty (it can be re-config locally)
+*/
+require_once('Smarty/Smarty.class.php');
+# Configura smarty (puede re-configurarse localmente)
 $smarty = new Smarty;
 $smarty->template_dir = ROOTDIR . '/templates/';
 $smarty->compile_dir = ROOTDIR . '/templates_c/';
 $smarty->config_dir = ROOTDIR . '/configs/';
-$smarty->cache_dir = ROOTDIR . '/cache/smarty/';
+$smarty->cache_dir = ROOTDIR . '/cache/';
 $smarty->plugins_dir = array('plugins', $almidondir.'/smarty/',$almidondir.'/smarty/validate/');
-/*
- * @ignore - ADMIN, Am I in admin mode?
- */
+
+/**
+* @ignore - ADMIN: Estamos en modo administrador?
+*/
+if (!defined('ADMIN')) define('ADMIN', false);
 if (ADMIN === true && !isset($_SESSION['idalm_role'])) $_SESSION['idalm_role'] = null;
 if (ADMIN === true && !isset($_SESSION['idalm_user'])) $_SESSION['idalm_user'] = null;
-/*
- * Loading local table definitions
- */
-alm_require(ROOTDIR . '/classes/tables.class.php');
-/*
- * Extra tables, they are not automatically modified
- */
-alm_require(ROOTDIR . '/classes/extra.class.php');
-if ( ADMIN === true ) {
-  /*
-   * Defining the ALM URI By default whether it is defined in config.php
-   */
-  if (!defined('ALM_URI')) define('ALM_URI','almidon');
-  /*
-   * Defining the ADMIN THEME
-   */
-  if ( !defined('ALM_ADMIN_THEME') ) define('ALM_ADMIN_THEME','wax');
-  /*
-   * Defining the ADMIN COMPRESS OPTION
-   */
-  if ( !defined('ALM_ADMIN_COMPRESS') ) define('ALM_ADMIN_COMPRESS',false);
-  /*
-  /*
-   * Loading global table definitions, (alm_*)
-   */
-  alm_require($almidondir . '/php/alm.tables.class.php');
-}
+/**
+* Carga definición local de tablas
+*/
+require(ROOTDIR . '/classes/tables.class.php');
+/**
+* Tablas extras no modificables automáticamente
+*/
+require(ROOTDIR . '/classes/extra.class.php');
+/**
+* Carga definición global de tablas (alm_*)
+*/
+require_once($almidondir . '/php/alm.tables.class.php');
 
 $classes = get_declared_classes();
 global $global_dd;
 foreach($classes as $key) {
-  if (stristr($key, 'table') && $key != 'table' && $key != 'Table') {
+  if (stristr($key, 'table') && $key != 'table' && $key != 'tabledoublekey' && $key != 'Table' && $key != 'TableDoubleKey') {
     $table_object = new $key;
-    $global_dd[$table_object->name]['keys'] = $table_object->keys;
+    $global_dd[$table_object->name]['key'] = $table_object->key;
     if(isset($table_object->descriptor)) {
       $global_dd[$table_object->name]['descriptor'] = $table_object->descriptor;
     } elseif (preg_match('/(^|,)'.$table_object->name.'(,|$)/', $table_object->fields)) {
@@ -94,9 +69,9 @@ foreach($classes as $key) {
   }
 }
 
-/*
- * qdollar is used to escape strings, because in pgreg_replace uses "$" as a dollar sign, and no backreference
- */
+/**
+* qdollar se usa para "escape" cadenas en pgreg_replace que usan "$" como signo de dolar, y no backreference
+*/
 function qdollar($value) {
   return str_replace('$', '\$', $value);
 }

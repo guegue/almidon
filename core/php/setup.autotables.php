@@ -6,9 +6,18 @@
     if (!isset($output)) $output = '';
 
     foreach ($table_data as $table_datum) {
-      $output .= "class " . $table_datum['idalm_table'] . "Table extends Table {\n";
+      $doublekey = preg_match('/,/',$table_datum['pkey']);
+      $table_type = ($doublekey) ? 'TableDoubleKey' : 'Table';
+      $output .= "class " . $table_datum['idalm_table'] . "Table extends $table_type {\n";
       $output .= "  function ".$table_datum['idalm_table']."Table() {\n";
       $output .= "    \$this->Table('".$table_datum['idalm_table']."');\n";
+      if ($doublekey) {
+        list($pkey1,$pkey2) = preg_split('/,/',$table_datum['pkey']);
+        $output .= "    \$this->key1 = '".$pkey1."';\n";
+        $output .= "    \$this->key2 = '".$pkey2."';\n";
+      } else {
+        $output .= "    \$this->key = '".$table_datum['pkey']."';\n";
+      }
       $hidden = ($table_datum['hidden'] == 't') ? 'true' : 'false';
       if ($hidden === 'true') $output .= "    \$this->hidden = ".$hidden.";\n";
       if (!empty($table_datum['parent'])) $output .= "    \$this->parent ='".$table_datum['parent']."';\n";
@@ -30,11 +39,6 @@
       #if ($search === 'true') $output .= "    \$this->search = ".$search.";\n";
         if (!empty($datum['idalm_role'])) $extra[] = "'role'=>'".$datum['idalm_role']."'";
         if (!empty($datum['label_bool'])) $extra[] = "'label_bool'=>'".$datum['label_bool']."'";
-        if (!empty($datum['automatic'])) $extra[] = "'automatic'=>'".$datum['automatic']."'";
-        if (!empty($datum['range'])) $extra[] = "'range'=>'".$datum['range']."'";
-        if (!empty($datum['sizes'])) $extra[] = "'sizes'=>'".$datum['sizes']."'";
-        # FIXME: Mejor usar 1:Hola;2:Chao para list_values
-        if (!empty($datum['list_values'])) $extra[] = "'list_values'=>array(".$datum['list_values'].")";
         if (!empty($datum['help'])) $extra[] = "'help'=>'".$datum['help']."'";
         if (!empty($datum['display'])) $extra[] = "'display'=>\"".$datum['display'].'"';
         if (!empty($datum['search']) && $datum['search'] != 'f') $extra[] = "'search'=>true";

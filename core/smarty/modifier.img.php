@@ -27,9 +27,9 @@
  */
 function smarty_modifier_img($string)
 {
-  $imagen = '{if $row.imagen2}<table align="left" cellpadding="3" border="0" cellspacing="0"><tr><td><table width="100" cellpadding="0" cellspacing="0" border="0" ><tr><td><img src="' . URL . '/' . ALM_URI . '/pic/250x250/noticia/{$row.imagen2}" border="1" alt="Foto" align="top"/></td></tr>{if $row.pie2}<tr><td class="dark">{$row.pie2}</td></tr>{/if}'
+  $imagen = '{if $row.imagen2}<table align="left" cellpadding="3" border="0" cellspacing="0"><tr><td><table width="100" cellpadding="0" cellspacing="0" border="0" ><tr><td><img src="/cms/pic/250x250/noticia/{$row.imagen2}" border="1" alt="Foto" align="top"/></td></tr>{if $row.pie2}<tr><td class="dark">{$row.pie2}</td></tr>{/if}'
   $string = preg_replace('/<img2>/',"$imagen", $string);
-  $imagen = '{if $row.imagen3}<table align="left" cellpadding="3" border="0" cellspacing="0"><tr><td><table width="100" cellpadding="0" cellspacing="0" border="0" ><tr><td><img src="' . URL . '/' . ALM_URI . '/pic/250x250/noticia/{$row.imagen3}" border="1" alt="Foto" align="top"/></td></tr>{if $row.pie3}<tr><td class="dark">{$row.pie3}</td></tr>{/if}'
+  $imagen = '{if $row.imagen3}<table align="left" cellpadding="3" border="0" cellspacing="0"><tr><td><table width="100" cellpadding="0" cellspacing="0" border="0" ><tr><td><img src="/cms/pic/250x250/noticia/{$row.imagen3}" border="1" alt="Foto" align="top"/></td></tr>{if $row.pie3}<tr><td class="dark">{$row.pie3}</td></tr>{/if}'
   $string = preg_replace('/<img3>/',"$imagen", $string);
   return $string;
 }

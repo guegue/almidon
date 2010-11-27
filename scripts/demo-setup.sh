@@ -24,16 +24,7 @@ else
   echo "Instalando sql para Postgresql" >> logs/install.log
   runuser -c "psql -f demo.sql" postgres >> logs/install.log 2>&1
   runuser -c "psql -f country.sql" postgres >> logs/install.log 2>&1
-fi
-grep "local.almidon.org" /etc/hosts > /dev/null
-if [ "$?" == "1" ]; then
-  echo "127.0.0.1 local.almidon.org">>/etc/hosts
-fi
-pghba=/var/lib/pgsql/data/pg_hba.conf
-grep "almidondemo" $pghba > /dev/null
-if [ "$?" == "1" ]; then
-  echo "local almidondemo all md5">>$pghba
-  /etc/init.d/postgresql restart
+  echo "!! No olvides configurar pg_hba.conf !!"
 fi
 
 echo "Creando dirs y permisos para '$APACHEUSER'" >> logs/install.log
