@@ -68,7 +68,7 @@ if ($action != 'erd' && $action != 'erdcol' && !$failed) {
   print '<li><a href="/doc/">Documentaci&oacute;n</a></li>';
   print '<li><a href="http://almidon.org/">Wiki</a></li>';
   print '<li><a href="http://trac.almidon.org/">Trac</a></li>';
-  print '<br/>Almidon. Version: ' . file_get_contents('../../doc/VERSION') . '<br/>';
+  print '<br/>Almidon. Version: ' . file_get_contents(dirname(__FILE__) . '/../../doc/VERSION') . '<br/>';
   print "</small>";
 }
 if (!empty($action)) {
