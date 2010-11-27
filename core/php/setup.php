@@ -5,7 +5,7 @@ if ($_SESSION['idalm_user'] !== 'admin' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.
   exit;
 }
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../classes/app.class.php');
+require_once((defined('ROOTDIR')?ROOTDIR:$_SERVER['DOCUMENT_ROOT'].'/..') . '/classes/app.class.php');
 require_once('setup.gensql.php');
 require_once('setup.tests.php');
 require_once('setup.dd.php');
