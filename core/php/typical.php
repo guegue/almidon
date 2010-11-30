@@ -245,7 +245,26 @@ function fillOpt(&$object) {
             else 
               $references = $object->dd[$key]['references'];
             $where = (isset($where) ? $where : null);
-            $options[$key] = $object->selectMenu($references, $where);
+            // Grouping
+            $where = (isset($where) ? $where : null);
+            if ( !empty($object->dd[$key]['extra']['references_group']) ) {
+              $gkey = $object->dd[$key]['extra']['references_group'];
+              $clss_tmp = $object->dd[$key]['references'] . 'Table';
+              $obj_tmp = new $clss_tmp;
+              if ( !empty($obj_tmp->dd[$gkey]['references']) ) {
+                $_options = $obj_tmp->selectMenu($obj_tmp->dd[$gkey]['references']);
+              } else {
+                $_options = $obj_tmp->selectMenu("SELECT '1',$gkey FROM $obj_tmp->name");
+              }
+              foreach($_options as $id => $_option) {
+                $val = $object->selectMenu($references, $where?"$where AND $object->name.$gkey = " . $id:$where);
+                if ( !empty($val) ) {
+                  $options[$key][$_option] = $val;
+                }
+              }
+            } else {
+              $options[$key] = $object->selectMenu($references, $where);
+            }
           }
         }
       } else {
