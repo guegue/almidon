@@ -257,7 +257,7 @@ function fillOpt(&$object) {
                 $_options = $obj_tmp->selectMenu("SELECT '1',$gkey FROM $obj_tmp->name");
               }
               foreach($_options as $id => $_option) {
-                $val = $object->selectMenu($references, $where?"$where AND $object->name.$gkey = " . $id:$where);
+		$val = $object->selectMenu($references, $where?"$where AND $obj_tmp->name.$gkey = " . $id:"$obj_tmp->name.$gkey = " . $id);
                 if ( !empty($val) ) {
                   $options[$key][$_option] = $val;
                 }
