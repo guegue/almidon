@@ -63,12 +63,14 @@ if(isset($_SESSION['idalm_user'])) {
 	  }
 
     # No credentials? Go away...
-	  if(!isset($_SESSION['credentials'][$object]) && $_SESSION['idalm_user'] !== 'admin') {
+	  if(!isset($_SESSION['credentials'][$object]) && ( $_SESSION['idalm_user'] !== 'admin' && $_SESSION['idalm_role'] !== 'full' ) ) {
 	    session_destroy(); 
       session_start();
 	    require_once(ALMIDONDIR . '/php/login.php');
 	    exit;	  	 
-	  }
+	  } elseif ( $_SESSION['idalm_role'] === 'full' && ( empty($_SESSION['credentials'][$object]) || $_SESSION['credentials'][$object] == 'unknown') ) {
+      $_SESSION['credentials'][$object] = 'full';
+    }
 
     # Actualiza BD SQL con datos de tables.class.php
     $alm_tables = "/^(alm_table|alm_user|alm_access|alm_role|alm_column)Table/i";
