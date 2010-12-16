@@ -27,7 +27,13 @@ perl -pi -e "s/almideondemo/$2/g" $ROOTDIR/classes/config.php
 echo "Creando base de datos '$2'"
 # comentado para no borrar BD de casualidad:
 #runuser -c "dropdb -SDRP $2" postgres
-runuser -c "createuser -SDR $2" postgres
-runuser -c "createdb -O$2 $2" postgres
-runuser -c "psql -f $ALMIDONDIR/sql/almidon.sql" postgres
-runuser -c "echo \"ALTER USER $2 WITH PASSWORD '$3'\"|psql" postgres
+echo "Entrando como superusario del Servidor Postgresql";
+echo "Recuerde escribir en la consola el comando exit para salir de la"; 
+echo "consola del Servidor Postgresql luego de importación y ejecutación";
+echo "automática de los scripts necesarios para crear el sitio.";
+su - postgres
+echo "createuser -SDR $2" 
+echo "createdb -O$2 $2" 
+psql -f $ALMIDONDIR/sql/almidon.sql
+psql -c "ALTER USER $2 WITH PASSWORD '$3'" $2; 
+exit

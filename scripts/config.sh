@@ -9,13 +9,6 @@ WWWDIR=/var/www
 APACHE=httpd
 APACHEUSER=apache
 
-# Almidon dir
-if [ -d /usr/local/almidon ]; then
-  ALMIDONDIR=/usr/local/almidon
-fi
-if [ -d /var/www/almidon ]; then
-  ALMIDONDIR=/var/www/almidon
-fi
 
 # Web dir
 if [ -d /srv/www ]; then
@@ -23,6 +16,16 @@ if [ -d /srv/www ]; then
 fi
 if [ -d /var/www ]; then
   WWWDIR=/var/www
+fi
+
+# Almidon dir
+
+# Almidon dir
+if [ -d /usr/local/almidon ]; then
+  ALMIDONDIR=/usr/local/almidon
+fi
+if [ -d /var/www/almidon ]; then
+  ALMIDONDIR=/var/www/almidon
 fi
 
 # Apache

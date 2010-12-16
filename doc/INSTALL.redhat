@@ -1,0 +1,16 @@
+INSTALAR
+========
+
+IMPORTANTE: No es necesario seguir los pasos que sugiere el archivo INSTALL para contruir
+un instalador antes de crear el paquete *.rpm de almidon.
+
+CREANDO E INSTALANDO ALMIDON DESDE PAQUETE RPM
+=================================================
+
+Requisitos para contruir el paquete rpm
+rpm(>=4.4.2.1)
+
+Construir solo un paquete RPM junto con el correspondiente *.src.rpm a partir de un fichero *.spec:
+rpmbuild -ba --clean /ruta/hacia/la/carpeta/almidon
+
+
