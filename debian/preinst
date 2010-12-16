@@ -1,0 +1,249 @@
+#!/bin/bash
+# preinst script for almidon
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <new-preinst> `install'
+#        * <new-preinst> `install' <old-version>
+#        * <new-preinst> `upgrade' <old-version>
+#        * <old-preinst> `abort-upgrade' <new-version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+print_messg_db_driver_and_server(){            
+             array_dbserver_availables=(mysql postgresql)
+             count_dbserver_availables=0;
+             total_dbserver_availables=${#array_dbserver_availables[*]};
+           
+             array_drv_dbserver_availables=(mysql pgsql)
+             count_drv_dbserver_availables=0;
+             total_drv_dbserver_availables=${#array_dvr_dbserver_availables[*]};
+
+             array_dbserver_installeds=()
+             count_dbserver_installeds=0
+             total_dbserver_installeds=0
+
+             array_dbserver_not_installeds=()
+             count_dbserver_not_installeds=0
+             total_dbserver_not_installeds=0
+
+             array_drv_dbserver_installeds=()
+             count_drv_dbserver_installeds=0
+             total_drv_dbserver_installeds=0
+        
+             array_drv_dbserver_not_installeds=()
+             count_drv_dbserver_not_installeds=0
+             total_drv_dbserver_not_installeds=0
+
+             # $count_dbserver_available es menor que $total_dbserver_availables
+             while [ $count_dbserver_availables -lt $total_dbserver_availables ]; do #Inicio del 4º While
+              
+              dbserver=${array_dbserver_availables[$count_dbserver_availables]}   
+              drv_dbserver=${array_drv_dbserver_availables[$count_dbserver_availables]} 
+              
+              if [ -d "/etc/$dbserver" ];then   #Inicio del 5º if
+               array_dbserver_installeds=( ${array_dbserver_installeds[@]} $dbserver )
+               array_drv_dbserver_installeds=( ${array_drv_dbserver_installeds[@]} $drv_dbserver )
+                #echo "${array_dbserver_installeds[@]}";
+               count_dbserver_installeds=`expr $count_dbserver_installeds + 1`;
+               else
+                   array_dbserver_not_installeds=( ${array_dbserver_not_installeds[@]} $dbserver )  
+                   array_abrv_dbserver_not_installeds=( ${array_abrv_dbserver_not_installeds[@]} $drv_dbserver )
+                   count_dbserver_not_installeds=`expr $count_dbserver_not_installeds + 1`;
+              
+              fi   #Fin del 5º if
+              count_dbserver_availables=`expr $count_dbserver_availables + 1`;
+             done  #Fin del 4º While
+
+            echo "";
+
+            if [ $count_dbserver_not_installeds -gt "0" ];then
+
+             echo "Los Servidores de Base de Datos aún no instalados son: ${array_dbserver_not_installeds[@]}";
+
+             echo "No olvide al menos elegir e instalar uno de los servidores disponibles  por defecto para el sistema que aún no están instalados!";
+
+             array_drv_dbserver_not_installeds=( ${array_drv_dbserver_availables[*]} )       
+             echo "Los drivers de los Servidores de Datos aún no instalados son: ${array_drv_dbserver_not_installeds[@]}";
+
+             echo "No olvide al menos elegir e instalar uno de los driver del correspondiente Servidor de Datos disponible aún no instalado, sólo después de instalar el Servidor de Base de Datos antes seleccionado.!";
+
+             echo "No olvide al menos elegir e instalar uno de los drivers de los servidores disponibles  por defecto para el sistema que aún no están instalados!";
+
+             echo "Instrucciones de instalación de paquetes de los Servidores de Base de Datos y sus drivers";
+
+             echo "Paquete del Servidor de Base de Datos";            
+             echo "Escriba como root desde la línea de comandos: apt-get install nombre_del_Servidor_de_Base_de_Datos."
+
+             echo "Paquete PHP del driver del Servidor de Base de Datos";            
+             echo "Escriba como root desde la línea de comandos: apt-get install php5-nombre_del_driver_del_Servidor_de_Base_de_Datos.";
+
+             echo "Paquete PEAR MDB2 del driver del Servidor de Base de Datos";
+             echo "Escriba como root desde la línea de comandos: pear install mdb2#nombre_del_driver_del_Servidor_de_Base_de_Datos.";
+
+             echo "Vuelva a intentar nuevamente";
+             exit #Termina la ejecución del script preinst
+
+            fi
+
+            if [ $count_dbserver_installeds -gt "0"  ];then 
+
+                total_dbserver_installeds=${#array_dbserver_installeds[*]}
+                if [ $total_dbserver_installeds -gt "0" ];then
+                 echo "Los Servidores de Base de Datos instalados son:  ${array_dbserver_installeds[@]}";        
+                 total_drv_dbserver_installeds=${#array_drv_dbserver_installeds[*]}
+                 if [ $total_drv_dbserver_installeds -gt "0" ];then
+                  echo "";
+                  echo "Los Drivers de los Servidores de Base de Datos instalados son:";
+
+                 total_drv_dbserver_installeds=${#array_drv_dbserver_installeds[*]}                 
+                  while [ $count_drv_dbserver_installeds -lt $total_drv_dbserver_installeds ];do
+                   echo " Driver ${array_drv_dbserver_installeds[$count_drv_dbserver_installeds]} de Servidor de Base de Datos ${array_dbserver_installeds[$count_drv_dbserver_installeds]}"
+                 count_drv_dbserver_installeds=`expr $count_drv_dbserver_installeds + 1`
+                  done
+                 fi
+                fi
+
+                echo ""; 
+                total_dbserver_not_installeds=${#array_dbserver_not_installeds[*]}
+                if [ $total_dbserver_not_installeds -gt "0" ];then
+                 echo "Los Servidores de Base de Datos no instalados son:  ${array_dbserver_not_installeds[@]}";
+
+                 echo ""; 
+                 echo "Los Drivers de los Servidores de Base de Datos no instalados son:";                             
+                 total_drv_dbserver_not_installeds=${#array_drv_dbserver_not_installeds[*]}
+                 if [ $total_drv_dbserver_not_installeds -gt "0" ];then
+                  while [ $count_drv_dbserver_not_installeds -lt $total_drv_dbserver_not_installeds ];do
+                  echo " Driver ${array_drv_dbserver_not_installeds[$count_drv_dbserver_not_installeds]} de Servidor de Base de Datos ${array_dbserver_not_installeds[$count_drv_dbserver_not_installeds]}"
+                 count_drv_dbserver_not_installeds=`expr $count_drv_dbserver_not_installeds + 1`
+                  done
+                 fi
+                 echo "";
+                 echo "Puede instalar y/o utilizar estos Servidores de Base de Datos adicionales y sus correspondientes drivers si lo desea. Si desea instalar un Servidor de Base de Datos adicional y sus correspondientes driver, escriba como root desde la línea de comandos: «apt-get install nombre_del_Servidor_de_Base_de_Datos».";
+                 echo "";
+              
+                fi                     
+            fi 
+            echo "";
+
+            echo "Instrucciones de instalación de paquetes adicionales para cualquier Servidor de Base de Datos instalado en el sistema.";
+            
+            echo "";
+            echo "1. Seleccione el driver del correspondiente Servidor de Base de Datos para Apache2";
+            
+            echo "";
+            echo "2. Instale el módulo de auntentificación mediante el correspondiente Servidor de Base de Datos para Apache2, como root escriba en la línea de comandos: «apt-get install libapache2-mod-auth-nombre_del_driver_del_Servidor_de_Base_de_Datos».";
+            
+            echo "";
+            echo  "3. Instale el módulo del correspondiente Servidor de Base de Datos para PHP , como root escriba en la línea de comandos: «apt-get install «php5-nombre_del_driver_del_Servidor_de_Base_de_Datos».";
+            
+            echo "";
+            echo  "4. Instale Driver del correspondiente Servidor de Base de Datos para PEAR como root, escribiendo en la línea de comandos: «pear install mdb2#nombre_del_driver_del_Servidor_de_Base_de_Datos».";
+}
+
+if [ "$1" = "install" ];then
+
+         mode_instalation=""
+          while [ -z $mode_instalation ] || [ $mode_instalation = "" ] || [ $mode_instalation != "A" ] || [ $mode_instalation != "P" ] ;  do #Inicio del 1º While
+
+            echo -n "¿Desea utilizar el modo de instalación automática[A] o personalizada[P] de los requisitos antes de instalar Almidón?";
+           read mode_instalation
+
+           if [ $mode_instalation = "A" ] || [ $mode_instalation = "P" ] ;then
+             break;  #Termina la iteración que se esta ejecutando  y sale del 1º While      
+            else
+                echo "El valor de la opción ingresada es inválido";
+                echo "Vuelvalo a intentar";
+           fi
+          done #Fin del 1º While
+
+          echo "";
+          if [ $mode_instalation = "P" ];then  #Inicio del 1º if
+            echo "Modo de instalación personalizada de requisitos antes de instalar Almidón";
+            inst_mdb2="";
+            while [ -z $inst_mdb2 ] || [ $inst_mdb2 = "" ] || [ $inst_mdb2 != "S" ] || [ $inst_mdb2 != "N" ]; do  #Inicio del 2º While
+
+             echo -n "¿Desea instalar el paquete MDB2 de PEAR necesario para los drivers que necesita la Plataforma Almidón?[ S(Recomendable)/N ]";
+             read inst_mdb2
+             if [ $inst_mdb2 = "S" ] || [ $inst_mdb2 = "N" ];then #Inicio del 2º if  
+               break;  #Termina la iteración que se esta ejecutando  y sale del 2º While 
+              else
+                  echo "El valor de la opción ingresada es inválido";
+                  echo "Vuelvalo a intentar"; 
+             fi #Fin del 2º if
+            done  #Inicio del 2º While
+
+            if [ $inst_mdb2 = "S" ];then   #Inicio del 3º if
+             echo "Instalando el paquete MDB2 de PEAR";
+             pear install mdb2
+            fi #Fin del 3º if
+
+            if [ $inst_mdb2 = "N" ];then  #Inicio del 4º if
+             echo "No se instaló el paquete MDB2 de PEAR";
+             echo "Si desea instalarlo más tarde. Escriba como root en la línea de comandos de la consola: pear install mdb2";
+            fi  #Fin del 4º if           
+           
+           print_messg_db_driver_and_server;
+           
+           inst_HTML_AJAX=""; #Inicialización de la variable inst_HTML_AJAX
+           while [ -z $inst_HTML_AJAX || $inst_HTML_AJAX != "S" || $inst_HTML_AJAX != "N" ];do #Inicio del 7º While
+            echo -n "¿Desea instalar el soporte PHP y bibliotecas de JavaScript para la realización de AJAX?[ S(Recomendable)/N ]";
+            read inst_HTML_AJAX;
+            if [ $inst_HTML_AJAX = "S" ] || [ $inst_HTML_AJAX = "N" ];then
+             #Inicio del 10º if
+               break; #Termina la iteración que se esta ejecutando  y sale del 7º While 
+             else
+                 echo "El valor de la opción ingresada es inválido";
+                 echo "Vuelvalo a intentar";
+            fi  #Fin del 10º if
+           done #Fin del 7º While
+
+           if [ $inst_HTML_AJAX = "S" ];then  #Inicio del 11º if
+            echo "Instalando soporte PHP y bibliotecas de JavaScript para la realización de AJAX";
+            pear install HTML_AJAX-alpha
+           fi  #Fin del 11º if
+           
+           if [ $inst_HTML_AJAX = "N" ];then  #Inicio del 12º if
+            echo "No se instaló soporte PHP y bibliotecas de JavaScript para la realización de AJAX";
+            echo "Si desea instalarlo más tarde. Escriba como root en la línea de comandos de la consola: pear install HTML_AJAX";
+           fi #Fin del 12º if
+          fi #Fin del 1º if
+
+          if [ $mode_instalation = "A" ];then #Inicio del 13º if
+           echo ""; 
+           echo "Modo de instalación Automática de requisitos antes de instalar Almidón"; 
+           echo "Instalando el paquete MDB2 de PEAR";
+           pear install mdb2
+
+           print_messg_db_driver_and_server;
+           echo "";
+           echo "Instalando soporte PHP y bibliotecas de JavaScript para la realización de AJAX";
+           pear install HTML_AJAX-alpha
+          fi  #Fin del 13º if
+
+          if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then  #Inicio del 14º if
+		invoke-rc.d apache2 restart || true
+	  else
+		/etc/init.d/apache2 restart || true
+          fi  #Fin del 14º if     
+fi 
+
+# if [ "$1" = "upgrade" ]; then
+# fi
+
+# if [ "$1" = "abort-upgrade" ]; then
+# fi
+    
+ 
+
+# dh_installdeb will replace this with shell code automatically
+# generated by other debhelper scripts.
+
+#DEBHELPER#
+
+exit 0
+
+

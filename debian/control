@@ -1,0 +1,16 @@
+Source: almidon
+Section: web
+Priority: optional
+Maintainer: Guegue Comunicaciones <almidon-dev@lista.almidon.org>
+Build-Depends: debhelper (>= 5), autotools-dev, dpkg-dev, autoconf(>= 2.61), automake(>= 1.9.6),
+ autoproject (>= 0.20), libtool(>= 1.5.26)
+Standards-Version: 3.7.2
+
+Package: almidon
+Architecture: any
+Depends: apache2 (>= 2.2.8), libapache2-mod-php5 (>= 5.2.4), php5 (>= 5.2.4), php-pear (>=5.2.4), php5-gd (>=5.2.4), smarty, php-doc
+Description: Plataforma de desarrollo rapido php+postgresql
+ Almidón es una plataforma que permite un desarrollo sólido de un
+ sitio web, una administración sencilla, rápida, y un sitio web con
+ buen desempeño. Actualmente en su mayoría escrito para Linux usando
+ PHP, Apache y PostgreSQL, pero probado y usado en otras plataformas.
