@@ -1,0 +1,72 @@
+!!! NOTA: DESACTUALIZADO !!!
+
+INSTALAR
+========
+
+ver INSTALL
+
+INSTALANDO Y CONFIGURANDO XAMPP
+===============================
+
+- XAMPP se instala bajando el paquete desde http://www.apachefriends.org/en/xampp.html
+Luego se descomprime  en /opt con el comando (como root)
+
+  # tar xvfz xampp-linux-1.6.6.tar.gz -C /opt
+
+Si lo queremos iniciar damos el siguiente comando (como root)
+
+  # /etc/opt/lampp/lampp start
+
+Para detenerlo se ejecuta el mismo comando pero con la opcion stop y
+para reiniciarlo  con la opcion restart, se recomienda leer la
+documentación de XAMPP para mas detalles.
+
+- Configurando XAMPP para usar Almidon
+
+Para este paso tenemos que editar dos archivos de configuración
+
+Al archivo /opt/lampp/etc/httpd.conf le agregamos al final la linea:
+
+    Include etc/extra/httpd-vhosts.conf
+
+Esto sirve para que Apache trabaje con Virtual Host lo que permite 
+multiples aplicaciones en el mismo XAMPP y para poder correr tanto 
+el ejemplo de Almidon como la aplicacion administrativa de XAMPP.
+
+Luego modificamos el archivo /opt/lamp/etc/extra/httpd-vhost.conf
+que contiene la configuracion de los Virtual Host. Borramos todo el
+contenido e introducimos los siguientes valores.
+
+    NameVirtualHost 127.0.0.1:80
+    <VirtualHost 127.0.0.1:80>
+        ServerName demo.almidon.org
+        DocumentRoot /opt/lampp/htdocs/almidon/demo/public_html
+        Alias /cms /opt/lampp/htdocs/almidon/pub
+        <Directory>
+                Options +FollowSymLinks +MultiViews
+        </Directory>
+    </VirtualHost>
+
+    <VirtualHost 127.0.0.1:80>
+	ServerName localhost
+        DocumentRoot /opt/lampp/htdocs/xampp
+    </VirtualHost>
+
+
+INSTALANDO Y CONFIGURANDO ALMIDON
+=================================
+
+Descargamos Almidon desde el SVN en htdocs:
+
+  # cd /opt/lampp/htdocs
+  # svn checkout http://svn.almidon.org/trunk almidon
+
+Modificamos config.php en /opt/lampp/htdocs/almidon/demo/public_html/classes/config.php
+para definir la conexion a nuestra base de datos.
+
+  if (ADMIN===true) define ('DSN', 'mysql://almidondemo:pass@/almidondemo');
+  else define ('DSN', 'mysql://almidondemowww:pass@/almidondemo');
+
+Creamos nuestra base de datos:
+
+  # mysql < /var/www/almidon/demo/demo.mysql

@@ -1,0 +1,6 @@
+Put here extra PHP libreries that you want to include or add to almidon.
+
+Put here Smarty if you require, tips:
+- Extract Smarty-version.tar.gz
+- Find the libs folder and put it in the root of this include.d folder
+- Rename libs folder to Smarty

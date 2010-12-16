@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>openWYSIWYG - Online Documentation</title>
+<meta name="description" content="openWYSIWYG - An open source free cross-browser wysiwyg editor.">
+<meta name="keywords" content="wysiwyg editor browser dhtml javascript component content management software system open source free cross-browser">
+<script language="JavaScript" type="text/javascript" src="wysiwyg.js"></script>
+<style>
+a {color: #3F8BD8;}
+a:hover {color: #FF9900;}
+h2 {font-size:15pt; font-weight:bold;color:red; font-family: "Trebuchet MS"; text-decoration: underline;}
+h3 {font-size:12pt; color: #494949; font-family: "Trebuchet MS";}
+</style>
+</head>
+<body style="background-color: #EEEEEE;">
+
+<center>
+<table border="0" cellpadding="0" cellspacing="0" style=" border: 1px solid #CCCCCC; background-color: #DDDDDD; padding: 20px;">
+ <tr>
+  <td><a href="http://www.openwebware.com/"><img src="http://www.openwebware.com/images/docs/logo.gif" alt="openwebware - Free Components and Applications" hspace="10" vspace="10" border="0"></a></td>
+	<td><span style="font-family: arial, verdana, helvetica; font-size: 20px; font-weight: bold; color: #494949;">openWYSIWYG 1.01 Documentation</td>
+ </tr>
+ <tr>
+  <td colspan="2" style="font-family: verdana, helvetica; font-size: 13px; color: #494949;" >
+	<center><b>Please read this document completely before using openWYSIWYG.</b></center>
+		<p>Please note that this documentation is not all-inclusive, a more detailed instruction manual will be available as openWYSIWYG matures. The good news, this document will walk you through the basics of getting started.</p>
+	 <p>If you have any suggestions on how to improve this document, or feel your contributions will make it more complete, please <a href="http://www.openwebware.com/about/contact/">contact us</a>. We're always looking for ways to improve, whether it's the product itself or the accompanying documentation.</p>
+  
+	<ol>
+   <li><a href="#introduction">Introduction</a></li>
+	 <ol type="i">
+    <li><a href="#openWYSIWYG">What is openWYSIWYG?</a></li>
+    <li><a href="#free">Is openWYSIWYG really free and open source?</a></li>
+    <li><a href="#example">Do you have a working example I can see?</a></li>
+    <li><a href="#info">Where can I learn more about it, download the latest version, or talk to other openWYSIWYG developers?</a></li>
+   </ol>
+   <li><a href="#requirements">Browser Requirements</a></li>
+   <li><a href="#install">Installation</a></li>
+   <ol type="i">
+    <li><a href="#howtoadd">How do I add openWYSIWYG to my web page or web application?</a></li>
+   </ol>
+   <li><a href="#faqs">Frequently Asked Questions</a></li>
+	 <ol type="i">
+    <li><a href="#goals">What are the project goals for openWYSIWYG?</a></li>
+    <li><a href="#help">openWYSIWYG is great, is there anyway I can help?</a></li>
+    <li><a href="#feature">I'd like to add a feature, can you add it?</a></li>
+		<li><a href="#browsers">Why don't you support Safari, Opera, or &lt;insert browser name&gt;?</a></li>
+		<li><a href="#question">My question isn't answered here?</a></li>
+   </ol>
+	 <li><a href="#issues">Known Issues</a></li>
+   <li><a href="#change">Change Log</a></li>
+	 <li><a href="#features">Feature Recommendations for the Next Version</a>
+	 <li><a href="#disclaimer">Copyright and Disclaimer</a></li>
+  </ol>
+	
+<a name="#introduction"><h2>1. Introduction</h2></a>
+<p>If you are just getting started with openWYSIWYG, then you've come to the right place. This 
+document explains what openWYSIWYG is, contains information on installing and setting up 
+openWYSIWYG, answers frequently asked questions, lists the program's requirements, and provides other useful information.</p>
+
+
+<br /><br />
+<a name="#openWYSIWYG"><h3>1.i. What is openWYSIWYG?</h3></a>
+<p>openWYSIWYG is a free cross-browser WYSIWYG (what you see is what you get) editor. 
+With just a few simple lines of JavaScript code you can  easily replace a &lt;textarea&gt; 
+with a powerful WYSIWYG editor that lets your users do the following:</p>
+<ul>
+ <li>Format text to be bold, italicized, or underlined.</li> 
+ <li>Change the face, size, style and colour.</li> 
+ <li>Left, centre, or right-justify paragraphs.</li> 
+ <li>Make bulleted or numbered lists.</li> 
+ <li>Indent or un-indent paragraphs.</li> 
+ <li>Insert hyperlinks, images, and tables.</li>
+ <li>View the HTML source code of what you're editing.</li>
+ <li>And much more...</li>
+</ul>
+
+<p>What sets openWYSIWYG apart from other WYSIWYG editors?</p>
+<ul>
+ <li>It loads extremely fast and is completely written in JavaScript and DHTML. No server side code (like PHP) required.</li> 
+ <li>Regardless of what programming language you use, openWYSIWYG will work. (ASP, ASP. Net, PHP, Perl, Java, Python, Cold Fusion, etc).</li> 
+ <li>It's open source, meaning you'll have access to the full source code to modify or customize it to your needs.</li>
+ <li>With just one line of code it can easily be added to your content management system or custom web application.</li>
+ <li>It's compatible with the most popular internet browsers, meaning your users will have no trouble making use of it.</li>
+ <li>And best of all, it's free! It can be incorporated into any free or commercial program.</li> 
+</ul>
+
+
+<br /><br />
+<a name="#free"><h3>1.ii. Is openWYSIWYG really free and open source?</h3></a>
+<p>Yes! Unlike other WYSIWYG editors out there you don't have 
+to fork out big dollars for openWYSIWYG. You can distribute it in your 
+content management system or custom web application. It's absolutely free!</p> 
+
+<p>openWYSIWYG is an open source application released under the 
+<a href="http://www.opensource.org/licenses/lgpl-license.php" target="_blank">LGPL</a>, 
+meaning you'll have access to the full source code to modify or customize it to your 
+needs. Add new features, change the styles, or even optimize the code. It's entirely 
+up to you.</p>
+
+
+<br /><br />
+<a name="#example"><h3>1.iii. Do you have a working example I can see?</h3></a>
+
+<p>Absolutely, just check out a working example below:</p>
+
+	<textarea id="textarea1" name="test1" style="height: 170px; width: 500px; background-color:#ffffff;">
+  <table border="0" cellpadding="0" cellspacing="0" style="margin-left: 10px;">
+	 <tr>
+	  <td style="padding: 0 10 10 0;"><a href="http://www.openwebware.com/products/openwysiwyg/"><img src="http://www.openwebware.com/images/openwysiwyg/logo9060.gif" border="0" height="60" width="90" alt="openWYSIWYG - Cross-browser WYSIWYG editor"></a></td>
+		<td style="font-family: verdana; font-size: 11px; line-height: 130%; color: #494949;" valign="top">	
+	  <b><a href="http://www.openwebware.com/products/openwysiwyg/" style="font-family: arial; font-size: 12px; color: #055F92;">openWYSIWYG - Cross-browser WYSIWYG editor</a></b><br />
+	  Need a powerful cross-browser WYSIWYG editing component? openWYSIWYG is the ultimate 
+		&amp;lt;textarea&amp;gt; replacement for your content management system.
+		</td>
+	 </tr>
+	 <tr>
+	  <td style="padding: 0 10 10 0;"><a href="http://www.openwebware.com/products/openpopups/"><img src="http://www.openwebware.com/images/openpopups/logo9060.gif" border="0" height="60" width="90" alt="openWYSIWYG - Cross-browser WYSIWYG editor"></a></td>
+		<td style="font-family: verdana; font-size: 11px; line-height: 130%; color: #494949;" valign="top">	
+	  <b><a href="http://www.openwebware.com/products/openpopups/" style="font-family: arial; font-size: 12px; color: #055F92;">openPopUps - JavaScript and &amp;&lt;div&amp;&gt; powered popup window</a></b><br />
+	  The perfect pop up window replacement for your advertisements and web applications. Pop 
+		up blockers will fail to prevent an openPopUp window from opening. 
+		</td>
+	 </tr>
+	</table>
+	</textarea>
+  <script language="javascript1.2">
+    generate_wysiwyg('textarea1');
+  </script>
+
+
+<br /><br />
+<a name="#info"><h3>1.iv. Where can I learn more about it, download the latest version, or 
+talk to other openWYSIWYG developers?</h3></a>
+
+<p>You can learn more about openWYSIWYG and download the latest version at <a href="http://www.openwebware.com/products/openwysiwyg/">www.openwebware.com</a>.
+There's also an <a href="http://www.openwebware.com/forum/viewforum.php?f=1">excellent user community</a> where you can share ideas, learn various tricks, 
+or even post suggestions and comments.</p>
+
+
+<br /><br />
+<a name="#requirements"><h2>2. Browser Requirements</h2></a>
+
+<p>openWYSIWYG is cross-browser compatible and will work with the most popular internet 
+browsers. This means your users will have no trouble making use of it. Supported browsers include: 
+<b>IE</b> 5.5+ (Windows), <b>Firefox</b> 1.0+, <b>Mozilla</b> 1.3+ and <b>Netscape</b> 7+.</p>
+
+
+<br /><br />
+<a name="#install"><h2>3. Installation</h2></a>
+
+<p>Once you've downloaded openWYSIWYG you'll want to unzip it (while maintaining the directory 
+structure).</p>
+
+<p>openWYSIWYG is coded completely in JavaScript, HTML, and CSS. 
+It also uses images (.gif and .jpg), so if you're uploading these files to your 
+web server you'll want to make sure they're readable.</p>
+
+<p>On Unix based servers, that means every directory has chmod permissions of 755 
+while the files (.html, .js, .jpg., .gif, etc) are 644. Most Unix based servers 
+use these settings for folders and files by default, so  you most likely won't 
+have to change a thing.</p>
+
+<br /><br />
+<a name="#howtoadd"><h3>3.i. How do I add openWYSIWYG to my web page or web application?</h3></a>
+
+<p>You can easily add openWYSIWYG to your content management system or custom 
+web application by just adding a few simple lines of JavaScript code.</p>
+
+<p><b>1.</b> Near the beginning of the web page to which you plan to add openWYSIWYG insert 
+the following line of code before the closing &lt;/head&gt; tag.</p>
+
+<div style="margin-left: 20px;">Include the following:</div>
+<div style="background-color: #FFFFEE; font-family: courier new; font-size: 12px; padding: 5px; width: 100%; border: 1px solid #444444; margin-left: 20px;">
+  <span style="color: #0000FF;">&lt;script language=</span><!--
+  --><span style="color: #008080;">"JavaScript"</span> 
+  <span style="color: #0000FF;">type=</span><!--
+  --><span style="color: #008080;">"text/javascript"</span> 
+  <span style="color: #0000FF;">src=</span><!--
+  --><span style="color: #008080;">"/<span style="color: #CC0000;">your_directory_path</span>/openwysiwyg/wysiwyg.js"&gt;</span><!--
+  --><span style="color: #0000FF;">&lt;/script&gt;</span>
+</div>
+
+<p>Where <span style="font-family: courier new; font-size: 13px; color: #CC0000;">your_directory_path</span> is the path to your openwysiwyg directory.
+
+
+<p><b>2.</b> Next, add opening and closing &lt;textarea&gt; tags where you plan to include 
+your WYSIWYG editor. You'll also want to give your &lt;textarea&gt; an ID value.</p>
+
+<div style="margin-left: 20px;">Example &lt;textarea&gt; code:</div>
+<div style="background-color: #FFFFEE; font-family: courier new; font-size: 12px; padding: 5px; width: 300px; border: 1px solid #444444; margin-left: 20px;">
+<span style="color: #0000FF;">&lt;textarea id="<span style="color: #CC0000;">your_textarea</span>"&gt;&lt;/textarea&gt;</span>
+</div>
+
+<p>Your &lt;textarea&gt;'s ID should be something unique.</p>
+
+
+<p><b>3.</b> Finally, add the following JavaScript code just below your closing &lt;/textarea&gt; tag.</p>
+
+
+<div style="margin-left: 20px;">Example JavaScript code:</div>
+<div style="background-color: #FFFFEE; font-family: courier new; font-size: 12px; padding: 5px; width: 300px; border: 1px solid #444444; margin-left: 20px;">
+	<span style="color: #0000FF;">&lt;script language=</span><span style="color: #008080;">"JavaScript"</span>&gt;<br>
+  &nbsp;&nbsp;<span style="color: #000080;">generate_wysiwyg</span>('<span style="color: #CC0000;">your_textarea</span>');<br>
+  <span style="color: #0000FF;">&lt;/script&gt;</span>
+</div>
+
+<p>The value you pass to the generate_wysiwyg function (<span style="font-family: courier new; font-size: 13px; color: #CC0000;">your_textarea</span>) 
+must be the exact same as your &lt;textarea&gt;'s ID.</p>
+
+<p>And that's about it, you've just added openWYSIWYG to your content management 
+system or custom web application with just a few small lines of code.</p>
+
+<br /><br />
+<a name="#faqs"><h2>4. Frequently Asked Questions</h2></a>
+
+
+<a name="#goals"><h3>4.i.What are the project goals for openWYSIWYG?</h3></a>
+
+<p>The project goals for openWYSIWYG are designed to make it easy for developers who 
+contribute to the editor to know where it's going. This also lets people know 
+what's important to us and what we believe makes a good editor.</p>
+
+<p><b>100% JavaScript</b>
+<div style="margin-left: 50px;">openWYSIWYG must always be coded entirely in JavaScript and DHTML.
+This is so developers can use it in their applications regardless of the programming language 
+they choose to build their web applications, be it Perl, PHP, ASP, Cold Fusion, or any other 
+language.
+<br /><br />
+That being said, add-ons or plug-ins (e.g. image/media uploading utility) can be coded in 
+a server side language (Perl, PHP, ASP, etc).</div></p>
+
+
+<p><b>Fast Loading and Unbloated</b>
+<div style="margin-left: 50px;">openWYSIWYG must always be fast loading. Regardless of what feature 
+is added, it cannot slow down the loading of the editor itself. There are far too many free WYSIWYG 
+editors out there that take an unbelievable amount of time to load. End users (the very people who will 
+use your web applications) don't like this!<br /><br />
+Also, the editor must not become bloated, filled with features that only a small minority of users 
+will make use of. If there's ever a doubt to which features you think should be added please
+refer to the list of <a href="#features">feature recommendations for the next version</a> 
+found in this document.</div></p>
+
+
+<p><b>Easy to Use</b>
+<div style="margin-left: 50px;">openWYSIWYG must be easy to use for developers to integrate into 
+their applications, easy for programmers to add new features, and easy for end users 
+to use.</div></p>
+
+<br /><br />
+<a name="#help"><h3>4.ii.openWYSIWYG is great, is there any way I can help?</h3></a>
+
+<p>Absolutely. Whether you're just starting with openWYSIWYG, are a developer or programmer, 
+or have your own website, almost anyone can help.</p>
+
+<p><b>If You're a Programmer or Developer</b>
+<div style="margin-left: 50px;">Any code improvements you want to share are most certainly 
+welcome. After all, openWYSIWYG is open source, so we're always open to suggestions and 
+improvements.<br /><br /> 
+
+If you notice anything that you can do better, or have an improvement you would like to make 
+you can always share it with others in the <a href="http://www.openwebware.com/forum/viewforum.php?f=1">
+openWYSIWYG forum</a>, or <a href="mailto:webmaster@openwebware.com">send us an email</a> with 
+your code improvements, new features, or suggestions.<br /><br />
+
+If you're not sure where to get started you can always check out the <a href="#features">feature 
+recommendations</a> slated for the next version.<br /><br />
+
+All contributions will be credited to the creator in the openWYSIWYG source code and on the 
+openwebware.com website.</div></p>
+
+
+<p><b>If You're a Webmaster or Site Owner</b>
+<div style="margin-left: 50px;">As a webmaster, the best thing you can do to help is also the easiest thing to do; 
+give us a link on your website. The more people who can find out about openWYSIWYG the 
+better it will be.<br /><br />
+
+Just copy the HTML from one of the code samples below and place it somewhere on your 
+website.<br /><br />
+
+<i class="siteTitles">Image Link:</i><br />
+<a href="http://www.openwebware.com/products/openwysiwyg/"><img src="http://www.openwebware.com/images/openwysiwyg/32_x_88.gif" height="32" width="88" border="0" alt="openWYSIWYG - Free Open Source WYSIWYG Editor" /></a>
+<br /><br />
+<textarea rows="4" cols="75">&lt;a href="http://www.openwebware.com/products/openwysiwyg/"&gt;&lt;img src="http://www.openwebware.com/images/openwysiwyg/32_x_88.gif" height="32" width="88" border="0" alt="openWYSIWYG - Free Open Source WYSIWYG Editor" /&gt;&lt;/a&gt;</textarea>
+<br /><br />
+	
+<i class="siteTitles">Text Link:</i><br />
+<a href="http://www.openwebware.com/products/openwysiwyg/" style="font-family: arial; font-size: 12px;">openWYSIWYG - Free Open Source WYSIWYG Editor</a>
+<br /><br />
+<textarea rows="3" cols="75">&lt;a href="http://www.openwebware.com/products/openwysiwyg/" style="font-family: arial; font-size: 12px;"&gt;openWYSIWYG - Free Open Source WYSIWYG Editor&lt;/a&gt;</textarea>
+</div></p>
+
+
+<p><b>If You're a New User</b>
+<div style="margin-left: 50px;"><a href="http://www.openwebware.com/forum/viewforum.php?f=1">
+Participate in our forum</a> and post a message or two to help other openWYSIWYG users 
+(or learn something new yourself).</div></p>
+
+
+<br /><br />
+<a name="#feature"><h3>4.iii.I'd like to add a feature, can you add it?</h3></a>
+<p>Probably not. If it's not listed in the <a href="#features">feature recommendations</a> for 
+the next version we just won't have the time to work on it. That doesn't mean you can't work on it 
+or <a href="http://www.openwebware.com/forum/viewforum.php?f=1">post a message</a>
+in the forum asking if someone else could help you with it.</p>
+
+
+<br /><br />
+<a name="#browsers"><h3>4.iv.Why don't you support Safari, Opera, or &lt;insert browser name&gt;?</h3></a>
+<p>It's not that we don't want to, we just don't yet. Our first goal was to provide support for 
+the most popular browsers, those being Internet Explorer and Mozilla (Mozilla and Firefox). 
+Safari is definitely something we would like to support since it's gaining in popularity 
+within the Mac community. While not fully tested, if your users are working with Macs 
+they should be able to access openWYSIWYG using a Mozilla based browser (e.g. Mozilla or Firefox).</p>
+
+<p>As for Opera, to be realistic, we currently don't have any plans to support it. Opera 
+just hasn't reached a level of popularity to justify the time required to develop support for it.</p>
+
+
+<br /><br />
+<a name="#question"><h3>4.v.My question isn't answered here?</h3></a>
+<p>We're always happy to answer questions. <a href="http://www.openwebware.com/forum/viewforum.php?f=1">
+Post your question in the forum</a> if it wasn't answered here.</p>
+
+
+<br /><br />
+<a name="#issues"><h2>5. Known Issues</h2></a>
+<p><b>HTML header tags (e.g.: &lt;body&gt;, &lt;head&gt;, etc) aren't preserved</b>
+<div style="margin-left: 50px;">This probably has to do with the browser trying to be smart about the way it generates its HTML. The editor already has HTML header information of its own so inserting a second one confuses the browser and the content gets stripped. While this is a very minor issue, we do hope to research this further and find a solution.</div></p>
+
+<br /><br />
+<a name="#change"><h2>6. Change Log</h2></a>
+
+<p><b>Version 1.01 (Released: April 9, 2006)</b><br />
+Addresses the following:
+<ul>
+<li>A bizarre problem on certain version combinations of IE and Windows where; the textarea wasn't hidden, the font size and font type drop downs did not display at all, and the "Text" mode button wasn't hidden when first loading.</li>
+<li>Font Size and Font Select buttons weren't "unselectable" in IE 6+ (meaning users could drag and drop them into the editor). This is now fixed.</li>
+<li>The WYSIWYG should now always update the textarea on the user's last command.</li>
+<li>All document.all references have been changed to document.getElementById.</li>
+<li>Minor UI changes to the Insert Table popup.</li>
+<li>Minor design changes to the toolbar (CSS, HTML changes) so it displays better in various HTML doctypes.</li>
+<li>Undo/Redo now works in Internet Explorer.</li> 
+</ul>
+</p>
+
+<p><b>Version 1.00 (Released: March 1, 2006)</b><br />
+Initial Release</p>
+
+
+<br /><br />
+<a name="#features"><h2>7. Feature Recommendations for the Next Version</h2></a>
+<p>Included below is a list of features and fixes recommended for the next update 
+to openWYSIWYG. We could really use your help, so if you would like to lend a hand
+<a href="maitlo:webmaster@openwebware.com">let us know</a>, any additions and 
+enhancements will be credited in the source code and on the openwebware.com website.</p>
+
+<ul>
+ <li><b>Features and Improvements</b></li>
+ <ul>
+  <li>XHTML compliant code output</li>
+  <li>Table Editing Features (modify table, insert table cell, insert row, merge table cell, etc)</li>
+ </ul>
+</ul>
+
+<ul>
+ <li><b>Add-ons and Plug-ins</b></li>
+ <ul>
+  <li>Image/Media uploader for PHP</li>
+ </ul>
+</ul>
+ 
+<br /><br />
+<a name="#disclaimer"><h2>8. Copyright and Disclaimer</h2></a>
+This application is open source software released under the 
+<a href="http://www.opensource.org/licenses/lgpl-license.php" target="_blank">LGPL</a>. 
+Please see source code for more details. This package and its contents are Copyright 
+© 2006 openWebWare.com, All Rights Reserved.
+
+
+	</td>
+ </tr>
+</table>
+</center>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+.autocomplete-w1 { background:url(shadow.png) no-repeat bottom right; position:absolute; top:5px; left:0px; margin:8px 0 0 6px; /* IE6 fix: */ _background:none; _margin:0; }
+.autocomplete { font-family: arial, sans-serif; font-size:11px; border:1px solid #95a5c6; background:#FFF; cursor:default; text-align:left; max-height:350px; overflow:auto; margin:-6px 6px 6px -6px; /* IE6 specific: */ _height:350px;  _margin:0; _overflow-x:hidden; }
+.autocomplete .selected { background:#3b5998; color:#FFF; }
+.autocomplete div { padding-top:2px; padding-bottom:2px; padding-left:4px; padding-right:4px; margin:1px; white-space:nowrap; }
+.autocomplete strong { font-weight:normal; color:#000000; background-color:#cad1db; }

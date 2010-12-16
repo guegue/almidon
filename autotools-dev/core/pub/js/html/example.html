@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>openWYSIWYG Examples</title>
+</head>
+<script language="JavaScript" type="text/javascript" src="wysiwyg.js">
+</script>
+
+<body>
+<form name="example" method="get">
+<textarea id="textarea1" name="test1" style="height: 170px; width: 500px;">
+  <table border="0" cellpadding="0" cellspacing="0" style="margin-left: 10px;">
+	 <tr>
+	  <td style="padding: 0 10 10 0;"><a href="http://www.openwebware.com/products/openwysiwyg/"><img src="http://www.openwebware.com/images/openwysiwyg/logo9060.gif" border="0" height="60" width="90" alt="openWYSIWYG - Cross-browser WYSIWYG editor"></a></td>
+		<td style="font-family: verdana; font-size: 11px; line-height: 130%; color: #494949;" valign="top">	
+	  <b><a href="http://www.openwebware.com/products/openwysiwyg/" style="font-family: arial; font-size: 12px; color: #055F92;">openWYSIWYG - Cross-browser WYSIWYG editor</a></b><br />
+	  <?php
+		
+		echo "Hello World";
+		
+		?>
+		</td>
+	 </tr>
+	</table>
+</textarea>
+<script language="javascript1.2">
+  generate_wysiwyg('textarea1');
+</script>
+
+
+<br><br>
+<textarea id="textarea2" name="test2" style="height: 200px; width: 500px;">
+<h1>GNU Lesser General Public License</h1>
+
+<tt>
+<p>Version 2.1, February 1999</p>
+
+<blockquote>
+<p>Copyright (C) 1991, 1999 Free Software Foundation, Inc.
+59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.</p>
+
+<p>[This is the first released version of the Lesser GPL.  It also counts
+ as the successor of the GNU Library Public License, version 2, hence
+ the version number 2.1.]</p></blockquote>
+
+<h3>Preamble</h3>
+
+<p> The licenses for most software are designed to take away your freedom to share and change it.</p>
+</tt>
+</textarea>
+<script language="javascript1.2">
+  generate_wysiwyg('textarea2');
+</script>
+
+<br /><br />
+<input type="submit" id="button" />
+</form>
+
+
+</body>
+</html>

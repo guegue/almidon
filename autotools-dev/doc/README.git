@@ -1,0 +1,25 @@
+NOTA: para participar envia tu IP y llave publica a la lista almidon-dev@lista.almidon.org
+
+Clonar:
+
+$ cd /var/www/
+$ rm -fr almidon
+$ git clone git@git.almidon.org:almidon
+$ git config --global user.name "Bob Smith"
+$ git config --global user.email bob@example.com
+
+Cambiar y publicar:
+
+$ cd almidon
+$ vi doc/README.git
+$ git add doc/README.git
+$ git commit -m "added README.git"
+$ git push origin master
+
+Luego basta con:
+
+$ git push
+
+Para actualizar copia local:
+
+$ git pull origin master

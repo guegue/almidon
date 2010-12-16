@@ -1,0 +1,9 @@
+
+[Anjuta]
+Geometry=790x521+0+25
+
+[File Loader]
+Files=file:///media/ESTRIBI/C%2B%2B/almidon/almidon-0.7.1/demo/Makefile.am#49%%%file:///media/ESTRIBI/C%2B%2B/almidon/almidon-0.7.1/scripts/site-setup.sh#96%%%file:///media/ESTRIBI/C%2B%2B/almidon/almidon-0.7.1/doc/Makefile.am#41%%%file:///media/ESTRIBI/C%2B%2B/almidon/almidon-0.7.1/demo/sql/Makefile.am#18
+
+[Execution]
+Run in terminal=2

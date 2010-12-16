@@ -1,0 +1,14 @@
+AddType application/x-httpd-php .php
+
+# Protect themes
+<FilesMatch "\.(tpl(\.php)?|xtmpl)$">
+  Order allow,deny
+</FilesMatch>
+
+# Various rewrite rules.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} ^/(.*)/pic/(.*)
+  RewriteRule pic/(.*) /%1/pic.php/$1 [L,QSA]
+</IfModule>
