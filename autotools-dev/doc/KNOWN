@@ -1,3 +1,0 @@
-TICKETS:
-  * Soporte pobre para tablas de 2 llaves en sincronizacion tables<-->sql
-  * Soporte pobre para mysql en /setup
