@@ -11,7 +11,7 @@ License: GPLv3
 URL: http://almidon.org/
 Source0: http://almidon.org/downloads/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires: php, php-pgsql, postgresql, postgresql-server, httpd
+Requires: php, php-gd, smarty, php-pgsql, postgresql, postgresql-server, httpd
 BuildArch: noarch
 
 %description
