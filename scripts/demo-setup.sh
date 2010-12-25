@@ -62,3 +62,4 @@ else
     echo  "Must be the administrator named root for execute this script without any problem";
     echo "Try again with as administrator";
 fi
+
