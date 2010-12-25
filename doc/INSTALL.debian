@@ -11,7 +11,6 @@ En debian copiamos la configuracion a /etc/apache2/conf.d/:
   # cp /var/www/almidon/demo/almidon.conf /etc/apache2/conf.d/
 
 
-
 CREANDO E INSTALANDO ALMIDON DESDE PAQUETE DEBIAN 
 =================================================
 
@@ -351,4 +350,5 @@ Bibliografía:
 Página web sobre el contenido para realizar los pasos necesarios para crear un paquete debian.
 
 http://www.debian.org/doc/maint-guide/index.es.html#contents
+
 
