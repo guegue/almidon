@@ -1,6 +1,6 @@
 Construcción e instalación del instalador UNIX
 
-Antes de proceder con la construcción del instalador UNIX si un dado caso no existe el archivo configure y/o los archivos Makefile, se debe de instalar los siguientes paquetes:
+Antes de proceder con la construcción del instalador UNIX si un dado caso existe el archivo configure y/o Makefile, se debe de instalar los siguientes paquetes:
 
 autoproject(>=0.20) 
 autoconf(>=2.61)
@@ -49,67 +49,63 @@ Pasos para realizar la construcción del instalador UNIX:
  Paso 2: Ingresamos al directorio almidon
  # cd /ruta/hacia/el/directorio/de/almidon
 
- Paso 3: Copiar sólo el contenido de la carpeta autotools-dev al directorio de almidon 
- # cp -Rf autotools-dev/*.* ./
-
- Ojo:
- Luego de haber copiado el contenido de la carpeta autotools-dev a almidon, esta carpeta tiene 
- un archivo almidon.anjuta que si lo desea puede abrirlo para crear el instalador en modo 
- gráfico empleando el Entorno de Desarrollo llamado Anjuta, es útil si usted es un 
- desarrollador o tiene nociones básicos sobre cómo emplear este programa en una distribución  
- basada en Linux.
-
- Paso 4: Eliminamos sólo el contenido de la carpeta autotools-dev
- #rm -Rf autotools-dev/*
-
- Paso 5: Renombramos del directorio core y el nombre que asumirá es el siguiente: atma_core
+ Paso 3: Renombramos del directorio core y el nombre que asumirá es el siguiente: atma_core
  # mv core atma_core 
-	    
- Paso 6: Modificamos los archivos *.am sólo si lo deseamos, de lo contrario vayamos al 
- siguiente paso.
- Debe buscar el nombre del archivo o directorio dentro del archivo Makefile.am( que se 
- encuentra dentro del mismo directorio que éstos)que contiene que a su vez posee una macro 
- llamada SUBDIRS y otra llamada con el nombreDelObjetivo(el que lleva esta cadena _DATA), el 
- primero tiene una lista de los nombres de subdirectorios y el segundo de archivos que se 
- encuentran dentro de un directorio.
 
- Modificación de la lista de subdirectorios y archivos.
- a. Eliminación un archivo o subdirectorio dentro de su respectiva lista
- En consola:
- Abrimos y editamos el archivo Makefile.am, en el caso de haya eliminado un nuevo 
- subdirectorio o archivo debe borrar la línea que contiene el nombre del sudirectorio o 
- archivo y el cáracter /. Y por último, si no está eliminado el archivo o subdirectorio lo 
- borramos de la jerarquía de subdirectorios del directorio almidon.
- Sólo en el caso de la eliminación del subdirectorio debemos editar el archivo configure.ac y
- eliminar la línea que contiene nombre_del_directorio_incluido_de_almidon_por_modificar/nombre_del_subdirectorio_eliminado/Makefile
- 
- En Anjuta: Hacemos las intrucciones destinadas a la consola.
+ 4. Copiar sólo el contenido de la carpeta autotools-dev al directorio de almidon 
+    # cp -R autotool-dev/*.* ./
+	
+    Recuerde mantener la carpeta autotools-dev para añadir cualquier cambios en caso de que 
+    añada o elimine cualquier archivo o directorio dentro del árbol de directorios de la 
+    carpeta almidon. En el que caso de que haya agregado o eliminado un archivo o 
+    subdirectorio. 
+    
+    Debe buscar el nombre de dentro del archivo Makefile.am( que se encuentra dentro del mismo 
+    directorio que éstos)que contiene que a su vez posee una macro llamada SUBDIRS y otra 
+    llamada con el nombreDelObjetivo(el que lleva esta cadena _DATA), el primero tiene una 
+    lista de los nombres de subdirectorios y el segundo de archivos que se encuentran dentro de 
+    un directorio.
 
- b. Agregación un archivo o subdirectorio dentro de su respectiva lista
- En consola:
- Abrimos y editamos el archivo Makefile.am, en el caso de que haya agregado un nuevo 
- subdirectorio o archivo debe agregar el cáracter '\' al último después del nombre del 
- sudirectorio o archivo que posea la lista hasta el momento y en la siguiente línea escribir 
- el nombre del subdirectorio o archivo agregado.
+    a. Eliminación un archivo o subdirectorio dentro de su respectiva lista
+    En consola:
+    Abrimos y editamos el archivo Makefile.am, en el caso de haya eliminado un nuevo 
+    subdirectorio o archivo debe borrar la línea que contiene el nombre del sudirectorio o 
+    archivo y el cáracter /. Y por último, si no está eliminado el archivo o subdirectorio lo 
+    borramos de la jerarquía de subdirectorios del directorio almidon.
 
- Cuando vaya añadir un nuevo subdirectorio a la lista de subdirectorios de un directorio, 
- edité el archivo configure.ac, busque la macro AC_OUTPUT que posee una lista de Makefile a
- crear dentro del árbol jerárquico de subdirectorio de la carpeta almidon, al fina de la 
- lista y antes de '])' introduzca una nueva línea y escriba:  
- nombre_del_directorio_incluido_de_almidon_por_modificar/nombre_del_subdirectorio_añadido/
- Makefile
+    En Anjuta: Hacemos las intrucciones destinadas a la consola.
+    Además, sólo en el caso de la eliminación de un directorio debe además editamos el archivo
+    configure.ac y eliminar la línea que contiene   
+    nombre_del_directorio_incluido_de_almidon_por_modificar/nombre_del_subdirectorio_eliminado/
+    Makefile
 
- En Anjuta: 
- a. Añadir un nuevo subdirectorio a la lista de subdirectorios que posee el directorio a 
- modificar.
- Nos ubicamos en la barra de menú, luego hacemos clic sobre el menú Proyecto,  
- después hacemos clic sobre el menú Agregar grupo, a continuación se nos abrirá una nueva 
- ventana cuyo título es Nuevo Grupo escribimos en el campo el nombre del subdirectorio a 
- añadir y por seleccionamos el directorio(incluido dentro de la carpeta almidon)donde que 
- queremos que este agregado.
 
- b. Añadir un nuevo archivo a la lista de archivos de cualquier tipo y extensión que posee 
- el directorio a modificar.
+    b. Agregación un archivo o subdirectorio dentro de su respectiva lista
+
+    En consola:
+    Abrimos y editamos el archivo Makefile.am, en el caso de que haya agregado un nuevo 
+    subdirectorio o archivo debe agregar el cáracter '\' al último después del nombre del 
+    sudirectorio o archivo que posea la lista hasta el momento y en la siguiente línea escribir 
+    el nombre del subdirectorio o archivo agregado.
+
+    Cuando vaya añadir un nuevo subdirectorio a la lista de subdirectorios de un directorio, 
+    edité el archivo configure.ac, busque la macro AC_OUTPUT que posee una lista de Makefile a
+    crear dentro del árbol jerárquico de subdirectorio de la carpeta almidon, al fina de la 
+    lista y antes de '])' introduzca una nueva línea y escriba:  
+    nombre_del_directorio_incluido_de_almidon_por_modificar/nombre_del_subdirectorio_añadido/
+    Makefile
+
+    En Anjuta: 
+    a. Añadir un nuevo subdirectorio a la lista de subdirectorios que posee el directorio a 
+    modificar.
+    Nos ubicamos en la barra de menú, luego hacemos clic sobre el menú Proyecto,  
+    después hacemos clic sobre el menú Agregar grupo, a continuación se nos abrirá una nueva 
+    ventana cuyo título es Nuevo Grupo escribimos en el campo el nombre del subdirectorio a 
+    añadir y por seleccionamos el directorio(incluido dentro de la carpeta almidon)donde que 
+    queremos que este agregado.
+
+    b. Añadir un nuevo archivo a la lista de archivos de cualquier tipo y extensión que posee 
+    el directorio a modificar.
 
     Nos ubicamos en la barra de menú, luego hacemos clic sobre el menú Proyecto,  
     después hacemos clic sobre el menú Añadir archivo fuente, a continuación se nos abrirá una 
@@ -176,9 +172,14 @@ Pasos para realizar la construcción del instalador UNIX:
     .htpasswd \					
     nombre_del_subdirectorio_agregado 
 
+ Ojo:
+ Luego de haber copiado el contenido de la carpeta autotools-dev a almidon, esta carpeta tiene 
+ un archivo almidon.anjuta que si lo desea puede abrirlo para crear el instalador en modo 
+ gráfico empleando el Entorno de Desarrollo llamado Anjuta, es útil si usted es un 
+ desarrollador o tiene nociones básicos sobre cómo emplear este programa en una distribución  
+ basada en Linux.
 
- Paso 7: Introducimos la versión del instalador UNIX del código de Almidon sólo si deseamos
- cambiar la que está por defecto.
+ Paso 5: Introducimos la versión del instalador UNIX del código de Almidon
  Abrimos el archivo llamado configure.ac, luego buscamos y editamos la línea que contiene la
  macro AC_INIT. 
  Por defecto, la macro contiene como nombre del paquete o instalador precisamente el valor de
@@ -190,7 +191,7 @@ Pasos para realizar la construcción del instalador UNIX:
  Los argumentos de la macro AC_INIT que se encuentran entre los signos de llaves([]) son 
  opcionales.
 
- Paso 8: Actualiza los cambios hechos a los archivos con extensión *.ac y *.am para adaptarlos
+ Paso 6: Actualiza los cambios hechos a los archivos con extensión *.ac y *.am para adaptarlos
  los archivos que se generarán, los cuales son necesarios para construir el instalador UNIX. 
  Uno de ellos es el configure. 
 
@@ -211,18 +212,19 @@ Pasos para realizar la construcción del instalador UNIX:
  En Anjuta: Nos ubicamos en la barra de Menú y hacemos clic sobre el menú Construir y luego en 
  el submenú Ejecutar autogeneración...
 
- Paso 9: Ejecutamos el script configure sólo si no deseamos usar de nuevo autogen.sh(por que 
+
+ Paso 7: Ejecutamos el script configure sólo si no deseamos usar de nuevo autogen.sh(por que 
  invoca automáticamente al script configure ) y como y como resultado generamos los archivos 
  necesarios para construir el instalador, entre ellos están los Makefile.   
  En la consola: # ./configure
  En Anjuta: Nos ubicamos en la barra de Menú y hacemos clic sobre el menú Construir y luego en 
  el submenú Ejecutar configure...
- 
- Paso 10: Compilamos los archivos Makefile.
+
+ Paso 8: Compilamos los archivos Makefile.
  En la consola: # make
  En Anjuta: Haciendo clic sobre el menú Construir y luego en el submenú Construir proyecto
 
- Paso 11: Creamos el archivo comprimido del instalador en formato tarball, cuyo nombre incluye 
+ Paso 9: Creamos el archivo comprimido del instalador en formato tarball, cuyo nombre incluye 
  el nombre del paquete y la versión del mismo, éste incluye los directorios y archivos  
  necesarios para compilar y/o instalar el código fuente de Almidon  
 
@@ -235,29 +237,16 @@ Pasos para realizar la construcción del instalador UNIX:
  almidon-version.tar.gz
  
  La ruta absoluta del archivo comprimido es la siguiente:
- /ruta/hacia/el/directorio/de/almidon/almidon-version.tar.gz
+ /ruta/hacia/el/directorio/de/almidon/almidon-version.tar.gz 
 
- Paso 12: Si queremos cambiar nuevamente el contenido de los archivos con extensión *.ac, *.am 
- o *.in volvemos al paso 3, de lo contrario ejecutamos las siguientes intrucciones:
- 
- Renombramos el directorio atma_core a su nombre original que sería core. 
- #mv atma_core core
-
- Actualizamos el contenido del directorio autotools-dev de inmediato, ya sea si hemos cambiado 
- el contenido o no de los archivos con extensión *.ac, *.am o *.in copiado previamente a la 
- carpeta almidon, ya que este paso es necesario para futuras contrucciones de versiones del 
- instalador de almidon. Así:
- #chmod +x update_autotools-devdir.sh (Sólo es necesario si no tiene permisos de ejecución.)
- #./update_autotools-devdir.sh
-
- Paso 13: Descomprimimos el archivo comprimido del instalador en formato tarball.
+ Paso 10: Descomprimos el archivo comprimido del instalador en formato tarball.
  tar -xvzf /ruta/hacia/el/archivo/comprimido/en/formato/tarball/llamado/almidon-version.tar.gz
 
- Paso 14: Cambiamos el directorio que nos genera la descompresión del archivo comprimido del 
+ Paso 11: Cambiamos el directorio que nos genera la descompresión del archivo comprimido del 
  instalador en formato tarball.
  # cd /ruta/hacia/el/directorio/que/genera/el/archivo/comprimido/en/formato/llamado/almidon-version
 
- Paso 15:  Si no deseamos crear el paquete *.deb o *.rpm y deseamos instalar el contenido del 
+ Paso 12:  Si no deseamos crear el paquete *.deb o *.rpm y deseamos instalar el contenido del 
  directorio almidon-version en la computadora sin ayuda de la construcción de estos paquetes.
  Como root:
  En terminal: #make install
