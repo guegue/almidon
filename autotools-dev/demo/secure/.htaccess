@@ -1,6 +1,0 @@
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule (.*) /almidon/404.php [L]
-
-php_flag display_errors on
-php_value error_reporting 6143
