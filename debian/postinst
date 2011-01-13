@@ -21,51 +21,59 @@ set -e
 
 if [ "$1" = "configure" ];then #Inicio del 1º if
 
+    if [ -d /usr/share ]; then #Inicio del 2º if
+
+      if [ -d /usr/share/almidon ]; then #Inicio del 3º if
+ 
              # Web dir 
-             if [ -d /var/www ]; then #Inicio del 2º if
+             if [ -d /var/www ]; then #Inicio del 4º if
               CONTENTDIR=/var/www
              else
-                if [ -d /srv/www ]; then #Inicio del 3º if
+                if [ -d /srv/www ]; then #Inicio del 5º if
                  CONTENTDIR=/srv/www
-                fi #Fin del 3º if
-             fi #Fin del 2º if
+                fi #Fin del 5º if
+             fi #Fin del 4º if
 
              ALMIDONDIR=$CONTENTDIR/almidon
-             if [ ! -d $ALMIDONDIR ];then #Inicio del 4º if
+             if [ ! -d $ALMIDONDIR ];then #Inicio del 6º if
               mkdir $ALMIDONDIR
-             fi #Fin del 4º if
-                     
-            if [ -d /etc/almidon ]; then #Inicio del 5º if
-             if [ ! -x /etc/almidon/config.sh ];then #Inicio del 6º if
-              chmod +x /etc/almidon/config.sh
              fi #Fin del 6º if
- 
-             if [ ! -x /etc/almidon/demo-setup.sh ];then #Inicio del 7º if
-              chmod +x /etc/almidon/demo-setup.sh
-             fi #Fin del 7º if
-
-             if [ ! -x /etc/almidon/site-setup.sh ];then #Inicio del 8º if
-              chmod +x /etc/almidon/site-setup.sh
+                     
+            if [ -d /etc/almidon ]; then #Inicio del 7º if
+             if [ ! -x /etc/almidon/config.sh ];then #Inicio del 8º if
+              chmod +x /etc/almidon/config.sh
              fi #Fin del 8º if
-
-             if [ ! -x /etc/almidon/phpdoc-almidon.sh ];then #Inicio del 9º if
-              chmod +x /etc/almidon/phpdoc-almidon.sh
-             fi #Fin del 9º if
  
+             if [ ! -x /etc/almidon/demo-setup.sh ];then #Inicio del 9º if
+              chmod +x /etc/almidon/demo-setup.sh
+             fi #Fin del 9º if
 
-            fi #Fin del 5º if
+             if [ ! -x /etc/almidon/site-setup.sh ];then #Inicio del 10º if
+              chmod +x /etc/almidon/site-setup.sh
+             fi #Fin del 10º if
+
+             if [ ! -x /etc/almidon/phpdoc-almidon.sh ];then #Inicio del 11º if
+              chmod +x /etc/almidon/phpdoc-almidon.sh
+             fi #Fin del 11º if
+ 
+#             echo  "Configurando e instalando Sitio Web demo de Almidón.";
+#             /etc/almidon/demo-setup.sh
+            fi #Fin del 7º if
                                 
-            if [ -f /sbin/service ]; then #Inicio del 10º if
+            if [ -f /sbin/service ]; then #Inicio del 12º if
 	      /sbin/service apache2 condrestart > /dev/null 2>&1 || :
 	    else
-                 if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then #Inicio del 11º if	  
+                 if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then #Inicio del 13º if	  
                   invoke-rc.d apache2 restart
                  else 
-                     if [ -f /etc/init.d/apache2 ];then #Inicio del 12º if
+                     if [ -f /etc/init.d/apache2 ];then #Inicio del 14º if
                       /etc/init.d/apache2 restart
-                     fi #Fin del 12º if
-                fi  #Fin del 11º if
-            fi  #Fin del 10º if                 
+                     fi #Fin del 14º if
+                fi  #Fin del 13º if
+            fi  #Fin del 12º if   
+              
+      fi #Fin del 3º if
+   fi #Fin del 2º if
 fi #Fin del 1º if
 
 #if [ "$1" = "abort-upgrade" ];then
