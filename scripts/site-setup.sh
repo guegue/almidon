@@ -49,5 +49,4 @@ else
     echo "Try again with as administrator";
     exit
 fi
-#End of script sh
 
