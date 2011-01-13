@@ -1,15 +1,5 @@
 INSTALAR EN UBUNTU + mysql
 ==========================
-
-Pasos para la instalación de Almidon
-
-Fedora usa apt como manejador de paquetes, instalando requerimientos:
-
-  # apt-get install debian-helper-scripts apache2 php5 php5-pgsql php5-gd postgresql postgresql-server
-
-Los siguientes pasos deben realizarse sólo si desea hacer desde la fuente y no se requiere recurrir a instaladores
-con extensión *.rpm o *.deb:
-
 Paso 1: Obtener almidon
 
  # cd /var/www
@@ -42,5 +32,3 @@ Constantes de conexion a la base de datos (vienen configuradas por default para 
  $public_dsn = 'mysql://almidondemowww:secreto2@/almidondemo';
 
 Paso 6: Crear la base de datos de ejemplo.
-
-

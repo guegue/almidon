@@ -1,1 +1,0 @@
-0 2 * * *	almidon	${sbindir}/tmpwatch -umc ${datadir}/${name}/cache/ > /dev/null 2>&1

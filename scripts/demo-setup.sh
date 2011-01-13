@@ -19,17 +19,11 @@ cp classes/config.ori.php classes/config.php
 if [ "$1" == "mysql" ]; then
   echo "Instalando sql para Mysql" >> logs/install.log
   mysql < demo.mysql >> logs/install.log 2>&1
-  perl -pi -e 's/pgsql/mysql/' classes/config.php > classes/config.php
+  sed 's/pgsql/mysql/' classes/config.php > classes/config.php
 else
   echo "Instalando sql para Postgresql" >> logs/install.log
-  echo "Entrando como superusuario del Servidor Postgresql";
-  echo "Recuerde escribir en la consola el comando exit para salir de la"; 
-  echo "consola interactiva del Servidor Postgresql luego de importación y ejecutación";
-  echo "automática de los scripts necesarios para crear el sitio."
-  su - postgres
-  "psql -f demo.sql" >> logs/install.log 2>&1
-  "psql -f country.sql" >> logs/install.log 2>&1
-  exit
+  runuser -c "psql -f demo.sql" postgres >> logs/install.log 2>&1
+  runuser -c "psql -f country.sql" postgres >> logs/install.log 2>&1
 fi
 grep "local.almidon.org" /etc/hosts > /dev/null
 if [ "$?" == "1" ]; then
