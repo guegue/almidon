@@ -20,10 +20,10 @@ function check_user($user, $pass) {
     if (defined('DSN')) $admin_dsn = DSN;
     else die('No DSN nor admin_dsn, check config.php');
   }
-  $pass = md5($pass);
   $alm_user = new alm_userTable();
+  $pass = md5($alm_user->escape($pass));
   $alm_user->readEnv();
-  $alm_user_data = @$alm_user->readDataFilter("idalm_user='".$user."' AND password='".$pass."'");
+  $alm_user_data = @$alm_user->readDataFilter("idalm_user='".$alm_user->escape($user)."' AND password='".$pass."'");
   if (almdata::basicError($alm_user->data, $admin_dsn) && $pass === $emergency_password) {
     $_SESSION['idalm_user'] = 'admin';
     $_SESSION['alm_user'] = 'Emergency';
