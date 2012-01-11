@@ -349,7 +349,7 @@ class Table extends Data {
           $join .= " LEFT OUTER JOIN " . $column['references'] . " ON " . $this->name . "." . $column['name'] . "=" . $column['references'] . "." . $foreign_key;
         } else {
           $tmptable = $column['references'] . $references[$column['references']];
-          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $forenign_key;
+          $join .= " LEFT OUTER JOIN " . $column['references'] . " AS $tmptable ON " . $this->name . "." . $column['name'] . "=" . $tmptable . "." . $foreign_key;
         }
       }
     return $join;
