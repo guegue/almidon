@@ -88,7 +88,7 @@ function genModel($object) {
     $data_order = preg_replace('/, /', ',', $data->order);
     $order_fields = explode(',', $data_order);
     foreach($order_fields as $order_field) {
-      if (preg_match('/^id/', $order_field) && $order_field != $data->key) {
+      if (preg_match('/^id/', $order_field) && preg_replace('/ DESC/', '', $order_field) != $data->key) {
         $order_field = preg_replace('/^id/', '', $order_field);
       }
       $order[] = "'" . preg_replace('/(.*) DESC/', '-$1', $order_field) . "'";
