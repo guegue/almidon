@@ -7,6 +7,7 @@ if ($_SESSION['idalm_user'] !== 'admin' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.
 
 require_once((defined('ROOTDIR')?ROOTDIR:$_SERVER['DOCUMENT_ROOT'].'/..') . '/classes/app.class.php');
 require_once('setup.gensql.php');
+require_once('setup.genmodels.php');
 require_once('setup.tests.php');
 require_once('setup.dd.php');
 
@@ -46,6 +47,7 @@ $options = array(
   'exec'=>'Ejecutar c&oacute;digo SQL');
 $optionsdd = array(
   'sql'=>'SQL basado en tables.class',
+  'models'=>'Django models basado en tables.class',
   'dd'=>'Diccionario de datos (DD)',
   'erd'=>'Diagrama entidad relacion (DER)',
   'erdcol'=>'Diagrama entidad relacion detallado (DER)');
@@ -325,6 +327,10 @@ if (!empty($action)) {
     foreach($tables as $key)
       $output .= genSQL($key);
     break;
+  case 'models':
+    foreach($tables as $key)
+      $output .= genModel($key);
+    break;
   case 'dd':
     foreach($tables as $key) {
       $dd = genDD($key);
@@ -447,6 +453,7 @@ if (!empty($action)) {
     print $output;
     break;
   case 'sql':
+  case 'models':
     print "<pre>$output</pre>";
     break;
   case 'alm_tables':
