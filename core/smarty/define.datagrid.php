@@ -1,7 +1,7 @@
 <?php
 # URL almidon
 if ( !defined('ALM_URI') )
-  define('ALM_URI','almidon');
+  define('ALM_URI','cms');
 
 # FIXME: are we using this? form to search
 define('DS','<form action="_SELF_" method="POST" name="_FORM_search" class="search"><input type="hidden" name="action" value="search" />_DSFIELDS_&nbsp;<input type="submit" value="'. ALM_SEARCH_LB .'" /><input type="reset" value="'. ALM_RESET_LB .'" /></form>');

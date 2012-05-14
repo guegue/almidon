@@ -62,7 +62,7 @@ if ( ADMIN === true ) {
   /*
    * Defining the ALM URI By default whether it is defined in config.php
    */
-  if (!defined('ALM_URI')) define('ALM_URI','almidon');
+  if (!defined('ALM_URI')) define('ALM_URI','cms');
   /*
    * Defining the ADMIN THEME
    */

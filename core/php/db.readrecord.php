@@ -21,12 +21,13 @@
       $cache = (ALM_CACHE && !ADMIN);
     $this->filecache = ROOTDIR.'/cache/sql/'.md5($sqlcmd).".$this->name.".__FUNCTION__.'.dat';
     if ($cache === true && file_exists($this->filecache) && (time()-filemtime($this->filecache)<=ALM_CACHE_TIME)) {
-      $row = unserialize(file_get_contents($this->filecache));
+        $row = unserialize(file_get_contents($this->filecache));
     } else {
-      $this->execSql($sqlcmd);
-      if (almdata::isError($sqlcmd)) return;
-      $row = almdata::fetchRow($this->data);
-      file_put_contents($this->filecache, serialize($row));
+        $this->execSql($sqlcmd);
+        if (almdata::isError($sqlcmd)) return;
+        $row = almdata::fetchRow($this->data);
+        if ($cache === true)
+          file_put_contents($this->filecache, serialize($row));
     }
     if ($this->html) {
       foreach($row as $key=>$val)

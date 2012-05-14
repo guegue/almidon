@@ -98,6 +98,8 @@ function smarty_function_datagrid($params, &$smarty)
     }
   }
 
+  if (!isset($num_rows))
+    $num_rows = count($rows);
   if (empty($rows) ) {
     $smarty->trigger_error("datagrid: rows attribute must be present", E_USER_NOTICE);
     return ''; /* raise error here? */
@@ -452,6 +454,7 @@ function smarty_function_datagrid($params, &$smarty)
       $ids = null;
       $key_id_url = null;
       $key_id_js = null;
+      $ids = $key_id_url = $key_id_js = array();
       foreach($keys as $val) {
         $key_id_url[] = $val .'='. $row[$val];
         $key_id_js[] = "'$val':'".$row[$val]."'";
@@ -526,7 +529,7 @@ function smarty_function_datagrid($params, &$smarty)
   else
     $_html_result = preg_replace("/_SELF_/", $_SERVER['PHP_SELF'], $_html_result);
 
-  $akeys = null;
+  $akeys = array();
   foreach($keys as $val)
     $akeys[] = "'".$val."'";
   $_html_result = preg_replace("/{_KEYS_}/", '['. join(',',$akeys) .']',  $_html_result);

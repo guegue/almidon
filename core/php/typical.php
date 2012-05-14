@@ -171,7 +171,7 @@ if(isset($$object->child)) {
 		'title' => $$obj->title,
 		#'maxrows'=> $$obj->maxrows,
 		#'maxcols'=> $$obj->maxcols,
-                'num_rows'=> $$obj->getVar("SELECT COUNT(*) FROM ".$$obj->name." WHERE ".$filter)
+        'num_rows'=> $$obj->getVar("SELECT COUNT(*) FROM ".$$obj->name." WHERE ".$filter)
 	    );
     } 
   }
