@@ -16,8 +16,10 @@ function genColumnModel($column, $dbtype) {
     }
   } elseif ($type == 'image' || $type == 'autoimage') {
     $type = 'ImageField';
+    $params[] = "upload_to='$name'";
   } elseif ($type == 'file') {
     $type = 'FileField';
+    $params[] = "upload_to='$name'";
   } elseif ($type == 'html' || $type == 'xhtml' || $type == 'text') {
     $type = 'TextField';
     $size = null;
@@ -39,6 +41,8 @@ function genColumnModel($column, $dbtype) {
     $type = 'DateField';
   } elseif ($type == 'bool') {
     $type = 'BooleanField';
+  } elseif ($type == 'serial') {
+    $type = 'AutoField';
   }
 
   if ($dbtype == 'pgsql') {
@@ -50,7 +54,7 @@ function genColumnModel($column, $dbtype) {
   $size = preg_replace("/\./", ",", $size);
   if ($column['references']) {
     $name = preg_replace('/^id/', '', $name);
-    $model = "$name = ForeignKey";
+    $model = "$name = models.ForeignKey";
     $params[] = $column['references'];
   } else {
     $model = "$name = models.".$type;
