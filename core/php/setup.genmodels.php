@@ -86,6 +86,8 @@ function genModel($object) {
     $order = preg_replace('/(.*) DESC/', '-$1', $data->order);
     $model .= "        ordering = ['" . $order . "']\n";
   }
+  $model .= "\n    def __unicode__(self):\n";
+  $model .= "        return self." . $object . "\n";
   $model .= "\n\n";
   return($model);
 }
