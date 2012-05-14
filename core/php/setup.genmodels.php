@@ -76,7 +76,7 @@ function genModel($object) {
     $model .= "    " . genColumnModel($column, $dbtype);
     ++$i;
   }
-  $model .= "\n    Class Meta:\n";
+  $model .= "\n    class Meta:\n";
   $model .= "        db_table = '$object'\n";
   if ($data->order) {
     $order = preg_replace('/(.*) DESC/', '-$1', $data->order);
