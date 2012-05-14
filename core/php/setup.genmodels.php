@@ -1,5 +1,5 @@
 <?php
-function genColumnModel($column, $dbtype) {
+function genColumnModel($column, $table) {
   $sql = '';
   $type = $column['type'];
   $name = $column['name'];
@@ -16,10 +16,10 @@ function genColumnModel($column, $dbtype) {
     }
   } elseif ($type == 'image' || $type == 'autoimage') {
     $type = 'ImageField';
-    $params[] = "upload_to='$name'";
+    $params[] = "upload_to='$table'";
   } elseif ($type == 'file') {
     $type = 'FileField';
-    $params[] = "upload_to='$name'";
+    $params[] = "upload_to='$table'";
   } elseif ($type == 'html' || $type == 'xhtml' || $type == 'text') {
     $type = 'TextField';
     $size = null;
@@ -34,7 +34,7 @@ function genColumnModel($column, $dbtype) {
   } elseif ($type == 'varchar') {
     $type = 'CharField';
     if ($name == 'email') $type = 'EmailField';
-    if ($name == 'url') $type = 'UrlField';
+    if ($name == 'url') $type = 'URLField';
   } elseif ($type == 'int') {
     $type = 'IntegerField';
   } elseif ($type == 'date') {
@@ -43,19 +43,21 @@ function genColumnModel($column, $dbtype) {
     $type = 'BooleanField';
   } elseif ($type == 'serial') {
     $type = 'AutoField';
+  } elseif ($type == 'auto') {
+    if ($name == 'ip') $type = 'IPAddressField';
+    if ($name == 'fecha') {
+      $type = 'DateField';
+      $params[] = 'auto_now_add=True';
+    }
   }
 
-  if ($dbtype == 'pgsql') {
-    if ($type == 'order') $type = 'serial NULL';
-  } elseif ($dbtype == 'mysql') {
-    if ($type == 'order' ||  $type == 'serial') $type = 'int AUTO_INCREMENT';
-  }
   $size = isset($size) ? $size : $column['size'];
   $size = preg_replace("/\./", ",", $size);
   if ($column['references']) {
-    $name = preg_replace('/^id/', '', $name);
-    $model = "$name = models.ForeignKey";
+    $nname = preg_replace('/^id/', '', $name);
+    $model = "$nname = models.ForeignKey";
     $params[] = $column['references'];
+    $params[] = 'db_column="' . $name . '"';
   } else {
     $model = "$name = models.".$type;
     if ($size) $params[] = "max_length=$size";
@@ -69,7 +71,6 @@ function genModel($object) {
   global $admin_dsn;
   $o = $object . "Table";
   $data = new $o;
-  list($dbtype,$tmp) = preg_split('/:\/\//',$admin_dsn);
   $model = "class $data->name(models.Model):\n";
   $i = 0;
   if($data->definition)
@@ -77,14 +78,22 @@ function genModel($object) {
     unset($size);
     if (isset($type) && $type == 'external') next($data->definition);
     if ($i) $model .= "\n";
-    $model .= "    " . genColumnModel($column, $dbtype);
+    $model .= "    " . genColumnModel($column, $object);
     ++$i;
   }
   $model .= "\n    class Meta:\n";
   $model .= "        db_table = '$object'\n";
+  $model .= "        verbose_name = '$data->title'\n";
   if ($data->order) {
-    $order = preg_replace('/(.*) DESC/', '-$1', $data->order);
-    $model .= "        ordering = ['" . $order . "']\n";
+    $data_order = preg_replace('/, /', ',', $data->order);
+    $order_fields = explode(',', $data_order);
+    foreach($order_fields as $order_field) {
+      if (preg_match('/^id/', $order_field) && $order_field != $data->key) {
+        $order_field = preg_replace('/^id/', '', $order_field);
+      }
+      $order[] = "'" . preg_replace('/(.*) DESC/', '-$1', $order_field) . "'";
+    }
+    $model .= "        ordering = [" . join(',', $order) . "]\n";
   }
   $model .= "\n    def __unicode__(self):\n";
   $model .= "        return self." . $object . "\n";
